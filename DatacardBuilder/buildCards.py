@@ -84,9 +84,9 @@ if __name__ == '__main__':
 		sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
 
 	# connect the 0B bins to nB bins
-	signalRegion.addSingleSystematic('DYRatUnc','lnN',['zvv'],1.3,'BTags1');
-	signalRegion.addSingleSystematic('DYRatUnc','lnN',['zvv'],1.3,'BTags2');
-	signalRegion.addSingleSystematic('DYRatUnc','lnN',['zvv'],1.3,'BTags3');
+	signalRegion.addSingleSystematic('DYRatUnc1B','lnN',['zvv'],1.3,'BTags1');
+	signalRegion.addSingleSystematic('DYRatUnc2B','lnN',['zvv'],1.3,'BTags2');
+	signalRegion.addSingleSystematic('DYRatUnc3B','lnN',['zvv'],1.3,'BTags3');
 	signalRegion.addSingleSystematic('DYCR0BTo1B','lnU',['zvv'],100,'BTags1');
 	signalRegion.addSingleSystematic('DYCR0BTo1B','lnU',['zvv'],100,'BTags0');
 	signalRegion.addSingleSystematic('DYCR0BTo2B','lnU',['zvv'],100,'BTags2');
