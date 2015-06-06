@@ -21,7 +21,7 @@ class singleBin:
 
 		#############################
 		# yield part of the datacard
-		line = "imax %i #number of channels 1 \n";
+		line = "imax 1 #number of channels \n";
 		self._allLines.append(line);
 		line = "jmax %i #number of backgrounds \n" % (len(self._binLabels)-1);
 		self._allLines.append(line);
@@ -49,7 +49,7 @@ class singleBin:
 		line += "\n";
 		self._allLines.append(line);
 
-		line = "rates ";
+		line = "rate ";
 		zeroProxy = 0.0001;
 		for rate in self._rates: 
 			if rate < 0.000001: line += str(zeroProxy) + " ";

@@ -1,4 +1,5 @@
 import sys
+import re
 from singleBin import *
 
 class searchRegion:
@@ -30,8 +31,12 @@ class searchRegion:
 		
 	def addSingleSystematic(self,sysname,systype,channel,val,identifier='',index=None):
 		
+		#print "Looking for ",identifier;
+
 		for i in range(self._nBins): 
-			if identifier in self._singleBins[i]._tag:
+			#if identifier in self._singleBins[i]._tag:
+			if re.search(identifier, self._singleBins[i]._tag) and identifier != '':
+				#print "Found! ",self._singleBins[i]._tag;
 				if index == None or index == self._singleBins[i]._index:
 					# print identifier, " in ", self._singleBins[i]._tag;
 					self._singleBins[i].addSystematic( sysname, systype, channel, val );
