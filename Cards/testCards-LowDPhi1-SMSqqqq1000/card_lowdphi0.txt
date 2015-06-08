@@ -1,0 +1,13 @@
+#the tag = NJets0_BTags0_MHT0_HT1 
+imax 1 #number of channels 
+jmax 1 #number of backgrounds 
+kmax * nuissance 
+------------ 
+bin Binlowdphi0
+observation 30226.2805138
+bin Binlowdphi0 Binlowdphi0 
+process sig qcd 
+process 0 1 
+rate 40.70825 30185.57227 
+------------ 
+LDPCRHT1 lnU - 100 

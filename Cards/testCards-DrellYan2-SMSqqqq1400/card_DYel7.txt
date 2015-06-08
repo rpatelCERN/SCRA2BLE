@@ -1,0 +1,14 @@
+#the tag = NJets1_BTags0_MHT0_HT1 
+imax 1 #number of channels 
+jmax 1 #number of backgrounds 
+kmax * nuissance 
+------------ 
+bin BinDYel7
+observation 3.71531677246
+bin BinDYel7 BinDYel7 
+process sig zvv 
+process 0 1 
+rate 0.0001 3.71532 
+------------ 
+DYCR7 lnU - 100 
+DYelStatUnc7 lnN - 1.038 
