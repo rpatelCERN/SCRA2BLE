@@ -35,7 +35,7 @@ class searchRegion:
 
 		for i in range(self._nBins): 
 			#if identifier in self._singleBins[i]._tag:
-			if re.search(identifier, self._singleBins[i]._tag) and identifier != '':
+			if re.search(identifier, self._singleBins[i]._tag) or identifier == '':
 				#print "Found! ",self._singleBins[i]._tag;
 				if index == None or index == self._singleBins[i]._index:
 					# print identifier, " in ", self._singleBins[i]._tag;

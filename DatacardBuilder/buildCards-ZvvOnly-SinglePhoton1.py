@@ -9,8 +9,8 @@ from singleBin import *
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option('-b', action='store_true', dest='noX', default=False, help='no X11 windows')
-parser.add_option("--lumi", dest="lumi", default = 4,help="mass of LSP", metavar="MLSP")
-parser.add_option("--binning",dest="binning",default="RA2bBins",help="Select binning to be used: Classic, SMJ, extSMJ", metavar="binning")
+parser.add_option("--signal", dest="signal", default = 'SMSqqqq1000',help="mass of LSP", metavar="signal")
+parser.add_option("--tag", dest="tag", default = 'SinglePhoton1',help="mass of LSP", metavar="tag")
 (options, args) = parser.parse_args()
 
 
@@ -18,9 +18,10 @@ parser.add_option("--binning",dest="binning",default="RA2bBins",help="Select bin
 #########################################################################################################
 if __name__ == '__main__':
 
-	odir = 'testCards-SinglePhoton1/';
-	if not os.path.exists(odir): os.path.makedirs(odir);
-	sms = 'SMStttt1500';
+	sms = options.signal;
+	tag = options.tag;
+	odir = 'testCards-%s-%s/' % (tag,sms);
+	if not os.path.exists(odir): os.makedirs(odir);
 
 	#------------------------------------------------------------------------------------------------
 	## 1. Fill Rates for each signal region

@@ -11,7 +11,7 @@ class singleBin:
 		self._rates = [];
 		self._allLines = [];
 
-		print "bin tag = ", tag, index
+		#print "bin tag = ", tag, index
 
 	def setRates( self, rates ):
 
@@ -21,6 +21,9 @@ class singleBin:
 
 		#############################
 		# yield part of the datacard
+		line = "#the tag = %s \n" % (self._tag);
+		self._allLines.append(line);
+		
 		line = "imax 1 #number of channels \n";
 		self._allLines.append(line);
 		line = "jmax %i #number of backgrounds \n" % (len(self._binLabels)-1);
