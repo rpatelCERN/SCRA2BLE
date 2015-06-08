@@ -5,6 +5,7 @@ import math
 import sys
 from searchRegion import *
 from singleBin import *
+from cardUtilities import *
 
 from optparse import OptionParser
 parser = OptionParser()
@@ -24,14 +25,9 @@ if __name__ == '__main__':
 	if not os.path.exists(odir): os.makedirs(odir);
 
 	#------------------------------------------------------------------------------------------------
-	## 1. Fill Rates for each signal region
-	signalRegion_file = TFile("../Analysis/datacards/RA2bin_signal.root");
-	signalRegion_hists = [];
-	signalRegion_hists.append( signalRegion_file.Get("RA2bin_"+sms) );
-	signalRegion_hists.append( signalRegion_file.Get("RA2bin_Zinv") );
-	signalRegion = searchRegion('signal', ['sig','zvv'], signalRegion_hists[0])
-	signalRegion.fillRates( signalRegion_hists );
+	## 1. Fill Rates for each analysis region
 
+	# Zmumu control region
 	zmumuRegion_file = TFile("../Analysis/datacards/RA2bin_DYm_CleanVars.root");
 	zmumuRegion_hists = [];
 	zmumuRegion_hists.append( zmumuRegion_file.Get("RA2bin_"+sms) );
@@ -39,12 +35,25 @@ if __name__ == '__main__':
 	zmumuRegion = searchRegion('DYmu', ['sig','zvv'], zmumuRegion_hists[0])
 	zmumuRegion.fillRates( zmumuRegion_hists );
 
+	# Zelel control region
 	zelelRegion_file = TFile("../Analysis/datacards/RA2bin_DYe_CleanVars.root");
 	zelelRegion_hists = [];
 	zelelRegion_hists.append( zelelRegion_file.Get("RA2bin_"+sms) );
 	zelelRegion_hists.append( zelelRegion_file.Get("RA2bin_DY") );
 	zelelRegion = searchRegion('DYel', ['sig','zvv'], zelelRegion_hists[0])
 	zelelRegion.fillRates( zelelRegion_hists );
+
+	# signal region
+	signalRegion_file = TFile("../Analysis/datacards/RA2bin_signal.root");
+	signalRegion_hists = [];
+
+	h_newZinvSRYields = hutil_clone0BtoNB(signalRegion_file.Get("RA2bin_Zinv"))
+	signalRegion_hists.append( signalRegion_file.Get("RA2bin_"+sms) );
+	#signalRegion_hists.append( signalRegion_file.Get("RA2bin_Zinv") );
+	signalRegion_hists.append( h_newZinvSRYields );
+	
+	signalRegion = searchRegion('signal', ['sig','zvv'], signalRegion_hists[0])
+	signalRegion.fillRates( signalRegion_hists );
 
 
 	# #------------------------------------------------------------------------------------------------
