@@ -39,20 +39,16 @@ if __name__ == '__main__':
 	sphotonRegion_hists = [];
 	sphotonRegion_hists.append( sphotonRegion_file.Get("RA2bin_"+sms) );
 	sphotonRegion_hists.append( gjet_cr );
-	sphotonRegion = searchRegion('sphoton', ['sig','zvv'], sphotonRegion_hists[0])
+	tagsForSinglePhoton = binLabelsToList(sphotonRegion_hists[0])
+	sphotonRegion = searchRegion('sphoton', ['sig','zvv'], tagsForSinglePhoton)
 	#normalize = True;
 	sphotonRegion.fillRates( sphotonRegion_hists );
-
-	# sphotonSingleBins = sphotonRegion._singleBins;
-	# observedEventsInSignalRegion = [];
-	# for i in range(len(sphotonSingleBins)):
-	# 	curval = sphotonSingleBins[i]._observed*binsToList(zinv_sr_normAndTrans)[i]+binsToList(signalRegion_file.Get("RA2bin_"+sms))[i];
-	# 	observedEventsInSignalRegion.append(curval);
 
 	signalRegion_hists = [];
 	signalRegion_hists.append( signalRegion_file.Get("RA2bin_"+sms) );
 	signalRegion_hists.append( h_newZinvSRYields );
-	signalRegion = searchRegion('signal', ['sig','zvv'], signalRegion_hists[0])
+	tagsForSignalRegion = binLabelsToList(signalRegion_hists[0]);	
+	signalRegion = searchRegion('signal', ['sig','zvv'], tagsForSignalRegion)
 	signalRegion.fillRates( signalRegion_hists );
 	# signalRegion.setObservedManually( observedEventsInSignalRegion );
 

@@ -46,7 +46,7 @@ if __name__ == '__main__':
 	sphotonRegion_hists = [];
 	sphotonRegion_hists.append( sphotonRegion_file.Get("RA2bin_"+sms) );
 	sphotonRegion_hists.append( newYieldsGJet );
-	sphotonRegion = searchRegion('sphoton', ['sig','zvv'], sphotonRegion_hists[0])
+	sphotonRegion = searchRegion('sphoton', ['sig','zvv'], binLabelsToList(sphotonRegion_hists[0]) )
 	#normalize = True;
 	sphotonRegion.fillRates( sphotonRegion_hists );
 	sphotonRegion.setObservedManually( observedEventsInControlRegion );
@@ -60,7 +60,7 @@ if __name__ == '__main__':
 	signalRegion_hists = [];
 	signalRegion_hists.append( signalRegion_file.Get("RA2bin_"+sms) );
 	signalRegion_hists.append( newYieldsZvv );
-	signalRegion = searchRegion('signal', ['sig','zvv'], signalRegion_hists[0])
+	signalRegion = searchRegion('signal', ['sig','zvv'], binLabelsToList(signalRegion_hists[0]) )
 	signalRegion.fillRates( signalRegion_hists );
 	signalRegion.setObservedManually( observedEventsInSignalRegion );
 

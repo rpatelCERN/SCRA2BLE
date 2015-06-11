@@ -4,13 +4,13 @@ jmax 1 #number of backgrounds
 kmax * nuissance 
 ------------ 
 bin Binsignal40
-observation 1.81184260547
+observation 2.255842466
 bin Binsignal40 Binsignal40 
 process sig zvv 
 process 0 1 
-rate 0.04286 1.76898 
+rate 0.04286 2.21298 
 ------------ 
 lumi lnN 1.04 - 
-SPhoCR4 lnU - 100 
+PhotonCR40 lnU - 100 
 SPhoRZgUnc4 lnN - 1.048 
 SPho2BUnc lnN - 2.0 

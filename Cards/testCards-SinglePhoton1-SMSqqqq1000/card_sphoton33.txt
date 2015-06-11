@@ -1,0 +1,13 @@
+#the tag = NJets2_BTags1_MHT1_HT3 
+imax 1 #number of channels 
+jmax 1 #number of backgrounds 
+kmax * nuissance 
+------------ 
+bin Binsphoton33
+observation 0.437596529722
+bin Binsphoton33 Binsphoton33 
+process sig zvv 
+process 0 1 
+rate 0.03362 1.00000 
+------------ 
+PhotonCR33 lnU - 100 

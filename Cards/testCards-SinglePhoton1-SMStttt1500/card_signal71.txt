@@ -8,9 +8,9 @@ observation 3.07470035553
 bin Binsignal71 Binsignal71 
 process sig zvv 
 process 0 1 
-rate 3.07470 0.0001 
+rate 3.07470 0.95986 
 ------------ 
 lumi lnN 1.04 - 
-SPhoCR17 lnU - 100000 
+PhotonCR71 lnU - 100 
 SPhoRZgUnc17 lnN - 1.9 
 SPho3BUnc lnN - 3.0 

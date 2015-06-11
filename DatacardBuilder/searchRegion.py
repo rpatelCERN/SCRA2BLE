@@ -4,16 +4,16 @@ from singleBin import *
 
 class searchRegion:
 
-	def __init__( self ,name, binLabels, refhisto ) :
+	def __init__( self ,name, binLabels, singleBinTags ) :
 
 		self._regionName = name;
 		self._binLabels = binLabels;
-		self._refhisto = refhisto;
+		self._singleBinTags = singleBinTags;
 
-		self._nBins = self._refhisto.GetNbinsX();
+		self._nBins = len(singleBinTags);
 		self._singleBins = [];
 		for i in range(self._nBins):
-			self._singleBins.append( singleBin(self._regionName + str(i), self._refhisto.GetXaxis().GetBinLabel(i+1), self._binLabels, i ) );
+			self._singleBins.append( singleBin(self._regionName + str(i), self._singleBinTags[i], self._binLabels, i ) );
 
 		# print "nbins = ", self._nBins;
 

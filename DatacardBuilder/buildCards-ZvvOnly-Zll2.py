@@ -32,7 +32,7 @@ if __name__ == '__main__':
 	zmumuRegion_hists = [];
 	zmumuRegion_hists.append( zmumuRegion_file.Get("RA2bin_"+sms) );
 	zmumuRegion_hists.append( zmumuRegion_file.Get("RA2bin_DY") );
-	zmumuRegion = searchRegion('DYmu', ['sig','zvv'], zmumuRegion_hists[0])
+	zmumuRegion = searchRegion('DYmu', ['sig','zvv'], binLabelsToList(zmumuRegion_hists[0]) )
 	zmumuRegion.fillRates( zmumuRegion_hists );
 
 	# Zelel control region
@@ -40,7 +40,7 @@ if __name__ == '__main__':
 	zelelRegion_hists = [];
 	zelelRegion_hists.append( zelelRegion_file.Get("RA2bin_"+sms) );
 	zelelRegion_hists.append( zelelRegion_file.Get("RA2bin_DY") );
-	zelelRegion = searchRegion('DYel', ['sig','zvv'], zelelRegion_hists[0])
+	zelelRegion = searchRegion('DYel', ['sig','zvv'], binLabelsToList(zelelRegion_hists[0]) )
 	zelelRegion.fillRates( zelelRegion_hists );
 
 	# signal region
@@ -52,7 +52,7 @@ if __name__ == '__main__':
 	#signalRegion_hists.append( signalRegion_file.Get("RA2bin_Zinv") );
 	signalRegion_hists.append( h_newZinvSRYields );
 	
-	signalRegion = searchRegion('signal', ['sig','zvv'], signalRegion_hists[0])
+	signalRegion = searchRegion('signal', ['sig','zvv'], binLabelsToList(signalRegion_hists[0]) )
 	signalRegion.fillRates( signalRegion_hists );
 
 	zmumuRegion.writeRates();

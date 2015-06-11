@@ -74,10 +74,14 @@ def getBinContentByLabel(h_in,label):
 def binsToList(h_in):
 
 	olist = [];
-	for i in range(h_in.GetNbinsX()):
-		olist.append( h_in.GetBinContent(i+1) );
+	for i in range(h_in.GetNbinsX()): olist.append( h_in.GetBinContent(i+1) );
 	return olist;
 
+def binLabelsToList(h_in):
+
+	olist = [];
+	for i in range(h_in.GetNbinsX()): olist.append( h_in.GetXaxis().GetBinLabel(i+1) );
+	return olist;
 
 
 
