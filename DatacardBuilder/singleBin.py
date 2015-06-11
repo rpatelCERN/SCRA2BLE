@@ -11,11 +11,20 @@ class singleBin:
 		self._rates = [];
 		self._allLines = [];
 
-		#print "bin tag = ", tag, index
+		# print "bin tag = ", tag, index
 
-	def setRates( self, rates ):
+	def setRates( self, rates, normalize = False ):
 
-		self._rates = rates;
+		self._observed = float(sum(rates));
+		
+		# print self._index, self._observed, rates
+
+		self._rates = [];
+		if normalize: 
+			if self._observed > 0: 
+				self._rates = [x / self._observed for x in rates];
+			else : self._rates = [1.]*len(rates);
+		else: self._rates = rates;
 
 	def writeRates( self ):
 
@@ -34,7 +43,7 @@ class singleBin:
 		line = "bin Bin"+self._name+"\n";
 		self._allLines.append(line);
 		
-		line = "observation "+str(sum(self._rates))+"\n";
+		line = "observation "+str(self._observed)+"\n";
 		self._allLines.append(line);
 
 		line = "bin ";

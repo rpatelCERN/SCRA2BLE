@@ -25,73 +25,69 @@ if __name__ == '__main__':
 	if not os.path.exists(odir): os.makedirs(odir);
 
 	#------------------------------------------------------------------------------------------------
-	## 1. Fill Rates for each analysis region
+	## 1. Fill Rates for each signal region
 
-	# Zmumu control region
-	zmumuRegion_file = TFile("../Analysis/datacards/RA2bin_DYm_CleanVars.root");
-	zmumuRegion_hists = [];
-	zmumuRegion_hists.append( zmumuRegion_file.Get("RA2bin_"+sms) );
-	zmumuRegion_hists.append( zmumuRegion_file.Get("RA2bin_DY") );
-	zmumuRegion = searchRegion('DYmu', ['sig','zvv'], zmumuRegion_hists[0])
-	zmumuRegion.fillRates( zmumuRegion_hists );
-
-	# Zelel control region
-	zelelRegion_file = TFile("../Analysis/datacards/RA2bin_DYe_CleanVars.root");
-	zelelRegion_hists = [];
-	zelelRegion_hists.append( zelelRegion_file.Get("RA2bin_"+sms) );
-	zelelRegion_hists.append( zelelRegion_file.Get("RA2bin_DY") );
-	zelelRegion = searchRegion('DYel', ['sig','zvv'], zelelRegion_hists[0])
-	zelelRegion.fillRates( zelelRegion_hists );
-
-	# signal region
+	# histogram gymnastics...
 	signalRegion_file = TFile("../Analysis/datacards/RA2bin_signal.root");
-	signalRegion_hists = [];
+	sphotonRegion_file = TFile("../Analysis/datacards/RA2bin_GJet_CleanVars-18bins.root");
 
-	h_newZinvSRYields = hutil_clone0BtoNB(signalRegion_file.Get("RA2bin_Zinv"))
+	zinv_sr = signalRegion_file.Get("RA2bin_Zinv");
+	gjet_cr = sphotonRegion_file.Get("RA2bin_GJet");
+	h_newZinvSRYields = hutil_clone0BtoNB( zinv_sr );
+
+	# single photon first
+	sphotonRegion_hists = [];
+	sphotonRegion_hists.append( sphotonRegion_file.Get("RA2bin_"+sms) );
+	sphotonRegion_hists.append( gjet_cr );
+	sphotonRegion = searchRegion('sphoton', ['sig','zvv'], sphotonRegion_hists[0])
+	#normalize = True;
+	sphotonRegion.fillRates( sphotonRegion_hists );
+
+	# sphotonSingleBins = sphotonRegion._singleBins;
+	# observedEventsInSignalRegion = [];
+	# for i in range(len(sphotonSingleBins)):
+	# 	curval = sphotonSingleBins[i]._observed*binsToList(zinv_sr_normAndTrans)[i]+binsToList(signalRegion_file.Get("RA2bin_"+sms))[i];
+	# 	observedEventsInSignalRegion.append(curval);
+
+	signalRegion_hists = [];
 	signalRegion_hists.append( signalRegion_file.Get("RA2bin_"+sms) );
-	#signalRegion_hists.append( signalRegion_file.Get("RA2bin_Zinv") );
 	signalRegion_hists.append( h_newZinvSRYields );
-	
 	signalRegion = searchRegion('signal', ['sig','zvv'], signalRegion_hists[0])
 	signalRegion.fillRates( signalRegion_hists );
+	# signalRegion.setObservedManually( observedEventsInSignalRegion );
 
-	zmumuRegion.writeRates();
-	zelelRegion.writeRates();
+	sphotonRegion.writeRates();
 	signalRegion.writeRates();
 
 	# #------------------------------------------------------------------------------------------------
 	# ## 2. Add systematics
 	signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.04);
 
+	RzgammaUnc = [1.006,1.011,1.025,1.014,1.048,1.031,
+				  1.043,1.048,1.09,1.1,1.171,1.179,
+				  1.4,1.2,1.3,1.42,1.6,1.9 ];
+
 	# connect the single photon CR to the signal region
-	drellyanBins = ["NJets0_BTags._MHT0_HT0","NJets0_BTags._MHT0_HT1","NJets0_BTags._MHT0_HT2","NJets0_BTags._MHT1_HT3","NJets0_BTags._MHT1_HT4","NJets0_BTags._MHT2_HT5",
+	singlePhotonBins = ["NJets0_BTags._MHT0_HT0","NJets0_BTags._MHT0_HT1","NJets0_BTags._MHT0_HT2","NJets0_BTags._MHT1_HT3","NJets0_BTags._MHT1_HT4","NJets0_BTags._MHT2_HT5",
 						"NJets1_BTags._MHT0_HT0","NJets1_BTags._MHT0_HT1","NJets1_BTags._MHT0_HT2","NJets1_BTags._MHT1_HT3","NJets1_BTags._MHT1_HT4","NJets1_BTags._MHT2_HT5",
 						"NJets2_BTags._MHT0_HT0","NJets2_BTags._MHT0_HT1","NJets2_BTags._MHT0_HT2","NJets2_BTags._MHT1_HT3","NJets2_BTags._MHT1_HT4","NJets2_BTags._MHT2_HT5"];
 
-	DYmuStatUnc = [1.006,1.009,1.02,1.013 ,1.041 ,1.027 ,1.045 ,1.034 ,1.061 ,1.073 ,1.116 ,1.142 ,1.217 ,1.122 ,1.154 ,1.372 ,1.452 ,1.611];
-	DYelStatUnc = [1.006 ,1.01 ,1.023 ,1.012 ,1.043 ,1.027 ,1.045 ,1.038 ,1.071 ,1.086 ,1.122 ,1.161 ,1.272 ,1.143 ,1.194 ,1.48 ,1.405 ,1.48];
+	for i in range(len(singlePhotonBins)):
+		signalRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
+		sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
 
-	for i in range(len(drellyanBins)):
-		signalRegion.addSingleSystematic('DYCR'+str(i),'lnU',['zvv'],100,drellyanBins[i]);
-		zmumuRegion.addSingleSystematic('DYCR'+str(i),'lnU',['zvv'],100,drellyanBins[i]);
-		zelelRegion.addSingleSystematic('DYCR'+str(i),'lnU',['zvv'],100,drellyanBins[i]);
+	for i in range(signalRegion.GetNbins()):
+		ratioI = i % 18;
+		signalRegion.addSingleSystematic('SPhoRZgUnc'+str(ratioI),'lnN',['zvv'],RzgammaUnc[ratioI],'',i);
 		
-		zmumuRegion.addSingleSystematic('DYmuStatUnc'+str(i),'lnN',['zvv'],DYmuStatUnc[i],drellyanBins[i]);		
-		zelelRegion.addSingleSystematic('DYelStatUnc'+str(i),'lnN',['zvv'],DYelStatUnc[i],drellyanBins[i]);
-
 	drellyanNBExtrap = ["NJets0_BTags1","NJets0_BTags2","NJets0_BTags3",
 						"NJets1_BTags1","NJets1_BTags2","NJets1_BTags3",
 						"NJets2_BTags1","NJets2_BTags2","NJets2_BTags3"];
 	DYNBStatUnc = [1.074,1.148,1.492,1.079,1.159,1.502,1.12,1.195,1.561];
 	for i in range(len(drellyanNBExtrap)):
 		signalRegion.addSingleSystematic('DYNBStatUnc'+str(i),'lnN',['zvv'],DYNBStatUnc[i],drellyanNBExtrap[i]);
-
+		
 	# #------------------------------------------------------------------------------------------------
 	# ## 3. Write Cards
 	signalRegion.writeCards( odir );
-	zmumuRegion.writeCards( odir );	
-	zelelRegion.writeCards( odir );	
-
-
-
-
+	sphotonRegion.writeCards( odir );	

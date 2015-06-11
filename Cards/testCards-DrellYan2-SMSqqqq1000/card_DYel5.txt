@@ -4,11 +4,11 @@ jmax 1 #number of backgrounds
 kmax * nuissance 
 ------------ 
 bin BinDYel5
-observation 5.85950183868
+observation 2.34383511543
 bin BinDYel5 BinDYel5 
 process sig zvv 
 process 0 1 
-rate 0.0001 5.85950 
+rate 0.0001 2.34384 
 ------------ 
 DYCR5 lnU - 100 
 DYelStatUnc5 lnN - 1.027 

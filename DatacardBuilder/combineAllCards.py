@@ -26,5 +26,6 @@ if __name__ == '__main__':
 	os.system(command);
 
 	if options.run:
+		#combine_cmmd = "combine -M ProfileLikelihood --signif -t -1 --expectSignal=1 --toysFreq %s/allcards.txt" % (cdir);
 		combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.txt" % (cdir);
 		os.system(combine_cmmd);

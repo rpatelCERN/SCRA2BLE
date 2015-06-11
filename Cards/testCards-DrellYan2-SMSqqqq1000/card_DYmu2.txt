@@ -4,11 +4,11 @@ jmax 1 #number of backgrounds
 kmax * nuissance 
 ------------ 
 bin BinDYmu2
-observation 12.7098932266
+observation 5.0838766098
 bin BinDYmu2 BinDYmu2 
 process sig zvv 
 process 0 1 
-rate 0.0001 12.70989 
+rate 0.0001 5.08388 
 ------------ 
 DYCR2 lnU - 100 
 DYmuStatUnc2 lnN - 1.02 
