@@ -83,5 +83,13 @@ def binLabelsToList(h_in):
 	for i in range(h_in.GetNbinsX()): olist.append( h_in.GetXaxis().GetBinLabel(i+1) );
 	return olist;
 
+def textToList(fn,column):
+
+	olist = [];
+	f = open(fn,'r');
+	for line in f:
+		olist.append( float(line.strip().split()[column]) );
+	return olist;
+
 
 

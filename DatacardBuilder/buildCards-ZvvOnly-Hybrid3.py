@@ -35,21 +35,39 @@ if __name__ == '__main__':
 	gjet_cr = sphotonRegion_file.Get("RA2bin_GJet");
 	h_newZinvSRYields = hutil_clone0BtoNB( zinv_sr );
 
-	# single photon first
-	sphotonRegion_hists = [];
-	sphotonRegion_hists.append( sphotonRegion_file.Get("RA2bin_"+sms) );
-	sphotonRegion_hists.append( gjet_cr );
-	tagsForSinglePhoton = binLabelsToList(sphotonRegion_hists[0])
-	sphotonRegion = searchRegion('sphoton', ['sig','zvv'], tagsForSinglePhoton)
+	# photon region
+	phoRegion_sigHist = sphotonRegion_file.Get("RA2bin_"+sms)
+	tagsForSinglePhoton = binLabelsToList(phoRegion_sigHist)
+	phoRegion_sigList = binsToList(phoRegion_sigHist);
+	phoRegion_phoList = binsToList(gjet_cr);
+	contributionsPerBin = [];
+	for i in range(len(tagsForSinglePhoton)): contributionsPerBin.append(['sig','zvv']);
+	sphotonRegion = searchRegion('sphoton', contributionsPerBin, tagsForSinglePhoton)
 	#normalize = True;
-	sphotonRegion.fillRates( sphotonRegion_hists );
+	phoRegion_Rates = [];
+	for i in range(sphotonRegion._nBins):
+		tmpList = [];
+		tmpList.append(phoRegion_sigList[i]);
+		tmpList.append(phoRegion_phoList[i]);
+		phoRegion_Rates.append( tmpList );
+	sphotonRegion.fillRates( phoRegion_Rates );
 
-	signalRegion_hists = [];
-	signalRegion_hists.append( signalRegion_file.Get("RA2bin_"+sms) );
-	signalRegion_hists.append( h_newZinvSRYields );
-	tagsForSignalRegion = binLabelsToList(signalRegion_hists[0]);	
-	signalRegion = searchRegion('signal', ['sig','zvv'], tagsForSignalRegion)
-	signalRegion.fillRates( signalRegion_hists );
+	# signal region
+	signalRegion_sigHist = signalRegion_file.Get("RA2bin_"+sms);
+	tagsForSignalRegion = binLabelsToList(signalRegion_sigHist);
+	signalRegion_sigList = binsToList( signalRegion_sigHist );
+	signalRegion_zvvList = binsToList( h_newZinvSRYields );
+	contributionsPerBin = [];
+	for i in range(len(tagsForSignalRegion)): contributionsPerBin.append(['sig','zvv']);
+	signalRegion = searchRegion('signal', contributionsPerBin, tagsForSignalRegion)
+	signalRegion_Rates = [];
+	for i in range(signalRegion._nBins):
+		tmpList = [];
+		tmpList.append(signalRegion_sigList[i]);
+		tmpList.append(signalRegion_zvvList[i]);
+		signalRegion_Rates.append( tmpList );
+	signalRegion.fillRates( signalRegion_Rates );
+
 	# signalRegion.setObservedManually( observedEventsInSignalRegion );
 
 	sphotonRegion.writeRates();

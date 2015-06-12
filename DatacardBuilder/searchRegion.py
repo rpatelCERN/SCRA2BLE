@@ -13,20 +13,22 @@ class searchRegion:
 		self._nBins = len(singleBinTags);
 		self._singleBins = [];
 		for i in range(self._nBins):
-			self._singleBins.append( singleBin(self._regionName + str(i), self._singleBinTags[i], self._binLabels, i ) );
+			# print i, self._binLabels[i]
+			self._singleBins.append( singleBin(self._regionName + str(i), self._singleBinTags[i], self._binLabels[i], i ) );
 
 		# print "nbins = ", self._nBins;
 
-	def fillRates(self, histograms, normalize=False):
+	def fillRates(self, rateinputs, normalize=False):
 
-		if len(histograms) != len(self._binLabels): 
-			raise Exception("There is a mismatch in histogram input")
+		# if len(histograms) != len(self._binLabels): 
+		# 	raise Exception("There is a mismatch in histogram input")
 
 		for i in range(self._nBins):
-			tmprates = [];
-			for j in range(len(histograms)):
-				tmprates.append( histograms[j].GetBinContent(i+1))
-			self._singleBins[i].setRates( tmprates, normalize );
+			self._singleBins[i].setRates( rateinputs[i], normalize );
+			if len(rateinputs[i]) != len(self._binLabels[i]):
+				print  len(rateinputs[i]),len(self._binLabels[i])
+				raise Exception("There is a mismatch in this bin of this signal region between rates and n contributions");
+
 		
 	def addSingleSystematic(self,sysname,systype,channel,val,identifier='',index=None):
 		

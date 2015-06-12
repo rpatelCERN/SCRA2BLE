@@ -18,24 +18,25 @@ parser.add_option("--tag", dest="tag", default = 'SinglePhoton1',help="mass of L
 #########################################################################################################
 if __name__ == '__main__':
 
-	signals = ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
-	# signals = ['SMSqqqq1000']
+	# signals = ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
+	# signals = ['SMSqqqq1000','SMSbbbb1000']
+	signals = ['SMSqqqq1000']
 	
 	for sig in signals:
 		
-		tag = 'SinglePhoton1'
-		command = 'python buildCards-ZvvOnly-SinglePhoton1.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
-		command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
-
-		tag = 'DrellYan2'
-		command = 'python buildCards-ZvvOnly-Zll2.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
-		command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
-
-		tag = 'Hybrid3'
-		command = 'python buildCards-ZvvOnly-Hybrid3.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
-		command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
-		
-		# tag = 'LowDPhi1'
-		# command = 'python buildCards-QCDOnly-LowDPhi1.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
+		# tag = 'SinglePhoton1'
+		# command = 'python buildCards-ZvvOnly-SinglePhoton1.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
 		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+
+		# tag = 'DrellYan2'
+		# command = 'python buildCards-ZvvOnly-Zll2.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
+		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+
+		# tag = 'Hybrid3'
+		# command = 'python buildCards-ZvvOnly-Hybrid3.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
+		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+		
+		tag = 'LowDPhi1'
+		command = 'python buildCards-QCDOnly-LowDPhi1.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
+		command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
 

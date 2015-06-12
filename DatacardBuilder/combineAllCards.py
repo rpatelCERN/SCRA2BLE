@@ -27,5 +27,9 @@ if __name__ == '__main__':
 
 	if options.run:
 		#combine_cmmd = "combine -M ProfileLikelihood --signif -t -1 --expectSignal=1 --toysFreq %s/allcards.txt" % (cdir);
-		combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.txt" % (cdir);
+		#combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.txt" % (cdir);
+		combine_cmmd = "text2workspace.py %s/allcards.txt -o %s/allcards.root" % (cdir,cdir);
+
+		os.system(combine_cmmd);
+		combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.root" % (cdir);
 		os.system(combine_cmmd);
