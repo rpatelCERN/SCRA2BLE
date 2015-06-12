@@ -36,7 +36,9 @@ if __name__ == '__main__':
 		# command = 'python buildCards-ZvvOnly-Hybrid3.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
 		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
 		
-		tag = 'LowDPhi1'
-		command = 'python buildCards-QCDOnly-LowDPhi1.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
-		command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+		# tag = 'LowDPhi1'
+		# command = 'python buildCards-QCDOnly-LowDPhi1.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
+		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
 
+		tag = 'HadTau';
+		command = 'python buildCards-HadTauOnly-tautempl.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
