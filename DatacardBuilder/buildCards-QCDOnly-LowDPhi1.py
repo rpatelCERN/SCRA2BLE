@@ -55,6 +55,7 @@ if __name__ == '__main__':
 		else: 
 			tmpList.append(lowdphiRegion_qcdList[i]);
 			QCDCRDict_TagToRate[qcdcurtag] = lowdphiRegion_qcdList[i]
+		#print qcdcurtag
 		QCDCRDict_TagToObs[qcdcurtag] = lowdphiRegion_qcdList[i]
 		lowdphiRegion_Rates.append( tmpList );
 
@@ -88,7 +89,10 @@ if __name__ == '__main__':
 				for val2 in HTDict[curtaglist[3]]:
 					qcdkey = 'qcd'+val0+curtaglist[1]+val1+val2;
 					curratio = kappaNJDict[val0]*kappaMHTDict[val1]*kappaHTDict[val2];
+					#print qcdkey
+					
 					cursignalyield = curratio*QCDCRDict_TagToRate[qcdkey];
+					#print QCDCRDict_TagToRate[qcdkey]
 					translatedBins.append(qcdkey);
 					kappaRatios.append( curratio )
 					ratesFromKappas.append( cursignalyield );
@@ -152,29 +156,29 @@ if __name__ == '__main__':
 			sysname = 'QCDCR'+binname;
 			signalRegion.addSingleSystematic(sysname,'lnU',[binname],100,'',i);
 	
-
-	kappaUncHTDict  =  { 'HT0':1.089,'HT1':1.080,'HT2':1.0465 }
-	kappaUncMHTDict =  { 'MHT0':1.0001,'MHT1':1.070,'MHT2':1.116,'MHT3':1.198 }
-	kappaUncNJDict  =  { 'NJets0':1.0001,'NJets1':1.0771,'NJets2':1.124,'NJets3':1.156,'NJets4':1.397 }      	
+        kappaUncHTDict  =  { 'HT0':1.089,'HT1':1.080,'HT2':1.0465 }
+        kappaUncMHTDict =  { 'MHT0':1.0001,'MHT1':1.070,'MHT2':1.116,'MHT3':1.198 }
+        kappaUncNJDict  =  { 'NJets0':1.0001,'NJets1':1.0771,'NJets2':1.124,'NJets3':1.156,'NJets4':1.397}	
+#	for i in range(signalRegion._nBins):
+#                for j in range(1,len( contributionsPerBinForSignal[i] )):
+#			binname = contributionsPerBinForSignal[i][j];
+#			print binname
 	for i in range(lowdphiRegion._nBins):
-
 		curtag = tagsForLowDPhiRegion[i];
-		curtagS = curtag.split('_');
-
+		curtagS=curtag.split('_');
 		qcdcurtag = 'qcd'+curtag.replace('_','');
 		sysname = 'QCDCR'+qcdcurtag;
-		lowdphiRegion.addSingleSystematic(sysname,'lnU',[qcdcurtag],100,'',i);
-
-		sysname1='KappaUnc'+curtagS[0]
-		sysname2='KappaUnc'+curtagS[2]
-		sysname3='KappaUnc'+curtagS[3]
 		kappaUncNJDict[curtagS[0]]
 		kappaUncMHTDict[curtagS[2]]
-		kappaUncHTDict[curtagS[3]]      
+	        kappaUncHTDict[curtagS[3]]	
+		#print qcdcurtag
+		sysname1 = 'KappaUnc'+curtagS[0]	
+		sysname2 = 'KappaUnc'+curtagS[2]
+                sysname3 = 'KappaUnc'+curtagS[3]
 		lowdphiRegion.addSingleSystematic(sysname1,'lnN',[qcdcurtag],kappaUncNJDict[curtagS[0]],'',i);
-		lowdphiRegion.addSingleSystematic(sysname2,'lnN',[qcdcurtag],kappaUncMHTDict[curtagS[2]],'',i);
-		lowdphiRegion.addSingleSystematic(sysname3,'lnN',[qcdcurtag],kappaUncHTDict[curtagS[3]],'',i);
-
+                lowdphiRegion.addSingleSystematic(sysname2,'lnN',[qcdcurtag],kappaUncMHTDict[curtagS[2]],'',i);
+                lowdphiRegion.addSingleSystematic(sysname3,'lnN',[qcdcurtag],kappaUncHTDict[curtagS[3]],'',i);
+		lowdphiRegion.addSingleSystematic(sysname,'lnU',[qcdcurtag],100,'',i);
 
 
 	# # connect the single photon CR to the signal region
