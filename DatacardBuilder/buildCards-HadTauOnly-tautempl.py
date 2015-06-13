@@ -51,7 +51,7 @@ if __name__ == '__main__':
 	# #------------------------------------------------------------------------------------------------
 	# ## 2. Add systematics
 	signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.04);
-	hadtauSystematics = textToList( "inputsHadTau/HadTauYieldsUnc10fb.txt",1 )
+	hadtauSystematics = textToList( "inputsHadTau/HadTauMCPred10fb.txt",1 )
 	hadtauClosureSystematics = {};
 	hadtauClosureSystematics['NJets0'] = 1.2;
 	hadtauClosureSystematics['NJets1'] = 1.4;
@@ -60,7 +60,7 @@ if __name__ == '__main__':
 	for i in range(signalRegion.GetNbins()):
 		njetTag = tagsForSignalRegion[i].split('_')[0];
 		# print njetTag
-		signalRegion.addSingleSystematic('HadTauUnc'+str(i),'lnN',['WTopHadTau'],1+float(hadtauSystematics[i]),'',i);
+		signalRegion.addSingleSystematic('HadTauUnc'+str(i),'lnN',['WTopHadTau'],float(hadtauSystematics[i]),'',i);
 	
 	signalRegion.addSingleSystematic('HadTauNJClosureNJets0Unc','lnN',['WTopHadTau'],hadtauClosureSystematics['NJets0'],'NJets0');
 	signalRegion.addSingleSystematic('HadTauNJClosureNJets1Unc','lnN',['WTopHadTau'],hadtauClosureSystematics['NJets1'],'NJets1');
