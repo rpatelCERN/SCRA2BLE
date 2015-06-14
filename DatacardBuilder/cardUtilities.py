@@ -8,15 +8,15 @@ import re
 def hutil_clone0BtoNB(h_in,useFactors=True):
 
 	translations = [
-					['NJets0_BTags1',0.244],
-					['NJets0_BTags2',0.047],
+					['NJets0_BTags1',0.2470],
+					['NJets0_BTags2',0.0479],
 					['NJets0_BTags3',0.0045],
-					['NJets1_BTags1',0.392],
-					['NJets1_BTags2',0.132],
-					['NJets1_BTags3',0.024],
-					['NJets2_BTags1',0.50],
-					['NJets2_BTags2',0.226],
-					['NJets2_BTags3',0.057]
+					['NJets1_BTags1',0.3955],
+					['NJets1_BTags2',0.1326],
+					['NJets1_BTags3',0.0238],
+					['NJets2_BTags1',0.5083],
+					['NJets2_BTags2',0.2269],
+					['NJets2_BTags3',0.0569]
 				   ]
 
 	h_new = h_in.Clone();

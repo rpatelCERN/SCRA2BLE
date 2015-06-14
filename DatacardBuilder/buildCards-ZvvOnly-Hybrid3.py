@@ -90,17 +90,37 @@ if __name__ == '__main__':
 		signalRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
 		sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
 
-	for i in range(signalRegion.GetNbins()):
-		ratioI = i % 18;
-		signalRegion.addSingleSystematic('SPhoRZgUnc'+str(ratioI),'lnN',['zvv'],RzgammaUnc[ratioI],'',i);
+	# for i in range(signalRegion.GetNbins()):
+	for i in range(18): # only for the 0B bins
+		# ratioI = i % 18;
+		signalRegion.addSingleSystematic('SPhoRZgUnc'+str(ratioI),'lnN',['zvv'],RzgammaUnc[i],'',i);
+
+	#RZg data/MC double ratios from Jim H.
+	signalRegion.addSingleSystematic('RZgDataUncMHT0','lnN',['zvv'],1.04,'MHT0');	
+	signalRegion.addSingleSystematic('RZgDataUncMHT1','lnN',['zvv'],1.11,'MHT1');	
+	signalRegion.addSingleSystematic('RZgDataUncMHT2','lnN',['zvv'],1.28,'MHT2');	
+	signalRegion.addSingleSystematic('RZgDataUncNJets0','lnN',['zvv'],1.06,'NJets0');	
+	signalRegion.addSingleSystematic('RZgDataUncNJets1','lnN',['zvv'],1.13,'NJets1');	
+	signalRegion.addSingleSystematic('RZgDataUncNJets2','lnN',['zvv'],1.16,'NJets2');	
+
+	# added to all bins (photon efficiency)
+	signalRegion.addSingleSystematic('PhoEffUnc','lnN',['zvv'],1.2,'NJets');	
 		
-	drellyanNBExtrap = ["NJets0_BTags1","NJets0_BTags2","NJets0_BTags3",
-						"NJets1_BTags1","NJets1_BTags2","NJets1_BTags3",
-						"NJets2_BTags1","NJets2_BTags2","NJets2_BTags3"];
-	DYNBStatUnc = [1.074,1.148,1.492,1.079,1.159,1.502,1.12,1.195,1.561];
-	for i in range(len(drellyanNBExtrap)):
-		signalRegion.addSingleSystematic('DYNBStatUnc'+str(i),'lnN',['zvv'],DYNBStatUnc[i],drellyanNBExtrap[i]);
+	# drellyanNBExtrap = ["NJets0_BTags1","NJets0_BTags2","NJets0_BTags3",
+	# 					"NJets1_BTags1","NJets1_BTags2","NJets1_BTags3",
+	# 					"NJets2_BTags1","NJets2_BTags2","NJets2_BTags3"];
+	# DYNBStatUnc = [1.074,1.148,1.492,1.079,1.159,1.502,1.12,1.195,1.561];
+	# for i in range(len(drellyanNBExtrap)):
+	# 	signalRegion.addSingleSystematic('DYNBStatUnc'+str(i),'lnN',['zvv'],DYNBStatUnc[i],drellyanNBExtrap[i]);
 		
+	# Extrpolation uncertainties, from Kevin S.
+	signalRegion.addSingleSystematic('DYNBStatUncBTags1','lnN',['zvv'],1.076,'BTags1');		
+	signalRegion.addSingleSystematic('DYNBStatUncBTags2','lnN',['zvv'],1.158,'BTags2');		
+	signalRegion.addSingleSystematic('DYNBStatUncBTags3','lnN',['zvv'],1.507,'BTags3');		
+
+	signalRegion.addSingleSystematic('DYNBStatUncNJets1','lnN',['zvv'],1.008,'NJets1_BTags.');		
+	signalRegion.addSingleSystematic('DYNBStatUncNJets2','lnN',['zvv'],1.049,'NJets2_BTags.');		
+
 	# #------------------------------------------------------------------------------------------------
 	# ## 3. Write Cards
 	signalRegion.writeCards( odir );
