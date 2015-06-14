@@ -63,14 +63,16 @@ if __name__ == '__main__':
 		if(signalRegion_CSList[i]>=2):
 			tmpList.append(signalRegion_LLList[i]);
 		else:
-			tmpList.append(signalRegion_WeightList[i]*signalRegion_CSList[i]); 
+			CS=signalRegion_CSList[i]
+			if(CS<0.0001):CS=1
+			tmpList.append(signalRegion_WeightList[i]*CS); 
 			addControl.append(i);
 		signalRegion_Rates.append( tmpList );
  
 	for i in range(len(addControl)):
 		tmpList=[]
 		tmpList.append(0);
-                tmpList.append(signalRegion_CSList[i]);
+                tmpList.append(signalRegion_CSList[addControl[i]]);
 		controlRegion_Rates.append(tmpList);
    	signalRegion.fillRates( signalRegion_Rates );
         signalRegion.writeRates();
