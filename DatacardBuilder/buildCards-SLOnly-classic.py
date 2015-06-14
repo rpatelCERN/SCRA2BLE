@@ -100,9 +100,11 @@ if __name__ == '__main__':
 	for i in range(signalRegion.GetNbins()):
 		if(signalRegion_CSList[i]<2):
 			signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSL'],100,'',i);
+		else: 
+			signalRegion.addSingleSystematic('LLStat'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_statUncList[i]/den),'',i);					
+
 		den=signalRegion_LLList[i]
 		if(signalRegion_LLList[i]<0.00001):den=1.0
-		signalRegion.addSingleSystematic('LLStat'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_statUncList[i]/den),'',i);					
 		signalRegion.addSingleSystematic('LLSys'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_sysUncList[i]/den),'',i);
 	
 	for i in range(controlRegion.GetNbins()):
