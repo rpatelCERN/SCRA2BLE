@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
 	# histogram gymnastics...
 	signalRegion_file = TFile("../Analysis/datacards/RA2bin_signal.root");
-	sphotonRegion_file = TFile("../Analysis/datacards/RA2bin_GJet_CleanVars-18bins.root");
+	sphotonRegion_file = TFile("../Analysis/datacards/RA2bin_GJet_CleanVars.root");
 
 	zinv_sr = signalRegion_file.Get("RA2bin_Zinv");
 	gjet_cr = sphotonRegion_file.Get("RA2bin_GJet");
