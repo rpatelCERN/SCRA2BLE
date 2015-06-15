@@ -73,6 +73,8 @@ class singleBin:
 
 	def addSystematic(self,sysname,systype,bins,val):
 
+		# print "length rates = ",len(self._rates)
+
 		line = "";
 		line += sysname + " " + systype + " ";
 		for i in range(len(self._binLabels)): 

@@ -40,9 +40,16 @@ if __name__ == '__main__':
 		# command = 'python buildCards-QCDOnly-LowDPhi1.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
 		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
 
-		#tag = 'HadTau';
-		#command = 'python buildCards-HadTauOnly-tautempl.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
+		# tag = 'HadTau';
+		# command = 'python buildCards-HadTauOnly-tautempl.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
+		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
 
-		tag = 'LL';
-		command = 'python buildCards-SLOnly-classic.py -b --signal  %s --tag %s' % (sig,tag); os.system(command);
+		# tag = 'LL';
+		# command = 'python buildCards-SLOnly-classic.py -b --signal  %s --tag %s' % (sig,tag); os.system(command);
+		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+
+		tag = 'AllButQCD';
+		command = 'python buildCards-AllButQCD.py -b --signal  %s --tag %s' % (sig,tag); os.system(command);
 		command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+
+

@@ -98,14 +98,16 @@ if __name__ == '__main__':
 	signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.04);
 
 	for i in range(signalRegion.GetNbins()):
+		
+		denom = signalRegion_LLList[i]
+		
 		if(signalRegion_CSList[i]<2):
 			signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSL'],100,'',i);
 		else: 
-			signalRegion.addSingleSystematic('LLStat'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_statUncList[i]/den),'',i);					
+			signalRegion.addSingleSystematic('LLStat'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_statUncList[i]/denom),'',i);					
 
-		den=signalRegion_LLList[i]
-		if(signalRegion_LLList[i]<0.00001):den=1.0
-		signalRegion.addSingleSystematic('LLSys'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_sysUncList[i]/den),'',i);
+		if(signalRegion_LLList[i]<0.00001): denom = 1.0
+		signalRegion.addSingleSystematic('LLSys'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_sysUncList[i] / denom),'',i);
 	
 	for i in range(controlRegion.GetNbins()):
 		controlRegion.addSingleSystematic('LLSCSR'+tagsForControlRegion[i],'lnU',['WTopSL'],100,'',i);		

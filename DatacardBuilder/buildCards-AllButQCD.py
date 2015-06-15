@@ -30,10 +30,32 @@ if __name__ == '__main__':
 	# histogram gymnastics...
 	signalRegion_file = TFile("../Analysis/datacards/RA2bin_signal.root");
 	sphotonRegion_file = TFile("../Analysis/datacards/RA2bin_GJet_CleanVars.root");
-
+	
+	# zinv --------
 	zinv_sr = signalRegion_file.Get("RA2bin_Zinv");
 	gjet_cr = sphotonRegion_file.Get("RA2bin_GJet");
 	h_newZinvSRYields = hutil_clone0BtoNB( zinv_sr );
+	signalRegion_zvvList = binsToList( h_newZinvSRYields );
+
+	# ll --------
+	LL_file = TFile("inputsLostLepton/LLPrediction_10fb.root");
+	LLPrediction_Hist=LL_file.Get("fullPred_LL");
+	LLCS_Hist=LL_file.Get("fullCS_LL");
+	LLWeight_Hist=LL_file.Get("fullWeight_LL");
+	signalRegion_LLList = binsToList( LLPrediction_Hist );
+	signalRegion_WeightList=binsToList(LLWeight_Hist);
+	signalRegion_CSList=binsToList(LLCS_Hist)
+	signalRegion_statUncList = textToList( "./inputsLostLepton/statunc.txt", 0 );
+	signalRegion_sysUncList = textToList( "./inputsLostLepton/sysunc.txt", 0 );
+
+	# had tau
+	signalRegion_tauList = textToList( "inputsHadTau/HadTauMCPred10fb.txt", 0 );
+	hadtauSystematics = textToList( "inputsHadTau/HadTauMCPred10fb.txt",1 )
+
+	# signal --------
+	signalRegion_sigHist = signalRegion_file.Get("RA2bin_"+sms);
+	tagsForSignalRegion = binLabelsToList(signalRegion_sigHist);
+	signalRegion_sigList = binsToList( signalRegion_sigHist );
 
 	# photon region
 	phoRegion_sigHist = sphotonRegion_file.Get("RA2bin_"+sms)
@@ -43,7 +65,6 @@ if __name__ == '__main__':
 	contributionsPerBin = [];
 	for i in range(len(tagsForSinglePhoton)): contributionsPerBin.append(['sig','zvv']);
 	sphotonRegion = searchRegion('sphoton', contributionsPerBin, tagsForSinglePhoton)
-	#normalize = True;
 	phoRegion_Rates = [];
 	for i in range(sphotonRegion._nBins):
 		tmpList = [];
@@ -53,25 +74,66 @@ if __name__ == '__main__':
 	sphotonRegion.fillRates( phoRegion_Rates );
 
 	# signal region
-	signalRegion_sigHist = signalRegion_file.Get("RA2bin_"+sms);
-	tagsForSignalRegion = binLabelsToList(signalRegion_sigHist);
-	signalRegion_sigList = binsToList( signalRegion_sigHist );
-	signalRegion_zvvList = binsToList( h_newZinvSRYields );
 	contributionsPerBin = [];
-	for i in range(len(tagsForSignalRegion)): contributionsPerBin.append(['sig','zvv']);
+	for i in range(len(tagsForSignalRegion)): contributionsPerBin.append(['sig','WTopSL','WTopHad','zvv']);
 	signalRegion = searchRegion('signal', contributionsPerBin, tagsForSignalRegion)
+
+	# accounting for LL Region
+	tagsForSLControlRegion=[]	
+	SLcontrolContributionsPerBin = [];
+	addControl=[]
+	for i in range(len(tagsForSignalRegion)): 
+		if(signalRegion_CSList[i]<2):
+			SLcontrolContributionsPerBin.append(['sig', 'WTopSL']);
+			tagsForSLControlRegion.append(tagsForSignalRegion[i]);
+			addControl.append(i);
+
+	SLcontrolRegion = searchRegion('SLControl', SLcontrolContributionsPerBin, tagsForSLControlRegion)
+	SLcontrolRegion_Obs = [];
+	SLcontrolRegion_Rates = [];
+	for i in range(len(addControl)):
+		tmpList=[]
+		tmpList.append(0);
+		tmpList.append(1.);
+		SLcontrolRegion_Obs.append(signalRegion_CSList[addControl[i]]);
+		SLcontrolRegion_Rates.append(tmpList);
+
+	SLcontrolRegion.fillRates(SLcontrolRegion_Rates);
+	SLcontrolRegion.setObservedManually(SLcontrolRegion_Obs);
+
+	# -------------------------------
 	signalRegion_Rates = [];
+	signalRegion_Obs = [];
+	controlRegion_Rates=[];
+
 	for i in range(signalRegion._nBins):
+		signalRegion_Obs.append(signalRegion_sigList[i] + signalRegion_LLList[i] + signalRegion_tauList[i] + signalRegion_zvvList[i]);
+
 		tmpList = [];
 		tmpList.append(signalRegion_sigList[i]);
+
+		# LL rate
+		if(signalRegion_CSList[i]>=2):
+			tmpList.append(signalRegion_LLList[i]);
+		else:
+			#CS=signalRegion_CSList[i]
+			#if(CS<0.0001):CS=1
+			tmpList.append(signalRegion_WeightList[i]); # the control region "rate" line is always going to be 1
+			addControl.append(i);
+
+		# Had Tau rate
+		tmpList.append(signalRegion_tauList[i]);
 		tmpList.append(signalRegion_zvvList[i]);
 		signalRegion_Rates.append( tmpList );
+	
+	signalRegion.setObservedManually(signalRegion_Obs)
 	signalRegion.fillRates( signalRegion_Rates );
 
-	# signalRegion.setObservedManually( observedEventsInSignalRegion );
-
+	SLcontrolRegion.writeRates();
 	sphotonRegion.writeRates();
 	signalRegion.writeRates();
+
+	print signalRegion._nBins;
 
 	# #------------------------------------------------------------------------------------------------
 	# ## 2. Add systematics
@@ -106,13 +168,6 @@ if __name__ == '__main__':
 	# added to all bins (photon efficiency)
 	signalRegion.addSingleSystematic('PhoEffUnc','lnN',['zvv'],1.2,'NJets');	
 		
-	# drellyanNBExtrap = ["NJets0_BTags1","NJets0_BTags2","NJets0_BTags3",
-	# 					"NJets1_BTags1","NJets1_BTags2","NJets1_BTags3",
-	# 					"NJets2_BTags1","NJets2_BTags2","NJets2_BTags3"];
-	# DYNBStatUnc = [1.074,1.148,1.492,1.079,1.159,1.502,1.12,1.195,1.561];
-	# for i in range(len(drellyanNBExtrap)):
-	# 	signalRegion.addSingleSystematic('DYNBStatUnc'+str(i),'lnN',['zvv'],DYNBStatUnc[i],drellyanNBExtrap[i]);
-		
 	# Extrpolation uncertainties, from Kevin S.
 	signalRegion.addSingleSystematic('DYNBStatUncBTags1','lnN',['zvv'],1.076,'BTags1');		
 	signalRegion.addSingleSystematic('DYNBStatUncBTags2','lnN',['zvv'],1.158,'BTags2');		
@@ -121,7 +176,30 @@ if __name__ == '__main__':
 	signalRegion.addSingleSystematic('DYNBStatUncNJets1','lnN',['zvv'],1.008,'NJets1_BTags.');		
 	signalRegion.addSingleSystematic('DYNBStatUncNJets2','lnN',['zvv'],1.049,'NJets2_BTags.');		
 
+	for i in range(signalRegion.GetNbins()):
+		denom = signalRegion_LLList[i]
+		if(signalRegion_CSList[i]<2):
+			signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSL'],100,'',i);
+		else: 
+			signalRegion.addSingleSystematic('LLStat'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_statUncList[i]/denom),'',i);					
+		if(signalRegion_LLList[i]<0.00001): denom = 1.0
+		signalRegion.addSingleSystematic('LLSys'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_sysUncList[i] / denom),'',i);
+	
+	for i in range(SLcontrolRegion.GetNbins()):
+		SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopSL'],100,'',i);		
+
+	for i in range(signalRegion.GetNbins()):
+		njetTag = tagsForSignalRegion[i].split('_')[0];
+		# print njetTag
+		signalRegion.addSingleSystematic('HadTauUnc'+str(i),'lnN',['WTopHadTau'],float(hadtauSystematics[i]),'',i);
+	
+	signalRegion.addSingleSystematic('HadTauNJClosureNJets0Unc','lnN',['WTopHadTau'],1.2,'NJets0');
+	signalRegion.addSingleSystematic('HadTauNJClosureNJets1Unc','lnN',['WTopHadTau'],1.4,'NJets1');
+	signalRegion.addSingleSystematic('HadTauNJClosureNJets2Unc','lnN',['WTopHadTau'],1.6,'NJets2');
+
+
 	# #------------------------------------------------------------------------------------------------
 	# ## 3. Write Cards
+	SLcontrolRegion.writeCards( odir );
 	signalRegion.writeCards( odir );
 	sphotonRegion.writeCards( odir );	

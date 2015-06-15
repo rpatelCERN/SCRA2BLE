@@ -34,7 +34,7 @@ if __name__ == '__main__':
 	signalRegion_sigHist = signalRegion_file.Get("RA2bin_"+sms);
 	tagsForSignalRegion = binLabelsToList(signalRegion_sigHist);
 	signalRegion_sigList = binsToList( signalRegion_sigHist );
-	signalRegion_tauList = textToList( "inputsHadTau/HadTauYieldsUnc10fb.txt", 0 );
+	signalRegion_tauList = textToList( "inputsHadTau/HadTauMCPred10fb.txt", 0 );
 	contributionsPerBin = [];
 	for i in range(len(tagsForSignalRegion)): contributionsPerBin.append(['sig','WTopHadTau']);
 	signalRegion = searchRegion('signal', contributionsPerBin, tagsForSignalRegion)
