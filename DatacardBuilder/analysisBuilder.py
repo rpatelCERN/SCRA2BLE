@@ -18,7 +18,7 @@ parser.add_option("--tag", dest="tag", default = 'SinglePhoton1',help="mass of L
 #########################################################################################################
 if __name__ == '__main__':
 
-	# signals = ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
+	#signals = ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
 	# signals = ['SMSqqqq1000','SMSbbbb1000']
 	signals = ['SMSqqqq1000']
 	
@@ -40,6 +40,10 @@ if __name__ == '__main__':
 		# command = 'python buildCards-QCDOnly-LowDPhi1.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
 		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
 
+		tag = 'LowDPhi2'
+                command = 'python buildCards-QCDOnly-LowDPhiProxy.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
+                command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+		
 		# tag = 'HadTau';
 		# command = 'python buildCards-HadTauOnly-tautempl.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
 		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
@@ -48,8 +52,8 @@ if __name__ == '__main__':
 		# command = 'python buildCards-SLOnly-classic.py -b --signal  %s --tag %s' % (sig,tag); os.system(command);
 		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
 
-		tag = 'AllButQCD';
-		command = 'python buildCards-AllButQCD.py -b --signal  %s --tag %s' % (sig,tag); os.system(command);
-		command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+	#	tag = 'AllButQCD';
+	#	command = 'python buildCards-AllButQCD.py -b --signal  %s --tag %s' % (sig,tag); os.system(command);
+	#	command = 'python combineAllCards.py -b --run --dir testCards-%s-%s ' % (tag,sig); os.system(command);
 
 
