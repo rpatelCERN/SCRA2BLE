@@ -43,10 +43,11 @@ def getSignif(fn):
 #########################################################################################################
 if __name__ == '__main__':
 
-	# signals = ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
+	#signals = ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
 	# signals = ['SMSqqqq1000','SMSbbbb1000']
 	signals = ['SMSqqqq1000']
 	
+<<<<<<< HEAD
 	# mus = [0.5,1.0,1.5,2.0];
 	mus = [0.5];
 
@@ -65,6 +66,41 @@ if __name__ == '__main__':
 				tag = 'AllButQCD';
 				command = 'python buildCards-AllButQCD.py -b --signal  %s --tag %s --lumi %0.1f --mu %0.1f' % (sig,tag,lumi,mu); os.system(command);
 				command = 'python combineAllCards.py -b --run --dir testCards-%s-%s-%0.1f-mu%0.1f' % (tag,sig,lumi,mu); os.system(command);
+=======
+	for sig in signals:
+		
+		# tag = 'SinglePhoton1'
+		# command = 'python buildCards-ZvvOnly-SinglePhoton1.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
+		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+
+		# tag = 'DrellYan2'
+		# command = 'python buildCards-ZvvOnly-Zll2.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
+		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+
+		# tag = 'Hybrid3'
+		# command = 'python buildCards-ZvvOnly-Hybrid3.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
+		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+		
+		# tag = 'LowDPhi1'
+		# command = 'python buildCards-QCDOnly-LowDPhi1.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
+		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+
+		tag = 'LowDPhi2'
+                command = 'python buildCards-QCDOnly-LowDPhiProxy.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
+                command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+		
+		# tag = 'HadTau';
+		# command = 'python buildCards-HadTauOnly-tautempl.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
+		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+
+		# tag = 'LL';
+		# command = 'python buildCards-SLOnly-classic.py -b --signal  %s --tag %s' % (sig,tag); os.system(command);
+		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+
+	#	tag = 'AllButQCD';
+	#	command = 'python buildCards-AllButQCD.py -b --signal  %s --tag %s' % (sig,tag); os.system(command);
+	#	command = 'python combineAllCards.py -b --run --dir testCards-%s-%s ' % (tag,sig); os.system(command);
+>>>>>>> 454b982a79aca1542bfc00bbe5ec3bd17fcc161f
 
 				significances[dicttag] = getSignif( "higgsCombinetestCards-AllButQCD-SMSqqqq1000-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (lumi,mu) )
 				fittedMus[dicttag] = getFittedMu( "higgsCombinetestCards-AllButQCD-SMSqqqq1000-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (lumi,mu) )
