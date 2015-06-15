@@ -1,0 +1,22 @@
+#the tag = NJets0_BTags3_MHT0_HT1 
+imax 1 #number of channels 
+jmax 3 #number of backgrounds 
+kmax * nuissance 
+------------ 
+bin Binsignal55
+observation 57.5476339178
+bin Binsignal55 Binsignal55 Binsignal55 Binsignal55 
+process sig WTopSL WTopHad zvv 
+process 0 1 2 3 
+rate 0.36977 25.11901 28.92420 3.13465 
+------------ 
+lumi lnN 1.04 - - - 
+SPhoCR1 lnU - - - 100 
+RZgDataUncMHT0 lnN - - - 1.04 
+RZgDataUncNJets0 lnN - - - 1.06 
+PhoEffUnc lnN - - - 1.2 
+DYNBStatUncBTags3 lnN - - - 1.507 
+LLStatNJets0_BTags3_MHT0_HT1 lnN - 1.19013885595 - - 
+LLSysNJets0_BTags3_MHT0_HT1 lnN - 1.29999986952 - - 
+HadTauUnc55 lnN - - - - 
+HadTauNJClosureNJets0Unc lnN - - - - 
