@@ -12,6 +12,9 @@ parser = OptionParser()
 parser.add_option('-b', action='store_true', dest='noX', default=False, help='no X11 windows')
 parser.add_option("--signal", dest="signal", default = 'SMSqqqq1000',help="mass of LSP", metavar="signal")
 parser.add_option("--tag", dest="tag", default = 'SinglePhoton1',help="mass of LSP", metavar="tag")
+parser.add_option("--mu", dest="mu", default = 1.,help="mass of LSP", metavar="mu")
+parser.add_option("--lumi", dest="lumi", default = 10.,help="mass of LSP", metavar="lumi")
+
 (options, args) = parser.parse_args()
 
 
@@ -21,15 +24,21 @@ if __name__ == '__main__':
 
 	sms = options.signal;
 	tag = options.tag;
-	odir = 'testCards-%s-%s/' % (tag,sms);
-	if not os.path.exists(odir): os.makedirs(odir);
+	lumi = float(options.lumi);
+	signalmu = float(options.mu);
+	odir = 'testCards-%s-%s-%s-mu%0.1f/' % ( tag,sms,str(round(lumi,1)), signalmu );
+	idir = '../Analysis/datacards_%sfb' % ( str(int(lumi)) );
+	if os.path.exists(odir): os.system( "rm -r %s" % (odir) );
+	os.makedirs(odir);
+
+	print odir, signalmu
 
 	#------------------------------------------------------------------------------------------------
 	## 1. Fill Rates for each signal region
 
 	# histogram gymnastics...
-	signalRegion_file = TFile("../Analysis/datacards/RA2bin_signal.root");
-	sphotonRegion_file = TFile("../Analysis/datacards/RA2bin_GJet_CleanVars.root");
+	signalRegion_file = TFile(idir+"/RA2bin_signal.root");
+	sphotonRegion_file = TFile(idir+"/RA2bin_GJet_CleanVars.root");
 	
 	# zinv --------
 	zinv_sr = signalRegion_file.Get("RA2bin_Zinv");
@@ -38,19 +47,19 @@ if __name__ == '__main__':
 	signalRegion_zvvList = binsToList( h_newZinvSRYields );
 
 	# ll --------
-	LL_file = TFile("inputsLostLepton/LLPrediction_10fb.root");
+	LL_file = TFile("inputsLostLepton/LLPrediction_%sfb.root" % (str(int(lumi)) ));
 	LLPrediction_Hist=LL_file.Get("fullPred_LL");
 	LLCS_Hist=LL_file.Get("fullCS_LL");
 	LLWeight_Hist=LL_file.Get("fullWeight_LL");
 	signalRegion_LLList = binsToList( LLPrediction_Hist );
 	signalRegion_WeightList=binsToList(LLWeight_Hist);
 	signalRegion_CSList=binsToList(LLCS_Hist)
-	signalRegion_statUncList = textToList( "./inputsLostLepton/statunc.txt", 0 );
+	signalRegion_statUncList = binsToList( LL_file.Get("fullStatUp_LL") );
 	signalRegion_sysUncList = textToList( "./inputsLostLepton/sysunc.txt", 0 );
 
 	# had tau
-	signalRegion_tauList = textToList( "inputsHadTau/HadTauMCPred10fb.txt", 0 );
-	hadtauSystematics = textToList( "inputsHadTau/HadTauMCPred10fb.txt",1 )
+	signalRegion_tauList = textToList( "inputsHadTau/HadTauMCPred%sfb.txt" % (str(int(lumi))), 0 );
+	hadtauSystematics = textToList( "inputsHadTau/HadTauMCPred%sfb.txt" % (str(int(lumi))), 1 )
 
 	# signal --------
 	signalRegion_sigHist = signalRegion_file.Get("RA2bin_"+sms);
@@ -107,7 +116,9 @@ if __name__ == '__main__':
 	controlRegion_Rates=[];
 
 	for i in range(signalRegion._nBins):
-		signalRegion_Obs.append(signalRegion_sigList[i] + signalRegion_LLList[i] + signalRegion_tauList[i] + signalRegion_zvvList[i]);
+		signalRegion_Obs.append(signalRegion_sigList[i]*signalmu + signalRegion_LLList[i] + signalRegion_tauList[i] + signalRegion_zvvList[i]);
+
+		# print signalRegion_sigList[i], (signalRegion_sigList[i]*signalmu)
 
 		tmpList = [];
 		tmpList.append(signalRegion_sigList[i]);
@@ -126,14 +137,12 @@ if __name__ == '__main__':
 		tmpList.append(signalRegion_zvvList[i]);
 		signalRegion_Rates.append( tmpList );
 	
-	signalRegion.setObservedManually(signalRegion_Obs)
 	signalRegion.fillRates( signalRegion_Rates );
+	signalRegion.setObservedManually(signalRegion_Obs)
 
 	SLcontrolRegion.writeRates();
 	sphotonRegion.writeRates();
 	signalRegion.writeRates();
-
-	print signalRegion._nBins;
 
 	# #------------------------------------------------------------------------------------------------
 	# ## 2. Add systematics

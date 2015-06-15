@@ -15,6 +15,31 @@ parser.add_option("--tag", dest="tag", default = 'SinglePhoton1',help="mass of L
 
 
 #########################################################################################################
+def getFittedMu(fn):
+	
+	output = [];
+
+	tf = TFile(fn);
+	tt = tf.Get("limit")
+	tt.GetEntry(0);
+	output.append( tt.limit );
+	tt.GetEntry(1);
+	output.append( tt.limit );
+	tt.GetEntry(2);
+	output.append( tt.limit );
+
+	print output
+	return output
+
+def getSignif(fn):
+	
+	tf = TFile(fn);
+	tt = tf.Get("limit")
+	tt.GetEntry(0);
+
+	print "[getSignif], ", tt.limit
+	return tt.limit;
+
 #########################################################################################################
 if __name__ == '__main__':
 
@@ -22,34 +47,26 @@ if __name__ == '__main__':
 	# signals = ['SMSqqqq1000','SMSbbbb1000']
 	signals = ['SMSqqqq1000']
 	
-	for sig in signals:
-		
-		# tag = 'SinglePhoton1'
-		# command = 'python buildCards-ZvvOnly-SinglePhoton1.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
-		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+	# mus = [0.5,1.0,1.5,2.0];
+	mus = [0.5];
 
-		# tag = 'DrellYan2'
-		# command = 'python buildCards-ZvvOnly-Zll2.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
-		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+	lumis = [3.0,10.0];
 
-		# tag = 'Hybrid3'
-		# command = 'python buildCards-ZvvOnly-Hybrid3.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
-		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
-		
-		# tag = 'LowDPhi1'
-		# command = 'python buildCards-QCDOnly-LowDPhi1.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
-		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+	fittedMus = {};
+	injectedMus = {};
+	significances = {};
 
-		# tag = 'HadTau';
-		# command = 'python buildCards-HadTauOnly-tautempl.py -b --signal %s --tag %s' % (sig,tag); os.system(command);
-		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+	for lumi in lumis: 
+		for sig in signals:
+			for mu in mus:
+	
+				dicttag = "%s_%.1f" % (sig,lumi);
 
-		# tag = 'LL';
-		# command = 'python buildCards-SLOnly-classic.py -b --signal  %s --tag %s' % (sig,tag); os.system(command);
-		# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
+				tag = 'AllButQCD';
+				command = 'python buildCards-AllButQCD.py -b --signal  %s --tag %s --lumi %0.1f --mu %0.1f' % (sig,tag,lumi,mu); os.system(command);
+				command = 'python combineAllCards.py -b --run --dir testCards-%s-%s-%0.1f-mu%0.1f' % (tag,sig,lumi,mu); os.system(command);
 
-		tag = 'AllButQCD';
-		command = 'python buildCards-AllButQCD.py -b --signal  %s --tag %s' % (sig,tag); os.system(command);
-		command = 'python combineAllCards.py -b --run --dir testCards-%s-%s' % (tag,sig); os.system(command);
-
+				significances[dicttag] = getSignif( "higgsCombinetestCards-AllButQCD-SMSqqqq1000-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (lumi,mu) )
+				fittedMus[dicttag] = getFittedMu( "higgsCombinetestCards-AllButQCD-SMSqqqq1000-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (lumi,mu) )
+				injectedMus[dicttag] = mu;
 
