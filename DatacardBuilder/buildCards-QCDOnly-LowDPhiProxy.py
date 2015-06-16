@@ -26,8 +26,8 @@ if __name__ == '__main__':
 
 	#------------------------------------------------------------------------------------------------
 	## 1. Fill Rates for each signal region
-	signalRegion_file = TFile("../Analysis/datacards/RA2bin_signal.root");
-	lowdphiRegion_file = TFile("../Analysis/datacards/RA2bin_LDP.root");
+	signalRegion_file = TFile("../Analysis/datacards_3fb/RA2bin_signal.root");
+	lowdphiRegion_file = TFile("../Analysis/datacards_10fb/RA2bin_LDP.root");
 	# signal region stuff
 	signalRegion_sigHist = signalRegion_file.Get("RA2bin_"+sms);
 	tagsForSignalRegion = binLabelsToList(signalRegion_sigHist)

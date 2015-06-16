@@ -35,3 +35,5 @@ if __name__ == '__main__':
 		os.system(combine_cmmd);
 		combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.root -n %s" % (cdir,cdir);
 		os.system(combine_cmmd);
+		combine_cmmd = "combine -M Asymptotic --noFitAsimov %s/allcards.root -n %s" % (cdir,cdir);
+		os.system(combine_cmmd);		
