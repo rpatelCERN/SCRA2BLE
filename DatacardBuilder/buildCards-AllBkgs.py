@@ -334,9 +334,11 @@ if __name__ == '__main__':
 				signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSL'],100,'',i);
 			else: 
 				signalRegion.addSingleSystematic('LLStat'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_statUncList[i]/denom),'',i);					
-			if(signalRegion_LLList[i]<0.00001): denom = 1.0
+			if(signalRegion_LLList[i]<0.00001): denom = signalRegion_WeightList[i]
 			signalRegion.addSingleSystematic('LLSys'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_sysUncList[i]/denom),'',i);
-		
+			
+			# print signalRegion_CSList[i], denom, signalRegion_WeightList[i], signalRegion_sysUncList[i], signalRegion_statUncList[i]
+
 		for i in range(SLcontrolRegion.GetNbins()):
 			SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopSL'],100,'',i);		
 
