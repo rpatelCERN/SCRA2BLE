@@ -1,0 +1,20 @@
+#the tag = NJets2_BTags2_MHT2_HT5 
+imax 1 #number of channels 
+jmax 1 #number of backgrounds 
+kmax * nuissance 
+------------ 
+bin Binsignal53
+observation 1.63573594391
+bin Binsignal53 Binsignal53 
+process sig zvv 
+process 0 1 
+rate 1.57250 0.06323 
+------------ 
+lumi lnN 1.04 - 
+SPhoCR17 lnU - 100 
+DYHTUnc53 lnN - 1.2 
+PhoEffUnc lnN - 1.2 
+RZgDataUncMHT2 lnN - 1.28 
+RZgDataUncNJets2 lnN - 1.16 
+DYNBStatUncBTags2 lnN - 1.158 
+DYNBStatUncNJets2 lnN - 1.049 

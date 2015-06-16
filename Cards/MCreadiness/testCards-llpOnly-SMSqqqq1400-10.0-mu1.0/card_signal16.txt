@@ -1,0 +1,15 @@
+#the tag = NJets2_BTags0_MHT1_HT4 
+imax 1 #number of channels 
+jmax 1 #number of backgrounds 
+kmax * nuissance 
+------------ 
+bin Binsignal16
+observation 3.48416349292
+bin Binsignal16 Binsignal16 
+process sig WTopSL 
+process 0 1 
+rate 3.18734 0.45166 
+------------ 
+lumi lnN 1.04 - 
+LLSCSRNJets2_BTags0_MHT1_HT4 lnU - 100 
+LLSysNJets2_BTags0_MHT1_HT4 lnN - 1.30000034201 

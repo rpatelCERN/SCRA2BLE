@@ -1,0 +1,26 @@
+#the tag = NJets1_BTags1_MHT2_HT5 
+imax 1 #number of channels 
+jmax 4 #number of backgrounds 
+kmax * nuissance 
+------------ 
+bin Binsignal29
+observation 29.6983999453
+bin Binsignal29 Binsignal29 Binsignal29 Binsignal29 Binsignal29 
+process sig WTopSL WTopHad zvv qcd 
+process 0 1 2 3 4 
+rate 0.02572 0.46594 0.06059 0.32202 29.21886 
+------------ 
+lumi lnN 1.04 - - - - 
+SPhoCR11 lnU - - - 100 - 
+DYHTUnc29 lnN - - - 1.2 - 
+PhoEffUnc lnN - - - 1.2 - 
+RZgDataUncMHT2 lnN - - - 1.54 - 
+RZgDataUncNJets1 lnN - - - 1.25 - 
+DYNBStatUncBTags1 lnN - - - 1.076 - 
+DYNBStatUncNJets1 lnN - - - 1.015 - 
+LLSCSRNJets1_BTags1_MHT2_HT5 lnU - 100 - - - 
+LLSysNJets1_BTags1_MHT2_HT5 lnN - 1.29999350914 - - - 
+HadTauUnc29 lnN - - 2.2873 - - 
+HadTauNJClosureNJets1Unc lnN - - 1.4 - - 
+Ratioqcd29 lnU - - - - 100 
+Logqcd29 lnN - - - - 1.99835843023 
