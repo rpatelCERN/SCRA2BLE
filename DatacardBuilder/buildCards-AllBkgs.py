@@ -37,7 +37,7 @@ if __name__ == '__main__':
 	lumi = float(options.lumi);
 	signalmu = float(options.mu);
 	odir = 'testCards-%s-%s-%s-mu%0.1f/' % ( tag,sms,str(round(lumi,1)), signalmu );
-	idir = '../Analysis/datacards_%sfb' % ( str(int(lumi)) );
+	idir = 'inputHistograms/histograms_%sfb/' % ( str(int(lumi)) );
 	if os.path.exists(odir): os.system( "rm -r %s" % (odir) );
 	os.makedirs(odir);
 
@@ -243,7 +243,7 @@ if __name__ == '__main__':
 	# #------------------------------------------------------------------------------------------------
 	# #------------------------------------------------------------------------------------------------
 	# ## 2. Add systematics
-	['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
+	# ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
 	pdf=1.03
 	ISR=1.01
 	if(sms=='SMSqqqq1400' or sms=='SMStttt1200' or sms=='SMSbbbb1000'):
@@ -263,10 +263,11 @@ if __name__ == '__main__':
 	signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 0.95, 'BTags3')
 	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.0, 'MHT0_HT0');
 	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT0_HT1');
-        signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.1, 'MHT0_HT2');
+	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.1, 'MHT0_HT2');
 	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT1_HT3');
 	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT1_HT4');
-        signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.1, 'MHT2_HT5');
+	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.1, 'MHT2_HT5');
+
 	### Zvv uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.zvvOnly:
 		
@@ -315,9 +316,9 @@ if __name__ == '__main__':
 			signalRegion.addSingleSystematic('RZgDataUncNJets1','lnN',['zvv'],1.25,'NJets1');	
 			signalRegion.addSingleSystematic('RZgDataUncNJets2','lnN',['zvv'],1.32,'NJets2');				
 			# Extrpolation uncertainties, from Kevin S.
-			signalRegion.addSingleSystematic('DYNBStatUncBTags1','lnN',['zvv'],1.076,'BTags1');		
-			signalRegion.addSingleSystematic('DYNBStatUncBTags2','lnN',['zvv'],1.158,'BTags2');		
-			signalRegion.addSingleSystematic('DYNBStatUncBTags3','lnN',['zvv'],1.507,'BTags3');		
+			signalRegion.addSingleSystematic('DYNBStatUncBTags1','lnN',['zvv'],1.139,'BTags1');		
+			signalRegion.addSingleSystematic('DYNBStatUncBTags2','lnN',['zvv'],1.289,'BTags2');		
+			signalRegion.addSingleSystematic('DYNBStatUncBTags3','lnN',['zvv'],1.923,'BTags3');		
 			signalRegion.addSingleSystematic('DYNBStatUncNJets1','lnN',['zvv'],1.015,'NJets1_BTags.');		
 			signalRegion.addSingleSystematic('DYNBStatUncNJets2','lnN',['zvv'],1.059,'NJets2_BTags.');		
 

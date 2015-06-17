@@ -1,0 +1,38 @@
+Running the SCRA2BLE datacard builder!  
+
+Check out the package: 
+> cmsrel CMSSW_7_1_5
+> cd CMSSW_7_1_5/src/
+> git clone git@github.com:nhanvtran/SCRA2BLE.git
+> git clone https://github.com/cms-analysis/HiggsAnalysis-CombinedLimit.git HiggsAnalysis/CombinedLimit
+> scram b -j8
+
+> cd SCRA2BLE/DatacardBuilder
+> # run it! here's an example
+> python buildCards-AllBkgs.py -b --allBkgs --signal SMSqqqq1000 --tag myFirstTest --lumi 10.0 --mu 10.0
+
+This will create a set of cards for you in a new directory.  
+The options are as follows:
+
+backgrounds to include, options are 
+--allBkgs
+--qcdOnly
+--llpOnly
+--zvvOnly
+--tauOnly
+
+
+'--signal': signal models, can be SMSqqqq1000, etc.
+'--tag': for you to identify your cards, can be whatever string you want
+'--lumi': so far only works for 10.0 and 3.0, default = 10.0
+'--mu': injected signal strength, default = 1.0
+
+-------------------------
+
+After you get your cards, you may want to run some limits or significances. 
+
+A script is here to aid you, although its quite straightforward and you could do it form the command line if you felt like it.
+> python combineAllCards.py -b --run --dir  myDir
+
+Here, 'myDir' is the directory where your cards went.  Right now the code runs the limit and significance.  It should not take more than a few minutes.  
+

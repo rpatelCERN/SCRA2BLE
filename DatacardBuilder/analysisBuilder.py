@@ -51,19 +51,19 @@ def getSignif(fn):
 
 #########################################################################################################
 if __name__ == '__main__':
-	signals = ['SMStttt1500']
-	#signals = ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
+	
+	signals = ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
 	# signals = ['SMSqqqq1000','SMSbbbb1000']
 	# signals = ['SMSbbbb1500','SMSbbbb1000']
 	
 	#mus = [0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0];
 	mus = [1.0];
 
-	# lumis = [3.0,10.0];
-	lumis = [10.0];
+	lumis = [3.0,10.0];
+	# lumis = [10.0];
 
-	# variations = ['allBkgs','qcdOnly','zvvOnly','llpOnly','tauOnly']
-	variations = ['allBkgs']
+	variations = ['allBkgs','qcdOnly','zvvOnly','llpOnly','tauOnly']
+	# variations = ['allBkgs']
 
 	identifiers = [];
 	limits = [];
@@ -83,3 +83,20 @@ if __name__ == '__main__':
 					command = 'python combineAllCards.py -b --run --dir testCards-%s-%s-%0.1f-mu%0.1f' % (tag,sig,lumi,mu); os.system(command);
 
 					dicttag = "%s_%s_%.1f" % (tag,sig,lumi);
+
+					identifiers.append( dicttag );
+					significances.append( getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,sig,lumi,mu) ) );
+					limits.append( getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,sig,lumi,mu) ) );
+					# fittedMus.append( getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,sig,lumi,mu) ) );
+					# limits.append( 0. );
+					fittedMus.append( [0.,0.,0.] );
+					injectedMus.append( mu );
+
+	for i in range(len(identifiers)):
+		splitid = identifiers[i].split('_');
+		# print splitid[0],splitid[1],splitid[2],round(significances[i],4),round(limits[i],4),round(fittedMus[i][0],4),round(injectedMus[i],4);
+		print splitid[0],splitid[1],splitid[2],round(significances[i],4),round(limits[i],4)
+
+
+
+
