@@ -79,7 +79,9 @@ if __name__ == '__main__':
 	# had tau
 	signalRegion_tauList = textToList( "inputsHadTau/HadTauMCPred%sfb.txt" % (str(int(lumi))), 0 );
 	hadtauSystematics = textToList( "inputsHadTau/HadTauMCPred%sfb.txt" % (str(int(lumi))), 1 )
-
+        controlRegion_tauList = textToList( "inputsHadTau/TauControlBins%sfb.txt" % (str(int(lumi))), 0 );
+	#for i in range(len(controlRegion_tauList)):
+	#	if(controlRegion_tauList[i]<2):print controlRegion_tauList[i]
 	# QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
 	# QCD stuff
 	# low dphi region stuff
@@ -189,27 +191,43 @@ if __name__ == '__main__':
 
 	# accounting for LL Region
 	tagsForSLControlRegion=[]	
+	tagsForHadControlRegion=[]
 	SLcontrolContributionsPerBin = [];
+	HadcontrolContributionsPerBin=[]	
 	addControl=[]
+	addControlHad=[]
 	for i in range(len(tagsForSignalRegion)): 
 		if(signalRegion_CSList[i]<2):
 			SLcontrolContributionsPerBin.append(['sig', 'WTopSL']);
 			tagsForSLControlRegion.append(tagsForSignalRegion[i]);
 			addControl.append(i);
-
+		if(controlRegion_tauList[i]<2):
+			HadcontrolContributionsPerBin.append(['sig', 'WTopHad']);
+			addControlHad.append(i);
+			tagsForHadControlRegion.append(tagsForSignalRegion[i])
 	SLcontrolRegion = searchRegion('SLControl', SLcontrolContributionsPerBin, tagsForSLControlRegion)
+        HadcontrolRegion = searchRegion('HadControl', HadcontrolContributionsPerBin, tagsForHadControlRegion)
 	SLcontrolRegion_Obs = [];
 	SLcontrolRegion_Rates = [];
+	HadcontrolRegion_Obs = [];
+        HadcontrolRegion_Rates = [];
 	for i in range(len(addControl)):
 		tmpList=[]
 		tmpList.append(0);
 		tmpList.append(1.);
 		SLcontrolRegion_Obs.append(signalRegion_CSList[addControl[i]]);
 		SLcontrolRegion_Rates.append(tmpList);
-
+        for i in range(len(addControlHad)):
+		tmpList2=[]
+		tmpList2.append(0);
+		tmpList2.append(1.);
+		HadcontrolRegion_Obs.append(controlRegion_tauList[addControlHad[i]]);
+                HadcontrolRegion_Rates.append(tmpList2);
+		
 	SLcontrolRegion.fillRates(SLcontrolRegion_Rates);
 	SLcontrolRegion.setObservedManually(SLcontrolRegion_Obs);
-
+	HadcontrolRegion.fillRates(HadcontrolRegion_Rates);
+        HadcontrolRegion.setObservedManually(HadcontrolRegion_Obs);
 	# -------------------------------
 	# signal region
 	contributionsPerBin = [];
@@ -348,7 +366,7 @@ if __name__ == '__main__':
 		for i in range(signalRegion.GetNbins()):
 			njetTag = tagsForSignalRegion[i].split('_')[0];
 			# print njetTag
-			signalRegion.addSingleSystematic('HadTauUnc'+str(i),'lnN',['WTopHad'],float(hadtauSystematics[i]),'',i);
+			signalRegion.addSingleSystematic('LLStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],float(hadtauSystematics[i]),'',i);
 		
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets0Unc','lnN',['WTopHad'],1.2,'NJets0');
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets1Unc','lnN',['WTopHad'],1.4,'NJets1');
@@ -390,6 +408,7 @@ if __name__ == '__main__':
 	# ## 3. Write Cards
 	signalRegion.writeCards( odir );
 	if options.allBkgs or options.llpOnly: SLcontrolRegion.writeCards( odir );
+	if options.allBkgs or options.tauOnly: HadcontrolRegion.writeCards( odir );
 	if options.allBkgs or options.zvvOnly: sphotonRegion.writeCards( odir );
 	if options.allBkgs or options.qcdOnly: NewControlRegion.writeCards( odir );
 

@@ -60,7 +60,7 @@ if __name__ == '__main__':
 	mus = [1.0];
 
 	# lumis = [3.0,10.0];
-	lumis = [10.0];
+	lumis = [3.0];
 
 	# variations = ['allBkgs','qcdOnly','zvvOnly','llpOnly','tauOnly']
 	variations = ['allBkgs']
@@ -78,7 +78,6 @@ if __name__ == '__main__':
 		for sig in signals:
 			for mu in mus:
 				for vary in variations: 
-	
 					tag = vary;
 					command = 'python buildCards-AllBkgs.py -b --%s --signal  %s --tag %s --lumi %0.1f --mu %0.1f' % (vary,sig,tag,lumi,mu); os.system(command);
 					# command = 'python combineAllCards.py -b --run --dir testCards-%s-%s-%0.1f-mu%0.1f' % (tag,sig,lumi,mu); os.system(command);

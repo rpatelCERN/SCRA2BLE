@@ -35,6 +35,8 @@ if __name__ == '__main__':
 	tagsForSignalRegion = binLabelsToList(signalRegion_sigHist);
 	signalRegion_sigList = binsToList( signalRegion_sigHist );
 	signalRegion_tauList = textToList( "inputsHadTau/HadTauMCPred10fb.txt", 0 );
+	controlRegion_tauList = textToList( "inputsHadTau/TauControlBins10fb.txt", 0 );
+	for i in range(len(controlRegion_tauList)):print controlRegion_tauList[i]
 	contributionsPerBin = [];
 	for i in range(len(tagsForSignalRegion)): contributionsPerBin.append(['sig','WTopHadTau']);
 	signalRegion = searchRegion('signal', contributionsPerBin, tagsForSignalRegion)
