@@ -243,17 +243,30 @@ if __name__ == '__main__':
 	# #------------------------------------------------------------------------------------------------
 	# #------------------------------------------------------------------------------------------------
 	# ## 2. Add systematics
+	['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
+	pdf=1.03
+	ISR=1.01
+	if(sms=='SMSqqqq1400' or sms=='SMStttt1200' or sms=='SMSbbbb1000'):
+		ISR=1.08
+		pdf=1.10
 	signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.04);
 	signalRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.03);
 	signalRegion.addSingleSystematic('PUwUnc','lnN',['sig'],1.03);
 	signalRegion.addSingleSystematic('TrigEff','lnN',['sig'],1.02);
-	signalRegion.addSingleSystematic('UnclE', 'lnN', ['sig'], 1.01);
-	signalRegion.addSingleSystematic('UnclE', 'lnN', ['sig'], 1.01);	
+	signalRegion.addSingleSystematic('ISR','lnN',['sig'],ISR);
+	signalRegion.addSingleSystematic('pdf','lnN',['sig'],pdf);
+	signalRegion.addSingleSystematic('UnclEUnc', 'lnN', ['sig'], 1.01);
+	signalRegion.addSingleSystematic('JERUnc', 'lnN', ['sig'], 1.02);	
 	signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.15, 'BTags0')	
 	signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.0, 'BTags1')
 	signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.0, 'BTags2')
 	signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 0.95, 'BTags3')
-
+	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.0, 'MHT0_HT0');
+	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT0_HT1');
+        signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.1, 'MHT0_HT2');
+	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT1_HT3');
+	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT1_HT4');
+        signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.1, 'MHT2_HT5');
 	### Zvv uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.zvvOnly:
 		
@@ -316,7 +329,8 @@ if __name__ == '__main__':
 			denom = signalRegion_LLList[i]
 			if(signalRegion_CSList[i]<2):
 				signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSL'],100,'',i);
-				signalRegion.addSingleSystematic('HadStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],float(hadtauSystematics[i]),'',i);
+				
+				#signalRegion.addSingleSystematic('HadStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],float(hadtauSystematics[i]),'',i);
 			else: 
 				signalRegion.addSingleSystematic('StatMuError'+tagsForSignalRegion[i],'lnN',['WTopSL','WTopHad'],[1+(signalRegion_sysUncList[i]/denom),float(hadtauSystematics[i])],'',i)
 			if(signalRegion_LLList[i]<0.00001): denom = signalRegion_WeightList[i]
