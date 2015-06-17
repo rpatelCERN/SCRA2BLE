@@ -79,97 +79,55 @@ if __name__ == '__main__':
 	# had tau
 	signalRegion_tauList = textToList( "inputsHadTau/HadTauMCPred%sfb.txt" % (str(int(lumi))), 0 );
 	hadtauSystematics = textToList( "inputsHadTau/HadTauMCPred%sfb.txt" % (str(int(lumi))), 1 )
-        controlRegion_tauList = textToList( "inputsHadTau/TauControlBins%sfb.txt" % (str(int(lumi))), 0 );
+	controlRegion_tauList = textToList( "inputsHadTau/TauControlBins%sfb.txt" % (str(int(lumi))), 0 );
 	#for i in range(len(controlRegion_tauList)):
 	#	if(controlRegion_tauList[i]<2):print controlRegion_tauList[i]
+	
 	# QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
 	# QCD stuff
 	# low dphi region stuff
-	QCDcontributionsPerBinForSignal = [];
-	QCDratiosPerContributionForSignal = [];
-	QCDratesPerContributionForSignal = [];
+
+	ratesForSignalRegion_QCDList = [];
+	NSRForSignalRegion_QCDList = textToList("inputsFromOwen/lowdphiinputs-72bins-%sifb.txt"%(str(int(lumi))),4);
+	ratesForLowdphiRegion_QCDList = [];
+	NCRForLowdphiRegion_QCDList = textToList("inputsFromOwen/lowdphiinputs-72bins-%sifb.txt"%(str(int(lumi))),2);
+	obsForLowdphiRegion_QCDList = [];
+	ratiosForLowdphiRegion = textToList("inputsFromOwen/lowdphiinputs-72bins-%sifb.txt"%(str(int(lumi))),3);
+
 	lowdphiRegion_sigHist = lowdphiRegion_file.Get("RA2bin_"+sms);
+	ratesForLowdphiRegion_sigList = binsToList(lowdphiRegion_sigHist);
 	tagsForLowDPhiRegion = binLabelsToList(lowdphiRegion_sigHist)
-	contributionsPerBin = [];
+	QCDcontributionsPerBin = [];
 	for i in range(len(tagsForLowDPhiRegion)): 
-		curtag = tagsForLowDPhiRegion[i];
-		qcdcurtag = 'qcd'+curtag.replace('_','');
-		contributionsPerBin.append( [ 'sig',qcdcurtag ] );
-	lowdphiRegion = searchRegion('lowdphi', contributionsPerBin, tagsForLowDPhiRegion)
-	lowdphiRegion_sigList = binsToList(lowdphiRegion_sigHist);
-	lowdphiRegion_qcdList = textToList('inputsFromOwen/lhbuilder-input-v4b-perfect-closure-ss1-fullfit-qcdcounts-%sifb.txt' % (str(int(lumi))) ,3);
-	lowdphiRegion_Rates = [];
-	QCDCRDict_TagToObs = {};
-	QCDCRDict_TagToRate = {};
-	for i in range(lowdphiRegion._nBins):
-		curtag = tagsForLowDPhiRegion[i];
-		qcdcurtag = 'qcd'+curtag.replace('_','');
-		tmpList = [];
-		tmpList.append(0.);
-		tmpList.append(lowdphiRegion_qcdList[i]);
-		QCDCRDict_TagToRate[qcdcurtag] = lowdphiRegion_qcdList[i]
-		
-		#print qcdcurtag
-		QCDCRDict_TagToObs[qcdcurtag] = lowdphiRegion_qcdList[i]
-		lowdphiRegion_Rates.append( tmpList );	
+		QCDcontributionsPerBin.append( [ 'sig','qcd' ] );
 
-	HTDict  = { 'HT0':['HT0'], 'HT1':['HT1'], 'HT2':['HT2'], 'HT3':['HT0','HT1'], 'HT4':['HT2'], 'HT5':['HT1','HT2'] };
-	MHTDict = { 'MHT0':['MHT0','MHT1'], 'MHT1':['MHT2'], 'MHT2':['MHT3'] };
-	NJDict  = { 'NJets0':['NJets0','NJets1','NJets2'], 'NJets1':['NJets3'], 'NJets2':['NJets4'] };
-	kappaHTDict  =  { 'HT0':0.062,'HT1':0.048,'HT2':0.036 }
-	kappaMHTDict =  { 'MHT0':1.0,'MHT1':0.472,'MHT2':0.328,'MHT3':0.308 }
-	kappaNJDict  =  { 'NJets0':1.0,'NJets1':1.45,'NJets2':1.45,'NJets3':2.11,'NJets4':4.0 }
+		if NCRForLowdphiRegion_QCDList[i] < 1: 
+			ratesForLowdphiRegion_QCDList.append( 1. );
+			ratesForSignalRegion_QCDList.append( ratiosForLowdphiRegion[i] )
+		else: 
+			ratesForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] ); 
+			ratesForSignalRegion_QCDList.append( NSRForSignalRegion_QCDList[i] )
 
-	kappaUncMHTDict =  { 'MHT0':0.000,'MHT1':0.080,'MHT2':0.16,'MHT3':0.30 }
-	kappaUncNJDict  =  { 'NJets0':0.0000,'NJets1':0.015,'NJets2':0.15,'NJets3':0.30,'NJets4':2.0}
-	kappaUncHTDict  =  { 'HT0':0.01,'HT1':0.008,'HT2':0.006 }
+		#obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] + ratesForLowdphiRegion_sigList[i])
+		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] ); # currently not considering signal contamination
 
-	TotalLowdphiRegion_Rates = [];
-	for i in range(len(tagsForSignalRegion)):
-		curtag = tagsForSignalRegion[i];
-		curtaglist = curtag.split('_');
-		translatedBins = [];
-		translatedBins.append('sig');
-		kappaRatios = [];
-		ratesFromKappas = [];
-		tmp=0;
-		tmp2=0;
-		for val0 in NJDict[curtaglist[0]]:
-			for val1 in MHTDict[curtaglist[2]]:
-				for val2 in HTDict[curtaglist[3]]:
-					qcdlookupkey='qcd'+val0+curtaglist[1]+val1+val2;
-					tmp=kappaNJDict[val0]*kappaMHTDict[val1]*kappaHTDict[val2]*QCDCRDict_TagToRate[qcdlookupkey]+tmp;
-					tmp2=QCDCRDict_TagToRate[qcdlookupkey]+tmp2
-					#curratio = kappaNJDict[val0]*kappaMHTDict[val1]*kappaHTDict[val2];
-					#print qcdkey
-					#cursignalyield = curratio*QCDCRDict_TagToRate[qcdkey];
-					#print QCDCRDict_TagToRate[qcdkey]
-		#print " bin %d  qcd yield  %2.2f" %(i, tmp)
-		translatedBins.append('qcd');
-		kappaRatios.append( tmp )
-		ratesFromKappas.append( tmp );
-		QCDcontributionsPerBinForSignal.append( translatedBins );
-		QCDratiosPerContributionForSignal.append( tmp );
-		QCDratesPerContributionForSignal.append( tmp );
-		TotalLowdphiRegion_Rates.append(tmp2);
-	
-	NewControlRegion = searchRegion('Lowdphi', QCDcontributionsPerBinForSignal, tagsForSignalRegion);	
-
-	signalRegion_Rates = [];
-	signalRegion_Observed = [];
-	controlRegion_Rates = [];
-	controllRegion_Observed = [];
-	for i in range(NewControlRegion._nBins):
+	LowdphiControlRegion = searchRegion('Lowdphi', QCDcontributionsPerBin, tagsForLowDPhiRegion);	
+	qcdcontrolRegion_Rates = [];
+	qcdcontrollRegion_Observed = [];
+	for i in range(LowdphiControlRegion._nBins):
 		curobsC = 0;
+		curobsC += obsForLowdphiRegion_QCDList[i]		
+
 		currateC = [];
-		currateC.append(0)
-		currateC.append(TotalLowdphiRegion_Rates[i]);
-		curobsC += TotalLowdphiRegion_Rates[i]
-		controlRegion_Rates.append(currateC);
-		controllRegion_Observed.append(curobsC);	
-	NewControlRegion.fillRates(controlRegion_Rates);
-	NewControlRegion.setObservedManually(controllRegion_Observed);
-	NewControlRegion.writeRates();
+		currateC.append( 0. );
+		currateC.append( ratesForLowdphiRegion_QCDList[i] );
+	
+		qcdcontrolRegion_Rates.append(currateC);
+		qcdcontrollRegion_Observed.append(curobsC);	
+
+	LowdphiControlRegion.fillRates(qcdcontrolRegion_Rates);
+	LowdphiControlRegion.setObservedManually(qcdcontrollRegion_Observed);
+	LowdphiControlRegion.writeRates();
 
 	# QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
 
@@ -206,28 +164,29 @@ if __name__ == '__main__':
 			addControlHad.append(i);
 			tagsForHadControlRegion.append(tagsForSignalRegion[i])
 	SLcontrolRegion = searchRegion('SLControl', SLcontrolContributionsPerBin, tagsForSLControlRegion)
-        HadcontrolRegion = searchRegion('HadControl', HadcontrolContributionsPerBin, tagsForHadControlRegion)
+	HadcontrolRegion = searchRegion('HadControl', HadcontrolContributionsPerBin, tagsForHadControlRegion)
 	SLcontrolRegion_Obs = [];
 	SLcontrolRegion_Rates = [];
 	HadcontrolRegion_Obs = [];
-        HadcontrolRegion_Rates = [];
+	HadcontrolRegion_Rates = [];
 	for i in range(len(addControl)):
 		tmpList=[]
 		tmpList.append(0);
 		tmpList.append(1.);
 		SLcontrolRegion_Obs.append(signalRegion_CSList[addControl[i]]);
 		SLcontrolRegion_Rates.append(tmpList);
-        for i in range(len(addControlHad)):
-		tmpList2=[]
-		tmpList2.append(0);
-		tmpList2.append(1.);
-		HadcontrolRegion_Obs.append(controlRegion_tauList[addControlHad[i]]);
-                HadcontrolRegion_Rates.append(tmpList2);
+		for i in range(len(addControlHad)):
+			tmpList2=[]
+			tmpList2.append(0);
+			tmpList2.append(1.);
+			HadcontrolRegion_Obs.append(controlRegion_tauList[addControlHad[i]]);
+			HadcontrolRegion_Rates.append(tmpList2);
 		
 	SLcontrolRegion.fillRates(SLcontrolRegion_Rates);
 	SLcontrolRegion.setObservedManually(SLcontrolRegion_Obs);
 	HadcontrolRegion.fillRates(HadcontrolRegion_Rates);
-        HadcontrolRegion.setObservedManually(HadcontrolRegion_Obs);
+	HadcontrolRegion.setObservedManually(HadcontrolRegion_Obs);
+		
 	# -------------------------------
 	# signal region
 	contributionsPerBin = [];
@@ -249,7 +208,7 @@ if __name__ == '__main__':
 	for i in range(signalRegion._nBins):
 		srobs = 0;
 		srobs += signalRegion_sigList[i]*signalmu;
-		if options.allBkgs or options.qcdOnly: srobs += QCDratesPerContributionForSignal[i];
+		if options.allBkgs or options.qcdOnly: srobs += NSRForSignalRegion_QCDList[i];
 		if options.allBkgs or options.zvvOnly: srobs += signalRegion_zvvList[i];
 		if options.allBkgs or options.llpOnly: srobs += signalRegion_LLList[i];
 		if options.allBkgs or options.tauOnly: srobs += signalRegion_tauList[i];
@@ -270,7 +229,7 @@ if __name__ == '__main__':
 		# Had Tau rate
 		if options.allBkgs or options.tauOnly: tmpList.append(signalRegion_tauList[i]);
 		if options.allBkgs or options.zvvOnly: tmpList.append(signalRegion_zvvList[i]);
-		if options.allBkgs or options.qcdOnly: tmpList.append( QCDratesPerContributionForSignal[i] );
+		if options.allBkgs or options.qcdOnly: tmpList.append( ratesForSignalRegion_QCDList[i] );
 		signalRegion_Rates.append( tmpList );
 	
 	signalRegion.fillRates( signalRegion_Rates );
@@ -374,35 +333,15 @@ if __name__ == '__main__':
 
 	### QCD uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.qcdOnly:	
-		logNormalUnc=[]
+
+		ListOfQCDSys = getSystematicsListQCD("inputsFromOwen/lowdphiinputs-72bins-%sifb.txt"%(str(int(lumi))));
+		
 		for i in range(len(tagsForSignalRegion)):
-			curtag = tagsForSignalRegion[i];
-			curtaglist = curtag.split('_');
-			translatedBins = [];
-			translatedBins.append('sig');
-			sumQCDQuad=0;		
-			for val0 in NJDict[curtaglist[0]]:
-				for val1 in MHTDict[curtaglist[2]]:
-					for val2 in HTDict[curtaglist[3]]:
-						qcdlookupkey='qcd'+val0+curtaglist[1]+val1+val2;
-						qcdNJUncRatio=kappaUncNJDict[val0]/kappaNJDict[val0]
-						qcdHTUncRatio=kappaUncHTDict[val2]/kappaHTDict[val2]
-						qcdMHTUncRatio=kappaUncMHTDict[val1]/kappaMHTDict[val1]
-						qcdControlYield=QCDCRDict_TagToRate[qcdlookupkey]
-						sumquad=(qcdNJUncRatio*qcdNJUncRatio)+(qcdHTUncRatio*qcdHTUncRatio)+(qcdMHTUncRatio*qcdMHTUncRatio)
-						sumQCDQuad+=(sqrt(sumquad)*qcdControlYield)
+			signalRegion.addSingleSystematic(        "ldpCR"+str(i),'lnU','qcd',100,'',i);
+			LowdphiControlRegion.addSingleSystematic("ldpCR"+str(i),'lnU','qcd',100,'',i);	
 
-			den=TotalLowdphiRegion_Rates[i]
-			if(den<0.000001):den=1.0
-			unc=1+((sumQCDQuad)/den)
-			logNormalUnc.append(unc)
-
-		for i in range(signalRegion._nBins):
-			sysLN="Logqcd%d" %i
-			sysLNU="Ratioqcd%d" %i
-			signalRegion.addSingleSystematic(sysLNU,'lnU','qcd',100,'',i);
-			signalRegion.addSingleSystematic(sysLN,'lnN','qcd',logNormalUnc[i],'',i);
-			NewControlRegion.addSingleSystematic(sysLNU,'lnU','qcd',100,'',i);	
+			for sys in ListOfQCDSys[i]:
+				signalRegion.addSingleSystematic("kappaUnc"+sys[0],'lnN','qcd',float(sys[1]),'',i);
 
 	# #------------------------------------------------------------------------------------------------
 	# ## 3. Write Cards
@@ -410,7 +349,7 @@ if __name__ == '__main__':
 	if options.allBkgs or options.llpOnly: SLcontrolRegion.writeCards( odir );
 	if options.allBkgs or options.tauOnly: HadcontrolRegion.writeCards( odir );
 	if options.allBkgs or options.zvvOnly: sphotonRegion.writeCards( odir );
-	if options.allBkgs or options.qcdOnly: NewControlRegion.writeCards( odir );
+	if options.allBkgs or options.qcdOnly: LowdphiControlRegion.writeCards( odir );
 
 
 

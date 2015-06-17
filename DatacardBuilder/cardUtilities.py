@@ -54,6 +54,23 @@ def hutil_PhotonRatioFix(h_gjet,h_zvv):
 	return [hout_gjet,hout_zvv];
 
 
+def getSystematicsListQCD(fn):
+	
+	sysnames = ['Kht1','Kht2','Kht3','Kmht2','Kmht3','Kmht4','Knj2','Knj3','Knj4','Knj5'];
+
+	allSystematics = [];
+	fin = open(fn,'r');
+	for line in fin:
+		theLineList = line.strip().split();
+		tmpsysList = theLineList[5:15];
+		# sysList = [x for x in sysList if x != '-']
+		sysList = [];
+		for i in range(len(tmpsysList)):
+			if tmpsysList[i] != '-': sysList.append( [sysnames[i],tmpsysList[i]] )
+		# print sysList;
+		allSystematics.append(sysList);
+
+	return allSystematics;
 ##########################################################################################
 ##########################################################################################
 ##########################################################################################
