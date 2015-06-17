@@ -44,7 +44,7 @@ class searchRegion:
 
 	def addSystematicByBinTag(self):
 		print "this does nothing at the moment"
-
+		
 	def setObservedManually(self,listObs):
 		for i in range(self._nBins):
 			self._singleBins[i]._observed = listObs[i];

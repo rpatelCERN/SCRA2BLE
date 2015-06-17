@@ -366,8 +366,8 @@ if __name__ == '__main__':
 		for i in range(signalRegion.GetNbins()):
 			njetTag = tagsForSignalRegion[i].split('_')[0];
 			# print njetTag
-			signalRegion.addSingleSystematic('LLStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],float(hadtauSystematics[i]),'',i);
-		
+			signalRegion.addSingleSystematic('HadStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],float(hadtauSystematics[i]),'',i);
+
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets0Unc','lnN',['WTopHad'],1.2,'NJets0');
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets1Unc','lnN',['WTopHad'],1.4,'NJets1');
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets2Unc','lnN',['WTopHad'],1.6,'NJets2');
