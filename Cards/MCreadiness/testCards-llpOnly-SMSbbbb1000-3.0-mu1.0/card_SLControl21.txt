@@ -1,13 +1,13 @@
-#the tag = NJets2_BTags2_MHT2_HT5 
+#the tag = NJets2_BTags3_MHT1_HT3 
 imax 1 #number of channels 
 jmax 1 #number of backgrounds 
 kmax * nuissance 
 ------------ 
 bin BinSLControl21
-observation 0.0307900235057
+observation 0.0950328409672
 bin BinSLControl21 BinSLControl21 
 process sig WTopSL 
 process 0 1 
 rate 0.0001 1.00000 
 ------------ 
-LLSCSRNJets2_BTags2_MHT2_HT5 lnU - 100 
+LLSCSRNJets2_BTags3_MHT1_HT3 lnU - 100 

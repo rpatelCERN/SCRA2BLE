@@ -8,8 +8,17 @@ observation 0.0389685798436
 bin Binsignal59 Binsignal59 
 process sig WTopSL 
 process 0 1 
-rate 0.02017 0.49505 
+rate 0.02017 0.24187 
 ------------ 
 lumi lnN 1.04 - 
+EvtFilters lnN 1.03 - 
+PUwUnc lnN 1.03 - 
+TrigEff lnN 1.02 - 
+ISR lnN 1.01 - 
+pdf lnN 1.03 - 
+UnclEUnc lnN 1.01 - 
+JERUnc lnN 1.02 - 
+BTagSFUnc lnN 0.95 - 
+JESUnc lnN 1.1 - 
 LLSCSRNJets0_BTags3_MHT2_HT5 lnU - 100 
 LLSysNJets0_BTags3_MHT2_HT5 lnN - 1.29999751132 

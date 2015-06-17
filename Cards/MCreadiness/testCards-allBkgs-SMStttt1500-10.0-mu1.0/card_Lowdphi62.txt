@@ -4,10 +4,10 @@ jmax 1 #number of backgrounds
 kmax * nuissance 
 ------------ 
 bin BinLowdphi62
-observation 1.64
+observation 55.0
 bin BinLowdphi62 BinLowdphi62 
 process sig qcd 
 process 0 1 
-rate 0.0001 1.64000 
+rate 0.0001 55.00000 
 ------------ 
-Ratioqcd62 lnU - 100 
+ldpCR62 lnU - 100 

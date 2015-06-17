@@ -11,5 +11,14 @@ process 0 1
 rate 0.01198 2.82552 
 ------------ 
 lumi lnN 1.04 - 
-LLStatNJets1_BTags0_MHT1_HT3 lnN - 1.40017371657 
+EvtFilters lnN 1.03 - 
+PUwUnc lnN 1.03 - 
+TrigEff lnN 1.02 - 
+ISR lnN 1.01 - 
+pdf lnN 1.03 - 
+UnclEUnc lnN 1.01 - 
+JERUnc lnN 1.02 - 
+BTagSFUnc lnN 1.15 - 
+JESUnc lnN 0.95 - 
+StatMuErrorNJets1_BTags0_MHT1_HT3 lnN - 1.3000011078 
 LLSysNJets1_BTags0_MHT1_HT3 lnN - 1.3000011078 

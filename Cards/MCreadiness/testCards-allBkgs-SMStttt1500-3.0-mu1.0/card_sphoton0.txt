@@ -4,10 +4,10 @@ jmax 1 #number of backgrounds
 kmax * nuissance 
 ------------ 
 bin Binsphoton0
-observation 1100.33010934
+observation 1794.25308298
 bin Binsphoton0 Binsphoton0 
 process sig zvv 
 process 0 1 
-rate 0.00040 1100.32971 
+rate 0.00040 1794.25269 
 ------------ 
 SPhoCR0 lnU - 100 

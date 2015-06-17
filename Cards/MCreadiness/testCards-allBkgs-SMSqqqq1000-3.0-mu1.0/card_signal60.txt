@@ -8,19 +8,29 @@ observation 27.8728831303
 bin Binsignal60 Binsignal60 Binsignal60 Binsignal60 Binsignal60 
 process sig WTopSL WTopHad zvv qcd 
 process 0 1 2 3 4 
-rate 0.20169 10.48804 16.52000 0.66315 0.0001 
+rate 0.20169 10.48804 16.52000 0.66315 0.09600 
 ------------ 
 lumi lnN 1.04 - - - - 
+EvtFilters lnN 1.03 - - - - 
+PUwUnc lnN 1.03 - - - - 
+TrigEff lnN 1.02 - - - - 
+ISR lnN 1.01 - - - - 
+pdf lnN 1.03 - - - - 
+UnclEUnc lnN 1.01 - - - - 
+JERUnc lnN 1.02 - - - - 
+BTagSFUnc lnN 0.95 - - - - 
+JESUnc lnN 1.0 - - - - 
 SPhoCR6 lnU - - - 100 - 
 DYHTUnc60 lnN - - - 1.2 - 
 PhoEffUnc lnN - - - 1.2 - 
 RZgDataUncMHT0 lnN - - - 1.08 - 
 RZgDataUncNJets1 lnN - - - 1.25 - 
-DYNBStatUncBTags3 lnN - - - 1.507 - 
+DYNBStatUncBTags3 lnN - - - 1.923 - 
 DYNBStatUncNJets1 lnN - - - 1.015 - 
-LLStatNJets1_BTags3_MHT0_HT0 lnN - 1.24706230148 - - - 
+StatMuErrorNJets1_BTags3_MHT0_HT0 lnN - 1.29999877485 1.04274 - - 
 LLSysNJets1_BTags3_MHT0_HT0 lnN - 1.29999877485 - - - 
-HadTauUnc60 lnN - - 1.04274 - - 
 HadTauNJClosureNJets1Unc lnN - - 1.4 - - 
-Ratioqcd60 lnU - - - - 100000 
-Logqcd60 lnN - - - - 1.0 
+ldpCR60 lnU - - - - 100 
+kappaUncKht1 lnN - - - - 1.161 
+kappaUncKmht2 lnN - - - - 1.088 
+kappaUncKnj4 lnN - - - - 1.19 

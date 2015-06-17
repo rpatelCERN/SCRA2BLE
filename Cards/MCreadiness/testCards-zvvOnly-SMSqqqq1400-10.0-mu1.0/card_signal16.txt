@@ -11,6 +11,15 @@ process 0 1
 rate 3.18734 0.56947 
 ------------ 
 lumi lnN 1.04 - 
+EvtFilters lnN 1.03 - 
+PUwUnc lnN 1.03 - 
+TrigEff lnN 1.02 - 
+ISR lnN 1.08 - 
+pdf lnN 1.1 - 
+UnclEUnc lnN 1.01 - 
+JERUnc lnN 1.02 - 
+BTagSFUnc lnN 1.15 - 
+JESUnc lnN 0.95 - 
 SPhoCR16 lnU - 100 
 SPhoRZgUnc16 lnN - 1.6 
 PhoEffUnc lnN - 1.2 

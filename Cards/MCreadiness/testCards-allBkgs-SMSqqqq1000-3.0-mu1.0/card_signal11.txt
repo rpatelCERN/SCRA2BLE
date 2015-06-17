@@ -4,13 +4,22 @@ jmax 4 #number of backgrounds
 kmax * nuissance 
 ------------ 
 bin Binsignal11
-observation 3.20037677941
+observation 3.20452785941
 bin Binsignal11 Binsignal11 Binsignal11 Binsignal11 Binsignal11 
 process sig WTopSL WTopHad zvv qcd 
 process 0 1 2 3 4 
-rate 2.00686 0.49570 0.16664 0.81421 0.00585 
+rate 2.00686 0.24785 0.16664 0.81421 0.02300 
 ------------ 
 lumi lnN 1.04 - - - - 
+EvtFilters lnN 1.03 - - - - 
+PUwUnc lnN 1.03 - - - - 
+TrigEff lnN 1.02 - - - - 
+ISR lnN 1.01 - - - - 
+pdf lnN 1.03 - - - - 
+UnclEUnc lnN 1.01 - - - - 
+JERUnc lnN 1.02 - - - - 
+BTagSFUnc lnN 1.15 - - - - 
+JESUnc lnN 1.1 - - - - 
 SPhoCR11 lnU - - - 100 - 
 SPhoRZgUnc11 lnN - - - 1.179 - 
 PhoEffUnc lnN - - - 1.2 - 
@@ -19,7 +28,9 @@ RZgDataUncNJets1 lnN - - - 1.25 -
 DYNBStatUncNJets1 lnN - - - 1.015 - 
 LLSCSRNJets1_BTags0_MHT2_HT5 lnU - 100 - - - 
 LLSysNJets1_BTags0_MHT2_HT5 lnN - 1.29999871513 - - - 
-HadTauUnc11 lnN - - 1.24868 - - 
 HadTauNJClosureNJets1Unc lnN - - 1.4 - - 
-Ratioqcd11 lnU - - - - 100 
-Logqcd11 lnN - - - - 1.99835843023 
+ldpCR11 lnU - - - - 100 
+kappaUncKht2 lnN - - - - 1.0 
+kappaUncKht3 lnN - - - - 1.167 
+kappaUncKmht4 lnN - - - - 1.974 
+kappaUncKnj4 lnN - - - - 1.19 

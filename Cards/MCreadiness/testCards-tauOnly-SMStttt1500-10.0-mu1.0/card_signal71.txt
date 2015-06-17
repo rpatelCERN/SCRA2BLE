@@ -11,5 +11,13 @@ process 0 1
 rate 2.98197 0.32000 
 ------------ 
 lumi lnN 1.04 - 
-HadTauUnc71 lnN - 2.0 
+EvtFilters lnN 1.03 - 
+PUwUnc lnN 1.03 - 
+TrigEff lnN 1.02 - 
+ISR lnN 1.01 - 
+pdf lnN 1.03 - 
+UnclEUnc lnN 1.01 - 
+JERUnc lnN 1.02 - 
+BTagSFUnc lnN 0.95 - 
+JESUnc lnN 1.1 - 
 HadTauNJClosureNJets2Unc lnN - 1.6 

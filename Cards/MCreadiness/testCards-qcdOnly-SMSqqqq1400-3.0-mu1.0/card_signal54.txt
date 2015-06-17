@@ -4,12 +4,24 @@ jmax 1 #number of backgrounds
 kmax * nuissance 
 ------------ 
 bin Binsignal54
-observation 0.424152546259
+observation 10.5911937543
 bin Binsignal54 Binsignal54 
 process sig qcd 
 process 0 1 
-rate 0.00119 0.42296 
+rate 0.00119 10.59000 
 ------------ 
 lumi lnN 1.04 - 
-Ratioqcd54 lnU - 100 
-Logqcd54 lnN - 1.22849783217 
+EvtFilters lnN 1.03 - 
+PUwUnc lnN 1.03 - 
+TrigEff lnN 1.02 - 
+ISR lnN 1.08 - 
+pdf lnN 1.1 - 
+UnclEUnc lnN 1.01 - 
+JERUnc lnN 1.02 - 
+BTagSFUnc lnN 0.95 - 
+JESUnc lnN 1.0 - 
+ldpCR54 lnU - 100 
+kappaUncKht1 lnN - 1.161 
+kappaUncKmht2 lnN - 1.013 
+kappaUncKnj2 lnN - 1.056 
+kappaUncKnj3 lnN - 1.0 

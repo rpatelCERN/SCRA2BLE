@@ -4,23 +4,33 @@ jmax 4 #number of backgrounds
 kmax * nuissance 
 ------------ 
 bin Binsignal66
-observation 5.26821329525
+observation 3.65238417525
 bin Binsignal66 Binsignal66 Binsignal66 Binsignal66 Binsignal66 
 process sig WTopSL WTopHad zvv qcd 
 process 0 1 2 3 4 
-rate 0.02017 1.71385 1.87252 0.04585 1.61583 
+rate 0.02017 1.71385 1.87252 0.04585 0.18300 
 ------------ 
 lumi lnN 1.04 - - - - 
+EvtFilters lnN 1.03 - - - - 
+PUwUnc lnN 1.03 - - - - 
+TrigEff lnN 1.02 - - - - 
+ISR lnN 1.01 - - - - 
+pdf lnN 1.03 - - - - 
+UnclEUnc lnN 1.01 - - - - 
+JERUnc lnN 1.02 - - - - 
+BTagSFUnc lnN 0.95 - - - - 
+JESUnc lnN 1.0 - - - - 
 SPhoCR12 lnU - - - 100 - 
 DYHTUnc66 lnN - - - 1.2 - 
 PhoEffUnc lnN - - - 1.2 - 
 RZgDataUncMHT0 lnN - - - 1.08 - 
 RZgDataUncNJets2 lnN - - - 1.32 - 
-DYNBStatUncBTags3 lnN - - - 1.507 - 
+DYNBStatUncBTags3 lnN - - - 1.923 - 
 DYNBStatUncNJets2 lnN - - - 1.059 - 
-LLStatNJets2_BTags3_MHT0_HT0 lnN - 1.60793103012 - - - 
+StatMuErrorNJets2_BTags3_MHT0_HT0 lnN - 1.29999783006 1.17163 - - 
 LLSysNJets2_BTags3_MHT0_HT0 lnN - 1.29999783006 - - - 
-HadTauUnc66 lnN - - 1.17163 - - 
 HadTauNJClosureNJets2Unc lnN - - 1.6 - - 
-Ratioqcd66 lnU - - - - 100 
-Logqcd66 lnN - - - - 1.52741286145 
+ldpCR66 lnU - - - - 100 
+kappaUncKht1 lnN - - - - 1.161 
+kappaUncKmht2 lnN - - - - 1.088 
+kappaUncKnj5 lnN - - - - 1.5 

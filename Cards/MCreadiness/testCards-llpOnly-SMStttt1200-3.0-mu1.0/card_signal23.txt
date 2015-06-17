@@ -8,8 +8,17 @@ observation 0.75051343441
 bin Binsignal23 Binsignal23 
 process sig WTopSL 
 process 0 1 
-rate 0.0001 0.66273 
+rate 0.0001 0.75051 
 ------------ 
 lumi lnN 1.04 - 
-LLSCSRNJets0_BTags1_MHT2_HT5 lnU - 100 
+EvtFilters lnN 1.03 - 
+PUwUnc lnN 1.03 - 
+TrigEff lnN 1.02 - 
+ISR lnN 1.08 - 
+pdf lnN 1.1 - 
+UnclEUnc lnN 1.01 - 
+JERUnc lnN 1.02 - 
+BTagSFUnc lnN 1.0 - 
+JESUnc lnN 1.1 - 
+StatMuErrorNJets0_BTags1_MHT2_HT5 lnN - 1.29999462991 
 LLSysNJets0_BTags1_MHT2_HT5 lnN - 1.29999462991 

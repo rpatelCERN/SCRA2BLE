@@ -8,8 +8,19 @@ observation 3.36261749268
 bin Binsignal60 Binsignal60 
 process sig qcd 
 process 0 1 
-rate 3.36262 0.0001 
+rate 3.36262 0.09600 
 ------------ 
 lumi lnN 1.04 - 
-Ratioqcd60 lnU - 100000 
-Logqcd60 lnN - 1.0 
+EvtFilters lnN 1.03 - 
+PUwUnc lnN 1.03 - 
+TrigEff lnN 1.02 - 
+ISR lnN 1.08 - 
+pdf lnN 1.1 - 
+UnclEUnc lnN 1.01 - 
+JERUnc lnN 1.02 - 
+BTagSFUnc lnN 0.95 - 
+JESUnc lnN 1.0 - 
+ldpCR60 lnU - 100 
+kappaUncKht1 lnN - 1.161 
+kappaUncKmht2 lnN - 1.088 
+kappaUncKnj4 lnN - 1.19 
