@@ -247,7 +247,11 @@ if __name__ == '__main__':
 	signalRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.03);
 	signalRegion.addSingleSystematic('PUwUnc','lnN',['sig'],1.03);
 	signalRegion.addSingleSystematic('TrigEff','lnN',['sig'],1.02);
-	
+	signalRegion.addSingleSystematic('UnclE', 'lnN', ['sig'], 1.01, 'MHT')	
+	signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.15, 'BTags0')	
+	signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.0, 'BTags1')
+	signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.0, 'BTags2')
+	signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 0.95, 'BTags3')
 	### Zvv uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.zvvOnly:
 		
@@ -259,7 +263,6 @@ if __name__ == '__main__':
 		singlePhotonBins = ["NJets0_BTags._MHT0_HT0","NJets0_BTags._MHT0_HT1","NJets0_BTags._MHT0_HT2","NJets0_BTags._MHT1_HT3","NJets0_BTags._MHT1_HT4","NJets0_BTags._MHT2_HT5",
 							"NJets1_BTags._MHT0_HT0","NJets1_BTags._MHT0_HT1","NJets1_BTags._MHT0_HT2","NJets1_BTags._MHT1_HT3","NJets1_BTags._MHT1_HT4","NJets1_BTags._MHT2_HT5",
 							"NJets2_BTags._MHT0_HT0","NJets2_BTags._MHT0_HT1","NJets2_BTags._MHT0_HT2","NJets2_BTags._MHT1_HT3","NJets2_BTags._MHT1_HT4","NJets2_BTags._MHT2_HT5"];
-
 		for i in range(len(singlePhotonBins)):
 			signalRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
 			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
