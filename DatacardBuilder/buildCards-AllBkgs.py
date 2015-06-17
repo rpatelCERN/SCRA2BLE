@@ -70,7 +70,6 @@ if __name__ == '__main__':
 	signalRegion_LLList = binsToList( LLPrediction_Hist );
 	signalRegion_WeightList=binsToList(LLWeight_Hist);
 	signalRegion_CSList=binsToList(LLCS_Hist)
-	signalRegion_statUncList = binsToList( LL_file.Get("fullStatUp_LL") );
 	
 	# print  "./inputsLostLepton/statunc%sfb.txt" % (str(int(lumi)))
 	signalRegion_statUncList = textToList( "./inputsLostLepton/statunc%sfb.txt" % (str(int(lumi))), 0 );
@@ -314,8 +313,6 @@ if __name__ == '__main__':
 			if(signalRegion_LLList[i]<0.00001): denom = signalRegion_WeightList[i]
 			signalRegion.addSingleSystematic('LLSys'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_sysUncList[i]/denom),'',i);
 			
-			# print signalRegion_CSList[i], denom, signalRegion_WeightList[i], signalRegion_sysUncList[i], signalRegion_statUncList[i]
-
 		for i in range(SLcontrolRegion.GetNbins()):
 			SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopSL'],100,'',i);		
 
@@ -326,7 +323,7 @@ if __name__ == '__main__':
 			njetTag = tagsForSignalRegion[i].split('_')[0];
 			# print njetTag
 			signalRegion.addSingleSystematic('HadStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],float(hadtauSystematics[i]),'',i);
-
+			#addMultiSystematic('HadStat'+tagsForSignalRegion[i],'lnN',['WTopSL','WTopHad'],[float(hadtauSystematics[i]),1],'',i);
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets0Unc','lnN',['WTopHad'],1.2,'NJets0');
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets1Unc','lnN',['WTopHad'],1.4,'NJets1');
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets2Unc','lnN',['WTopHad'],1.6,'NJets2');
