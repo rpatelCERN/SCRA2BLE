@@ -1,3 +1,4 @@
+sysUp
 500.42
 104.58
 22.643
@@ -69,4 +70,8 @@
 1.2467
 0.035442
 0.001646
-0.0639
+0
+Traceback (most recent call last):
+  File "QuickParse.py", line 5, in <module>
+    secondparse=firstparse[7].split('+-')
+IndexError: list index out of range
