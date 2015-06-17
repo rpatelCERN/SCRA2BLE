@@ -244,7 +244,10 @@ if __name__ == '__main__':
 	# #------------------------------------------------------------------------------------------------
 	# ## 2. Add systematics
 	signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.04);
-
+	signalRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.03);
+	signalRegion.addSingleSystematic('PUwUnc','lnN',['sig'],1.03);
+	signalRegion.addSingleSystematic('TrigEff','lnN',['sig'],1.02);
+	
 	### Zvv uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.zvvOnly:
 		
