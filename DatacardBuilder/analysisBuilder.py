@@ -51,8 +51,8 @@ def getSignif(fn):
 
 #########################################################################################################
 if __name__ == '__main__':
-
-	signals = ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
+	signals = ['SMSqqqq1000']
+	#signals = ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
 	# signals = ['SMSqqqq1000','SMSbbbb1000']
 	# signals = ['SMSbbbb1500','SMSbbbb1000']
 	

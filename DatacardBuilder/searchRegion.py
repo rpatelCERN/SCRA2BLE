@@ -41,16 +41,6 @@ class searchRegion:
 				if index == None or index == self._singleBins[i]._index:
 					# print identifier, " in ", self._singleBins[i]._tag;
 					self._singleBins[i].addSystematic( sysname, systype, channel, val );
-
-        def addMultiSystematic(self,sysname,systype,channel,val,identifier='',index=None):
-                for i in range(self._nBins):
-                        #if identifier in self._singleBins[i]._tag:
-                        if re.search(identifier, self._singleBins[i]._tag) or identifier == '':
-                                #print "Found! ",self._singleBins[i]._tag;
-                                if index == None or index == self._singleBins[i]._index:
-                                        #print identifier, " in ", self._singleBins[i]._tag;
-					print channel, val
-                                        #self._singleBins[i].addSystematic( sysname, systype, channel, val )
 	def addSystematicByBinTag(self):
 		print "this does nothing at the moment"
 		

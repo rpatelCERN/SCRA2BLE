@@ -1,5 +1,5 @@
 import sys
-
+import collections
 class singleBin:
 
 	def __init__( self , name, tag, binLabels, index ):
@@ -74,13 +74,19 @@ class singleBin:
 	def addSystematic(self,sysname,systype,bins,val):
 
 		# print "length rates = ",len(self._rates)
-
+		#print bins,val
 		line = "";
 		line += sysname + " " + systype + " ";
+		bin=0;
 		for i in range(len(self._binLabels)): 
-			if self._binLabels[i] in bins: 
+			if self._binLabels[i] in bins:
+				#print self._binLabels[i]
 				if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1000) + " ";
-				else: line += str(val) + " ";
+				else: 
+					if isinstance(val,collections.Iterable):
+						line += str(val[bin]) + " ";
+						bin+=1
+					else: line += str(val) + " ";
 			else: line += "- ";
 		line += "\n";
 		self._allLines.append(line);
