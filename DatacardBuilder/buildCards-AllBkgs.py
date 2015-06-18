@@ -158,7 +158,7 @@ if __name__ == '__main__':
 			SLcontrolContributionsPerBin.append(['sig', 'WTopSL']);
 			tagsForSLControlRegion.append(tagsForSignalRegion[i]);
 			addControl.append(i);
-		if(controlRegion_tauList[i]<2):
+#		if(controlRegion_tauList[i]<2):
 			HadcontrolContributionsPerBin.append(['sig', 'WTopHad']);
 			addControlHad.append(i);
 			tagsForHadControlRegion.append(tagsForSignalRegion[i])
@@ -177,7 +177,7 @@ if __name__ == '__main__':
 		for i in range(len(addControlHad)):
 			tmpList2=[]
 			tmpList2.append(0);
-			tmpList2.append(1.);
+			tmpList2.append(controlRegion_tauList[addControlHad[i]]);
 			HadcontrolRegion_Obs.append(controlRegion_tauList[addControlHad[i]]);
 			HadcontrolRegion_Rates.append(tmpList2);
 		
@@ -235,6 +235,7 @@ if __name__ == '__main__':
 	signalRegion.setObservedManually(signalRegion_Obs)
 
 	SLcontrolRegion.writeRates();
+	HadcontrolRegion.writeRates();
 	sphotonRegion.writeRates();
 	signalRegion.writeRates();
 
@@ -336,9 +337,10 @@ if __name__ == '__main__':
 				signalRegion.addSingleSystematic('StatMuError'+tagsForSignalRegion[i],'lnN',['WTopSL','WTopHad'],[1+(signalRegion_sysUncList[i]/denom),float(hadtauSystematics[i])],'',i)
 			if(signalRegion_LLList[i]<0.00001): denom = signalRegion_WeightList[i]
 			signalRegion.addSingleSystematic('LLSys'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_sysUncList[i]/denom),'',i);
-			#signalRegion.addMultiSystematic('StatMuError'+tagsForSignalRegion[i],'lnN',['WTopSL','WTopHad'],[1+(signalRegion_sysUncList[i]/denom),float(hadtauSystematics[i])],'',i)			
 		for i in range(SLcontrolRegion.GetNbins()):
-			SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopSL'],100,'',i);		
+			SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopSL'],100,'',i);
+			SLcontrolRegion.addSingleSystematic('LLMuStat'+tagsForSLControlRegion[i],'lnU',['WTopSL'],100,'',i);
+			HadcontrolRegion.addSingleSystematic('LLMuStat'+tagsForSLControlRegion[i],'lnU',['WTopHad'],100,'',i);		
 
 	### hadtau uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.tauOnly:
