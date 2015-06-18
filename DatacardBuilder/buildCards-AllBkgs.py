@@ -332,9 +332,8 @@ if __name__ == '__main__':
 			if(signalRegion_CSList[i]<2):
 				signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSL'],100,'',i);
 				
-				#signalRegion.addSingleSystematic('HadStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],float(hadtauSystematics[i]),'',i);
 			else: 
-				signalRegion.addSingleSystematic('StatMuError'+tagsForSignalRegion[i],'lnN',['WTopSL','WTopHad'],[1+(signalRegion_sysUncList[i]/denom),float(hadtauSystematics[i])],'',i)
+				signalRegion.addSingleSystematic('StatMuError'+tagsForSignalRegion[i],'lnN',['WTopSL','WTopHad'],[1+(signalRegion_statUncList[i]/denom),float(hadtauSystematics[i])],'',i)
 			if(signalRegion_LLList[i]<0.00001): denom = signalRegion_WeightList[i]
 			signalRegion.addSingleSystematic('LLSys'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_sysUncList[i]/denom),'',i);
 		for i in range(SLcontrolRegion.GetNbins()):
@@ -347,9 +346,6 @@ if __name__ == '__main__':
 		
 		for i in range(signalRegion.GetNbins()):
 			njetTag = tagsForSignalRegion[i].split('_')[0];
-			# print njetTag
-			#signalRegion.addSingleSystematic('HadStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],float(hadtauSystematics[i]),'',i);
-			#addMultiSystematic('HadStat'+tagsForSignalRegion[i],'lnN',['WTopSL','WTopHad'],[float(hadtauSystematics[i]),1],'',i);
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets0Unc','lnN',['WTopHad'],1.2,'NJets0');
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets1Unc','lnN',['WTopHad'],1.4,'NJets1');
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets2Unc','lnN',['WTopHad'],1.6,'NJets2');
