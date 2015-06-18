@@ -173,12 +173,14 @@ if __name__ == '__main__':
 		tmpList.append(1.);
 		SLcontrolRegion_Obs.append(signalRegion_CSList[addControl[i]]);
 		SLcontrolRegion_Rates.append(tmpList);
-		for i in range(len(addControlHad)):
-			tmpList2=[]
-			tmpList2.append(0);
-			tmpList2.append(controlRegion_tauList[addControlHad[i]]);
-			HadcontrolRegion_Obs.append(controlRegion_tauList[addControlHad[i]]);
-			HadcontrolRegion_Rates.append(tmpList2);
+	for i in range(len(addControlHad)):
+		tmpList2=[]
+		tmpList2.append(0);
+			#tmpList2.append(signalRegion_CSList[addControlHad[i]]);
+		if(signalRegion_tauList[addControl[i]]<0.0001):tmpList2.append(1.);
+		else:tmpList2.append(signalRegion_CSList[addControl[i]]);
+		HadcontrolRegion_Obs.append(signalRegion_CSList[addControlHad[i]]);
+		HadcontrolRegion_Rates.append(tmpList2);
 		
 	SLcontrolRegion.fillRates(SLcontrolRegion_Rates);
 	SLcontrolRegion.setObservedManually(SLcontrolRegion_Obs);
@@ -226,7 +228,13 @@ if __name__ == '__main__':
 				addControl.append(i);
 
 		# Had Tau rate
-		if options.allBkgs or options.tauOnly: tmpList.append(signalRegion_tauList[i]);
+		if options.allBkgs or options.tauOnly: 
+			 if(signalRegion_CSList[i]>=2):
+				tmpList.append(signalRegion_tauList[i]);
+			 if(signalRegion_tauList[i]<0.00001 and signalRegion_CSList[i]<2):
+				tmpList.append(signalRegion_WeightList[i]);
+			 if(signalRegion_tauList[i]>0.00001 and signalRegion_CSList[i]<2):
+				tmpList.append(signalRegion_tauList[i]);
 		if options.allBkgs or options.zvvOnly: tmpList.append(signalRegion_zvvList[i]);
 		if options.allBkgs or options.qcdOnly: tmpList.append( ratesForSignalRegion_QCDList[i] );
 		signalRegion_Rates.append( tmpList );
@@ -331,8 +339,10 @@ if __name__ == '__main__':
 			denom = signalRegion_LLList[i]
 			if(signalRegion_CSList[i]<2):
 				signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSL','WTopHad'],100,'',i);
+				#print "Lost Lepton CS >=2 but signalRegion_tauList %2.2f" %signalRegion_tauList[i]
 			else: 
-				signalRegion.addSingleSystematic('StatMuError'+tagsForSignalRegion[i],'lnN',['WTopSL','WTopHad'],[1+(signalRegion_statUncList[i]/denom),1+(1.0/sqrt(controlRegion_tauList[i]))],'',i)
+				signalRegion.addSingleSystematic('StatMuError'+tagsForSignalRegion[i],'lnN',['WTopSL','WTopHad'],1+(signalRegion_statUncList[i]/denom),'',i)
+				#print "Lost Lepton CS >=2 but signalRegion_tauList %2.2f" %signalRegion_tauList[i] 
 			if(signalRegion_LLList[i]<0.00001): denom = signalRegion_WeightList[i]
 			signalRegion.addSingleSystematic('LLSys'+tagsForSignalRegion[i],'lnN',['WTopSL'],1+(signalRegion_sysUncList[i]/denom),'',i);
 		for i in range(SLcontrolRegion.GetNbins()):
