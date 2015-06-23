@@ -51,20 +51,20 @@ def getSignif(fn):
 
 #########################################################################################################
 if __name__ == '__main__':
-	#signals = ['SMStttt1200','SMSbbbb1500','SMSbbbb1000']
-	signals = ['SMSqqqq1400','SMSqqqq1000','SMStttt1500','SMStttt1200','SMSbbbb1500','SMSbbbb1000']
-	#signals = ['SMSqqqq1000','SMSbbbb1000']
-	#signals = ['SMStttt1200']
+	
+	signals = ['SMSqqqq1400','SMSqqqq1000','SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']
+	# signals = ['SMSqqqq1000','SMSbbbb1000']
+	# signals = ['SMSbbbb1500']
 	
 	#mus = [0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0];
 	mus = [1.0];
 
-	#lumis = [3.0,10.0];
-	lumis = [10.0];
+	lumis = [3.0,10.0];
+	# lumis = [10.0];
 
-	#variations = ['allBkgs','qcdOnly','zvvOnly','llpOnly','tauOnly']
-	#variations = ['qcdOnly','zvvOnly','llpOnly']
-	variations = ['allBkgs']
+	variations = ['allBkgs','qcdOnly','zvvOnly','llpOnly','tauOnly','allNoqcd','allNozvv','allNollp','allNotau']
+	# variations = ['allBkgs','allNoqcd','allNozvv','allNollp','allNotau']
+	# variations = ['allBkgs','llpOnly','tauOnly','allNollp','allNotau']
 
 	identifiers = [];
 	limits = [];
@@ -80,7 +80,18 @@ if __name__ == '__main__':
 			for mu in mus:
 				for vary in variations: 
 					tag = vary;
-					command = 'python buildCards-AllBkgs.py -b --%s --signal  %s --tag %s --lumi %0.1f --mu %0.1f' % (vary,sig,tag,lumi,mu); os.system(command);
+					combOpt = '';
+					if vary == 'allBkgs':  combOpt = '--allBkgs'
+					if vary == 'qcdOnly':  combOpt = '--qcdOnly'
+					if vary == 'zvvOnly':  combOpt = '--zvvOnly'
+					if vary == 'llpOnly':  combOpt = '--llpOnly'
+					if vary == 'tauOnly':  combOpt = '--tauOnly'
+					if vary == 'allNoqcd': combOpt = '--tauOnly --zvvOnly --llpOnly'
+					if vary == 'allNozvv': combOpt = '--tauOnly --qcdOnly --llpOnly'
+					if vary == 'allNollp': combOpt = '--tauOnly --zvvOnly --qcdOnly'
+					if vary == 'allNotau': combOpt = '--qcdOnly --zvvOnly --llpOnly'
+
+					command = 'python buildCards-AllBkgs.py -b %s --signal  %s --tag %s --lumi %0.1f --mu %0.1f' % (combOpt,sig,tag,lumi,mu); os.system(command);
 					command = 'python combineAllCards.py -b --run --dir testCards-%s-%s-%0.1f-mu%0.1f' % (tag,sig,lumi,mu); os.system(command);
 
 					dicttag = "%s_%s_%.1f" % (tag,sig,lumi);
@@ -88,10 +99,10 @@ if __name__ == '__main__':
 					identifiers.append( dicttag );
 					significances.append( getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,sig,lumi,mu) ) );
 					limits.append( getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,sig,lumi,mu) ) );
-					#fittedMus.append( getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,sig,lumi,mu) ) );
-					#limits.append( 0. );
-					#fittedMus.append( [0.,0.,0.] );
-					#injectedMus.append( mu );
+					# fittedMus.append( getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,sig,lumi,mu) ) );
+					# limits.append( 0. );
+					fittedMus.append( [0.,0.,0.] );
+					injectedMus.append( mu );
 
 	for i in range(len(identifiers)):
 		splitid = identifiers[i].split('_');
