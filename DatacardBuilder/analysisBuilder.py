@@ -62,10 +62,10 @@ if __name__ == '__main__':
 	lumis = [3.0,10.0];
 	# lumis = [10.0];
 
-	variations = ['allBkgs','qcdOnly','zvvOnly','llpOnly','tauOnly','allNoqcd','allNozvv','allNollp','allNotau']
+	#variations = ['allBkgs','qcdOnly','zvvOnly','llpOnly','tauOnly','allNoqcd','allNozvv','allNollp','allNotau']
 	# variations = ['allBkgs','allNoqcd','allNozvv','allNollp','allNotau']
 	# variations = ['allBkgs','llpOnly','tauOnly','allNollp','allNotau']
-
+        variations = ['allBkgs']
 	identifiers = [];
 	limits = [];
 	fittedMus = [];

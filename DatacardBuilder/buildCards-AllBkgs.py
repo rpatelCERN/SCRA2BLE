@@ -374,7 +374,10 @@ if __name__ == '__main__':
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets0Unc','lnN',['WTopHad'],1.2,'NJets0');
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets1Unc','lnN',['WTopHad'],1.4,'NJets1');
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets2Unc','lnN',['WTopHad'],1.6,'NJets2');
-
+                signalRegion.addSingleSystematic('HadTauBTagShape','lnN',['WTopHad'],1.02,'BTags0');
+                signalRegion.addSingleSystematic('HadTauBTagShape','lnN',['WTopHad'],1.01,'BTags1');
+                signalRegion.addSingleSystematic('HadTauBTagShape','lnN',['WTopHad'],0.99,'BTags2');
+                signalRegion.addSingleSystematic('HadTauBTagShape','lnN',['WTopHad'],0.90,'BTags3');
 	### QCD uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.qcdOnly:	
 
