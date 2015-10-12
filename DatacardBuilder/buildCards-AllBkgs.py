@@ -160,10 +160,10 @@ if __name__ == '__main__':
 			ratesForLowdphiRegion_QCDList.append( 1. );
 			ratesForSignalRegion_QCDList.append( ratiosForLowdphiRegion[i] )
 		else: 
-			ratesForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i]*225./3000. ); 
-			ratesForSignalRegion_QCDList.append( NSRForSignalRegion_QCDList[i]*225./3000. )
+			ratesForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] ); 
+			ratesForSignalRegion_QCDList.append( NSRForSignalRegion_QCDList[i])
 
-		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i]*225./3000. ); # currently not considering signal contamination
+		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] ); # currently not considering signal contamination
 
 	LowdphiControlRegion = searchRegion('Lowdphi', QCDcontributionsPerBin, tagsForLowDPhiRegion);	
 	qcdcontrolRegion_Rates = [];
