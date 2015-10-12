@@ -52,20 +52,21 @@ def getSignif(fn):
 #########################################################################################################
 if __name__ == '__main__':
 	
-	signals = ['SMSqqqq1400','SMSqqqq1000','SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']
-	# signals = ['SMSqqqq1000','SMSbbbb1000']
-	# signals = ['SMSbbbb1500']
-	
+	#signals = ['SMSqqqq1400','SMSqqqq1000','SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']
+	signals = ['SMSbbbb1000']
+	#signals = ['SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']	
 	#mus = [0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0];
 	mus = [1.0];
 
-	lumis = [3.0,10.0];
-	# lumis = [10.0];
+	#lumis = [3.0,10.0];
+	lumis = [225];
 
 	#variations = ['allBkgs','qcdOnly','zvvOnly','llpOnly','tauOnly','allNoqcd','allNozvv','allNollp','allNotau']
 	# variations = ['allBkgs','allNoqcd','allNozvv','allNollp','allNotau']
 	# variations = ['allBkgs','llpOnly','tauOnly','allNollp','allNotau']
-        variations = ['allBkgs']
+        #variations = ['llpOnly']
+	#variations = ['tauOnly']
+	variations=['allBkgs']
 	identifiers = [];
 	limits = [];
 	fittedMus = [];

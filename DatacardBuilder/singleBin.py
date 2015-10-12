@@ -72,9 +72,51 @@ class singleBin:
 		self._allLines.append("------------ \n");
 
 	def addSystematic(self,sysname,systype,bins,val):
-
+		#print sysname
 		# print "length rates = ",len(self._rates)
 		#print bins,val
+		line = "";
+		line += sysname + " " + systype + " ";
+		#bin=0;
+		for i in range(len(self._binLabels)):
+			#print len(self._binLabels)
+			if self._binLabels[i] in bins:
+				#print self._binLabels[i]
+				if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1000) + " ";
+				else: 
+					if(val>-99.):
+						line += str(val) + " ";
+					else: 
+						line += " - ";
+			else: line += "- ";
+		line += "\n";
+		self._allLines.append(line);
+
+	def addCorrelSystematic(self,sysname,systype,bins,val1, val2):
+                #print sysname
+                # print "length rates = ",len(self._rates)
+                line = "";
+                line += sysname + " " + systype + " ";
+                bin=0;
+                for i in range(len(self._binLabels)):
+                        #print len(self._binLabels)
+                        if self._binLabels[i] in bins:
+                                #print self._binLabels[i]
+                                if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1000) + " ";
+                                else:
+					if val1>-99. and val2>-99.:
+                                        	if(bin==0):
+                                                	line += str(val1) + " ";
+						if(bin==1):
+							line += str(val2) + " ";
+                                        else:
+                                                line += " - ";
+					bin+=1
+                        else: line += "- ";
+                line += "\n";
+                self._allLines.append(line);
+
+	def addAsymSystematic(self,sysname,systype,bins,valup, valdown ):
 		line = "";
 		line += sysname + " " + systype + " ";
 		bin=0;
@@ -83,10 +125,9 @@ class singleBin:
 				#print self._binLabels[i]
 				if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1000) + " ";
 				else: 
-					if isinstance(val,collections.Iterable):
-						line += str(val[bin]) + " ";
-						bin+=1
-					else: line += str(val) + " ";
+					if(valdown>-99. and valup>-99.):
+						line += str(valdown) + "/" +str(valup)+" ";
+					else: line += "- ";
 			else: line += "- ";
 		line += "\n";
 		self._allLines.append(line);
