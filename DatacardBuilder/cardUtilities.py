@@ -108,5 +108,10 @@ def textToList(fn,column):
 		olist.append( float(line.strip().split()[column]) );
 	return olist;
 
-
+def textToListStr(fn,column):
+        olist = [];
+        f = open(fn,'r');
+        for line in f:
+                olist.append((line.strip().split()[column]) );
+        return olist;
 
