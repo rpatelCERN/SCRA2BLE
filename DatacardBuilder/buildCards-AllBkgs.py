@@ -58,9 +58,9 @@ if __name__ == '__main__':
 	signalRegion_sigHist = signalSFB_file.Get("RA2bin_"+sms);
 	signalRegion_sigHistSFUp= signalSysSFUp_file.Get("RA2bin_"+sms);
 	signalRegion_sigHistSFDown= signalSysSFDown_file.Get("RA2bin_"+sms);
-	# signalRegion_sigHist.Scale(lumi/3000.);
-	# signalRegion_sigHistSFUp.Scale(lumi/3000.);
-	# signalRegion_sigHistSFDown.Scale(lumi/3000.);
+	signalRegion_sigHist.Scale(lumi/3000.);
+	signalRegion_sigHistSFUp.Scale(lumi/3000.);
+	signalRegion_sigHistSFDown.Scale(lumi/3000.);
 	tagsForSignalRegion = binLabelsToList(signalRegion_sigHist);
 	signalRegion_sigList = binsToList( signalRegion_sigHist );
 	signalRegion_sigListSFUp=binsToList( signalRegion_sigHistSFUp );
