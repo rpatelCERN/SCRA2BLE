@@ -50,26 +50,29 @@ if __name__ == '__main__':
 	signalRegion_file = TFile(idir+"/RA2bin_signal.root");
 	signalSFB_file =TFile(idir+"/RA2bin_signalSF.root");
 	signalSysSFUp_file=TFile("inputSignalSys/RA2bin_signal_btagSFuncUp.root");
-        signalSysSFDown_file=TFile("inputSignalSys/RA2bin_signal_btagSFuncDown.root");
+	signalSysSFDown_file=TFile("inputSignalSys/RA2bin_signal_btagSFuncDown.root");
 	sphotonRegion_file = TFile(idir+"/RA2bin_GJet_CleanVars.root");
 	lowdphiRegion_file = TFile(idir+"/RA2bin_LDP.root");
 		
 	# signal --------
 	signalRegion_sigHist = signalSFB_file.Get("RA2bin_"+sms);
-        signalRegion_sigHistSFUp= signalSysSFUp_file.Get("RA2bin_"+sms);
+	signalRegion_sigHistSFUp= signalSysSFUp_file.Get("RA2bin_"+sms);
 	signalRegion_sigHistSFDown= signalSysSFDown_file.Get("RA2bin_"+sms);
-        signalRegion_sigHist.Scale(lumi/3000.);
-	signalRegion_sigHistSFUp.Scale(lumi/3000.);
-        signalRegion_sigHistSFDown.Scale(lumi/3000.);
+	# signalRegion_sigHist.Scale(lumi/3000.);
+	# signalRegion_sigHistSFUp.Scale(lumi/3000.);
+	# signalRegion_sigHistSFDown.Scale(lumi/3000.);
 	tagsForSignalRegion = binLabelsToList(signalRegion_sigHist);
 	signalRegion_sigList = binsToList( signalRegion_sigHist );
 	signalRegion_sigListSFUp=binsToList( signalRegion_sigHistSFUp );
 	signalRegion_sigListSFDown=binsToList( signalRegion_sigHistSFDown );
 	# zinv --------
-	zinv_sr = signalRegion_file.Get("RA2bin_Zinv");
-	gjet_cr = sphotonRegion_file.Get("RA2bin_GJet");
-	h_newZinvSRYields = hutil_clone0BtoNB( zinv_sr );
-	signalRegion_zvvList = binsToList( h_newZinvSRYields );
+	# zinv_sr = signalRegion_file.Get("RA2bin_Zinv");
+	# gjet_cr = sphotonRegion_file.Get("RA2bin_GJet");
+	# h_newZinvSRYields = hutil_clone0BtoNB( zinv_sr );
+	# signalRegion_zvvList = binsToList( h_newZinvSRYields );
+	DYinputfile = TFile("inputsZinv/DYhistos.root")
+	signalRegion_zvvRatesFromDY = DYinputfile.Get("DYvalue")
+	signalRegion_zvvList = binsToList( signalRegion_zvvRatesFromDY );
 
 	# ll --------
 	LL_file = TFile("inputsLostLepton/LLPrediction_%spb.root" % (str(int(lumi)) ));
@@ -114,15 +117,15 @@ if __name__ == '__main__':
 	HadTauSysNCTTbarMHT3_Hist=HadTau_file.Get("searchBin_ClosureMHT3TTbar")
 
 	signalRegion_tauList=binsToList(HadTauPrediction_Hist)
-       	tauBMistagUp=binsToList(HadTauBMistagUp_Hist)
-       	tauBMistagDown=binsToList(HadTauBMistagDown_Hist)
-      	tauNonClosureJet0=binsToList(HadTauSysNCJet0_Hist)
-       	tauNonClosureJet1=binsToList(HadTauSysNCJet1_Hist)       	
+	tauBMistagUp=binsToList(HadTauBMistagUp_Hist)
+	tauBMistagDown=binsToList(HadTauBMistagDown_Hist)
+	tauNonClosureJet0=binsToList(HadTauSysNCJet0_Hist)
+	tauNonClosureJet1=binsToList(HadTauSysNCJet1_Hist)       	
 	tauNonClosureJet2=binsToList(HadTauSysNCJet2_Hist)
-      	tauNonClosureWJMHT2=binsToList(HadTauSysNCWjetsMHT2_Hist)
-      	tauNonClosureTTbarMHT2=binsToList(HadTauSysNCTTbarMHT2_Hist)
-      	tauNonClosureWJMHT3=binsToList(HadTauSysNCWjetsMHT3_Hist)
-      	tauNonClosureTTbarMHT3=binsToList(HadTauSysNCTTbarMHT3_Hist)
+	tauNonClosureWJMHT2=binsToList(HadTauSysNCWjetsMHT2_Hist)
+	tauNonClosureTTbarMHT2=binsToList(HadTauSysNCTTbarMHT2_Hist)
+	tauNonClosureWJMHT3=binsToList(HadTauSysNCWjetsMHT3_Hist)
+	tauNonClosureTTbarMHT3=binsToList(HadTauSysNCTTbarMHT3_Hist)
 	tauSqrtSumW2=binsToList(HadTauSqrtSumw2_Hist)
 
 	# print  "./inputsLostLepton/statunc%sfb.txt" % (str(int(lumi)))
@@ -186,20 +189,36 @@ if __name__ == '__main__':
 	# QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
 
 	# photon region
+
+	#sphoton observeds
+	sphotonObserved = [194,45,14,17,4,2,11,3,1,0,0,0,0,0,1,0,0,0]; # thess eventually will be histograms
+	RzgVals = [0.418,0.419,0.430,0.491,0.534,0.494,0.378,0.468,0.420,0.595,0.512,0.464,0.484,0.469,0.361,0.165,0.687,0.824];
+	RzgErrsAbs = [0.005,0.007,0.013,0.014,0.041,0.028,0.038,0.027,0.035,0.094,0.107,0.115,0.202,0.095,0.075,0.100,0.434,0.890];
+	PurVals = [0.790,0.823,0.808,0.833,0.874,0.759,0.790,0.721,0.874,0.759,0.759,0.759,0.759,0.759,0.874,0.759,0.759,0.759];	
+	PurErrsAbs = [0.047,0.050,0.049,0.052,0.058,0.045,0.047,0.045,0.058,0.045,0.045,0.045,0.045,0.045,0.058,0.045,0.045,0.045];
+	RzgErrs = [];
+	PurErrs = [];
+	for i in range(len(RzgVals)): RzgErrs.append( RzgErrsAbs[i]/RzgVals[i] );
+	for i in range(len(PurVals)): PurErrs.append( PurErrsAbs[i]/PurVals[i] );
+	PhoRatios = [];
+	doubleRatioCentralValue = 0.94;
+	for i in range(len(RzgVals)): PhoRatios.append( 1./RzgVals[i]/PurVals[i]/doubleRatioCentralValue );
+
 	phoRegion_sigHist = sphotonRegion_file.Get("RA2bin_"+sms)
 	tagsForSinglePhoton = binLabelsToList(phoRegion_sigHist)
-	phoRegion_sigList = binsToList(phoRegion_sigHist);
-	phoRegion_phoList = binsToList(gjet_cr);
 	contributionsPerBin = [];
 	for i in range(len(tagsForSinglePhoton)): contributionsPerBin.append(['sig','zvv']);
-	sphotonRegion = searchRegion('sphoton', contributionsPerBin, tagsForSinglePhoton)
+	sphotonRegion = searchRegion('sphoton', contributionsPerBin, tagsForSinglePhoton);		
+	phoRegion_sigList = binsToList(phoRegion_sigHist);
 	phoRegion_Rates = [];
 	for i in range(sphotonRegion._nBins):
 		tmpList = [];
 		tmpList.append(phoRegion_sigList[i]);
-		tmpList.append(phoRegion_phoList[i]);
+		tmpList.append(PhoRatios[i]);
 		phoRegion_Rates.append( tmpList );
 	sphotonRegion.fillRates( phoRegion_Rates );
+	sphotonRegion.setObservedManually(sphotonObserved);
+
 
 	# QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
 	# accounting for LL Region
@@ -212,7 +231,7 @@ if __name__ == '__main__':
 		tmpcontributionsSL = [];
 		tmpcontributionsSL.append( 'sig' );
 		if options.allBkgs or options.llpOnly: tmpcontributionsSL.append( 'WTopSL' );
-                if options.allBkgs or options.llpOnly: tmpcontributionsSL.append( 'WTopSLHighW' );
+		if options.allBkgs or options.llpOnly: tmpcontributionsSL.append( 'WTopSLHighW' );
 		if options.allBkgs or options.tauOnly: tmpcontributionsSL.append( 'WTopHad' );
 		if options.allBkgs or options.tauOnly: tmpcontributionsSL.append( 'WTopHadHighW' );			
 		if options.llpOnly and signalRegion_CSList[i]<2:
@@ -222,7 +241,7 @@ if __name__ == '__main__':
 		if options.allBkgs or options.tauOnly:
 			addControl.append(i); 
 			SLcontrolContributionsPerBin.append( tmpcontributionsSL );
-                        tagsForSLControlRegion.append(tagsForSignalRegion[i]);			
+			tagsForSLControlRegion.append(tagsForSignalRegion[i]);			
 	SLcontrolRegion = searchRegion('SLControl', SLcontrolContributionsPerBin, tagsForSLControlRegion)
 	SLcontrolRegion_Obs = [];
 	SLcontrolRegion_Rates = [];
@@ -322,9 +341,9 @@ if __name__ == '__main__':
 	signalRegion.addSingleSystematic('JERUnc', 'lnN', ['sig'], 1.02);
 
 	signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], signalRegion_sigHistSFUp,signalRegion_sigHistSFDown,'BTags0')
-        signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], signalRegion_sigHistSFUp,signalRegion_sigHistSFDown,'BTags1')
-        signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], signalRegion_sigHistSFUp,signalRegion_sigHistSFDown,'BTags2')
-        signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], signalRegion_sigHistSFUp,signalRegion_sigHistSFDown,'BTags3')
+	signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], signalRegion_sigHistSFUp,signalRegion_sigHistSFDown,'BTags1')
+	signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], signalRegion_sigHistSFUp,signalRegion_sigHistSFDown,'BTags2')
+	signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], signalRegion_sigHistSFUp,signalRegion_sigHistSFDown,'BTags3')
 	#signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.15, 'BTags0')	
 	#signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.0, 'BTags1')
 	#signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.0, 'BTags2')
@@ -339,10 +358,6 @@ if __name__ == '__main__':
 
 	### Zvv uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.zvvOnly:
-		
-		RzgammaUnc = [1.006,1.011,1.025,1.014,1.048,1.031,
-					  1.043,1.048,1.09,1.1,1.171,1.179,
-					  1.4,1.2,1.3,1.42,1.6,1.9 ];
 
 		# connect the single photon CR to the signal region
 		singlePhotonBins = ["NJets0_BTags._MHT0_HT0","NJets0_BTags._MHT0_HT1","NJets0_BTags._MHT0_HT2","NJets0_BTags._MHT1_HT3","NJets0_BTags._MHT1_HT4","NJets0_BTags._MHT2_HT5",
@@ -352,44 +367,17 @@ if __name__ == '__main__':
 			signalRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
 			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
 
-		# for i in range(signalRegion.GetNbins()):
-		for i in range(18): # only for the 0B bins
-			signalRegion.addSingleSystematic('SPhoRZgUnc'+str(i),'lnN',['zvv'],RzgammaUnc[i],'',i);
-		for i in range(18,72): # only for the 0B bins
-			signalRegion.addSingleSystematic('DYHTUnc'+str(i),'lnN',['zvv'],1.20,'',i);
-
 		# added to all bins (photon efficiency)
-		signalRegion.addSingleSystematic('PhoEffUnc','lnN',['zvv'],1.2,'NJets');	
+		print len(RzgErrs),len(PurErrs)
+		sphotonRegion.addSystematicFromList('PhoRzgUnc','lnN',['zvv'],RzgErrs);	
+		sphotonRegion.addSystematicFromList('PhoEffUnc','lnN',['zvv'],PurErrs);	
+		## RZg double ratio from Jim H.
+		sphotonRegion.addAsymSystematic('PhoRZgDblRatio','lnN',['zvv'],1.33,1.26,'NJets'); # adjusted to make relative
 
-		if lumi == 10.0:
-			#RZg data/MC double ratios from Jim H.
-			signalRegion.addSingleSystematic('RZgDataUncMHT0','lnN',['zvv'],1.04,'MHT0');	
-			signalRegion.addSingleSystematic('RZgDataUncMHT1','lnN',['zvv'],1.11,'MHT1');	
-			signalRegion.addSingleSystematic('RZgDataUncMHT2','lnN',['zvv'],1.28,'MHT2');	
-			signalRegion.addSingleSystematic('RZgDataUncNJets0','lnN',['zvv'],1.06,'NJets0');	
-			signalRegion.addSingleSystematic('RZgDataUncNJets1','lnN',['zvv'],1.13,'NJets1');	
-			signalRegion.addSingleSystematic('RZgDataUncNJets2','lnN',['zvv'],1.16,'NJets2');				
-			# Extrpolation uncertainties, from Kevin S.
-			signalRegion.addSingleSystematic('DYNBStatUncBTags1','lnN',['zvv'],1.076,'BTags1');		
-			signalRegion.addSingleSystematic('DYNBStatUncBTags2','lnN',['zvv'],1.158,'BTags2');		
-			signalRegion.addSingleSystematic('DYNBStatUncBTags3','lnN',['zvv'],1.507,'BTags3');		
-			signalRegion.addSingleSystematic('DYNBStatUncNJets1','lnN',['zvv'],1.008,'NJets1_BTags.');		
-			signalRegion.addSingleSystematic('DYNBStatUncNJets2','lnN',['zvv'],1.049,'NJets2_BTags.');		
-		
-		if lumi == 3.0 or lumi==225:
-			#RZg data/MC double ratios from Jim H.
-			signalRegion.addSingleSystematic('RZgDataUncMHT0','lnN',['zvv'],1.08,'MHT0');	
-			signalRegion.addSingleSystematic('RZgDataUncMHT1','lnN',['zvv'],1.21,'MHT1');	
-			signalRegion.addSingleSystematic('RZgDataUncMHT2','lnN',['zvv'],1.54,'MHT2');	
-			signalRegion.addSingleSystematic('RZgDataUncNJets0','lnN',['zvv'],1.12,'NJets0');	
-			signalRegion.addSingleSystematic('RZgDataUncNJets1','lnN',['zvv'],1.25,'NJets1');	
-			signalRegion.addSingleSystematic('RZgDataUncNJets2','lnN',['zvv'],1.32,'NJets2');				
-			# Extrpolation uncertainties, from Kevin S.
-			signalRegion.addSingleSystematic('DYNBStatUncBTags1','lnN',['zvv'],1.139,'BTags1');		
-			signalRegion.addSingleSystematic('DYNBStatUncBTags2','lnN',['zvv'],1.289,'BTags2');		
-			signalRegion.addSingleSystematic('DYNBStatUncBTags3','lnN',['zvv'],1.923,'BTags3');		
-			signalRegion.addSingleSystematic('DYNBStatUncNJets1','lnN',['zvv'],1.015,'NJets1_BTags.');		
-			signalRegion.addSingleSystematic('DYNBStatUncNJets2','lnN',['zvv'],1.059,'NJets2_BTags.');		
+		## all the Drell-Yan systematics now nicely wrapped up in a bow
+		signalRegion.addSystematicFromList('DYstat','lnN',['zvv'], binsToList(DYinputfile.Get("DYstat")));
+		signalRegion.addSystematicFromList('DYsysKin','lnN',['zvv'], binsToList(DYinputfile.Get("DYsysKin")));
+		signalRegion.addAsymSystematicFromList('DYsysNj','lnN',['zvv'], binsToList(DYinputfile.Get("DYsysNjUp")), binsToList(DYinputfile.Get("DYsysNjDown")));
 
 
 	### LL uncertainties ------------------------------------------------------------------------------
@@ -405,8 +393,7 @@ if __name__ == '__main__':
 				if options.tauOnly : signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
 				if options.llpOnly : signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],100,'',i);
 			else: 
-                                if options.allBkgs or options.tauOnly: signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-
+				if options.allBkgs or options.tauOnly: signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
 				if options.allBkgs: 
 					signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], 1+(LLSysUp[i]/signalRegion_LLList[i]), 1+(tauSqrtSumW2[i]/signalRegion_tauList[i]), '',i)			
 
@@ -426,8 +413,8 @@ if __name__ == '__main__':
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets0Unc','lnN',['WTopHad'],tauNonClosureJet0,'NJets0');
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets1Unc','lnN',['WTopHad'],tauNonClosureJet1,'NJets1');
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets2Unc','lnN',['WTopHad'],tauNonClosureJet2,'NJets2');
-	       	signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown,'BTags0');
-	       	signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown,'BTags1');
+		signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown,'BTags0');
+		signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown,'BTags1');
 		signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown,'BTags2');
 		signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown,'BTags3');
 	### QCD uncertainties ------------------------------------------------------------------------------

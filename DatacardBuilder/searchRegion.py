@@ -46,28 +46,39 @@ class searchRegion:
 					else: 
 						self._singleBins[i].addSystematic( sysname, systype, channel, val );
 
-        def addAsymSystematic(self,sysname,systype,channel,valup,valdown,identifier='',index=None):
-                #print "Looking for ",identifier;
-                for i in range(self._nBins):
-                        #if identifier in self._singleBins[i]._tag:
-                        if re.search(identifier, self._singleBins[i]._tag) or identifier == '':
-                                #print "Found! ",self._singleBins[i]._tag;
-                                if index == None or index == self._singleBins[i]._index:
-					if isinstance(valup,collections.Iterable) and isinstance(valdown,collections.Iterable):
-					 	self._singleBins[i].addAsymSystematic( sysname, systype, channel, valup[i],valdown[i] );
-					else: 
-						self._singleBins[i].addAsymSystematic( sysname, systype, channel, valup,valdown );
+	def addAsymSystematic(self,sysname,systype,channel,valup,valdown,identifier='',index=None):
+			#print "Looking for ",identifier;
+			for i in range(self._nBins):
+				#if identifier in self._singleBins[i]._tag:
+				if re.search(identifier, self._singleBins[i]._tag) or identifier == '':
+					#print "Found! ",self._singleBins[i]._tag;
+					if index == None or index == self._singleBins[i]._index:
+						if isinstance(valup,collections.Iterable) and isinstance(valdown,collections.Iterable):
+							self._singleBins[i].addAsymSystematic( sysname, systype, channel, valup[i],valdown[i] );
+						else: 
+							self._singleBins[i].addAsymSystematic( sysname, systype, channel, valup,valdown );
 
-        def addCorrelSystematic(self,sysname,systype,channel,val1,val2,identifier='',index=None):	
-                for i in range(self._nBins):
-                        #if identifier in self._singleBins[i]._tag:
-                        if re.search(identifier, self._singleBins[i]._tag) or identifier == '':
-                                #print "Found! ",self._singleBins[i]._tag;
-                                if index == None or index == self._singleBins[i]._index:
-                                                self._singleBins[i].addCorrelSystematic( sysname, systype, channel, val1,val2 );
+	def addCorrelSystematic(self,sysname,systype,channel,val1,val2,identifier='',index=None):	
+			for i in range(self._nBins):
+					#if identifier in self._singleBins[i]._tag:
+					if re.search(identifier, self._singleBins[i]._tag) or identifier == '':
+							#print "Found! ",self._singleBins[i]._tag;
+							if index == None or index == self._singleBins[i]._index:
+											self._singleBins[i].addCorrelSystematic( sysname, systype, channel, val1,val2 );
 
-	def addSystematicByBinTag(self):
-		print "this does nothing at the moment"
+	def addSystematicFromList(self,sysname,systype,channel,inputlist):
+
+		if len(inputlist) != self._nBins: print "There is a problem mistaching in searchRegion:addSystematicFromList!!";
+		for i in range(self._nBins): 
+			self._singleBins[i].addSystematic( sysname, systype, channel, 1+inputlist[i] );
+
+	def addAsymSystematicFromList(self,sysname,systype,channel,inputListUp,inputListDn):
+
+		if len(inputListUp) != self._nBins: print "There is a problem mistaching in searchRegion:addSystematicFromList!!";
+		for i in range(self._nBins): 
+			self._singleBins[i].addAsymSystematic( sysname, systype, channel, 1+inputListUp[i], 1+inputListDn[i] );
+
+
 		
 	def setObservedManually(self,listObs):
 		for i in range(self._nBins):
