@@ -208,17 +208,36 @@ if __name__ == '__main__':
 	tagsForSinglePhoton = binLabelsToList(phoRegion_sigHist)
 	contributionsPerBin = [];
 	for i in range(len(tagsForSinglePhoton)): contributionsPerBin.append(['sig','zvv']);
-	sphotonRegion = searchRegion('sphoton', contributionsPerBin, tagsForSinglePhoton);		
+	sphotonRegion = searchRegion('sphoton', contributionsPerBin, tagsForSinglePhoton);              
 	phoRegion_sigList = binsToList(phoRegion_sigHist);
 	phoRegion_Rates = [];
 	for i in range(sphotonRegion._nBins):
-		tmpList = [];
-		tmpList.append(phoRegion_sigList[i]);
-		tmpList.append(PhoRatios[i]);
-		phoRegion_Rates.append( tmpList );
+			tmpList = [];
+			#tmpList.append(phoRegion_sigList[i]);
+			tmpList.append(0.000001);
+			if sphotonObserved[i] > 0: tmpList.append(sphotonObserved[i]);
+			else: tmpList.append(PhoRatios[i]);
+			phoRegion_Rates.append( tmpList );
 	sphotonRegion.fillRates( phoRegion_Rates );
 	sphotonRegion.setObservedManually(sphotonObserved);
+   #compute the Zvv actual yields to be put in the observed lines
+	sphotonObservedExt = [];
+	RzgValsExt = [];
+	PurValsExt = [];
+	for i in range(4):
+			sphotonObservedExt.extend(sphotonObserved[0:6]); RzgValsExt.extend(RzgVals[0:6]); PurValsExt.extend(PurVals[0:6])
+	for i in range(4):
+			sphotonObservedExt.extend(sphotonObserved[6:12]); RzgValsExt.extend(RzgVals[6:12]); PurValsExt.extend(PurVals[6:12])
+	for i in range(4):
+			sphotonObservedExt.extend(sphotonObserved[12:18]); RzgValsExt.extend(RzgVals[12:18]); PurValsExt.extend(PurVals[12:18])
 
+	ZvvYieldsInSignalRegion = [sphotonObservedExt[i]*RzgValsExt[i]*PurValsExt[i]*signalRegion_zvvList[i] for i in range(len(sphotonObservedExt))]
+	ZvvRatesInSignalRegion = [];
+	for i in range(len(sphotonObservedExt)):
+			if sphotonObservedExt[i] > 0: ZvvRatesInSignalRegion.append( ZvvYieldsInSignalRegion[i] );
+			else: ZvvRatesInSignalRegion.append(signalRegion_zvvList[i]);
+
+	print ZvvYieldsInSignalRegion
 
 	# QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
 	# accounting for LL Region
@@ -285,7 +304,7 @@ if __name__ == '__main__':
 		srobs = 0;
 		srobs += signalRegion_sigList[i]*signalmu;
 		if options.allBkgs or options.qcdOnly: srobs += NSRForSignalRegion_QCDList[i];
-		if options.allBkgs or options.zvvOnly: srobs += signalRegion_zvvList[i];
+		if options.allBkgs or options.zvvOnly: srobs += ZvvYieldsInSignalRegion[i];
 		if options.allBkgs or options.llpOnly: srobs += signalRegion_LLList[i];
 		if options.allBkgs or options.tauOnly: srobs += signalRegion_tauList[i];
 		signalRegion_Obs.append( srobs );
@@ -309,7 +328,7 @@ if __name__ == '__main__':
 		if options.allBkgs or options.tauOnly: 
 				tmpList.append(signalRegion_tauList[i])
 				tmpList.append(0.25);
-		if options.allBkgs or options.zvvOnly: tmpList.append(signalRegion_zvvList[i]);
+		if options.allBkgs or options.zvvOnly: tmpList.append(ZvvRatesInSignalRegion[i]);
 		if options.allBkgs or options.qcdOnly: tmpList.append( ratesForSignalRegion_QCDList[i] );
 		signalRegion_Rates.append( tmpList );
 	

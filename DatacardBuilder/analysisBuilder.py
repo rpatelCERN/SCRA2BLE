@@ -52,8 +52,8 @@ def getSignif(fn):
 #########################################################################################################
 if __name__ == '__main__':
 	
-	signals = ['SMSqqqq1400','SMSqqqq1000','SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']
-	#signals = ['SMStttt1500']
+	#signals = ['SMSqqqq1400','SMSqqqq1000','SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']
+	signals = ['SMSqqqq1400']
 	#signals = ['SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']	
 	#mus = [0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0];
 	mus = [1.0];
@@ -66,7 +66,7 @@ if __name__ == '__main__':
 	# variations = ['allBkgs','llpOnly','tauOnly','allNollp','allNotau']
         #variations = ['llpOnly']
 	#variations = ['tauOnly']
-	variations=['allBkgs']
+	variations=['zvvOnly']
 	identifiers = [];
 	limits = [];
 	fittedMus = [];
@@ -100,9 +100,9 @@ if __name__ == '__main__':
 					identifiers.append( dicttag );
 					significances.append( getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,sig,lumi,mu) ) );
 					limits.append( getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,sig,lumi,mu) ) );
-					# fittedMus.append( getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,sig,lumi,mu) ) );
+					fittedMus.append( getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,sig,lumi,mu) ) );
 					# limits.append( 0. );
-					fittedMus.append( [0.,0.,0.] );
+					# fittedMus.append( [0.,0.,0.] );
 					injectedMus.append( mu );
 
 	for i in range(len(identifiers)):
