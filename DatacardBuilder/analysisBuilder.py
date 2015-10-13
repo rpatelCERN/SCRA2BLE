@@ -66,7 +66,8 @@ if __name__ == '__main__':
 	# variations = ['allBkgs','llpOnly','tauOnly','allNollp','allNotau']
         #variations = ['llpOnly']
 	#variations = ['tauOnly']
-	variations=['zvvOnly']
+	#variations=['zvvOnly']
+	variations=['allBkgs']
 	identifiers = [];
 	limits = [];
 	fittedMus = [];

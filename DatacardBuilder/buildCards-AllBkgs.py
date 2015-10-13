@@ -145,40 +145,39 @@ if __name__ == '__main__':
 	# QCD stuff
 	# low dphi region stuff
 
-	ratesForSignalRegion_QCDList = [];
-	NSRForSignalRegion_QCDList = textToList("inputsFromOwen/lowdphiinputs-72bins-%sifb.txt"%(str(int(3))),4);
-	ratesForLowdphiRegion_QCDList = [];
-	NCRForLowdphiRegion_QCDList = textToList("inputsFromOwen/lowdphiinputs-72bins-%sifb.txt"%(str(int(3))),2);
-	obsForLowdphiRegion_QCDList = [];
-	ratiosForLowdphiRegion = textToList("inputsFromOwen/lowdphiinputs-72bins-%sifb.txt"%(str(int(3))),3);
+        ratesForSignalRegion_QCDList = [];
+        NSRForSignalRegion_QCDList = textToList("inputsFromOwen/qcd-bg-combine-input-%sipb-v0.txt"%(str(int(lumi))),18);
+        ratesForLowdphiRegion_QCDList = [];
+        NCRForLowdphiRegion_QCDList = textToList("inputsFromOwen/qcd-bg-combine-input-%sipb-v0.txt"%(str(int(lumi))),2);
+        obsForLowdphiRegion_QCDList = [];
+        ratiosForLowdphiRegion = textToList("inputsFromOwen/qcd-bg-combine-input-%sipb-v0.txt"%(str(int(lumi))),5);
+        ContaminForLowdphiRegion = textToList("inputsFromOwen/qcd-bg-combine-input-%sipb-v0.txt"%(str(int(lumi))),3);
+        lowdphiRegion_sigHist = lowdphiRegion_file.Get("RA2bin_"+sms);
+        ratesForLowdphiRegion_sigList = binsToList(lowdphiRegion_sigHist);
+        tagsForLowDPhiRegion = binLabelsToList(lowdphiRegion_sigHist)
+
 
 	lowdphiRegion_sigHist = lowdphiRegion_file.Get("RA2bin_"+sms);
 	ratesForLowdphiRegion_sigList = binsToList(lowdphiRegion_sigHist);
 	tagsForLowDPhiRegion = binLabelsToList(lowdphiRegion_sigHist)
 	QCDcontributionsPerBin = [];
 	for i in range(len(tagsForLowDPhiRegion)): 
-		QCDcontributionsPerBin.append( [ 'sig','qcd' ] );
+		QCDcontributionsPerBin.append( [ 'sig','qcd','contam' ] );
+                ratesForLowdphiRegion_QCDList.append( 1. );
+                ratesForSignalRegion_QCDList.append( ratiosForLowdphiRegion[i] )
+		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] );
 
-		if NCRForLowdphiRegion_QCDList[i] < 1: 
-			ratesForLowdphiRegion_QCDList.append( 1. );
-			ratesForSignalRegion_QCDList.append( ratiosForLowdphiRegion[i] )
-		else: 
-			ratesForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] ); 
-			ratesForSignalRegion_QCDList.append( NSRForSignalRegion_QCDList[i])
-
-		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] ); # currently not considering signal contamination
 
 	LowdphiControlRegion = searchRegion('Lowdphi', QCDcontributionsPerBin, tagsForLowDPhiRegion);	
 	qcdcontrolRegion_Rates = [];
 	qcdcontrollRegion_Observed = [];
 	for i in range(LowdphiControlRegion._nBins):
 		curobsC = 0;
-		curobsC += obsForLowdphiRegion_QCDList[i]		
-
+		curobsC += obsForLowdphiRegion_QCDList[i]+ratesForLowdphiRegion_QCDList[i]
 		currateC = [];
 		currateC.append( 0. );
 		currateC.append( ratesForLowdphiRegion_QCDList[i] );
-	
+                currateC.append( ContaminForLowdphiRegion[i] );	
 		qcdcontrolRegion_Rates.append(currateC);
 		qcdcontrollRegion_Observed.append(curobsC);	
 
@@ -439,14 +438,16 @@ if __name__ == '__main__':
 	### QCD uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.qcdOnly:	
 
-		ListOfQCDSys = getSystematicsListQCD("inputsFromOwen/lowdphiinputs-72bins-%sifb.txt"%(str(int(3))));
-		
+		#ListOfQCDSys = getSystematicsListQCD("inputsFromOwen/lowdphiinputs-72bins-%sifb.txt"%(str(int(3))));
+		ContaminUncForLowdphiRegion = textToList("inputsFromOwen/qcd-bg-combine-input-%sipb-v0.txt"%(str(int(lumi))),4);
+		ListOfQCDSys = textToList("inputsFromOwen/qcd-bg-combine-input-%sipb-v0.txt" %(str(int(lumi))),18);
 		for i in range(len(tagsForSignalRegion)):
 			signalRegion.addSingleSystematic(        "ldpCR"+str(i),'lnU','qcd',100,'',i);
 			LowdphiControlRegion.addSingleSystematic("ldpCR"+str(i),'lnU','qcd',100,'',i);	
-
-			for sys in ListOfQCDSys[i]:
-				signalRegion.addSingleSystematic("kappaUnc"+sys[0],'lnN','qcd',float(sys[1]),'',i);
+			if(ContaminForLowdphiRegion[i]>0.000001):LowdphiControlRegion.addSingleSystematic("contamUnc"+str(i), 'lnN','contam',1+(ContaminUncForLowdphiRegion[i]/ContaminForLowdphiRegion[i]),'',i)
+                        signalRegion.addSingleSystematic("QCDRatioUnc"+str(i),'lnN','qcd',1+(ListOfQCDSys[i]/ratiosForLowdphiRegion[i]),'',i);
+			#for sys in ListOfQCDSys[i]:
+			#	signalRegion.addSingleSystematic("kappaUnc"+sys[0],'lnN','qcd',float(sys[1]),'',i);
 
 	# #------------------------------------------------------------------------------------------------
 	# ## 3. Write Cards
