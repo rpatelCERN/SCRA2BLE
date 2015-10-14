@@ -170,8 +170,8 @@ if __name__ == '__main__':
 		else:
 			ratesForSignalRegion_QCDList.append(1.0)
 			ratesForLowdphiRegion_QCDList.append(1.0/ratiosForLowdphiRegion[i]);
-		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i]-ContaminForLowdphiRegion[i] );
-
+		#obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i]-ContaminForLowdphiRegion[i] );
+		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] );
 	LowdphiControlRegion = searchRegion('Lowdphi', QCDcontributionsPerBin, tagsForLowDPhiRegion);	
 	qcdcontrolRegion_Rates = [];
 	qcdcontrollRegion_Observed = [];
@@ -363,10 +363,9 @@ if __name__ == '__main__':
 	signalRegion.addSingleSystematic('UnclEUnc', 'lnN', ['sig'], 1.01);
 	signalRegion.addSingleSystematic('JERUnc', 'lnN', ['sig'], 1.02);
 
-	signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], signalRegion_sigHistSFUp,signalRegion_sigHistSFDown,'BTags0')
-	signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], signalRegion_sigHistSFUp,signalRegion_sigHistSFDown,'BTags1')
-	signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], signalRegion_sigHistSFUp,signalRegion_sigHistSFDown,'BTags2')
-	signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], signalRegion_sigHistSFUp,signalRegion_sigHistSFDown,'BTags3')
+	for i in range(signalRegion.GetNbins()):
+		if( signalRegion_sigList[i]>0.000001):
+			signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], (signalRegion_sigListSFUp[i]/signalRegion_sigList[i]),signalRegion_sigListSFDown[i]/signalRegion_sigList[i],'', i)
 	#signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.15, 'BTags0')	
 	#signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.0, 'BTags1')
 	#signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.0, 'BTags2')
