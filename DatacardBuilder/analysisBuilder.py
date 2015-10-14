@@ -52,11 +52,11 @@ def getSignif(fn):
 #########################################################################################################
 if __name__ == '__main__':
 	
-	#signals = ['SMSqqqq1400','SMSqqqq1000','SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']
-	signals = ['SMSqqqq1400']
+	signals = ['SMSqqqq1400','SMSqqqq1000','SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']
+	#signals = ['SMSqqqq1400']
 	#signals = ['SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']	
-	mus = [0.0,1.0,2.0,3.0];
-	#mus = [1.0];
+	#mus = [3.0];
+	mus = [0.0,1.0,2.0];
 
 	#lumis = [3.0,10.0];
 	lumis = [225];
@@ -105,7 +105,7 @@ if __name__ == '__main__':
 					fittedMus.append( getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,sig,lumi,mu) ) );
 					# limits.append( 0. );
 					# fittedMus.append( [0.,0.,0.] );
-					injectedMus.append( mu );
+					#injectedMus.append( mu );
 
 	for i in range(len(identifiers)):
 		splitid = identifiers[i].split('_');

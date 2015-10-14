@@ -157,7 +157,6 @@ if __name__ == '__main__':
         ratesForLowdphiRegion_sigList = binsToList(lowdphiRegion_sigHist);
         tagsForLowDPhiRegion = binLabelsToList(lowdphiRegion_sigHist)
 
-
 	lowdphiRegion_sigHist = lowdphiRegion_file.Get("RA2bin_"+sms);
 	ratesForLowdphiRegion_sigList = binsToList(lowdphiRegion_sigHist);
 	tagsForLowDPhiRegion = binLabelsToList(lowdphiRegion_sigHist)
@@ -165,8 +164,9 @@ if __name__ == '__main__':
 	for i in range(len(tagsForLowDPhiRegion)): 
 		QCDcontributionsPerBin.append( [ 'sig','qcd','contam' ] );
 		if(NCRForLowdphiRegion_QCDList[i]>0.0):
-			ratesForLowdphiRegion_QCDList.append(NCRForLowdphiRegion_QCDList[i])
-			ratesForSignalRegion_QCDList.append(NCRForLowdphiRegion_QCDList[i] *ratiosForLowdphiRegion[i])			
+			BkgRateSubtracted=NCRForLowdphiRegion_QCDList[i]-ContaminForLowdphiRegion[i]
+			ratesForLowdphiRegion_QCDList.append(BkgRateSubtracted)
+			ratesForSignalRegion_QCDList.append(BkgRateSubtracted *ratiosForLowdphiRegion[i])			
 		else:
 			ratesForSignalRegion_QCDList.append(1.0)
 			ratesForLowdphiRegion_QCDList.append(1.0/ratiosForLowdphiRegion[i]);
@@ -177,11 +177,12 @@ if __name__ == '__main__':
 	qcdcontrollRegion_Observed = [];
 	for i in range(LowdphiControlRegion._nBins):
 		curobsC = 0;
-		curobsC += obsForLowdphiRegion_QCDList[i]+ContaminForLowdphiRegion[i]
+		curobsC += obsForLowdphiRegion_QCDList[i]
 		currateC = [];
 		currateC.append( 0. );
 		currateC.append( ratesForLowdphiRegion_QCDList[i] );
                 currateC.append( ContaminForLowdphiRegion[i] );	
+		#currateC.append(0.0)
 		qcdcontrolRegion_Rates.append(currateC);
 		qcdcontrollRegion_Observed.append(curobsC);	
 
@@ -460,21 +461,17 @@ if __name__ == '__main__':
 			signalRegion.addSingleSystematic("ldpCR"+str(i),'lnU','qcd',10000.,'',i);
 			LowdphiControlRegion.addSingleSystematic("ldpCR"+str(i),'lnU','qcd',10000.,'',i);	
 			if(ContaminForLowdphiRegion[i]>0.000001):LowdphiControlRegion.addSingleSystematic("contamUnc"+str(i), 'lnN','contam',1+(ContaminUncForLowdphiRegion[i]/ContaminForLowdphiRegion[i]),'',i)
-#		for i in range(len(ListOfQCDSysK1)):
-#			if(ListOfQCDSysK1[i]!='-'):signalRegion.addSingleSystematic("KQCDHT1",'lnN','qcd',float(ListOfQCDSysK1[i]),'',i);
-#			if(ListOfQCDSysK2[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2",'lnN','qcd',float(ListOfQCDSysK2[i]),'',i);
-#                        if(ListOfQCDSysK3[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3",'lnN','qcd',float(ListOfQCDSysK3[i]),'',i);
-#                        if(ListOfQCDSysK4[i]!='-'):signalRegion.addSingleSystematic("KQCDMHT2",'lnN','qcd',float(ListOfQCDSysK4[i]),'',i);
-#                        if(ListOfQCDSysK5[i]!='-'):signalRegion.addSingleSystematic("KQCDMHT3",'lnN','qcd',float(ListOfQCDSysK5[i]),'',i);
-#                        if(ListOfQCDSysK6[i]!='-'):signalRegion.addSingleSystematic("KQCDMHT4",'lnN','qcd',float(ListOfQCDSysK6[i]),'',i);
-#                        if(ListOfQCDSysK7[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ2",'lnN','qcd',float(ListOfQCDSysK7[i]),'',i);
-#                        if(ListOfQCDSysK8[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ3",'lnN','qcd',float(ListOfQCDSysK8[i]),'',i);
-#                        if(ListOfQCDSysK9[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ4",'lnN','qcd',float(ListOfQCDSysK9[i]),'',i);
-#                        if(ListOfQCDSysK10[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ5",'lnN','qcd',float(ListOfQCDSysK10[i]),'',i);
-			#print k1sys
-                        #signalRegion.addSingleSystematic("QCDRatioUnc"+str(i),'lnN','qcd',1+(ListOfQCDSys[i]/ratiosForLowdphiRegion[i]),'',i);
-			#for sys in ListOfQCDSys[i]:
-			#	signalRegion.addSingleSystematic("kappaUnc"+sys[0],'lnN','qcd',float(sys[1]),'',i);
+		for i in range(len(ListOfQCDSysK1)):
+			if(ListOfQCDSysK1[i]!='-'):signalRegion.addSingleSystematic("KQCDHT1",'lnN','qcd',float(ListOfQCDSysK1[i]),'',i);
+			if(ListOfQCDSysK2[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2",'lnN','qcd',float(ListOfQCDSysK2[i]),'',i);
+                        if(ListOfQCDSysK3[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3",'lnN','qcd',float(ListOfQCDSysK3[i]),'',i);
+                        if(ListOfQCDSysK4[i]!='-'):signalRegion.addSingleSystematic("KQCDMHT2",'lnN','qcd',float(ListOfQCDSysK4[i]),'',i);
+                        if(ListOfQCDSysK5[i]!='-'):signalRegion.addSingleSystematic("KQCDMHT3",'lnN','qcd',float(ListOfQCDSysK5[i]),'',i);
+                        if(ListOfQCDSysK6[i]!='-'):signalRegion.addSingleSystematic("KQCDMHT4",'lnN','qcd',float(ListOfQCDSysK6[i]),'',i);
+                        if(ListOfQCDSysK7[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ2",'lnN','qcd',float(ListOfQCDSysK7[i]),'',i);
+                        if(ListOfQCDSysK8[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ3",'lnN','qcd',float(ListOfQCDSysK8[i]),'',i);
+                        if(ListOfQCDSysK9[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ4",'lnN','qcd',float(ListOfQCDSysK9[i]),'',i);
+                        if(ListOfQCDSysK10[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ5",'lnN','qcd',float(ListOfQCDSysK10[i]),'',i);
 
 	# #------------------------------------------------------------------------------------------------
 	# ## 3. Write Cards
@@ -483,6 +480,4 @@ if __name__ == '__main__':
 	# if options.allBkgs or options.tauOnly: HadcontrolRegion.writeCards( odir );
 	if options.allBkgs or options.zvvOnly: sphotonRegion.writeCards( odir );
 	if options.allBkgs or options.qcdOnly: LowdphiControlRegion.writeCards( odir );
-
-
 
