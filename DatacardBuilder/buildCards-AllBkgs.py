@@ -146,7 +146,8 @@ if __name__ == '__main__':
 	# low dphi region stuff
 
         ratesForSignalRegion_QCDList = [];
-        NSRForSignalRegion_QCDList = textToList("inputsFromOwen/qcd-bg-combine-input-%sipb-v0.txt"%(str(int(lumi))),18);
+        NSRForSignalRegion_QCDList = textToList("inputsFromOwen/qcd-bg-combine-input-%sipb-v0.txt"%(str(int(lumi))),6);
+	print NSRForSignalRegion_QCDList
         ratesForLowdphiRegion_QCDList = [];
         NCRForLowdphiRegion_QCDList = textToList("inputsFromOwen/qcd-bg-combine-input-%sipb-v0.txt"%(str(int(lumi))),2);
         obsForLowdphiRegion_QCDList = [];
@@ -173,7 +174,7 @@ if __name__ == '__main__':
 	qcdcontrollRegion_Observed = [];
 	for i in range(LowdphiControlRegion._nBins):
 		curobsC = 0;
-		curobsC += obsForLowdphiRegion_QCDList[i]+ratesForLowdphiRegion_QCDList[i]
+		curobsC += obsForLowdphiRegion_QCDList[i]+ContaminForLowdphiRegion[i]
 		currateC = [];
 		currateC.append( 0. );
 		currateC.append( ratesForLowdphiRegion_QCDList[i] );
@@ -236,7 +237,7 @@ if __name__ == '__main__':
 			if sphotonObservedExt[i] > 0: ZvvRatesInSignalRegion.append( ZvvYieldsInSignalRegion[i] );
 			else: ZvvRatesInSignalRegion.append(signalRegion_zvvList[i]);
 
-	print ZvvYieldsInSignalRegion
+	#print ZvvYieldsInSignalRegion
 
 	# QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
 	# accounting for LL Region
@@ -386,7 +387,7 @@ if __name__ == '__main__':
 			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
 
 		# added to all bins (photon efficiency)
-		print len(RzgErrs),len(PurErrs)
+		#print len(RzgErrs),len(PurErrs)
 		sphotonRegion.addSystematicFromList('PhoRzgUnc','lnN',['zvv'],RzgErrs);	
 		sphotonRegion.addSystematicFromList('PhoEffUnc','lnN',['zvv'],PurErrs);	
 		## RZg double ratio from Jim H.
@@ -453,8 +454,8 @@ if __name__ == '__main__':
 		ContaminUncForLowdphiRegion = textToList("inputsFromOwen/qcd-bg-combine-input-%sipb-v0.txt"%(str(int(lumi))),4);
 		#ListOfQCDSys = textToList("inputsFromOwen/qcd-bg-combine-input-%sipb-v0.txt" %(str(int(lumi))),18);
 		for i in range(len(tagsForSignalRegion)):
-			signalRegion.addSingleSystematic(        "ldpCR"+str(i),'lnU','qcd',100,'',i);
-			LowdphiControlRegion.addSingleSystematic("ldpCR"+str(i),'lnU','qcd',100,'',i);	
+			signalRegion.addSingleSystematic(        "ldpCR"+str(i),'lnU','qcd',10000,'',i);
+			LowdphiControlRegion.addSingleSystematic("ldpCR"+str(i),'lnU','qcd',10000,'',i);	
 			if(ContaminForLowdphiRegion[i]>0.000001):LowdphiControlRegion.addSingleSystematic("contamUnc"+str(i), 'lnN','contam',1+(ContaminUncForLowdphiRegion[i]/ContaminForLowdphiRegion[i]),'',i)
 		for i in range(len(ListOfQCDSysK1)):
 			if(ListOfQCDSysK1[i]!='-'):signalRegion.addSingleSystematic("KQCDHT1",'lnN','qcd',float(ListOfQCDSysK1[i]),'',i);
