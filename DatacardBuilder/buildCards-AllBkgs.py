@@ -175,8 +175,12 @@ if __name__ == '__main__':
 		QCDcontributionsPerBin.append( [ 'sig','qcd','contam' ] );
 		if(NCRForLowdphiRegion_QCDList[i]>0.0):
 			BkgRateSubtracted=NCRForLowdphiRegion_QCDList[i]-ContaminForLowdphiRegion[i]
-			ratesForLowdphiRegion_QCDList.append(BkgRateSubtracted)
-			ratesForSignalRegion_QCDList.append(BkgRateSubtracted *ratiosForLowdphiRegion[i])			
+			if BkgRateSubtracted>0:
+				ratesForLowdphiRegion_QCDList.append(BkgRateSubtracted)
+				ratesForSignalRegion_QCDList.append(BkgRateSubtracted *ratiosForLowdphiRegion[i])			
+			else:
+				ratesForSignalRegion_QCDList.append(1.0)
+                        	ratesForLowdphiRegion_QCDList.append(1.0/ratiosForLowdphiRegion[i]);
 		else:
 			ratesForSignalRegion_QCDList.append(1.0)
 			ratesForLowdphiRegion_QCDList.append(1.0/ratiosForLowdphiRegion[i]);
@@ -317,7 +321,7 @@ if __name__ == '__main__':
 	for i in range(signalRegion._nBins):
 		srobs = 0;
 		srobs += signalRegion_sigList[i]*signalmu;
-		if options.allBkgs or options.qcdOnly: srobs += (NCRForLowdphiRegion_QCDList[i]) *ratiosForLowdphiRegion[i];
+		if options.allBkgs or options.qcdOnly: srobs += NSRForSignalRegion_QCDList[i];
 		if options.allBkgs or options.zvvOnly: srobs += ZvvYieldsInSignalRegion[i];
 		if options.allBkgs or options.llpOnly: srobs += signalRegion_LLList[i];
 		if options.allBkgs or options.tauOnly: srobs += signalRegion_tauList[i];
