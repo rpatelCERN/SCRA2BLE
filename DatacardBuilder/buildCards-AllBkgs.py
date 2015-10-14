@@ -51,6 +51,9 @@ if __name__ == '__main__':
 	signalSFB_file =TFile(idir+"/RA2bin_signalSF.root");
 	signalSysSFUp_file=TFile("inputSignalSys/RA2bin_signal_btagSFuncUp.root");
 	signalSysSFDown_file=TFile("inputSignalSys/RA2bin_signal_btagSFuncDown.root");
+        signalSysMisSFUp_file=TFile("inputSignalSys/RA2bin_signal_mistagSFuncUp.root");
+        signalSysMisSFDown_file=TFile("inputSignalSys/RA2bin_signal_mistagSFuncDown.root");
+
 	sphotonRegion_file = TFile(idir+"/RA2bin_GJet_CleanVars.root");
 	lowdphiRegion_file = TFile(idir+"/RA2bin_LDP.root");
 		
@@ -58,13 +61,20 @@ if __name__ == '__main__':
 	signalRegion_sigHist = signalSFB_file.Get("RA2bin_"+sms);
 	signalRegion_sigHistSFUp= signalSysSFUp_file.Get("RA2bin_"+sms);
 	signalRegion_sigHistSFDown= signalSysSFDown_file.Get("RA2bin_"+sms);
+ 	signalRegion_sigHistMisSFUp = signalSysMisSFUp_file.Get("RA2bin_"+sms)
+        signalRegion_sigHistMisSFDown = signalSysMisSFDown_file.Get("RA2bin_"+sms)
 	signalRegion_sigHist.Scale(lumi/3000.);
 	signalRegion_sigHistSFUp.Scale(lumi/3000.);
 	signalRegion_sigHistSFDown.Scale(lumi/3000.);
+        signalRegion_sigHistMisSFUp.Scale(lumi/3000.);
+        signalRegion_sigHistMisSFDown.Scale(lumi/3000.);
+	
 	tagsForSignalRegion = binLabelsToList(signalRegion_sigHist);
 	signalRegion_sigList = binsToList( signalRegion_sigHist );
 	signalRegion_sigListSFUp=binsToList( signalRegion_sigHistSFUp );
 	signalRegion_sigListSFDown=binsToList( signalRegion_sigHistSFDown );
+        signalRegion_sigListMisSFUp=binsToList( signalRegion_sigHistMisSFUp );
+        signalRegion_sigListMisSFDown=binsToList( signalRegion_sigHistMisSFDown );
 	# zinv --------
 	# zinv_sr = signalRegion_file.Get("RA2bin_Zinv");
 	# gjet_cr = sphotonRegion_file.Get("RA2bin_GJet");
@@ -307,7 +317,7 @@ if __name__ == '__main__':
 	for i in range(signalRegion._nBins):
 		srobs = 0;
 		srobs += signalRegion_sigList[i]*signalmu;
-		if options.allBkgs or options.qcdOnly: srobs += (NCRForLowdphiRegion_QCDList[i]-ContaminForLowdphiRegion[i]) *ratiosForLowdphiRegion[i];
+		if options.allBkgs or options.qcdOnly: srobs += (NCRForLowdphiRegion_QCDList[i]) *ratiosForLowdphiRegion[i];
 		if options.allBkgs or options.zvvOnly: srobs += ZvvYieldsInSignalRegion[i];
 		if options.allBkgs or options.llpOnly: srobs += signalRegion_LLList[i];
 		if options.allBkgs or options.tauOnly: srobs += signalRegion_tauList[i];
@@ -365,6 +375,7 @@ if __name__ == '__main__':
 
 	for i in range(signalRegion.GetNbins()):
 		if( signalRegion_sigList[i]>0.000001):
+			signalRegion.addAsymSystematic('MisTagSFunc', 'lnN', ['sig'], signalRegion_sigListMisSFUp[i]/signalRegion_sigList[i], signalRegion_sigListMisSFDown[i]/signalRegion_sigList[i], '', i)
 			signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], (signalRegion_sigListSFUp[i]/signalRegion_sigList[i]),signalRegion_sigListSFDown[i]/signalRegion_sigList[i],'', i)
 	#signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.15, 'BTags0')	
 	#signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.0, 'BTags1')
