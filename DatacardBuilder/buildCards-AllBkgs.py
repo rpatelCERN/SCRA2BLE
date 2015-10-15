@@ -48,6 +48,9 @@ if __name__ == '__main__':
 
 	# histogram gymnastics...
 	signalRegion_file = TFile(idir+"/RA2bin_signal.root");
+	data_file= TFile(idir+"/RA2bin_Data%spb.root" %(str(int(lumi))));
+	Data_Hist=data_file.Get("RA2bin_data")
+	Data_List=binsToList(Data_Hist);
 	signalSFB_file =TFile(idir+"/RA2bin_signalSF.root");
 	signalSysSFUp_file=TFile("inputSignalSys/RA2bin_signal_btagSFuncUp.root");
 	signalSysSFDown_file=TFile("inputSignalSys/RA2bin_signal_btagSFuncDown.root");
@@ -390,13 +393,13 @@ if __name__ == '__main__':
 	controlRegion_Rates=[];
 
 	for i in range(signalRegion._nBins):
-		srobs = 0;
-		srobs += signalRegion_sigList[i]*signalmu;
-		if options.allBkgs or options.qcdOnly:srobs +=NCRForLowdphiRegion_QCDList[i]*ratiosForLowdphiRegion[i]
+		srobs = Data_List[i];
+		#srobs += signalRegion_sigList[i]*signalmu;
+		#if options.allBkgs or options.qcdOnly:srobs +=NCRForLowdphiRegion_QCDList[i]*ratiosForLowdphiRegion[i]
 #		if options.allBkgs or options.qcdOnly: srobs += NSRForSignalRegion_QCDList[i];
-		if options.allBkgs or options.zvvOnly: srobs += ZvvYieldsInSignalRegion[i];
-		if options.allBkgs or options.llpOnly: srobs += signalRegion_LLList[i];
-		if options.allBkgs or options.tauOnly: srobs += signalRegion_tauList[i];
+		#if options.allBkgs or options.zvvOnly: srobs += ZvvYieldsInSignalRegion[i];
+		#if options.allBkgs or options.llpOnly: srobs += signalRegion_LLList[i];
+		#if options.allBkgs or options.tauOnly: srobs += signalRegion_tauList[i];
 		signalRegion_Obs.append( srobs );
 
 		tmpList = [];
