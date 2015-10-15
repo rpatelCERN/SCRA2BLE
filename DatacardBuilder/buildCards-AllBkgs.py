@@ -533,7 +533,7 @@ if __name__ == '__main__':
 		MHTBins=['MHT0', 'MHT1', 'MHT2']
 		for j in range(len(NJbinsLLPur)):
 			for m in range(len(MHTBins)):
-			   signalRegion.addAsymSystematic("LLPurity_"+str(MHTHTBinsLL[h])+"_"+str(NJbinsLLPur[j]),'lnN',['WTopSL'],LLSysPurUp,LLSysPurDown,str(NJbinsLLPur[j])+"_BTags._"+str(MHTBins[m])+"_HT.")
+			   signalRegion.addAsymSystematic("LLPurity_"+str(MHTBins[m])+"_"+str(NJbinsLLPur[j]),'lnN',['WTopSL'],LLSysPurUp,LLSysPurDown,str(NJbinsLLPur[j])+"_BTags._"+str(MHTBins[m])+"_HT.")
 	if options.allBkgs or options.tauOnly or options.llpOnly:
 		for i in range(signalRegion.GetNbins()):
 			if(signalRegion_CSList[i]<2):
