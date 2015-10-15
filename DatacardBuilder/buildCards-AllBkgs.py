@@ -344,10 +344,10 @@ if __name__ == '__main__':
 		
 		if options.allBkgs or options.llpOnly:		
 			# addControl=[]	
-			if(signalRegion_CSList[i]>=2):
-				tmpList.append(signalRegion_LLList[i]);
-			else:
-				tmpList.append(0.0)
+			#if(signalRegion_CSList[i]>=2):
+			tmpList.append(signalRegion_LLList[i]);
+			#else:
+			#tmpList.append(0.0)
 			if(signalRegion_CSList[i]>=2):
 				tmpList.append(0.0)
 			if(signalRegion_CSList[i]==1):

@@ -69,7 +69,7 @@ if __name__ == '__main__':
 	#variations = ['tauOnly']
 	#variations=['qcdOnly']
 	#variations=['zvvOnly']
-	variations=['allBkgs']
+	#variations=['allBkgs']
 	identifiers = [];
 	limits = [];
 	fittedMus = [];
