@@ -86,12 +86,11 @@ if __name__ == '__main__':
 
 	# ll --------
 	LL_file = TFile("inputsLostLepton/LLPrediction_%spb.root" % (str(int(lumi)) ));
+	LL_fileMC = TFile("inputsLostLepton/LLPrediction_%spbMC.root" % (str(int(lumi)) ));
 	LLPrediction_Hist=LL_file.Get("totalPred_LL");
 	LLCS_Hist=LL_file.Get("totalCS_LL");
 	LLSysUp_Hist=LL_file.Get("totalPredSysUp_LL");
 	LLSysDown_Hist=LL_file.Get("totalPredSysDown_LL");
-	LLStatUp_Hist=LL_file.Get("totalPredStatUp_LL");
-	LLStatDown_Hist=LL_file.Get("totalPredStatDown_LL");
 	LLNonCUp_Hist=LL_file.Get("totalPredNonClosureUp_LL");
 	LLNonCDown_Hist=LL_file.Get("totalPredNonClosureDown_LL");
 	LLWeight_Hist=LL_file.Get("avgWeight_LL");
@@ -99,8 +98,16 @@ if __name__ == '__main__':
 	LLWeightSysDown_Hist=LL_file.Get("avgWeightSysDown_LL");
 	LLWeightNonCUp_Hist=LL_file.Get("avgWeightNonClosureUp_LL");
 	LLWeightNonCDown_Hist=LL_file.Get("avgWeightNonClosureUp_LL");
+
+	LLMCWeight_Hist=LL_fileMC.Get("avgWeight_LL_MC");
+        LLMCWeightSysUp_Hist=LL_fileMC.Get("avgWeightSysUp_LL_MC");
+        LLMCWeightSysDown_Hist=LL_fileMC.Get("avgWeightSysDown_LL_MC");
+        LLMCWeightNonCUp_Hist=LL_fileMC.Get("avgWeightNonClosureUp_LL_MC");
+        LLMCWeightNonCDown_Hist=LL_fileMC.Get("avgWeightNonClosureUp_LL_MC");
+	
 	signalRegion_LLList = binsToList( LLPrediction_Hist );
 	signalRegion_WeightList=binsToList(LLWeight_Hist);
+        signalRegion_MCWeightList=binsToList(LLMCWeight_Hist);
 	signalRegion_CSList=binsToList(LLCS_Hist)
 	LLSysUp=binsToList(LLSysUp_Hist)
 	LLSysDown=binsToList(LLSysDown_Hist)
@@ -287,10 +294,12 @@ if __name__ == '__main__':
 	for i in range(len(addControl)):
 		tmpList=[]
 		tmpList.append(0);
-		if options.allBkgs or options.llpOnly: 
-			#if(signalRegion_CSList[addControl[i]]<2):
-			tmpList.append(0.);
-			tmpList.append(0.);
+		if options.llpOnly: 
+				tmpList.append(0.);
+				tmpList.append(1.0); 
+		if options.allBkgs:
+				tmpList.append(0.);
+                                tmpList.append(0.0);
 		if options.allBkgs or options.tauOnly: tmpList.append(0.0);
 		if options.allBkgs or options.tauOnly: tmpList.append(1.);
 		SLcontrolRegion_Obs.append(0.0);
@@ -341,8 +350,10 @@ if __name__ == '__main__':
 				tmpList.append(0.0)
 			if(signalRegion_CSList[i]>=2):
 				tmpList.append(0.0)
-			else:
+			if(signalRegion_CSList[i]==1):
 				tmpList.append(signalRegion_WeightList[i])
+			if(signalRegion_CSList[i]<1):
+				tmpList.append(signalRegion_MCWeightList[i])
 		# Had Tau rate
 		if options.allBkgs or options.tauOnly: 
 				tmpList.append(signalRegion_tauList[i])
@@ -364,7 +375,7 @@ if __name__ == '__main__':
 	# #------------------------------------------------------------------------------------------------
 	# ## 2. Add systematics
 	# ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
-	pdf=1.03
+	pdf=1.3
 	ISR=1.01
 	if(sms=='SMSqqqq1400' or sms=='SMStttt1200' or sms=='SMSbbbb1000'):
 		ISR=1.08
@@ -435,10 +446,15 @@ if __name__ == '__main__':
 
 				if options.allBkgs: 
 					signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], 1+(LLSysUp[i]/signalRegion_LLList[i]), 1+(tauSqrtSumW2[i]/signalRegion_tauList[i]), '',i)			
-					
+				if options.llpOnly:
+					signalRegion.addSingleSystematic('LLSysError'+tagsForSignalRegion[i], 'lnN', ['WTopSL'], 1+(LLSysUp[i]/signalRegion_LLList[i]), '',i)		
+
 		for i in range(SLcontrolRegion.GetNbins()):
-			if options.allBkgs or options.tauOnly or options.llpOnly: 
+			if options.allBkgs or options.tauOnly : 
 				SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
+			if options.llpOnly:
+				SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopSLHighW'],100,'',i);		
+
 	### hadtau uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.tauOnly:
 		for i in range(signalRegion.GetNbins()):
