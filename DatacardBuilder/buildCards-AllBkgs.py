@@ -99,7 +99,6 @@ if __name__ == '__main__':
 	LLWeightSysDown_Hist=LL_file.Get("avgWeightSysDown_LL");
 	LLWeightNonCUp_Hist=LL_file.Get("avgWeightNonClosureUp_LL");
 	LLWeightNonCDown_Hist=LL_file.Get("avgWeightNonClosureUp_LL");
-
 	signalRegion_LLList = binsToList( LLPrediction_Hist );
 	signalRegion_WeightList=binsToList(LLWeight_Hist);
 	signalRegion_CSList=binsToList(LLCS_Hist)
@@ -125,7 +124,8 @@ if __name__ == '__main__':
 	HadTauSysNCTTbarMHT2_Hist=HadTau_file.Get("searchBin_ClosureMHT2TTbar")	
 	HadTauSysNCWjetsMHT3_Hist=HadTau_file.Get("searchBin_ClosureMHT3Wjets")	
 	HadTauSysNCTTbarMHT3_Hist=HadTau_file.Get("searchBin_ClosureMHT3TTbar")
-
+        HadTauSysUncCorrections_Hist=HadTau_file.Get("searchBin_UncertaintyCorrectionStats")
+	
 	signalRegion_tauList=binsToList(HadTauPrediction_Hist)
 	tauBMistagUp=binsToList(HadTauBMistagUp_Hist)
 	tauBMistagDown=binsToList(HadTauBMistagDown_Hist)
@@ -137,7 +137,7 @@ if __name__ == '__main__':
 	tauNonClosureWJMHT3=binsToList(HadTauSysNCWjetsMHT3_Hist)
 	tauNonClosureTTbarMHT3=binsToList(HadTauSysNCTTbarMHT3_Hist)
 	tauSqrtSumW2=binsToList(HadTauSqrtSumw2_Hist)
-
+	tauUncCorr=binsToList(HadTauSysUncCorrections_Hist)
 	# print  "./inputsLostLepton/statunc%sfb.txt" % (str(int(lumi)))
 	
 	#signalRegion_statUncList = textToList( "./inputsLostLepton/statunc%sfb.txt" % (str(int(lumi))), 0 );
@@ -180,12 +180,11 @@ if __name__ == '__main__':
 				ratesForLowdphiRegion_QCDList.append(BkgRateSubtracted)
 				ratesForSignalRegion_QCDList.append(BkgRateSubtracted *ratiosForLowdphiRegion[i])			
 			else:
-				ratesForSignalRegion_QCDList.append(1.0)
-                        	ratesForLowdphiRegion_QCDList.append(1.0/ratiosForLowdphiRegion[i]);
+				ratesForLowdphiRegion_QCDList.append(1.0)
+                        	ratesForSignalRegion_QCDList.append(ratiosForLowdphiRegion[i]);
 		else:
-			ratesForSignalRegion_QCDList.append(1.0)
-			ratesForLowdphiRegion_QCDList.append(1.0/ratiosForLowdphiRegion[i]);
-		#obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i]-ContaminForLowdphiRegion[i] );
+                                ratesForLowdphiRegion_QCDList.append(1.0)
+                                ratesForSignalRegion_QCDList.append(ratiosForLowdphiRegion[i]);
 		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] );
 	LowdphiControlRegion = searchRegion('Lowdphi', QCDcontributionsPerBin, tagsForLowDPhiRegion);	
 	qcdcontrolRegion_Rates = [];
@@ -433,9 +432,10 @@ if __name__ == '__main__':
 				if options.llpOnly : signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],100,'',i);
 			else: 
 				if options.allBkgs or options.tauOnly: signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
+
 				if options.allBkgs: 
 					signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], 1+(LLSysUp[i]/signalRegion_LLList[i]), 1+(tauSqrtSumW2[i]/signalRegion_tauList[i]), '',i)			
-
+					
 		for i in range(SLcontrolRegion.GetNbins()):
 			if options.allBkgs or options.tauOnly or options.llpOnly: 
 				SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
@@ -448,6 +448,15 @@ if __name__ == '__main__':
 			tauNonClosureJet2[i]=1.0+tauNonClosureJet2[i];
 			tauBMistagUp[i]=1.0+tauBMistagUp[i];
 			tauBMistagDown[i]=1.0+tauBMistagDown[i];
+			if(tauNonClosureWJMHT2[i]<-99):tauNonClosureWJMHT2[i]=1.0;
+			else: tauNonClosureWJMHT2[i]=1.0+tauNonClosureWJMHT2[i]
+			if(tauNonClosureTTbarMHT2[i]<-99):tauNonClosureTTbarMHT2[i]=1.0;
+		        else: tauNonClosureTTbarMHT2[i]=1.0+tauNonClosureTTbarMHT2[i]
+                        if(tauNonClosureWJMHT3[i]<-99):tauNonClosureWJMHT3[i]=1.0;
+                        else: tauNonClosureWJMHT3[i]=1.0+tauNonClosureWJMHT3[i]
+                        if(tauNonClosureTTbarMHT3[i]<-99):tauNonClosureTTbarMHT3[i]=1.0;
+                        else: tauNonClosureTTbarMHT3[i]=1.0+tauNonClosureTTbarMHT3[i]
+			signalRegion.addSingleSystematic('HadTauCorrUnc'+str(i),'lnN',['WTopHad'], 1.0+tauUncCorr[i], '', i)
 		#print tauNonClosureJet1[42]
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets0Unc','lnN',['WTopHad'],tauNonClosureJet0,'NJets0');
 		signalRegion.addSingleSystematic('HadTauNJClosureNJets1Unc','lnN',['WTopHad'],tauNonClosureJet1,'NJets1');
@@ -456,6 +465,10 @@ if __name__ == '__main__':
 		signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown,'BTags1');
 		signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown,'BTags2');
 		signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown,'BTags3');
+		signalRegion.addSingleSystematic("HadTauMHT1WJUnc ", 'lnN', ['WTopHad'], tauNonClosureWJMHT2, 'MHT1')
+                signalRegion.addSingleSystematic("HadTauMHT1TTbarUnc ", 'lnN', ['WTopHad'], tauNonClosureTTbarMHT2, 'MHT1')	
+                signalRegion.addSingleSystematic("HadTauMHT2WJUnc ", 'lnN', ['WTopHad'], tauNonClosureWJMHT3, 'MHT2')
+                signalRegion.addSingleSystematic("HadTauMHT2TTbarUnc ", 'lnN', ['WTopHad'], tauNonClosureTTbarMHT3, 'MHT2')
 	### QCD uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.qcdOnly:	
 
