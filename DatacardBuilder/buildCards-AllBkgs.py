@@ -268,8 +268,8 @@ if __name__ == '__main__':
 		currateC = [];
 		currateC.append( 0. );
 		currateC.append( ratesForLowdphiRegion_QCDList[i] );
-				#currateC.append( ContaminForLowdphiRegion[i] );	
-		currateC.append(0.0)
+		currateC.append( ContaminForLowdphiRegion[i] );	
+		#currateC.append(0.0)
 		qcdcontrolRegion_Rates.append(currateC);
 		qcdcontrollRegion_Observed.append(curobsC);	
 
