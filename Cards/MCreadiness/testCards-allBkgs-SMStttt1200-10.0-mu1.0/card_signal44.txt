@@ -1,0 +1,36 @@
+#the tag = NJets1_BTags2_MHT0_HT2 
+imax 1 #number of channels 
+jmax 4 #number of backgrounds 
+kmax * nuissance 
+------------ 
+bin Binsignal44
+observation 67.0110102798
+bin Binsignal44 Binsignal44 Binsignal44 Binsignal44 Binsignal44 
+process sig WTopSL WTopHad zvv qcd 
+process 0 1 2 3 4 
+rate 0.41148 21.22484 22.04390 2.92080 20.41000 
+------------ 
+lumi lnN 1.04 - - - - 
+EvtFilters lnN 1.03 - - - - 
+PUwUnc lnN 1.03 - - - - 
+TrigEff lnN 1.02 - - - - 
+ISR lnN 1.08 - - - - 
+pdf lnN 1.1 - - - - 
+UnclEUnc lnN 1.01 - - - - 
+JERUnc lnN 1.02 - - - - 
+BTagSFUnc lnN 1.0 - - - - 
+JESUnc lnN 1.1 - - - - 
+SPhoCR8 lnU - - - 100 - 
+DYHTUnc44 lnN - - - 1.2 - 
+PhoEffUnc lnN - - - 1.2 - 
+RZgDataUncMHT0 lnN - - - 1.04 - 
+RZgDataUncNJets1 lnN - - - 1.13 - 
+DYNBStatUncBTags2 lnN - - - 1.158 - 
+DYNBStatUncNJets1 lnN - - - 1.008 - 
+StatMuErrorNJets1_BTags2_MHT0_HT2 lnN - 1.3000023131 1.03198 - - 
+LLSysNJets1_BTags2_MHT0_HT2 lnN - 1.3000023131 - - - 
+HadTauNJClosureNJets1Unc lnN - - 1.4 - - 
+ldpCR44 lnU - - - - 100 
+kappaUncKht3 lnN - - - - 1.167 
+kappaUncKmht2 lnN - - - - 1.019 
+kappaUncKnj4 lnN - - - - 1.142 
