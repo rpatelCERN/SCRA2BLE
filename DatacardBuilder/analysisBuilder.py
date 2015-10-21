@@ -58,12 +58,12 @@ if __name__ == '__main__':
 	signals = ['SMSbbbb1000']
 	#mus = [0.0,0.5,1.0 ,1.5, 2.0, 2.5, 3.0,3.5, 4.0,4.5, 5.0];
 	#mus = [10000.0];
-	mus=[1.0]
+	mus=[0.0]
 	#lumis = [3.0,10.0];
 	lumis = [225];
 
 	#variations = ['allBkgs','qcdOnly','zvvOnly','llpOnly','tauOnly','allNoqcd','allNozvv','allNollp','allNotau','onlyLep','allNolep']
-	variations = ['allBkgs','llpOnly','tauOnly']
+	variations = ['allBkgs','llpOnly', 'tauOnly']
 	# variations = ['allBkgs','allNoqcd','allNozvv','allNollp','allNotau']
 	#variations=['allNoqcd','allNozvv','allNollp','allNotau','onlyLep','allNolep']
 	#variations = ['qcdOnly' ]
