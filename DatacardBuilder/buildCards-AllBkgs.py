@@ -340,15 +340,15 @@ if __name__ == '__main__':
 		#if(signalRegion_CSList[i]<2):
 		tmpcontributionsSL = [];
 		tmpcontributionsSL.append( 'sig' );
-		if options.allBkgs or options.llpOnly: tmpcontributionsSL.append( 'WTopSL' );
-		if options.allBkgs or options.llpOnly: tmpcontributionsSL.append( 'WTopSLHighW' );
-		if options.allBkgs or options.tauOnly: tmpcontributionsSL.append( 'WTopHad' );
-		if options.allBkgs or options.tauOnly: tmpcontributionsSL.append( 'WTopHadHighW' );			
-		if options.llpOnly and signalRegion_CSList[i]<2:
+		if options.allBkgs or options.llpOnly or (options.tauOnly and  options.llpOnly): tmpcontributionsSL.append( 'WTopSL' );
+		if options.allBkgs or options.llpOnly or (options.tauOnly and  options.llpOnly): tmpcontributionsSL.append( 'WTopSLHighW' );
+		if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly): tmpcontributionsSL.append( 'WTopHad' );
+		if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly): tmpcontributionsSL.append( 'WTopHadHighW' );			
+		if options.llpOnly and signalRegion_CSList[i]<2  and not (options.tauOnly and  options.llpOnly):
 			addControl.append(i);
 			SLcontrolContributionsPerBin.append( tmpcontributionsSL );
 			tagsForSLControlRegion.append(tagsForSignalRegion[i]);
-		if options.allBkgs or options.tauOnly:
+		if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly):
 			addControl.append(i); 
 			SLcontrolContributionsPerBin.append( tmpcontributionsSL );
 			tagsForSLControlRegion.append(tagsForSignalRegion[i]);			
@@ -360,15 +360,15 @@ if __name__ == '__main__':
 	for i in range(len(addControl)):
 		tmpList=[]
 		tmpList.append(0);
-		if options.llpOnly: 
+		if options.llpOnly and not options.tauOnly and not options.allBkgs: 
 				tmpList.append(0.);			
 				if(signalRegion_CSList[i]<=1): tmpList.append(1.0); 
 				else: tmpList.append(0.0); 
-		if options.allBkgs:
+		if options.allBkgs or (options.tauOnly and options.llpOnly):
 				tmpList.append(0.);
 				tmpList.append(1.0);
-		if options.allBkgs or options.tauOnly: tmpList.append(0.0);
-		if options.allBkgs or options.tauOnly: tmpList.append(1.);
+		if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly): tmpList.append(0.0);
+		if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly): tmpList.append(1.);
 		SLcontrolRegion_Obs.append(0.0);
 		SLcontrolRegion_Rates.append(tmpList);
 	#print len(SLcontrolRegion_Rates), len(SLcontrolRegion_Obs)
@@ -380,10 +380,10 @@ if __name__ == '__main__':
 	for i in range(len(tagsForSignalRegion)): 
 		tmpcontributions = [];
 		tmpcontributions.append('sig');
-		if options.allBkgs or options.llpOnly: tmpcontributions.append('WTopSL');
-		if options.allBkgs or options.llpOnly: tmpcontributions.append('WTopSLHighW');
-		if options.allBkgs or options.tauOnly: tmpcontributions.append('WTopHad');
-		if options.allBkgs or options.tauOnly: tmpcontributions.append('WTopHadHighW');
+		if options.allBkgs or options.llpOnly or (options.tauOnly and  options.llpOnly): tmpcontributions.append('WTopSL');
+		if options.allBkgs or options.llpOnly or (options.tauOnly and  options.llpOnly): tmpcontributions.append('WTopSLHighW');
+		if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly): tmpcontributions.append('WTopHad');
+		if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly): tmpcontributions.append('WTopHadHighW');
 		if options.allBkgs or options.zvvOnly: tmpcontributions.append('zvv');
 		if options.allBkgs or options.qcdOnly: tmpcontributions.append('qcd');
 		contributionsPerBin.append(tmpcontributions);
@@ -396,13 +396,13 @@ if __name__ == '__main__':
 
 	for i in range(signalRegion._nBins):
 		srobs = Data_List[i];
-		# srobs = 0;
-		# srobs += signalRegion_sigList[i]*signalmu;
-		# # if options.allBkgs or options.qcdOnly: srobs += NCRForLowdphiRegion_QCDList[i]*ratiosForLowdphiRegion[i]
-		# if options.allBkgs or options.qcdOnly: srobs += NSRForSignalRegion_QCDList[i];
-		# if options.allBkgs or options.zvvOnly: srobs += ZvvYieldsInSignalRegion[i];
-		# if options.allBkgs or options.llpOnly: srobs += signalRegion_LLList[i];
-		# if options.allBkgs or options.tauOnly: srobs += signalRegion_tauList[i];
+		#srobs = 0;
+		#srobs += signalRegion_sigList[i]*signalmu;
+		#if options.allBkgs or options.qcdOnly: srobs += NCRForLowdphiRegion_QCDList[i]*ratiosForLowdphiRegion[i]
+		#if options.allBkgs or options.qcdOnly: srobs += NSRForSignalRegion_QCDList[i];
+		#if options.allBkgs or options.zvvOnly: srobs += ZvvYieldsInSignalRegion[i];
+		#if options.allBkgs or options.llpOnly: srobs += signalRegion_LLList[i];
+		#if options.allBkgs or options.tauOnly: srobs += signalRegion_tauList[i];
 		signalRegion_Obs.append( srobs );
 
 		tmpList = [];
@@ -410,7 +410,7 @@ if __name__ == '__main__':
 
 		# LL rate
 		
-		if options.allBkgs or options.llpOnly:		
+		if options.allBkgs or options.llpOnly or (options.tauOnly and  options.llpOnly):		
 			# addControl=[]	
 			#if(signalRegion_CSList[i]>=2):
 			tmpList.append(signalRegion_LLList[i]);
@@ -419,11 +419,11 @@ if __name__ == '__main__':
 			if(signalRegion_CSList[i]>=2):
 				tmpList.append(0.0)
 			if(signalRegion_CSList[i]==1):
-				tmpList.append(signalRegion_MCWeightList[i]*3)
+				tmpList.append(signalRegion_MCWeightList[i]*3.0)
 			if(signalRegion_CSList[i]<1):
-				tmpList.append(signalRegion_MCWeightList[i]*3)
+				tmpList.append(signalRegion_MCWeightList[i]*3.0)
 		# Had Tau rate
-		if options.allBkgs or options.tauOnly: 
+		if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly): 
 				tmpList.append(signalRegion_tauList[i])
 				tmpList.append(0.25);
 		if options.allBkgs or options.zvvOnly: tmpList.append( ZvvRatesInSignalRegion[i]) ;
@@ -498,7 +498,7 @@ if __name__ == '__main__':
 
 
 	### LL uncertainties ------------------------------------------------------------------------------
-	if options.allBkgs or options.llpOnly:
+	if options.allBkgs or options.llpOnly or (options.tauOnly and  options.llpOnly):
 		for i in range(signalRegion.GetNbins()):
 			if(signalRegion_CSList[i]>2):
 				signalRegion.addAsymSystematic("LLNonClos"+tagsForSignalRegion[i],'lnN',['WTopSL'],(LLSysNCUp[i]), (LLSysNCDown[i]),'', i)
@@ -541,55 +541,34 @@ if __name__ == '__main__':
 			for m in range(len(MHTBins)):
 			   signalRegion.addAsymSystematic("LLPurity_"+str(MHTBins[m])+"_"+str(NJbinsLLPur[j]),'lnN',['WTopSL'],LLSysPurUp,LLSysPurDown,str(NJbinsLLPur[j])+"_BTags._"+str(MHTBins[m])+"_HT.")
 	
-	if options.allBkgs or options.tauOnly or options.llpOnly:
+	if options.allBkgs or options.tauOnly or options.llpOnly or (options.tauOnly and  options.llpOnly):
 		for i in range(signalRegion.GetNbins()):
 			if(signalRegion_CSList[i]<2):
 				if options.allBkgs : 
 					signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],100,'',i);
 					signalRegion.addSingleSystematic('TAUSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-				if options.tauOnly : signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-				if options.llpOnly : signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],100,'',i);
+				if options.tauOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
+				if options.llpOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],100,'',i);
 			else: 
-				if options.allBkgs or options.tauOnly: signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
+				if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
 				if options.allBkgs: 
 					signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], LLSumW2errors[i], 1+(tauSqrtSumW2[i]/signalRegion_tauList[i]), '',i)			
-				if options.llpOnly:
+				if options.llpOnly and not (options.tauOnly and  options.llpOnly):
 					signalRegion.addSingleSystematic('LLSumWError'+tagsForSignalRegion[i], 'lnN', ['WTopSL'], LLSumW2errors[i], '',i)		
 
 		for i in range(SLcontrolRegion.GetNbins()):
-			if options.allBkgs: 
+			if options.allBkgs or (options.tauOnly and  options.llpOnly): 
 				if(signalRegion_CSList[i]<2): 
 					SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopSLHighW'],100,'',i);
 					SLcontrolRegion.addSingleSystematic('TAUSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
 				else: SLcontrolRegion.addSingleSystematic('TAUSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-			if options.tauOnly:
+			if options.tauOnly and not (options.tauOnly and  options.llpOnly):
 				SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-			if options.llpOnly:
+			if options.llpOnly and not (options.tauOnly and  options.llpOnly):
 				SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopSLHighW'],100,'',i);		
 
-		# for i in range(signalRegion.GetNbins()):
-		# 	if(signalRegion_CSList[i]<2):
-		# 		if options.allBkgs : signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW','WTopSLHighW'],100,'',i);
-		# 		if options.tauOnly : signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-		# 		if options.llpOnly : signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],100,'',i);
-		# 	else: 
-		# 		if options.allBkgs or options.tauOnly: signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-		# 		if options.allBkgs: 
-		# 			signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], LLSumW2errors[i], 1+(tauSqrtSumW2[i]/signalRegion_tauList[i]), '',i)			
-		# 		if options.llpOnly:
-		# 			signalRegion.addSingleSystematic('LLSumWError'+tagsForSignalRegion[i], 'lnN', ['WTopSL'], LLSumW2errors[i], '',i)		
-
-		# for i in range(SLcontrolRegion.GetNbins()):
-		# 	if options.allBkgs: 
-		# 		if(signalRegion_CSList[i]<2): SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopSLHighW','WTopHadHighW'],100,'',i);
-		# 		else: SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-		# 	if options.tauOnly:
-		# 		SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-		# 	if options.llpOnly:
-		# 		SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopSLHighW'],100,'',i);		
-
 	### hadtau uncertainties ------------------------------------------------------------------------------
-	if options.allBkgs or options.tauOnly:
+	if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly):
 		for i in range(signalRegion.GetNbins()):
 			njetTag = tagsForSignalRegion[i].split('_')[0];
 			tauNonClosureJet0[i]=1.0+tauNonClosureJet0[i];
@@ -655,7 +634,7 @@ if __name__ == '__main__':
 	# #------------------------------------------------------------------------------------------------
 	# ## 3. Write Cards
 	signalRegion.writeCards( odir );
-	if options.allBkgs or options.llpOnly or options.tauOnly: SLcontrolRegion.writeCards( odir );
+	if options.allBkgs or options.llpOnly or  (options.tauOnly and  options.llpOnly) or options.tauOnly: SLcontrolRegion.writeCards( odir );
 	# if options.allBkgs or options.tauOnly: HadcontrolRegion.writeCards( odir );
 	if options.allBkgs or options.zvvOnly: sphotonRegion.writeCards( odir );
 	if options.allBkgs or options.qcdOnly: LowdphiControlRegion.writeCards( odir );

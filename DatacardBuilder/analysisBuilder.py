@@ -55,21 +55,23 @@ if __name__ == '__main__':
 	signals = ['SMSqqqq1400','SMSqqqq1000','SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']
 	#signals = ['SMSqqqq1400']
 	#signals = ['SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']	
-	# signals = ['SMSbbbb1500']
+	#signals = ['SMSbbbb1000']
 	#mus = [0.0,0.5,1.0 ,1.5, 2.0, 2.5, 3.0,3.5, 4.0,4.5, 5.0];
 	#mus = [10000.0];
 	mus=[1.0]
 	#lumis = [3.0,10.0];
 	lumis = [225];
 
-	#variations = ['allBkgs','qcdOnly','zvvOnly','llpOnly','tauOnly','allNoqcd','allNozvv','allNollp','allNotau','onlyLep','allNolep']
+	variations = ['allBkgs','qcdOnly','zvvOnly','llpOnly','tauOnly','allNoqcd','allNozvv','allNollp','allNotau','onlyLep','allNolep']
 	#variations = ['allBkgs','onlyLep','allNolep']
 	# variations = ['allBkgs','allNoqcd','allNozvv','allNollp','allNotau']
-	# variations = ['qcdOnly' ]
-	variations = ['allBkgs']
+	#variations=['allNoqcd','allNozvv','allNollp','allNotau','onlyLep','allNolep']
+	#variations = ['qcdOnly' ]
+	#variations = ['allBkgs']
+	#variations=['allNozvv']
 	# variations=['onlyLep']
-	#variations=['tauOnly','llpOnly']
-	# variations=['allBkgs']
+	#variations=['tauOnly']
+	#variations=['allBkgs']
 	identifiers = [];
 	limits = [];
 	fittedMus = [];
@@ -103,8 +105,8 @@ if __name__ == '__main__':
 					dicttag = "%s_%s_%.1f" % (tag,sig,lumi);
 
 					identifiers.append( dicttag );
-					significances.append( getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,sig,lumi,mu) ) );
-					limits.append( getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,sig,lumi,mu) ) );
+					#significances.append( getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,sig,lumi,mu) ) );
+					#limits.append( getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,sig,lumi,mu) ) );
 					#fittedMus.append( getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,sig,lumi,mu) ) );
 					# significances.append( 0. );
 					# limits.append( 0. );
