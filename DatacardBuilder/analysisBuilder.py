@@ -52,17 +52,17 @@ def getSignif(fn):
 #########################################################################################################
 if __name__ == '__main__':
 	
-	signals = ['SMSqqqq1400','SMSqqqq1000','SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']
+	#signals = ['SMSqqqq1400','SMSqqqq1000']
 	#signals = ['SMSqqqq1400']
 	#signals = ['SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']	
-	#signals = ['SMSbbbb1000']
-	#mus = [0.0,0.5,1.0 ,1.5, 2.0, 2.5, 3.0,3.5, 4.0,4.5, 5.0];
+	signals = ['SMSbbbb1000']
+	mus = [0.0,0.5,1.0 ,1.5, 2.0, 2.5, 3.0,3.5, 4.0,4.5, 5.0];
 	#mus = [10000.0];
-	mus=[1.0]
+	#mus=[1.0]
 	#lumis = [3.0,10.0];
 	lumis = [225];
 
-	#variations = ['allBkgs','qcdOnly','zvvOnly','llpOnly','tauOnly','allNoqcd','allNozvv','allNollp','allNotau','onlyLep','allNolep']
+	variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
 	#variations = ['allNotau','llpOnly', 'tauOnly']
 	# variations = ['allBkgs','allNoqcd','allNozvv','allNollp','allNotau']
 	#variations=['allNoqcd','allNozvv','allNollp','allNotau','onlyLep','allNolep']
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 	#variations=['allNozvv']
 	# variations=['onlyLep']
 	#variations=['tauOnly']
-	variations=['allBkgs']
+	#variations=['allBkgs']
 	identifiers = [];
 	limits = [];
 	fittedMus = [];
@@ -106,18 +106,18 @@ if __name__ == '__main__':
 					dicttag = "%s_%s_%.1f" % (tag,sig,lumi);
 
 					identifiers.append( dicttag );
-					significances.append( getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,sig,lumi,mu) ) );
-					limits.append( getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,sig,lumi,mu) ) );
-					#fittedMus.append( getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,sig,lumi,mu) ) );
+					#significances.append( getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,sig,lumi,mu) ) );
+					#limits.append( getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,sig,lumi,mu) ) );
+					fittedMus.append( getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,sig,lumi,mu) ) );
 					# significances.append( 0. );
 					# limits.append( 0. );
-					# fittedMus.append( [0.,0.,0.] );
-					#injectedMus.append( mu );
+					#fittedMus.append( [0.,0.,0.] );
+					injectedMus.append( mu );
 
 	for i in range(len(identifiers)):
 		splitid = identifiers[i].split('_');
-		#print splitid[0],splitid[1],splitid[2],round(significances[i],4),round(limits[i],4),round(fittedMus[i][0],4),round(injectedMus[i],4);
-		print splitid[0],splitid[1],splitid[2],round(significances[i],4),round(limits[i],4)
+		print splitid[0],splitid[1],splitid[2],round(fittedMus[i][0],4),round(injectedMus[i],4);
+		#print splitid[0],splitid[1],splitid[2],round(injectedMus[i][0],4),round(injectedMus[i],4)
 
 
 
