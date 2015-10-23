@@ -396,7 +396,7 @@ if __name__ == '__main__':
 
 	for i in range(signalRegion._nBins):
 		srobs = Data_List[i];
-		srobs = 0;
+		#srobs = 0;
 		#srobs += signalRegion_sigList[i]*signalmu;
 		#if options.allBkgs or options.qcdOnly: srobs += NCRForLowdphiRegion_QCDList[i]*ratiosForLowdphiRegion[i]
 		#if options.allBkgs or options.qcdOnly: srobs += NSRForSignalRegion_QCDList[i];
