@@ -397,12 +397,12 @@ if __name__ == '__main__':
 	for i in range(signalRegion._nBins):
 		srobs = Data_List[i];
 		srobs = 0;
-		srobs += signalRegion_sigList[i]*signalmu;
+		#srobs += signalRegion_sigList[i]*signalmu;
 		#if options.allBkgs or options.qcdOnly: srobs += NCRForLowdphiRegion_QCDList[i]*ratiosForLowdphiRegion[i]
-		if options.allBkgs or options.qcdOnly: srobs += NSRForSignalRegion_QCDList[i];
-		if options.allBkgs or options.zvvOnly: srobs += ZvvYieldsInSignalRegion[i];
-		if options.allBkgs or options.llpOnly: srobs += signalRegion_LLList[i];
-		if options.allBkgs or options.tauOnly: srobs += signalRegion_tauList[i];
+		#if options.allBkgs or options.qcdOnly: srobs += NSRForSignalRegion_QCDList[i];
+		#if options.allBkgs or options.zvvOnly: srobs += ZvvYieldsInSignalRegion[i];
+		#if options.allBkgs or options.llpOnly: srobs += signalRegion_LLList[i];
+		#if options.allBkgs or options.tauOnly: srobs += signalRegion_tauList[i];
 		signalRegion_Obs.append( srobs );
 
 		tmpList = [];
