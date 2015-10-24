@@ -14,10 +14,6 @@ import ROOT
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option('-b', action='store_true', dest='noX', default=False, help='no X11 windows')
-parser.add_option("--bin", dest="bin", default = '71',help="analysis bin number", metavar="signal")
-parser.add_option("--runs", type="int", dest="runs", default = 1,help="analysis bin number", metavar="signal")
-parser.add_option("--toysPerRun", type="int", dest="toysPerRun", default = 10,help="analysis bin number", metavar="signal")
-parser.add_option("--lumi",type="int",dest="lumi", default = 225,help="mass of LSP", metavar="tag")
 
 (options, args) = parser.parse_args()
 
