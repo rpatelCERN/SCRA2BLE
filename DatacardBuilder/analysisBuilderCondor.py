@@ -1,8 +1,8 @@
 from ROOT import *
-
 import os
 import math
 import sys
+from array import array
 from searchRegion import *
 from singleBin import *
 
@@ -75,17 +75,22 @@ if __name__ == '__main__':
 	# variations=['onlyLep']
 	#variations=['tauOnly']
 	#variations=['allBkgs']
-	identifiers = [];
-	limits = [];
-	fittedMus = [];
-	injectedMus = [];
-	significances = [];
+
+	job_postfix = "%s_%s_%s" % (options.signal,options.mGo,options.mLSP);
+	fout = TFile("results_%s.root" % (job_postfix), "RECREATE");
+	tout = TTree("results","results");   
+	# identifier    = array( 'c', [ 'c' ] );  
+	identifier = std.string()
+	limit        = array( 'f', [ 0. ] );  
+	significance = array( 'f', [ 0. ] );  
+	fittedMu     = array( 'f', [ 0. ] );
+	tout.Branch('identifier',identifier);
+	tout.Branch("limit",limit,"limit/F");
+	tout.Branch("significance",significance,"significance/F");
+	tout.Branch("fittedMu",fittedMu,"fittedMu/F");
 
 	for lumi in lumis: 
-	#os.system("python QuickBias.py %d" %i)
-
 		print "=========>>> LUMI is ", lumi
-
 		for sig in signals:
 			for mu in mus:
 				for vary in variations: 
@@ -104,23 +109,37 @@ if __name__ == '__main__':
 					if vary == 'onlyLep': combOpt = '--tauOnly --llpOnly'
 
 					command = 'python buildCards-AllBkgsMassScan.py -b %s --signal  %s --tag %s --lumi %0.1f --mu %0.1f --mGo=%s --mLSP=%s' % (combOpt,options.signal,tag,lumi,mu, options.mGo, options.mLSP); os.system(command);
-					command = 'python combineAllCards.py -b --run --dir testCards-%s-%s-%0.1f-mu%0.1f' % (tag,sig,lumi,mu); os.system(command);
+					
+					the_odir = 'testCards-%s-%s-%0.1f-mu%0.1f' % (tag,sig,lumi,mu);
+					allcardnames = os.listdir(the_odir);
+					command = 'combineCards.py ';
+					for cn in allcardnames:
+						if 'card_' in cn: command += " " + the_odir+'/'+cn;
+					command += " > "+the_odir+'/allcards.txt'
+					os.system(command);
+					combine_cmmd = "text2workspace.py %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);
+					os.system(combine_cmmd);
+					
+					# run significance
+					#combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.root -n %s" % (the_odir,the_odir); os.system(combine_cmmd);
+					# run max likelihood fit
+					combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.root -n %s " % (the_odir,the_odir); os.system(combine_cmmd);
+					# run asymptotic
+					#combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); os.system(combine_cmmd);
 
 					dicttag = "%s_%s_%.1f" % (tag,sig,lumi);
 
-					identifiers.append( dicttag );
-					#significances.append( getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,sig,lumi,mu) ) );
-					#limits.append( getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,sig,lumi,mu) ) );
-					#fittedMus.append( getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,sig,lumi,mu) ) );
-					# significances.append( 0. );
-					# limits.append( 0. );
-					#fittedMus.append( [0.,0.,0.] );
-					injectedMus.append( mu );
+					identifier = dicttag;
+					fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,sig,lumi,mu) )[0];
+					significance[0] = -99.;
+					limit[0] = -99.;
+					tout.Fill();
+	fout.cd();
+	tout.Write();
+	fout.Close();
 
-	for i in range(len(identifiers)):
-		splitid = identifiers[i].split('_');
-		#print splitid[0],splitid[1],splitid[2],round(fittedMus[i][0],4),round(injectedMus[i],4);
-		#print splitid[0],splitid[1],splitid[2],round(injectedMus[i][0],4),round(injectedMus[i],4)
+
+
 
 
 
