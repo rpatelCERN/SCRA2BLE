@@ -6,8 +6,8 @@ from array import array
 import sys
 import time
 
-import ROOT
-
+#import ROOT
+from ROOT import *
 ############################################
 #            Job steering                  #
 ############################################
@@ -73,26 +73,36 @@ def condorize(command,tag,odir):
 
 if __name__ == '__main__':
 
-	outDir = "/store/user/ntran/SUSY/statInterp/scanOutput"
+	outDir = "/store/user/rgp230/SUSY/statInterp/scanOutput"
 
 	# tar it up for usage
 	os.system('tar -cvzf package.tar.gz *.py input*');
 
 
 	signals = ['T1bbbb'];
-	mGos  = [1200];
-	mLSPs = [1150];
+	f = TFile("inputHistograms/histograms_1p3fb/fastsimSignalScan/RA2bin_signal.root");
+	names = [k.GetName() for k in f.GetListOfKeys()]
+	mGos=[]
+	mLSPs=[]
+	for n in names:
+        	parse=n.split('_')
+       		mGos.append(int(parse[2]))
+	        mLSPs.append(int(parse[3]))
+
+	#mGos  = [1200];
+	#mLSPs = [1150];
+
 
 	for signal in signals:
-		for mGo in mGos:
-			for mLSP in mLSPs:
+		for m in range(len(mGos)):
+			#for mLSP in mLSPs:
 				command = "python analysisBuilderCondor.py -b ";
 				command += "--signal %s " % signal;
-				command += "--mGo %i " % mGo;
-				command += "--mLSP %i " % mLSP;
+				command += "--mGo %i " % mGos[m];
+				command += "--mLSP %i " % mLSPs[m];
 				print command;
 				# os.system( command );
-				tag = "%s_%i_%i" % (signal,mGo,mLSP);
+				tag = "%s_%i_%i" % (signal,mGos[m],mLSPs[m]);
 				condorize( command, tag, outDir );
 				time.sleep(0.1);
 	
