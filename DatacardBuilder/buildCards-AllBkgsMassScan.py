@@ -50,42 +50,96 @@ if __name__ == '__main__':
 	######################################################################
 	######################################################################
 
-	signaldirtag = idir;
-	if options.fastsim: signaldirtag += "/fastsimSignalScan";
-	signalSFB_file =TFile(idir+"/RA2bin_signal.root");
-	signalSysSFUp_file=TFile(idir+"/RA2bin_signal_btagCFuncUp.root");
-	signalSysSFDown_file=TFile(idir+"/RA2bin_signal_btagCFuncDown.root");
-	signalSysMisSFUp_file=TFile(idir+"/RA2bin_signal_mistagCFuncUp.root");
-	signalSysMisSFDown_file=TFile(idir+"/RA2bin_signal_mistagCFuncDown.root");
-
-	sphotonRegion_file = TFile(idir+"/RA2bin_GJet_CleanVars.root");
-
 	# --------------------------------------------
 	# signal 
+	signaldirtag = idir;
+	if options.fastsim: signaldirtag += "/fastsimSignalScan";
 	signaltag = "RA2bin_"+sms;
-	print signaltag
 	if options.fastsim: signaltag+="_fast"
+
+	signalSFB_file =TFile(idir+"/RA2bin_signal.root");
+
+	signalSysSFUp_file=TFile(idir+"/RA2bin_signal_btagSFuncUp.root");
+	signalSysSFDown_file=TFile(idir+"/RA2bin_signal_btagSFuncDown.root");
+	signalSysMisSFUp_file=TFile(idir+"/RA2bin_signal_mistagSFuncUp.root");
+	signalSysMisSFDown_file=TFile(idir+"/RA2bin_signal_mistagSFuncDown.root");
+	signalSysTrigSystUp_file=TFile(idir+"/RA2bin_signal_trigSystUncUp.root");
+	signalSysTrigSystDown_file=TFile(idir+"/RA2bin_signal_trigSystUncDown.root");
+	signalSysTrigStatUp_file=TFile(idir+"/RA2bin_signal_trigStatUncUp.root");
+	signalSysTrigStatDown_file=TFile(idir+"/RA2bin_signal_trigStatUncDown.root");
+
 	signalRegion_sigHist          = signalSFB_file.Get(signaltag);
+	tagsForSignalRegion = binLabelsToList(signalRegion_sigHist);
+
 	signalRegion_sigHistSFUp      = signalSysSFUp_file.Get(signaltag);
 	signalRegion_sigHistSFDown    = signalSysSFDown_file.Get(signaltag);
 	signalRegion_sigHistMisSFUp   = signalSysMisSFUp_file.Get(signaltag)
 	signalRegion_sigHistMisSFDown = signalSysMisSFDown_file.Get(signaltag)
+	signalRegion_sigHistTrigSystUp   = signalSysTrigSystUp_file.Get(signaltag)
+	signalRegion_sigHistTrigSystDown = signalSysTrigSystDown_file.Get(signaltag)
+	signalRegion_sigHistTrigStatUp   = signalSysTrigStatUp_file.Get(signaltag)
+	signalRegion_sigHistTrigStatDown = signalSysTrigStatDown_file.Get(signaltag)
 
 	signalRegion_sigHist.Scale(lumi/3.);
 	signalRegion_sigHistSFUp.Scale(lumi/3.);
 	signalRegion_sigHistSFDown.Scale(lumi/3.);
 	signalRegion_sigHistMisSFUp.Scale(lumi/3.);
 	signalRegion_sigHistMisSFDown.Scale(lumi/3.);
-	
-	tagsForSignalRegion = binLabelsToList(signalRegion_sigHist);
+	signalRegion_sigHistTrigSystUp.Scale(lumi/3.);
+	signalRegion_sigHistTrigSystDown.Scale(lumi/3.);
+	signalRegion_sigHistTrigStatUp.Scale(lumi/3.);  
+	signalRegion_sigHistTrigStatDown.Scale(lumi/3.);
+
 	signalRegion_sigList = binsToList( signalRegion_sigHist );
 	signalRegion_sigListSFUp=binsToList( signalRegion_sigHistSFUp );
 	signalRegion_sigListSFDown=binsToList( signalRegion_sigHistSFDown );
 	signalRegion_sigListMisSFUp=binsToList( signalRegion_sigHistMisSFUp );
 	signalRegion_sigListMisSFDown=binsToList( signalRegion_sigHistMisSFDown );
-	
+	signalRegion_sigListTrigSystUp=binsToList( signalRegion_sigHistTrigSystUp );
+	signalRegion_sigListTrigSystDown=binsToList( signalRegion_sigHistTrigSystDown );
+	signalRegion_sigListTrigStatUp=binsToList( signalRegion_sigHistTrigStatUp );  
+	signalRegion_sigListTrigStatDown=binsToList( signalRegion_sigHistTrigStatDown );
+
+	signalRegion_sigListbtagCFuncUp = [];
+	signalRegion_sigListbtagCFuncDown = [];
+	signalRegion_sigListctagCFuncUp = [];
+	signalRegion_sigListctagCFuncDown = [];
+	signalRegion_sigListmistagCFuncUp = [];
+	signalRegion_sigListmistagCFuncDown = [];
+
+	if options.fastsim:
+
+		signalSysbtagCFuncUp_file=TFile(idir+"/RA2bin_signal_btagCFuncUp.root");
+		signalSysbtagCFuncDown_file=TFile(idir+"/RA2bin_signal_btagCFuncDown.root");
+		signalSysctagCFuncUp_file=TFile(idir+"/RA2bin_signal_ctagCFuncUp.root");
+		signalSysctagCFuncDown_file=TFile(idir+"/RA2bin_signal_ctagCFuncDown.root");
+		signalSysmistagCFuncUp_file=TFile(idir+"/RA2bin_signal_mistagCFuncUp.root");
+		signalSysmistagCFuncDown_file=TFile(idir+"/RA2bin_signal_mistagCFuncDown.root");
+
+		signalRegion_sigHistbtagCFuncUp = signalSysbtagCFuncUp_file.Get(signaltag)
+		signalRegion_sigHistbtagCFuncUp.Scale(lumi/3.);
+		signalRegion_sigListbtagCFuncUp=binsToList( signalRegion_sigHistbtagCFuncUp );
+		signalRegion_sigHistctagCFuncUp = signalSysctagCFuncUp_file.Get(signaltag)
+		signalRegion_sigHistctagCFuncUp.Scale(lumi/3.);
+		signalRegion_sigListctagCFuncUp=binsToList( signalRegion_sigHistctagCFuncUp );
+		signalRegion_sigHistmistagCFuncUp = signalSysmistagCFuncUp_file.Get(signaltag)
+		signalRegion_sigHistmistagCFuncUp.Scale(lumi/3.);
+		signalRegion_sigListmistagCFuncUp=binsToList( signalRegion_sigHistmistagCFuncUp );	
+
+		signalRegion_sigHistbtagCFuncDown = signalSysbtagCFuncDown_file.Get(signaltag)
+		signalRegion_sigHistbtagCFuncDown.Scale(lumi/3.);
+		signalRegion_sigListbtagCFuncDown=binsToList( signalRegion_sigHistbtagCFuncDown );
+		signalRegion_sigHistctagCFuncDown = signalSysctagCFuncDown_file.Get(signaltag)
+		signalRegion_sigHistctagCFuncDown.Scale(lumi/3.);
+		signalRegion_sigListctagCFuncDown=binsToList( signalRegion_sigHistctagCFuncDown );
+		signalRegion_sigHistmistagCFuncDown = signalSysmistagCFuncDown_file.Get(signaltag)
+		signalRegion_sigHistmistagCFuncDown.Scale(lumi/3.);
+		signalRegion_sigListmistagCFuncDown=binsToList( signalRegion_sigHistmistagCFuncDown );	
+
 	# --------------------------------------------
 	# z invisible
+	sphotonRegion_file = TFile(idir+"/RA2bin_GJet_CleanVars.root");
+
 	DYinputfile = TFile(idir+"/ZinvHistos_%1.1fifb.root" %lumi)
 	signalRegion_zvvRatesFromDY = DYinputfile.Get("hDYvalue")
 	signalRegion_zvvList = binsToList( signalRegion_zvvRatesFromDY );
@@ -473,12 +527,16 @@ if __name__ == '__main__':
 
 	for i in range(signalRegion.GetNbins()):
 		if( signalRegion_sigList[i]>0.000001):
-			#signalRegion.addAsymSystematic('MisTagSFunc', 'lnN', ['sig'], signalRegion_sigListMisSFUp[i]/signalRegion_sigList[i], signalRegion_sigListMisSFDown[i]/signalRegion_sigList[i], '', i)
+			signalRegion.addAsymSystematic('MisTagSFunc', 'lnN', ['sig'], signalRegion_sigListMisSFUp[i]/signalRegion_sigList[i], signalRegion_sigListMisSFDown[i]/signalRegion_sigList[i], '', i)
 			signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], (signalRegion_sigListSFUp[i]/signalRegion_sigList[i]),signalRegion_sigListSFDown[i]/signalRegion_sigList[i],'', i)
-	#signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.15, 'BTags0')	
-	#signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.0, 'BTags1')
-	#signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.0, 'BTags2')
-	#signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 0.95, 'BTags3')
+	
+			signalRegion.addAsymSystematic('TrigSystunc', 'lnN', ['sig'], signalRegion_sigListTrigSystUp[i]/signalRegion_sigList[i], signalRegion_sigListTrigSystDown[i]/signalRegion_sigList[i], '', i)
+			signalRegion.addAsymSystematic('TrigStatUnc','lnN', ['sig'], (signalRegion_sigListTrigStatUp[i]/signalRegion_sigList[i]),signalRegion_sigListTrigStatDown[i]/signalRegion_sigList[i],'', i)
+
+			if options.fastsim:
+				signalRegion.addAsymSystematic('btagCFunc', 'lnN', ['sig'], signalRegion_sigListbtagCFuncUp[i]/signalRegion_sigList[i], signalRegion_sigListbtagCFuncDown[i]/signalRegion_sigList[i], '', i)
+				signalRegion.addAsymSystematic('ctagCFUnc','lnN', ['sig'], (signalRegion_sigListctagCFuncUp[i]/signalRegion_sigList[i]),signalRegion_sigListctagCFuncDown[i]/signalRegion_sigList[i],'', i)
+				signalRegion.addAsymSystematic('mistagCFUnc','lnN', ['sig'], (signalRegion_sigListmistagCFuncUp[i]/signalRegion_sigList[i]),signalRegion_sigListmistagCFuncDown[i]/signalRegion_sigList[i],'', i)
 
 	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.0, 'MHT0_HT0');
 	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT0_HT1');
