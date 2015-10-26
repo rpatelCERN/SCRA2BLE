@@ -56,13 +56,13 @@ if __name__ == '__main__':
 	#signals = ['SMSqqqq1400']
 	#signals = ['SMSbbbb1500','SMSbbbb1000','SMStttt1500','SMStttt1200']	
 	signals = ['SMSbbbb1000']
-	mus = [0.0,0.5,1.0 ,1.5, 2.0, 2.5, 3.0,3.5, 4.0,4.5, 5.0];
+	#mus = [0.0,0.5,1.0 ,1.5, 2.0, 2.5, 3.0,3.5, 4.0,4.5, 5.0];
 	#mus = [10000.0];
-	#mus=[1.0]
+	mus=[1.0]
 	#lumis = [3.0,10.0];
-	lumis = [225];
+	lumis = [1.3];
 
-	variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
+	#variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
 	#variations = ['allNotau','llpOnly', 'tauOnly']
 	# variations = ['allBkgs','allNoqcd','allNozvv','allNollp','allNotau']
 	#variations=['allNoqcd','allNozvv','allNollp','allNotau','onlyLep','allNolep']
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 	#variations=['allNozvv']
 	# variations=['onlyLep']
 	#variations=['tauOnly']
-	#variations=['allBkgs']
+	variations=['allBkgs']
 	identifiers = [];
 	limits = [];
 	fittedMus = [];
