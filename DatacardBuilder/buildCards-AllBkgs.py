@@ -272,11 +272,36 @@ if __name__ == '__main__':
 	# photon region
 
 	#sphoton observeds
-	sphotonObserved = [194,45,14,17,4,2,11,3,1,0,0,0,0,0,1,0,0,0]; # thess eventually will be histograms
-	RzgVals = [0.418,0.419,0.430,0.491,0.534,0.494,0.378,0.468,0.420,0.595,0.512,0.464,0.484,0.469,0.361,0.165,0.687,0.824];
-	RzgErrsAbs = [0.005,0.007,0.013,0.014,0.041,0.028,0.038,0.027,0.035,0.094,0.107,0.115,0.202,0.095,0.075,0.100,0.434,0.890];
-	PurVals = [0.790,0.823,0.808,0.833,0.874,0.759,0.790,0.721,0.874,0.759,0.759,0.759,0.759,0.759,0.874,0.759,0.759,0.759];	
-	PurErrsAbs = [0.047,0.050,0.049,0.052,0.058,0.045,0.047,0.045,0.058,0.045,0.045,0.045,0.045,0.045,0.058,0.045,0.045,0.045];
+	
+	GJet_Hist=DYinputfile.Get("hgJNobs")
+	GJet_Obs=binsToList(GJet_Hist)
+	ZgRatio_Hist=DYinputfile.Get("hgJZgR")	
+	ZgRatio_List=binsToList(ZgRatio_Hist)
+	ZgRatioErr_Hist=DYinputfile.Get("hgJZgRerr")
+	GJetPurErr_Hist=DYinputfile.Get("hgJPurErr")
+	ZgRatioErr_List=binsToList(ZgRatioErr_Hist)
+        GJetPurErr_List=binsToList(GJetPurErr_Hist)
+	GJetPur_Hist=DYinputfile.Get("hgJPur")	
+	GJetPur_List=binsToList(GJetPur_Hist)
+	
+	sphotonObserved=[]
+	RzgVals=[]
+	PurVals=[]
+	RzgErrsAbs=[]
+	PurErrsAbs=[]
+	for i in range(len(GJet_Obs)):
+		if(GJet_Obs[i]>-1):sphotonObserved.append(GJet_Obs[i])
+		if(ZgRatio_List[i]>-1):RzgVals.append(ZgRatio_List[i])
+		if(GJetPur_List[i]>-1):PurVals.append(GJetPur_List[i])
+		if(GJetPurErr_List[i]>-1):PurErrsAbs.append(GJetPurErr_List[i])
+		if(ZgRatioErr_List[i]>-1):RzgErrsAbs.append(ZgRatioErr_List[i])	
+	#sphotonObserved = [194,45,14,17,4,2,11,3,1,0,0,0,0,0,1,0,0,0]; # thess eventually will be histograms
+	#RzgVals = [0.418,0.419,0.430,0.491,0.534,0.494,0.378,0.468,0.420,0.595,0.512,0.464,0.484,0.469,0.361,0.165,0.687,0.824];
+
+	#RzgErrsAbs = [0.005,0.007,0.013,0.014,0.041,0.028,0.038,0.027,0.035,0.094,0.107,0.115,0.202,0.095,0.075,0.100,0.434,0.890];
+	#PurVals = [0.790,0.823,0.808,0.833,0.874,0.759,0.790,0.721,0.874,0.759,0.759,0.759,0.759,0.759,0.874,0.759,0.759,0.759];	
+	#PurErrsAbs = [0.047,0.050,0.049,0.052,0.058,0.045,0.047,0.045,0.058,0.045,0.045,0.045,0.045,0.045,0.058,0.045,0.045,0.045];
+	
 	RzgErrs = [];
 	PurErrs = [];
 	for i in range(len(RzgVals)): RzgErrs.append( RzgErrsAbs[i]/RzgVals[i] );
