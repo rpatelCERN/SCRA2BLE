@@ -414,6 +414,9 @@ if __name__ == '__main__':
 		if options.allBkgs or options.tauOnly: srobs += signalRegion_tauList[i];
 		signalRegion_Obs.append( srobs );
 
+		print "bin {0:2}: {1:6.2f} {2:6.2f} ||| {3:6.2f} {4:6.2f} {5:6.2f} {6:6.2f}".format(i,signalRegion_sigList[i]*signalmu,srobs-signalRegion_sigList[i]*signalmu,NSRForSignalRegion_QCDList[i],ZvvYieldsInSignalRegion[i],signalRegion_LLList[i],signalRegion_tauList[i]),
+		print " ---", tagsForSignalRegion[i]
+
 		tmpList = [];
 		tmpList.append(signalRegion_sigList[i]);
 
