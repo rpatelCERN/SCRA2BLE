@@ -479,7 +479,7 @@ if __name__ == '__main__':
 
 	for i in range(signalRegion.GetNbins()):
 		if( signalRegion_sigList[i]>0.000001):
-			signalRegion.addAsymSystematic('MisTagSFunc', 'lnN', ['sig'], signalRegion_sigListMisSFUp[i]/signalRegion_sigList[i], signalRegion_sigListMisSFDown[i]/signalRegion_sigList[i], '', i)
+			#signalRegion.addAsymSystematic('MisTagSFunc', 'lnN', ['sig'], signalRegion_sigListMisSFUp[i]/signalRegion_sigList[i], signalRegion_sigListMisSFDown[i]/signalRegion_sigList[i], '', i)
 			signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], (signalRegion_sigListSFUp[i]/signalRegion_sigList[i]),signalRegion_sigListSFDown[i]/signalRegion_sigList[i],'', i)
 	#signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.15, 'BTags0')	
 	#signalRegion.addSingleSystematic('BTagSFUnc', 'lnN', ['sig'], 1.0, 'BTags1')
