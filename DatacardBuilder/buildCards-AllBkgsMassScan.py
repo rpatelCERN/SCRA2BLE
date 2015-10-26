@@ -14,7 +14,7 @@ parser.add_option("--signal", dest="signal", default = 'SMSqqqq1000',help="mass 
 parser.add_option("--tag", dest="tag", default = 'SinglePhoton1',help="mass of LSP", metavar="tag")
 parser.add_option("--mu", dest="mu", default = 1.,help="mass of LSP", metavar="mu")
 parser.add_option("--lumi", dest="lumi", default = 10.,help="mass of LSP", metavar="lumi")
-parser.add_option('--fastsim', action='store_true', dest='qcdOnly', default=False, help='no X11 windows')
+parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='no X11 windows')
 
 parser.add_option('--qcdOnly', action='store_true', dest='qcdOnly', default=False, help='no X11 windows')
 parser.add_option('--zvvOnly', action='store_true', dest='zvvOnly', default=False, help='no X11 windows')
@@ -32,7 +32,8 @@ parser.add_option("--mLSP", dest="mLSP", default='900', help="Mass of LSP", meta
 #########################################################################################################
 if __name__ == '__main__':
 
-	sms = options.signal+'_'+options.mGo+'_'+options.mLSP;
+	sms = "SMS"+options.signal[2:]+options.mGo;
+	if options.fastsim: sms = options.signal+'_'+options.mGo+'_'+options.mLSP;
 	tag = options.tag;
 	lumi = float(options.lumi);
 	signalmu = float(options.mu);
@@ -51,17 +52,18 @@ if __name__ == '__main__':
 
 	signaldirtag = idir;
 	if options.fastsim: signaldirtag += "/fastsimSignalScan";
-	signalSFB_file =TFile(idir+"/fastsimSignalScan/RA2bin_signal.root");
-	signalSysSFUp_file=TFile(idir+"/fastsimSignalScan/RA2bin_signal_btagCFuncUp.root");
-	signalSysSFDown_file=TFile(idir+"/fastsimSignalScan/RA2bin_signal_btagCFuncDown.root");
-	signalSysMisSFUp_file=TFile(idir+"/fastsimSignalScan/RA2bin_signal_mistagCFuncUp.root");
-	signalSysMisSFDown_file=TFile(idir+"/fastsimSignalScan/RA2bin_signal_mistagCFuncDown.root");
+	signalSFB_file =TFile(idir+"/RA2bin_signal.root");
+	signalSysSFUp_file=TFile(idir+"/RA2bin_signal_btagCFuncUp.root");
+	signalSysSFDown_file=TFile(idir+"/RA2bin_signal_btagCFuncDown.root");
+	signalSysMisSFUp_file=TFile(idir+"/RA2bin_signal_mistagCFuncUp.root");
+	signalSysMisSFDown_file=TFile(idir+"/RA2bin_signal_mistagCFuncDown.root");
 
 	sphotonRegion_file = TFile(idir+"/RA2bin_GJet_CleanVars.root");
 
 	# --------------------------------------------
 	# signal 
 	signaltag = "RA2bin_"+sms;
+	print signaltag
 	if options.fastsim: signaltag+="_fast"
 	signalRegion_sigHist          = signalSFB_file.Get(signaltag);
 	signalRegion_sigHistSFUp      = signalSysSFUp_file.Get(signaltag);
