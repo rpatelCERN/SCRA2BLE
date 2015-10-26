@@ -27,9 +27,7 @@ parser.add_option("--mLSP", dest="mLSP", default='900', help="Mass of LSP", meta
 
 #########################################################################################################
 ## to do:
-## 1. put in asymmetric uncertainties from Jim/Arne(?)
-## 2. add the new uncertainty scheme from Owen
-## 3. try the hardcore QCD background estimate; also include lost lepton
+## .......
 #########################################################################################################
 if __name__ == '__main__':
 
@@ -44,32 +42,32 @@ if __name__ == '__main__':
 
 	print odir, signalmu
 
-	#------------------------------------------------------------------------------------------------
-	## 1. Fill Rates for each signal region
+	######################################################################
+	######################################################################
+	## 1. Get the input histograms from each of the background teams
+	######################################################################
+	######################################################################
 
-	# histogram gymnastics...
-	#signalRegion_file = TFile(idir+"/RA2bin_signal.root");
-	#data_file= TFile(idir+"/RA2bin_Data%spb.root" %(((lumi))));
-	#Data_Hist=data_file.Get("RA2bin_data")
-	#Data_List=binsToList(Data_Hist);
-	#signalSFB_file =TFile(idir+"/RA2bin_signal.root");
-	#signalSysSFUp_file=TFile(idir+"/RA2bin_signal_btagSFuncUp.root");
-	#signalSysSFDown_file=TFile(idir+"/RA2bin_signal_btagSFuncDown.root");
-	#signalSysMisSFUp_file=TFile(idir+"/RA2bin_signal_mistagSFuncUp.root");
-	#signalSysMisSFDown_file=TFile(idir+"/RA2bin_signal_mistagSFuncDown.root");
-	signalSFB_file =TFile(idir+"/fastsimSignalScan/"+"/RA2bin_signal.root");
+	signaldirtag = idir;
+	if options.fastsim: signaldirtag += "/fastsimSignalScan";
+	signalSFB_file =TFile(idir+"/fastsimSignalScan/RA2bin_signal.root");
 	signalSysSFUp_file=TFile(idir+"/fastsimSignalScan/RA2bin_signal_btagCFuncUp.root");
 	signalSysSFDown_file=TFile(idir+"/fastsimSignalScan/RA2bin_signal_btagCFuncDown.root");
 	signalSysMisSFUp_file=TFile(idir+"/fastsimSignalScan/RA2bin_signal_mistagCFuncUp.root");
 	signalSysMisSFDown_file=TFile(idir+"/fastsimSignalScan/RA2bin_signal_mistagCFuncDown.root");
-
+	
 	sphotonRegion_file = TFile(idir+"/RA2bin_GJet_CleanVars.root");
-	# signal --------
-	signalRegion_sigHist = signalSFB_file.Get("RA2bin_"+sms+"_fast");
-	signalRegion_sigHistSFUp= signalSysSFUp_file.Get("RA2bin_"+sms+"_fast");
-	signalRegion_sigHistSFDown= signalSysSFDown_file.Get("RA2bin_"+sms+"_fast");
-	signalRegion_sigHistMisSFUp = signalSysMisSFUp_file.Get("RA2bin_"+sms+"_fast")
-	signalRegion_sigHistMisSFDown = signalSysMisSFDown_file.Get("RA2bin_"+sms+"_fast")
+
+	# --------------------------------------------
+	# signal 
+	signaltag = "RA2bin_"+sms;
+	if options.fastsim: signaltag+="_fast"
+	signalRegion_sigHist          = signalSFB_file.Get(signaltag);
+	signalRegion_sigHistSFUp      = signalSysSFUp_file.Get(signaltag);
+	signalRegion_sigHistSFDown    = signalSysSFDown_file.Get(signaltag);
+	signalRegion_sigHistMisSFUp   = signalSysMisSFUp_file.Get(signaltag)
+	signalRegion_sigHistMisSFDown = signalSysMisSFDown_file.Get(signaltag)
+
 	signalRegion_sigHist.Scale(lumi/3.);
 	signalRegion_sigHistSFUp.Scale(lumi/3.);
 	signalRegion_sigHistSFDown.Scale(lumi/3.);
@@ -82,16 +80,15 @@ if __name__ == '__main__':
 	signalRegion_sigListSFDown=binsToList( signalRegion_sigHistSFDown );
 	signalRegion_sigListMisSFUp=binsToList( signalRegion_sigHistMisSFUp );
 	signalRegion_sigListMisSFDown=binsToList( signalRegion_sigHistMisSFDown );
-	# zinv --------
-	# zinv_sr = signalRegion_file.Get("RA2bin_Zinv");
-	# gjet_cr = sphotonRegion_file.Get("RA2bin_GJet");
-	# h_newZinvSRYields = hutil_clone0BtoNB( zinv_sr );
-	# signalRegion_zvvList = binsToList( h_newZinvSRYields );
+	
+	# --------------------------------------------
+	# z invisible
 	DYinputfile = TFile(idir+"/ZinvHistos_%1.1fifb.root" %lumi)
 	signalRegion_zvvRatesFromDY = DYinputfile.Get("hDYvalue")
 	signalRegion_zvvList = binsToList( signalRegion_zvvRatesFromDY );
 
-	# ll --------
+	# --------------------------------------------
+	# lost lepton
 	LL_file = TFile(idir+"/LLPrediction_%1.1fifb.root" %lumi);
 	LLPrediction_Hist=LL_file.Get("Prediction_data/totalPred_LL");
 	LLCS_Hist=LL_file.Get("Prediction_data/totalCS_LL");
@@ -123,7 +120,6 @@ if __name__ == '__main__':
 	LLSysElecAccDown_Hist=LL_file.Get("Prediction_data/totalPredElecAccSysDown_LL")
 	LLSysNCUp_Hist=LL_file.Get("Prediction_data/totalPredNonClosureUp_LL")
 	LLSysNCDown_Hist=LL_file.Get("Prediction_data/totalPredNonClosureDown_LL")
-
 
 	signalRegion_LLList = binsToList( LLPrediction_Hist );
 	signalRegion_WeightList=binsToList(LLWeight_Hist);
@@ -187,13 +183,14 @@ if __name__ == '__main__':
 			LLSumW2errors.append(1.0+multError);
 		else: LLSumW2errors.append(1.0)
 
-	
+	# --------------------------------------------
+	# hadronic tau
 	HadTau_file = TFile(idir+"/HadTauEstimation_data_%1.1fifb.root" % ((lumi)) );
-        HadTauSumw_file=TFile(idir+"/HadTauSumWError%1.1fifb.root" %lumi)	
+	HadTauSumw_file=TFile(idir+"/HadTauSumWError%1.1fifb.root" %lumi)	
 	HadTauPrediction_Hist=HadTau_file.Get("searchBin_nominal")
 	HadTauSqrtSumw2_Hist=HadTauSumw_file.Get("SqrtSumW2")
 	##HadTauBMistagUp_Hist=HadTau_file.Get("searchBin_BMistagUp")	
-#	HadTauBMistagDown_Hist=HadTau_file.Get("searchBin_BMistagDn")
+	#HadTauBMistagDown_Hist=HadTau_file.Get("searchBin_BMistagDn")
 	HadTauSysNC_Hist=HadTau_file.Get("searchBin_closureUncertainty")
 	#HadTauSysNC0b_Hist=HadTau_file.Get("hPredHTMHT0b_nominal")	
 	#HadTauSysNCNb_Hist=HadTau_file.Get("hPredHTMHTwb_nominal")	
@@ -213,25 +210,12 @@ if __name__ == '__main__':
 	#tauUncCorr=binsToList(HadTauSysUncCorrections_Hist)
 	# print  "./inputsLostLepton/statunc%sfb.txt" % (str(int(lumi)))
 	
-	#signalRegion_statUncList = textToList( "./inputsLostLepton/statunc%sfb.txt" % (str(int(lumi))), 0 );
-	#signalRegion_sysUncList = textToList( "./inputsLostLepton/sysunc%sfb.txt" % (str(int(lumi))), 0 );
-
-	# had tau
-#	signalRegion_tauList = textToList( "inputsHadTau/HadTauMCPred%sfb.txt" % (str(int(lumi))), 0 );
-	
-	#hadtauSystematics = textToList( "inputsHadTau/HadTauSumw2.txt", 0 )
-	#controlRegion_tauList = textToList( "inputsHadTau/TauControlBins%sfb.txt" % (str(int(lumi))), 0 );
-	#for i in range(len(controlRegion_tauList)):
-	#	if(controlRegion_tauList[i]<2):print controlRegion_tauList[i]
-	
-	# QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
-	# QCD stuff
-	# low dphi region stuff
+	# --------------------------------------------
+	# QCD, low delta phi
 
 	ratesForSignalRegion_QCDList = [];
 	print idir+"qcd-bg-combine-input-%1.1fifb.txt" %lumi
 	NSRForSignalRegion_QCDList = textToList(idir+"/qcd-bg-combine-input-%1.1fifb.txt" %(lumi),6);
-	#print NSRForSignalRegion_QCDList
 	ratesForLowdphiRegion_QCDList = [];
 	NCRForLowdphiRegion_QCDList = textToList(idir+"/qcd-bg-combine-input-%1.1fifb.txt" %(lumi),2);
 	obsForLowdphiRegion_QCDList = [];
@@ -255,6 +239,14 @@ if __name__ == '__main__':
 			ratesForSignalRegion_QCDList.append(ratiosForLowdphiRegion[i]);
 		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] );
 
+	######################################################################
+	######################################################################
+	## 2. Build the control regions and the signal regions
+	######################################################################
+	######################################################################
+
+	# --------------------------------------------
+	# QCD, low delta phi
 	LowdphiControlRegion = searchRegion('Lowdphi', QCDcontributionsPerBin, tagsForLowDPhiRegion);	
 	qcdcontrolRegion_Rates = [];
 	qcdcontrollRegion_Observed = [];
@@ -273,12 +265,9 @@ if __name__ == '__main__':
 	LowdphiControlRegion.setObservedManually(qcdcontrollRegion_Observed);
 	LowdphiControlRegion.writeRates();
 
-	# QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
+	# --------------------------------------------
+	# single photon control regions
 
-	# photon region
-
-	#sphoton observeds
-	
 	GJet_Hist=DYinputfile.Get("hgJNobs")
 	GJet_Obs=binsToList(GJet_Hist)
 	ZgRatio_Hist=DYinputfile.Get("hgJZgR")	
@@ -301,12 +290,6 @@ if __name__ == '__main__':
 		if(GJetPur_List[i]>-1):PurVals.append(GJetPur_List[i])
 		if(GJetPurErr_List[i]>-1):PurErrsAbs.append(GJetPurErr_List[i])
 		if(ZgRatioErr_List[i]>-1):RzgErrsAbs.append(ZgRatioErr_List[i])	
-	#sphotonObserved = [194,45,14,17,4,2,11,3,1,0,0,0,0,0,1,0,0,0]; # thess eventually will be histograms
-	#RzgVals = [0.418,0.419,0.430,0.491,0.534,0.494,0.378,0.468,0.420,0.595,0.512,0.464,0.484,0.469,0.361,0.165,0.687,0.824];
-
-	#RzgErrsAbs = [0.005,0.007,0.013,0.014,0.041,0.028,0.038,0.027,0.035,0.094,0.107,0.115,0.202,0.095,0.075,0.100,0.434,0.890];
-	#PurVals = [0.790,0.823,0.808,0.833,0.874,0.759,0.790,0.721,0.874,0.759,0.759,0.759,0.759,0.759,0.874,0.759,0.759,0.759];	
-	#PurErrsAbs = [0.047,0.050,0.049,0.052,0.058,0.045,0.047,0.045,0.058,0.045,0.045,0.045,0.045,0.045,0.058,0.045,0.045,0.045];
 	
 	RzgErrs = [];
 	PurErrs = [];
@@ -332,7 +315,7 @@ if __name__ == '__main__':
 			phoRegion_Rates.append( tmpList );
 	sphotonRegion.fillRates( phoRegion_Rates );
 	sphotonRegion.setObservedManually(sphotonObserved);
-   #compute the Zvv actual yields to be put in the observed lines
+   	#compute the Zvv actual yields to be put in the observed lines
 	sphotonObservedExt = [];
 	RzgValsExt = [];
 	PurValsExt = [];
@@ -351,8 +334,9 @@ if __name__ == '__main__':
 
 	#print ZvvYieldsInSignalRegion
 
-	# QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
-	# accounting for LL Region
+	# --------------------------------------------
+	# lost lepton and had tau control regions
+
 	tagsForSLControlRegion=[]	
 	tagsForHadControlRegion=[]
 	SLcontrolContributionsPerBin = [];
@@ -395,8 +379,10 @@ if __name__ == '__main__':
 	#print len(SLcontrolRegion_Rates), len(SLcontrolRegion_Obs)
 	SLcontrolRegion.fillRates(SLcontrolRegion_Rates);
 	SLcontrolRegion.setObservedManually(SLcontrolRegion_Obs);
-	# -------------------------------
-	# signal region
+
+	# --------------------------------------------
+	# signal regions
+
 	contributionsPerBin = [];
 	for i in range(len(tagsForSignalRegion)): 
 		tmpcontributions = [];
@@ -457,11 +443,13 @@ if __name__ == '__main__':
 	sphotonRegion.writeRates();
 	signalRegion.writeRates();
 
-	# #------------------------------------------------------------------------------------------------
-	# #------------------------------------------------------------------------------------------------
-	# #------------------------------------------------------------------------------------------------
-	# #------------------------------------------------------------------------------------------------
-	# ## 2. Add systematics
+	######################################################################
+	######################################################################
+	# 3. Add all the systematics!
+	######################################################################
+	######################################################################
+
+
 	# ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
 	pdf=1.3
 	ISR=1.01
@@ -651,8 +639,12 @@ if __name__ == '__main__':
 			if(ListOfQCDSysK9[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ4",'lnN','qcd',float(ListOfQCDSysK9[i]),'',i);
 			if(ListOfQCDSysK10[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ5",'lnN','qcd',float(ListOfQCDSysK10[i]),'',i);
 
-	# #------------------------------------------------------------------------------------------------
-	# ## 3. Write Cards
+	######################################################################
+	######################################################################
+	# 4. Write Cards
+	######################################################################
+	######################################################################	
+
 	signalRegion.writeCards( odir );
 	if options.allBkgs or options.llpOnly or  (options.tauOnly and  options.llpOnly) or options.tauOnly: SLcontrolRegion.writeCards( odir );
 	# if options.allBkgs or options.tauOnly: HadcontrolRegion.writeCards( odir );
