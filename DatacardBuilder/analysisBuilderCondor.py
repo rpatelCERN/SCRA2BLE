@@ -61,7 +61,7 @@ if __name__ == '__main__':
 	signals = [signalmodel]
 	#mus = [0.0,0.5,1.0 ,1.5, 2.0, 2.5, 3.0,3.5, 4.0,4.5, 5.0];
 	#mus = [10000.0];
-	mus=[0.0]
+	mus=[1.0]
 	#lumis = [3.0,10.0];
 	lumis = [1.3];
 
@@ -106,7 +106,7 @@ if __name__ == '__main__':
 					if vary == 'allNollp': combOpt = '--tauOnly --zvvOnly --qcdOnly'
 					if vary == 'allNotau': combOpt = '--qcdOnly --zvvOnly --llpOnly'
 					if vary == 'allNolep': combOpt = '--qcdOnly --zvvOnly'
-					if vary == 'onlyLep': combOpt = '--tauOnly --llpOnly'
+					if vary == 'onlyLep':  combOpt = '--tauOnly --llpOnly'
 
 					command = 'python buildCards-AllBkgsMassScanNew.py -b %s --signal  %s --tag %s --lumi %0.1f --mu %0.1f --mGo=%s --mLSP=%s' % (combOpt,options.signal,tag,lumi,mu, options.mGo, options.mLSP); os.system(command);
 					
