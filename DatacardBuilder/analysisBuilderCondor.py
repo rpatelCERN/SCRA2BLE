@@ -63,7 +63,7 @@ if __name__ == '__main__':
 	#mus = [10000.0];
 	mus=[0.0]
 	#lumis = [3.0,10.0];
-	lumis = [225];
+	lumis = [1.3];
 
 	#variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
 	#variations = ['allNotau','llpOnly', 'tauOnly']
@@ -108,9 +108,9 @@ if __name__ == '__main__':
 					if vary == 'allNolep': combOpt = '--qcdOnly --zvvOnly'
 					if vary == 'onlyLep': combOpt = '--tauOnly --llpOnly'
 
-					command = 'python buildCards-AllBkgsMassScan.py -b %s --signal  %s --tag %s --lumi %0.1f --mu %0.1f --mGo=%s --mLSP=%s' % (combOpt,options.signal,tag,lumi,mu, options.mGo, options.mLSP); os.system(command);
+					command = 'python buildCards-AllBkgsMassScanNew.py -b %s --signal  %s --tag %s --lumi %0.1f --mu %0.1f --mGo=%s --mLSP=%s' % (combOpt,options.signal,tag,lumi,mu, options.mGo, options.mLSP); os.system(command);
 					
-					the_odir = 'testCards-%s-%s-%0.1f-mu%0.1f' % (tag,sig,lumi,mu);
+					the_odir = 'testCards-%s-%s_%s_%s-%1.1f-mu%0.1f' % (tag,options.signal,options.mGo, options.mLSP, lumi,mu);
 					allcardnames = os.listdir(the_odir);
 					command = 'combineCards.py ';
 					for cn in allcardnames:
@@ -121,18 +121,21 @@ if __name__ == '__main__':
 					os.system(combine_cmmd);
 					
 					# run significance
-					#combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.root -n %s" % (the_odir,the_odir); os.system(combine_cmmd);
+					combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.root -n %s" % (the_odir,the_odir); os.system(combine_cmmd);
 					# run max likelihood fit
-					combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.root -n %s " % (the_odir,the_odir); os.system(combine_cmmd);
+					combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.root -n %s " % (the_odir,the_odir); 
+					os.system(combine_cmmd);
 					# run asymptotic
-					#combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); os.system(combine_cmmd);
+					combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); os.system(combine_cmmd);
 
 					dicttag = "%s_%s_%.1f" % (tag,sig,lumi);
 
 					identifier = dicttag;
-					fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,sig,lumi,mu) )[0];
-					significance[0] = -99.;
-					limit[0] = -99.;
+					fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s_%s_%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,options.signal, options.mGo, options.mLSP,lumi,mu) )[0];
+                                        significance[0]=getSignif( "higgsCombinetestCards-%s-%s_%s_%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,options.signal, options.mGo, options.mLSP,lumi,mu) ) ;
+                                        limit[0] = getLimit( "higgsCombinetestCards-%s-%s_%s_%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,options.signal, options.mGo, options.mLSP,lumi,mu) ) ;
+					#significance[0] = -99.;
+					#limit[0] = -99.;
 					tout.Fill();
 	fout.cd();
 	tout.Write();
