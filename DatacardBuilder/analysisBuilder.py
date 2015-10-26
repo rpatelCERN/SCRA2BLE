@@ -107,7 +107,7 @@ if __name__ == '__main__':
 					dicttag = "%s_%s_%.1f" % (tag,sig,lumi);
 
 					identifiers.append( dicttag );
-					significances.append( getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,sig,lumi,mu) ) );
+					#significances.append( getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,sig,lumi,mu) ) );
 					limits.append( getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,sig,lumi,mu) ) );
 					#fittedMus.append( getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,sig,lumi,mu) ) );
 					# significances.append( 0. );
@@ -117,7 +117,7 @@ if __name__ == '__main__':
 
 	for i in range(len(identifiers)):
 		splitid = identifiers[i].split('_');
-		print splitid[0],splitid[1],splitid[2],round(significances[i],4),round(limits[i],4)
+		print splitid[0],splitid[1],splitid[2],round(limits[i],4)
 		#print splitid[0],splitid[1],splitid[2],round(fittedMus[i][0],4),round(injectedMus[i],4);
 		#print splitid[0],splitid[1],splitid[2],round(injectedMus[i][0],4),round(injectedMus[i],4)
 
