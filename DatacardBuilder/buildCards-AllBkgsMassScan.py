@@ -14,6 +14,7 @@ parser.add_option("--signal", dest="signal", default = 'SMSqqqq1000',help="mass 
 parser.add_option("--tag", dest="tag", default = 'SinglePhoton1',help="mass of LSP", metavar="tag")
 parser.add_option("--mu", dest="mu", default = 1.,help="mass of LSP", metavar="mu")
 parser.add_option("--lumi", dest="lumi", default = 10.,help="mass of LSP", metavar="lumi")
+parser.add_option('--fastsim', action='store_true', dest='qcdOnly', default=False, help='no X11 windows')
 
 parser.add_option('--qcdOnly', action='store_true', dest='qcdOnly', default=False, help='no X11 windows')
 parser.add_option('--zvvOnly', action='store_true', dest='zvvOnly', default=False, help='no X11 windows')
@@ -55,7 +56,7 @@ if __name__ == '__main__':
 	signalSysSFDown_file=TFile(idir+"/fastsimSignalScan/RA2bin_signal_btagCFuncDown.root");
 	signalSysMisSFUp_file=TFile(idir+"/fastsimSignalScan/RA2bin_signal_mistagCFuncUp.root");
 	signalSysMisSFDown_file=TFile(idir+"/fastsimSignalScan/RA2bin_signal_mistagCFuncDown.root");
-	
+
 	sphotonRegion_file = TFile(idir+"/RA2bin_GJet_CleanVars.root");
 
 	# --------------------------------------------
