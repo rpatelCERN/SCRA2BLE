@@ -697,9 +697,9 @@ if __name__ == '__main__':
 		ListOfQCDSysK5 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),11)
 		ListOfQCDSysK6 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),12)
 		ListOfQCDSysK7 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),13)
-		ListOfQCDSysK8 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),14)	
-		ListOfQCDSysK9 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),15)
-		ListOfQCDSysK10 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),16)
+		# ListOfQCDSysK8 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),14)	
+		# ListOfQCDSysK9 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),15)
+		# ListOfQCDSysK10 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),16)
 		ContaminUncForLowdphiRegion = textToList(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),4);
 		#ListOfQCDSys = textToList("inputsFromOwen/qcd-bg-combine-input-%sipb-v0.txt" %(str(int(lumi))),18);
 		for i in range(len(tagsForSignalRegion)):
@@ -710,13 +710,13 @@ if __name__ == '__main__':
 			if(ListOfQCDSysK1[i]!='-'):signalRegion.addSingleSystematic("KQCDHT1",'lnN','qcd',float(ListOfQCDSysK1[i]),'',i);
 			if(ListOfQCDSysK2[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2",'lnN','qcd',float(ListOfQCDSysK2[i]),'',i);
 			if(ListOfQCDSysK3[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3",'lnN','qcd',float(ListOfQCDSysK3[i]),'',i);
-			if(ListOfQCDSysK4[i]!='-'):signalRegion.addSingleSystematic("KQCDMHT2",'lnN','qcd',float(ListOfQCDSysK4[i]),'',i);
-			if(ListOfQCDSysK5[i]!='-'):signalRegion.addSingleSystematic("KQCDMHT3",'lnN','qcd',float(ListOfQCDSysK5[i]),'',i);
-			if(ListOfQCDSysK6[i]!='-'):signalRegion.addSingleSystematic("KQCDMHT4",'lnN','qcd',float(ListOfQCDSysK6[i]),'',i);
-			if(ListOfQCDSysK7[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ2",'lnN','qcd',float(ListOfQCDSysK7[i]),'',i);
-			if(ListOfQCDSysK8[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ3",'lnN','qcd',float(ListOfQCDSysK8[i]),'',i);
-			if(ListOfQCDSysK9[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ4",'lnN','qcd',float(ListOfQCDSysK9[i]),'',i);
-			if(ListOfQCDSysK10[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ5",'lnN','qcd',float(ListOfQCDSysK10[i]),'',i);
+			if(ListOfQCDSysK4[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ2",'lnN','qcd',float(ListOfQCDSysK4[i]),'',i);
+			if(ListOfQCDSysK5[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ3",'lnN','qcd',float(ListOfQCDSysK5[i]),'',i);
+			if(ListOfQCDSysK6[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ4",'lnN','qcd',float(ListOfQCDSysK6[i]),'',i);
+			if(ListOfQCDSysK7[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ5",'lnN','qcd',float(ListOfQCDSysK7[i]),'',i);
+			# if(ListOfQCDSysK8[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ3",'lnN','qcd',float(ListOfQCDSysK8[i]),'',i);
+			# if(ListOfQCDSysK9[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ4",'lnN','qcd',float(ListOfQCDSysK9[i]),'',i);
+			# if(ListOfQCDSysK10[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ5",'lnN','qcd',float(ListOfQCDSysK10[i]),'',i);
 
 	######################################################################
 	######################################################################
