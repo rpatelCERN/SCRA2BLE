@@ -37,7 +37,7 @@ def condorize(command,tag,odir):
 	f1.write("set SCRAM_ARCH=slc6_amd64_gcc481\n")
 	f1.write("cd %s \n" % (startdir) );
 	f1.write("eval `scramv1 runtime -sh`\n")
-	# f1.write("tar -cvzf package.tar.gz *.py input* \n")
+	#f1.write("tar -cvzf package.tar.gz *.py input* \n")
 	# copy over all stuff and run 
 	f1.write("cd - \n");
 	f1.write("cp %s/package.tar.gz . \n" % (startdir));
@@ -76,6 +76,7 @@ if __name__ == '__main__':
 	outDir = "/store/user/rgp230/SUSY/statInterp/scanOutput"
 
 	# # tar it up for usage
+	
 	os.system('tar -cvzf package.tar.gz *.py input*');
 
 
@@ -88,27 +89,27 @@ if __name__ == '__main__':
          	parse=n.split('_')
         	mGos.append(int(parse[2]))
 	        mLSPs.append(int(parse[3]))
-
-#	mGos  = [1200];
-#	mLSPs = [1150];
+		#print parse
+	#mGos  = [1200];
+	#mLSPs = [1150];
 
 
 	for signal in signals:
 	 	for m in range(len(mGos)):
-	 		for mLSP in mLSPs:
-				command = "python analysisBuilderCondor.py -b ";
-	 			command += "--signal %s " % signal;
-	 			command += "--mGo %i " % mGos[m];
-	 			command += "--mLSP %i " % mLSPs[m];
-	 			command += "--fastsim";
+	 	#	for mLSP in mLSPs:
+			command = "python analysisBuilderCondor.py -b ";
+	 		command += "--signal %s " % signal;
+	 		command += "--mGo %i " % mGos[m];
+	 		command += "--mLSP %i " % mLSPs[m];
+	 		command += "--fastsim";
 	 			#print command;
 	 			#os.system( command );
-	 			tag = "%s_%i_%i" % (signal,mGos[m],mLSPs[m]);
-	 			condorize( command, tag, outDir );
-	 			time.sleep(0.1);
-	
-	# time.sleep(0.1);
-	# os.system('rm package.tar.gz');
+	 		tag = "%s_%i_%i" % (signal,mGos[m],mLSPs[m]);
+			#print tag
+	 		condorize( command, tag, outDir );
+	 		time.sleep(0.1);
+					
+			#os.system('rm package.tar.gz');
 
 	#os.system('python analysisBuilderCondor.py -b --signal T1bbbb --mGo 1500 --mLSP 100');
 	#os.system('python analysisBuilderCondor.py -b --signal T1bbbb --mGo 1000 --mLSP 100');
