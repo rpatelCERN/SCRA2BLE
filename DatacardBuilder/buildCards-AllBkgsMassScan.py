@@ -406,7 +406,7 @@ if __name__ == '__main__':
 		if options.allBkgs or options.llpOnly or (options.tauOnly and  options.llpOnly): tmpcontributionsSL.append( 'WTopSLHighW' );
 		if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly): tmpcontributionsSL.append( 'WTopHad' );
 		if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly): tmpcontributionsSL.append( 'WTopHadHighW' );			
-		if options.llpOnly and signalRegion_CSList[i]<2  and not (options.tauOnly and  options.llpOnly):
+		if options.llpOnly and not (options.tauOnly and  options.llpOnly):
 			addControl.append(i);
 			SLcontrolContributionsPerBin.append( tmpcontributionsSL );
 			tagsForSLControlRegion.append(tagsForSignalRegion[i]);
@@ -424,8 +424,9 @@ if __name__ == '__main__':
 		tmpList.append(0);
 		if options.llpOnly and not options.tauOnly and not options.allBkgs: 
 				tmpList.append(0.);			
-				if(signalRegion_CSList[i]<=1): tmpList.append(1.0); 
-				else: tmpList.append(0.0); 
+				#if(signalRegion_CSList[i]<=1): 
+				tmpList.append(1.0); 
+				#else: tmpList.append(0.0); 
 		if options.allBkgs or (options.tauOnly and options.llpOnly):
 				tmpList.append(0.);
 				tmpList.append(0.0);
@@ -495,12 +496,13 @@ if __name__ == '__main__':
 			tmpList.append(signalRegion_LLList[i]);
 			#else:
 			#tmpList.append(0.0)
-			if(signalRegion_CSList[i]>=2):
-				tmpList.append(0.0)
-			if(signalRegion_CSList[i]==1):
-				tmpList.append(signalRegion_MCWeightList[i]*1.0)
-			if(signalRegion_CSList[i]<1):
-				tmpList.append(signalRegion_MCWeightList[i]*1.0)
+			#if(signalRegion_CSList[i]>=2):
+			#	tmpList.append(0.0)
+			#if(signalRegion_CSList[i]==1):
+			#print signalRegion_MCWeightList
+			tmpList.append(signalRegion_MCWeightList[i]*1.0)
+			#if(signalRegion_CSList[i]<1):
+				#tmpList.append(signalRegion_MCWeightList[i]*1.0)
 		# Had Tau rate
 		if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly): 
 				tmpList.append(signalRegion_tauList[i])
@@ -630,27 +632,30 @@ if __name__ == '__main__':
 	
 	if options.allBkgs or options.tauOnly or options.llpOnly or (options.tauOnly and  options.llpOnly):
 		for i in range(signalRegion.GetNbins()):
-			if(signalRegion_CSList[i]<2):
-				if options.allBkgs or (options.tauOnly and  options.llpOnly): 
+			#if(signalRegion_CSList[i]<2):
+			if options.allBkgs or (options.tauOnly and  options.llpOnly): 
 					#signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],100,'',i);
-					signalRegion.addSingleSystematic('TAUSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW','WTopSLHighW'],100,'',i);
-				if options.tauOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('TAUSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-				if options.llpOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],100,'',i);
-			else: 
-				if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('TAUSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-				if options.allBkgs: 
-					signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], LLSumW2errors[i], 1+(tauSqrtSumW2[i]/signalRegion_tauList[i]), '',i)			
-				if options.llpOnly and not (options.tauOnly and  options.llpOnly):
-					signalRegion.addSingleSystematic('LLSumWError'+tagsForSignalRegion[i], 'lnN', ['WTopSL'], LLSumW2errors[i], '',i)		
+				signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW','WTopSLHighW'],100,'',i);
+			if options.tauOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('TAUSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
+			if options.llpOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],100,'',i);
+			#else: 
+			#if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('TAUSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
+			if options.allBkgs:
+			#	print i, tauSqrtSumW2[i],signalRegion_tauList[i]
+				if(signalRegion_CSList[i]>2):signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], LLSumW2errors[i], 1+(tauSqrtSumW2[i]/signalRegion_tauList[i]), '',i)			
+				if(signalRegion_CSList[i]==1):signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], 2.0, 2.0, '',i)
+			
+			if options.llpOnly and not (options.tauOnly and  options.llpOnly):
+				signalRegion.addSingleSystematic('LLSumWError'+tagsForSignalRegion[i], 'lnN', ['WTopSL'], LLSumW2errors[i], '',i)		
 
 		for i in range(SLcontrolRegion.GetNbins()):
 			if options.allBkgs or (options.tauOnly and  options.llpOnly): 
-				if(signalRegion_CSList[i]<2): 
-					#SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopSLHighW'],100,'',i);
-					SLcontrolRegion.addSingleSystematic('TAUSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-				else: SLcontrolRegion.addSingleSystematic('TAUSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-			if options.tauOnly and not (options.tauOnly and  options.llpOnly):
+				#if(signalRegion_CSList[i]<2): 
 				SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
+				#SLcontrolRegion.addSingleSystematic('TAUSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
+				#else: SLcontrolRegion.addSingleSystematic('TAUSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
+			if options.tauOnly and not (options.tauOnly and  options.llpOnly):
+				SLcontrolRegion.addSingleSystematic('TAUSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
 			if options.llpOnly and not (options.tauOnly and  options.llpOnly):
 				SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopSLHighW'],100,'',i);		
 
