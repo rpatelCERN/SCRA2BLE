@@ -329,6 +329,8 @@ if __name__ == '__main__':
 	ZgRatio_Hist=DYinputfile.Get("hgJZgR")	
 	ZgRatio_List=binsToList(ZgRatio_Hist)
 	ZgRatioErr_Hist=DYinputfile.Get("hgJZgRerr")
+	ZgRatioErrUp_Hist=DYinputfile.Get("hgJZgRerrUp")
+        ZgRatioErrDown_Hist=DYinputfile.Get("hgJZgRerrLow")
 	GJetPurErr_Hist=DYinputfile.Get("hgJPurErr")
 	ZgRatioErr_List=binsToList(ZgRatioErr_Hist)
         GJetPurErr_List=binsToList(GJetPurErr_Hist)
@@ -568,20 +570,49 @@ if __name__ == '__main__':
 		singlePhotonBins = ["NJets0_BTags._MHT0_HT0","NJets0_BTags._MHT0_HT1","NJets0_BTags._MHT0_HT2","NJets0_BTags._MHT1_HT3","NJets0_BTags._MHT1_HT4","NJets0_BTags._MHT2_HT5",
 							"NJets1_BTags._MHT0_HT0","NJets1_BTags._MHT0_HT1","NJets1_BTags._MHT0_HT2","NJets1_BTags._MHT1_HT3","NJets1_BTags._MHT1_HT4","NJets1_BTags._MHT2_HT5",
 							"NJets2_BTags._MHT0_HT0","NJets2_BTags._MHT0_HT1","NJets2_BTags._MHT0_HT2","NJets2_BTags._MHT1_HT3","NJets2_BTags._MHT1_HT4","NJets2_BTags._MHT2_HT5"];
+		ZgRatioErrUp_List=binsToList(ZgRatioErrUp_Hist)
+                ZgRatioErrDown_List=binsToList(ZgRatioErrDown_Hist)
+		DYStatErr_List=binsToList(DYinputfile.Get("hDYstat"))
+		DYPurErr_List=binsToList(DYinputfile.Get("hDYsysPur"))
+		DYsysKin_List=binsToList(DYinputfile.Get("hDYsysKin"))
+		PhoCSZgRatio=[]
+		PhoCSZgRatioUp=[]	
+		PhoCSZgRatioDown=[]
+		for i in range(signalRegion.GetNbins()):
+			#if(ZgRatioErrUp_List[i]<-99.):ZgRatioErrUp_List[i]=1.0
+			#else:ZgRatioErrUp_List[i]=1+ZgRatioErrUp_List[i]
+			#if(ZgRatioErrDown_List[i]<-99.):ZgRatioErrDown_List[i]=1.0	
+                        #else:ZgRatioErrDown_List[i]=1-ZgRatioErrDown_List[i]
+			if(ZgRatio_List[i]>-1):PhoCSZgRatio.append(ZgRatio_List[i])
+                        if(ZgRatioErrUp_List[i]>-1):PhoCSZgRatioUp.append(ZgRatioErrUp_List[i])
+			if(ZgRatioErrDown_List[i]>-1):PhoCSZgRatioDown.append(ZgRatioErrDown_List[i])
+			#signalRegion.addAsymSystematic("ZgRatioAsymErr"+tagsForSignalRegion[i], 'lnN', ['zvv'], ZgRatioErrUp_List[i], ZgRatioErrDown_List[i], '', i)
+			DYStatErr_List[i]=1+DYStatErr_List[i]
+			DYPurErr_List[i]=1+DYPurErr_List[i]
+			signalRegion.addSingleSystematic('DYsysKin','lnN',['zvv'], DYsysKin_List,'', i);
+			#DYPurErr_List[i]=1+DYPurErr_List[i]
+		signalRegion.addSingleSystematic("DYstat"+"_BTag1", 'lnN', ['zvv'], DYStatErr_List, 'BTags1')
+		signalRegion.addSingleSystematic("DYstat"+"_BTag2", 'lnN', ['zvv'], DYStatErr_List, 'BTags2')			
+		signalRegion.addSingleSystematic("DYstat"+"_BTag3", 'lnN', ['zvv'], DYStatErr_List, 'BTags3')
+		signalRegion.addSingleSystematic("DYPur"+"_BTag1", 'lnN', ['zvv'], DYPurErr_List, "BTags1")
+		signalRegion.addSingleSystematic("DYPur"+"_BTag1Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags2")
+		signalRegion.addSingleSystematic("DYPur"+"_BTag1Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags3")
 		for i in range(len(singlePhotonBins)):
 			signalRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
 			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
-
+			sphotonRegion.addAsymSystematic('ZgRatioAsymErr'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
 		# added to all bins (photon efficiency)
 		#print len(RzgErrs),len(PurErrs)
-		sphotonRegion.addSystematicFromList('PhoRzgUnc','lnN',['zvv'],RzgErrs);	
+		#sphotonRegion.addSystematicFromList('PhoRzgUnc','lnN',['zvv'],RzgErrs);	
+		
 		sphotonRegion.addSystematicFromList('PhoEffUnc','lnN',['zvv'],PurErrs);	
 		## RZg double ratio from Jim H.
-		sphotonRegion.addAsymSystematic('PhoRZgDblRatio','lnN',['zvv'],1.33,1.26,'NJets'); # adjusted to make relative
-
+		sphotonRegion.addSystematicFromList('PhoRZgDblRatio','lnN',['zvv'],PhoCSZgRatio); # adjusted to make relative
 		## all the Drell-Yan systematics now nicely wrapped up in a bow
-		signalRegion.addSystematicFromList('DYstat','lnN',['zvv'], binsToList(DYinputfile.Get("hDYstat")));
-		signalRegion.addSystematicFromList('DYsysKin','lnN',['zvv'], binsToList(DYinputfile.Get("hDYsysKin")));
+		#signalRegion.addSystematicFromList('DYstat','lnN',['zvv'], binsToList(DYinputfile.Get("hDYstat")));
+		
+		#signalRegion.addSystematicFromList('DYsysKin','lnN',['zvv'], binsToList(DYinputfile.Get("hDYsysKin")));
+		#print binsToList(DYinputfile.Get("hDYsysNjUp"))
 		signalRegion.addAsymSystematicFromList('DYsysNj','lnN',['zvv'], binsToList(DYinputfile.Get("hDYsysNjUp")), binsToList(DYinputfile.Get("hDYsysNjLow")));
 
 
