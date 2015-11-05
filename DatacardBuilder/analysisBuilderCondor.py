@@ -59,19 +59,19 @@ if __name__ == '__main__':
 
 	signalmodel=options.signal+options.mGo
 	signals = [signalmodel]
-	mus=[1.0]
+	mus=[0.0]
 	lumis = [1.3];
 
 	#variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
 	#variations = ['allNotau','llpOnly', 'tauOnly']
 	# variations = ['allBkgs','allNoqcd','allNozvv','allNollp','allNotau']
 	#variations=['allNoqcd','allNozvv','allNollp','allNotau']
-	#variations = ['qcdOnly' ]
-	variations = ['allBkgs','tauOnly','llpOnly']
+	#variations = ['zvvOnly' ]
+	#variations = ['allBkgs','tauOnly','llpOnly']
 	#variations=['allNozvv']
 	# variations=['onlyLep']
 	#variations=['tauOnly']
-	#variations=['allBkgs']
+	variations=['allBkgs']
 
 	job_postfix = "%s_%s_%s" % (options.signal,options.mGo,options.mLSP);
 	fout = TFile("results_%s.root" % (job_postfix), "RECREATE");
@@ -126,25 +126,25 @@ if __name__ == '__main__':
 					os.system(combine_cmmd);
 					
 					# run significance
-					combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.root -n %s" % (the_odir,the_odir); 
-					os.system(combine_cmmd);
+					#combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.root -n %s" % (the_odir,the_odir); 
+					#os.system(combine_cmmd);
 					# # run max likelihood fit
-					# combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.root -n %s " % (the_odir,the_odir); os.system(combine_cmmd);
+					combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); os.system(combine_cmmd);
 					# # run asymptotic
-					combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); os.system(combine_cmmd);
+					#combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); os.system(combine_cmmd);
 
 					dicttag = "%s_%s_%.1f" % (tag,sig,lumi);
 
 					identifier = dicttag;
 					mGo[0] = float(options.mGo);
 					mLSP[0] = float(options.mLSP);
-					# fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,signaltag,lumi,mu) )[0];
-					significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
-					limit[0] = getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,signaltag,lumi,mu) ) ;
+					fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,signaltag,lumi,mu) )[0];
+					#significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
+					#limit[0] = getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,signaltag,lumi,mu) ) ;
 					
-					fittedMu[0] = -99.;
-					#significance[0] = -99.;
-					#limit[0] = -99.;
+					#fittedMu[0] = -99.;
+					significance[0] = -99.;
+					limit[0] = -99.;
 					
 					tout.Fill();
 	fout.cd();

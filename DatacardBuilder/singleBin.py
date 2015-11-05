@@ -38,6 +38,7 @@ class singleBin:
 		line = "jmax %i #number of backgrounds \n" % (len(self._binLabels)-1);
 		self._allLines.append(line);
 		self._allLines.append("kmax * nuissance \n");
+		self._allLines.append("shapes * * FAKE \n");
 		self._allLines.append("------------ \n");
 
 		line = "bin Bin"+self._name+"\n";

@@ -76,7 +76,7 @@ class searchRegion:
 
 		if len(inputListUp) != self._nBins: print "There is a problem mistaching in searchRegion:addSystematicFromList!!";
 		for i in range(self._nBins): 
-			print inputListUp[i]
+			#print inputListUp[i]
 			#if(inputlistUp[i]>-99 and inputlistDn[i]>-99):
 			self._singleBins[i].addAsymSystematic( sysname, systype, channel, 1+inputListUp[i], 1-inputListDn[i] );
 
