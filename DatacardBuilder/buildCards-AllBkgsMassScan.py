@@ -469,7 +469,7 @@ if __name__ == '__main__':
 	for i in range(4):
 			sphotonObservedExt.extend(sphotonObserved[12:18]); RzgValsExt.extend(RzgVals[12:18]); PurValsExt.extend(PurVals[12:18])
 
-	ZvvYieldsInSignalRegion = [sphotonObservedExt[i]*RzgValsExt[i]*PurValsExt[i]*signalRegion_zvvList[i] for i in range(len(sphotonObservedExt))]
+	ZvvYieldsInSignalRegion = [sphotonObservedExt[i]*RzgValsExt[i]*PurValsExt[i]*signalRegion_zvvList[i]*doubleRatioCentralValue for i in range(len(sphotonObservedExt))]
 	ZvvRatesInSignalRegion = [];
 	for i in range(len(sphotonObservedExt)):
 			if sphotonObservedExt[i] > 0: ZvvRatesInSignalRegion.append( ZvvYieldsInSignalRegion[i] );
@@ -665,9 +665,8 @@ if __name__ == '__main__':
 		PhoCSZgRatioDown=[]
 		for i in range(signalRegion.GetNbins()):
 			#if(ZgRatio_List[i]>-1):PhoCSZgRatio.append(ZgRatioErr_List[i])
-                        if(ZgRatioErrUp_List[i]>-1):PhoCSZgRatioUp.append(ZgRatioErrUp_List[i])
+			if(ZgRatioErrUp_List[i]>-1):PhoCSZgRatioUp.append(ZgRatioErrUp_List[i])
 			if(ZgRatioErrDown_List[i]>-1):PhoCSZgRatioDown.append(ZgRatioErrDown_List[i])
-
 			DYStatErr_List[i]=1+DYStatErr_List[i]
 			DYPurErr_List[i]=1+DYPurErr_List[i]
 			DYsysKin_List[i]=1+DYsysKin_List[i]
@@ -683,11 +682,9 @@ if __name__ == '__main__':
 			signalRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
 			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
 			sphotonRegion.addAsymSystematic('ZgRatioAsymErr'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
-		# added to all bins (photon efficiency)
-		#print len(RzgErrs),len(PurErrs)
-		
+			# added to all bins (photon efficiency)
+			#print len(RzgErrs),len(PurErrs)
 			sphotonRegion.addSingleSystematic('PhoRzgUnc','lnN',['zvv'],RzgErrs[i],'',i);	
-		
 			sphotonRegion.addSingleSystematic('PhoEffUnc','lnN',['zvv'],PurErrs[i],'',i);	
 		## RZg double ratio from Jim H.
 		sphotonRegion.addAsymSystematicFromList('PhoRZgDblRatio','lnN',['zvv'],binsToList(DYinputfile.Get("hgJZgRdataMCerrUp")),binsToList(DYinputfile.Get("hgJZgRdataMCerrLow"))); # adjusted to make relative
