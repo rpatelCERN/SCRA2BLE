@@ -329,9 +329,8 @@ if __name__ == '__main__':
 	# --------------------------------------------
 	# hadronic tau
 	HadTau_file = TFile(idir+"/HadTauEstimation_data_%1.1fifb.root" % ((lumi)) );
-	HadTauSumw_file=TFile(idir+"/HadTauSumWError%1.1fifb.root" %lumi)	
 	HadTauPrediction_Hist=HadTau_file.Get("searchBin_nominal")
-	HadTauSqrtSumw2_Hist=HadTauSumw_file.Get("SqrtSumW2")
+	#HadTauSqrtSumw2_Hist=HadTauSumw_file.Get("SqrtSumW2")
 	HadTauBMistagUp_Hist=HadTau_file.Get("searchBin_BMistagUp")	
 	HadTauBMistagDown_Hist=HadTau_file.Get("searchBin_BMistagDn")
 	HadTauSysNC_Hist=HadTau_file.Get("searchBin_closureUncertainty")
@@ -341,17 +340,33 @@ if __name__ == '__main__':
 	tauBMistagDown=binsToList(HadTauBMistagDown_Hist)	
         HadTauMuonCorrUncUpHist=HadTau_file.Get("searchBin_MuRecoIsoSysUp")
 	HadTauMuonCorrUncDnHist=HadTau_file.Get("searchBin_MuRecoIsoSysDn")	
-	HadTauMuonCorrUncUp=binsToList(HadTauMuonCorrUncUpHist)
-        HadTauMuonCorrUncDown=binsToList(HadTauMuonCorrUncDnHist)
-	tauSqrtSumW2=[]
-        for i in range(1,HadTauPrediction_Hist.GetNbinsX()+1):
-                if(HadTauPrediction_Hist.GetBinError(i)>0.000000001):
-                        multError=HadTauPrediction_Hist.GetBinError(i)/(HadTauPrediction_Hist.GetBinContent(i))
-                        tauSqrtSumW2.append(1.0+multError);
+	HadTauStatUncertainties=HadTau_file.Get("searchBin_StatUncertainties")
 
-                else: tauSqrtSumW2.append(1.0)
-	# print  "./inputsLostLepton/statunc%sfb.txt" % (str(int(lumi)))
-	
+        HadTauJECUncertUpHist=HadTau_file.Get("searchBin_JECSysUp")
+        HadTauJECUncertDownHist=HadTau_file.Get("searchBin_JECSysDn")	
+
+        HadTauMTSysUpHist=HadTau_file.Get("searchBin_MTSysUp")
+        HadTauMTSysDownHist=HadTau_file.Get("searchBin_MTSysDn")
+	HadTauMTEffHist=HadTau_file.Get("seaerchBin_MtEffStat")
+	HadTauIsoTkEffHistStatHist=HadTau_file.Get("seaerchBin_IsoTrkVetoEffUncertaintyStat")
+	HadTauIsoTkEffHistSysHist=HadTau_file.Get("seaerchBin_IsoTrkVetoEffUncertaintySys")
+	HadTauAccStatHist=HadTau_file.Get("seaerchBin_AccStat")
+	HadTauMuFromTauStatHist=HadTau_file.Get("seaerchBin_MuFromTauStat")
+	HadTauMuDiLeptonHist=HadTau_file.Get("searchBin_DileptonUncertainty")
+	HadTauMuonCorrUncUp=binsToList(HadTauMuonCorrUncUpHist)
+	HadTauMuonCorrUncDn=binsToList(HadTauMuonCorrUncDnHist)
+	HadTauJECUncertUp=binsToList(HadTauJECUncertUpHist)
+	HadTauJECUncertDn=binsToList(HadTauJECUncertDownHist)	
+        HadTauMTSysDn=binsToList(HadTauMTSysDownHist)	
+        HadTauMTSysUp=binsToList(HadTauMTSysUpHist)	
+        HadTauMTEff=binsToList(HadTauMTEffHist)
+	HadTauAccStat=binsToList(HadTauAccStatHist)
+	HadTauIsoTkEffHistStat =binsToList(HadTauIsoTkEffHistStatHist)
+	HadTauIsoTkEffHistSys=binsToList(HadTauIsoTkEffHistSysHist)
+	HadTauMuFromTauStat=binsToList(HadTauMuFromTauStatHist)
+	tauSqrtSumW2=binsToList(HadTauStatUncertainties)
+        for i in range(len(tauSqrtSumW2)):
+		if signalRegion_tauList[i]>0.0: tauSqrtSumW2[i]=tauSqrtSumW2[i]/signalRegion_tauList[i]
 	# --------------------------------------------
 	# QCD, low delta phi
 
@@ -716,7 +731,6 @@ if __name__ == '__main__':
 
 	### LL uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.llpOnly or (options.tauOnly and  options.llpOnly):
-		
 		for i in range(signalRegion.GetNbins()):
 			if(signalRegion_CSList[i]>2):
  				signalRegion.addAsymSystematic("LLSysNonClosSys"+tagsForSignalRegion[i],'lnN',['WTopSL'],(LLSysNCUp[i]), (LLSysNCDown[i]),'', i)				
@@ -775,12 +789,7 @@ if __name__ == '__main__':
 		for j in range(len(NJbinsLL)): print NJbinsLL[j]
 		for h in range(len(MHTHTBinsLL)):	
 			signalRegion.addAsymSystematic("LLSysIsoTrack7Jets"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysIsoTrackUp), (LLSysIsoTrackDown),str(NJbinsLL[j])+"_BTags._"+str(MHTHTBinsLL[h]))
-			#signalRegion.addAsymSystematic("MuAccSysN7Jets_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysMuAccUp), (LLSysMuAccDown),str(NJbinsLL[j])+'_BTags._'+str(MHTHTBinsLL[h]))
-			#signalRegion.addAsymSystematic("ElecAccSysN7Jets_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysElecAccUp), (LLSysElecAccDown),str(NJbinsLL[j])+'_BTags._'+str(MHTHTBinsLL[h]))
-
                         signalRegion.addAsymSystematic("LLStatIsoTrack7Jets"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatIsoTrackUp), (LLStatIsoTrackDown),str(NJbinsLL[j])+"_BTags._"+str(MHTHTBinsLL[h]))
-                        #signalRegion.addAsymSystematic("MuAccStatN7Jets_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatMuAccUp), (LLStatMuAccDown),str(NJbinsLL[j])+'_BTags._'+str(MHTHTBinsLL[h]))
-                        #signalRegion.addAsymSystematic("ElecAccStatN7Jets_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatElecAccUp), (LLStatElecAccDown),str(NJbinsLL[j])+'_BTags._'+str(MHTHTBinsLL[h]))
 		NJbinsLLPur=['NJets0', 'NJets1', 'NJets2']
 
 		MHTBins=['MHT0', 'MHT1', 'MHT2']
@@ -805,11 +814,8 @@ if __name__ == '__main__':
 				signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW','WTopSLHighW'],100,'',i);
 			if options.tauOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('TAUSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
 			if options.llpOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],100,'',i);
-			#else: 
-			#if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('TAUSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
 			if options.allBkgs:
-			#	print i, tauSqrtSumW2[i],signalRegion_tauList[i]
-				if(signalRegion_CSList[i]>2):signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], LLSumW2errors[i], 1+(tauSqrtSumW2[i]/signalRegion_tauList[i]), '',i)			
+				if(signalRegion_CSList[i]>2):signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], LLSumW2errors[i], 1+(tauSqrtSumW2[i]), '',i)			
 				if(signalRegion_CSList[i]==1):signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], 2.0, 2.0, '',i)
 			
 			if options.llpOnly and not (options.tauOnly and  options.llpOnly):
@@ -819,8 +825,6 @@ if __name__ == '__main__':
 			if options.allBkgs or (options.tauOnly and  options.llpOnly): 
 				#if(signalRegion_CSList[i]<2): 
 				SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-				#SLcontrolRegion.addSingleSystematic('TAUSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
-				#else: SLcontrolRegion.addSingleSystematic('TAUSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
 			if options.tauOnly and not (options.tauOnly and  options.llpOnly):
 				SLcontrolRegion.addSingleSystematic('TAUSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
 			if options.llpOnly and not (options.tauOnly and  options.llpOnly):
@@ -829,41 +833,20 @@ if __name__ == '__main__':
 	### hadtau uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly):
 		for i in range(signalRegion.GetNbins()):
-			#njetTag = tagsForSignalRegion[i].split('_')[0];
-			#tauNonClosureJet0[i]=1.0+tauNonClosureJet0[i];
-			#tauNonClosureJet1[i]=1.0+tauNonClosureJet1[i];
-			#tauNonClosureJet2[i]=1.0+tauNonClosureJet2[i];
-			tauBMistagUp[i]=1.0+tauBMistagUp[i];
-			tauBMistagDown[i]=1.0+tauBMistagDown[i];
-			if(tauNonClosure[i]<-99):tauNonClosure[i]=1.0;
-			else: tauNonClosure[i]=1.0+tauNonClosure[i]
-			HadTauMuonCorrUncUp[i]=1.0+HadTauMuonCorrUncUp[i]
-			HadTauMuonCorrUncDown[i]=1.0+HadTauMuonCorrUncDown[i]
-			#if(tauNonClosureTTbarMHT2[i]<-99):tauNonClosureTTbarMHT2[i]=1.0;
-			#else: tauNonClosureTTbarMHT2[i]=1.0+tauNonClosureTTbarMHT2[i]
-			#if(tauNonClosureWJMHT3[i]<-99):tauNonClosureWJMHT3[i]=1.0;
-			#else: tauNonClosureWJMHT3[i]=1.0+tauNonClosureWJMHT3[i]
-			#if(tauNonClosureTTbarMHT3[i]<-99):tauNonClosureTTbarMHT3[i]=1.0;
-			#else: tauNonClosureTTbarMHT3[i]=1.0+tauNonClosureTTbarMHT3[i]
-			#signalRegion.addSingleSystematic('HadTauCorrUnc'+str(i),'lnN',['WTopHad'], 1.0+tauUncCorr[i], '', i)
-		#print tauNonClosureJet1[42]
-			signalRegion.addSingleSystematic('HadTauNJClosure'+tagsForSignalRegion[i],'lnN',['WTopHad'],tauNonClosure[i],'',i);
-		#signalRegion.addSingleSystematic('HadTauNJClosureNJets1Unc','lnN',['WTopHad'],tauNonClosureJet1,'NJets1');
-		#signalRegion.addSingleSystematic('HadTauNJClosureNJets2Unc','lnN',['WTopHad'],tauNonClosureJet2,'NJets2');
+			#tauBMistagUp[i]=1.0+tauBMistagUp[i];
+			#tauBMistagDown[i]=1.0+tauBMistagDown[i];
+			tauNonClosure[i]=max(tauNonClosure[i],tauSqrtSumW2[i])
+			#if(tauNonClosure[i]<-99):tauNonClosure[i]=1.0;
+			#else: tauNonClosure[i]=1.0+tauNonClosure[i]
+			signalRegion.addSingleSystematic('HadTauClosure'+tagsForSignalRegion[i],'lnN',['WTopHad'],tauNonClosure[i],'',i);
+                        #signalRegion.addSingleSystematic('HadTauMuStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],HadTauMuFromTauStat[i],'',i);
 		signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown);
-		signalRegion.addAsymSystematic('HadTauMuCorrUnc', 'lnN', ['WTopHad'], HadTauMuonCorrUncDown[i], HadTauMuonCorrUncUp[i]);	
-		#signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown,'BTags1');
-		#signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown,'BTags2');
-		#signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown,'BTags3');
-		#signalRegion.addSingleSystematic("HadTauMHT1WJUnc ", 'lnN', ['WTopHad'], tauNonClosureWJMHT2, 'MHT1')
-		#signalRegion.addSingleSystematic("HadTauMHT1TTbarUnc ", 'lnN', ['WTopHad'], tauNonClosureTTbarMHT2, 'MHT1')	
-		#signalRegion.addSingleSystematic("HadTauMHT2WJUnc ", 'lnN', ['WTopHad'], tauNonClosureWJMHT3, 'MHT2')
-		#signalRegion.addSingleSystematic("HadTauMHT2TTbarUnc ", 'lnN', ['WTopHad'], tauNonClosureTTbarMHT3, 'MHT2')
-	
+                signalRegion.addAsymSystematic('HadTauEnergyScale','lnN',['WTopHad'],HadTauJECUncertUp,HadTauJECUncertDn);	
+		#signalRegion.addAsymSystematic('HadTauMuEff', 'lnN', ['WTopHad'], HadTauMuonCorrUncDown[i], HadTauMuonCorrUncUp[i]);	
+                #signalRegion.addAsymSystematic('HadTauMTStat', 'lnN', ['WTopHad'], HadTauMuonCorrUncDown[i], HadTauMuonCorrUncUp[i]);
+
 	### QCD uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.qcdOnly:	
-
-		#ListOfQCDSys = getSystematicsListQCD("inputsFromOwen/lowdphiinputs-72bins-%sifb.txt"%(str(int(3))));
 
 		ListOfQCDSysK1 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),7)
 		ListOfQCDSysK2 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),8)
@@ -877,7 +860,6 @@ if __name__ == '__main__':
 		ListOfQCDSysK9 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),15)
 		ListOfQCDSysK10 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),16)
 		ContaminUncForLowdphiRegion = textToList(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),4);
-		#ListOfQCDSys = textToList("inputsFromOwen/qcd-bg-combine-input-%sipb-v0.txt" %(str(int(lumi))),18);
 		for i in range(len(tagsForSignalRegion)):
 			signalRegion.addSingleSystematic("ldpCR"+str(i),'lnU','qcd',100.,'',i);
 			LowdphiControlRegion.addSingleSystematic("ldpCR"+str(i),'lnU','qcd',100.,'',i);	

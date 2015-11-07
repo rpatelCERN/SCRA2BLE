@@ -117,6 +117,26 @@ class singleBin:
                 line += "\n";
                 self._allLines.append(line);
 
+	def addCorrelSystematicAsym(self,sysname,systype,bins,val1up, val1dn, val2up,val2dn):
+                #print sysname
+                # print "length rates = ",len(self._rates)
+                line = "";
+                line += sysname + " " + systype + " ";
+                bin=0;
+                for i in range(len(self._binLabels)):
+                        #print len(self._binLabels)
+                        if self._binLabels[i] in bins:
+                                #print self._binLabels[i]
+				if val1>-99. and val2>-99.:
+                                	if(bin==0):line += str(val1dn) + "/" + str(val1up);
+					if(bin==1):line += str(val2dn) + "/" +str(val2up);
+                                else:
+                                     line += " - ";
+				bin+=1
+                        else: line += "- ";
+                line += "\n";
+                self._allLines.append(line);
+
 	def addAsymSystematic(self,sysname,systype,bins,valup, valdown ):
 		line = "";
 		line += sysname + " " + systype + " ";

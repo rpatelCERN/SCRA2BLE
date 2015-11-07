@@ -70,8 +70,8 @@ if __name__ == '__main__':
 	#variations = ['allBkgs','tauOnly','llpOnly']
 	#variations=['allNozvv']
 	# variations=['onlyLep']
-	#variations=['tauOnly']
-	variations=['allBkgs']
+	variations=['tauOnly']
+	#variations=['allBkgs']
 
 	job_postfix = "%s_%s_%s" % (options.signal,options.mGo,options.mLSP);
 	fout = TFile("results_%s.root" % (job_postfix), "RECREATE");
