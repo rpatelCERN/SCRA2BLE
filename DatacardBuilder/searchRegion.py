@@ -65,7 +65,16 @@ class searchRegion:
 							#print "Found! ",self._singleBins[i]._tag;
 							if index == None or index == self._singleBins[i]._index:
 											self._singleBins[i].addCorrelSystematic( sysname, systype, channel, val1,val2 );
-
+	def addCorrelSystematicAsym(self,sysname,systype,channel,val1up, val1down, val2up, val2down, identifier='',index=None):
+			for i in range(self._nBins):
+                                        #if identifier in self._singleBins[i]._tag:
+                                        if re.search(identifier, self._singleBins[i]._tag) or identifier == '':
+                                                        #print "Found! ",self._singleBins[i]._tag;
+                                                        if index == None or index == self._singleBins[i]._index:
+                                                		if isinstance(val1up,collections.Iterable) and isinstance(val1down,collections.Iterable):
+                                                                         self._singleBins[i].addCorrelSystematicAsym( sysname, systype, channel, val1up[i],val1down[i],val2up[i], val2down[i] );
+								else:
+                                                                         self._singleBins[i].addCorrelSystematicAsym( sysname, systype, channel, val1up,val1down,val2up, val2down );
 	def addSystematicFromList(self,sysname,systype,channel,inputlist):
 
 		if len(inputlist) != self._nBins: print "There is a problem mistaching in searchRegion:addSystematicFromList!!";

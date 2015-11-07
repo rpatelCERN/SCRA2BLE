@@ -127,13 +127,13 @@ class singleBin:
                         #print len(self._binLabels)
                         if self._binLabels[i] in bins:
                                 #print self._binLabels[i]
-				if val1>-99. and val2>-99.:
+				if val1up>-99. and val2up>-99.:
                                 	if(bin==0):line += str(val1dn) + "/" + str(val1up);
 					if(bin==1):line += str(val2dn) + "/" +str(val2up);
                                 else:
                                      line += " - ";
 				bin+=1
-                        else: line += "- ";
+                        else: line += " - ";
                 line += "\n";
                 self._allLines.append(line);
 
@@ -148,8 +148,8 @@ class singleBin:
 				else: 
 					if(valdown>-99. and valup>-99.):
 						line += str(valdown) + "/" +str(valup)+" ";
-					else: line += "- ";
-			else: line += "- ";
+					else: line += " - ";
+			else: line += " - ";
 		line += "\n";
 		self._allLines.append(line);
 
