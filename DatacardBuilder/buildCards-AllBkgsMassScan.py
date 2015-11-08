@@ -68,6 +68,15 @@ if __name__ == '__main__':
 	signalSysTrigStatUp_file=TFile(signaldirtag+"/RA2bin_signal_trigStatUncUp.root");
 	signalSysTrigStatDown_file=TFile(signaldirtag+"/RA2bin_signal_trigStatUncDown.root");
 
+	signalSysJECUp_file        =TFile(signaldirtag+"/RA2bin_signal_JECup.root");
+	signalSysJECDown_file      =TFile(signaldirtag+"/RA2bin_signal_JECdown.root");
+	signalSysScaleUp_file      =TFile(signaldirtag+"/RA2bin_signal_scaleuncUp.root");
+	signalSysScaleDown_file    =TFile(signaldirtag+"/RA2bin_signal_scaleuncDown.root");
+	signalSysPUUp_file         =TFile(signaldirtag+"/RA2bin_signal_puuncUp.root");
+	signalSysPUDown_file       =TFile(signaldirtag+"/RA2bin_signal_puuncDown.root");
+	signalSysPDFUp_file         =TFile(signaldirtag+"/RA2bin_signal_pdfuncUp.root");
+	signalSysPDFDown_file       =TFile(signaldirtag+"/RA2bin_signal_pdfuncDown.root");
+
 	signalRegion_sigHist          = signalSFB_file.Get(signaltag);
 	tagsForSignalRegion = binLabelsToList(signalRegion_sigHist);
 
@@ -99,6 +108,31 @@ if __name__ == '__main__':
 	signalRegion_sigListTrigSystDown=binsToList( signalRegion_sigHistTrigSystDown );
 	signalRegion_sigListTrigStatUp=binsToList( signalRegion_sigHistTrigStatUp );  
 	signalRegion_sigListTrigStatDown=binsToList( signalRegion_sigHistTrigStatDown );
+
+	signalRegion_sigHistJECUp     = signalSysJECUp_file.Get(signaltag);
+	signalRegion_sigHistJECDown   = signalSysJECDown_file.Get(signaltag);
+	signalRegion_sigHistScaleUp   = signalSysScaleUp_file.Get(signaltag);
+	signalRegion_sigHistScaleDown = signalSysScaleDown_file.Get(signaltag);
+	signalRegion_sigHistPUUp      = signalSysPUUp_file.Get(signaltag);
+	signalRegion_sigHistPUDown    = signalSysPUDown_file.Get(signaltag);
+	signalRegion_sigHistPDFUp      = signalSysPDFUp_file.Get(signaltag);
+	signalRegion_sigHistPDFDown    = signalSysPDFDown_file.Get(signaltag);
+	signalRegion_sigHistJECUp.Scale(lumi/3.);   
+	signalRegion_sigHistJECDown.Scale(lumi/3.);   
+	signalRegion_sigHistScaleUp.Scale(lumi/3.);   
+	signalRegion_sigHistScaleDown.Scale(lumi/3.); 
+	signalRegion_sigHistPUUp.Scale(lumi/3.);      
+	signalRegion_sigHistPUDown.Scale(lumi/3.);    
+	signalRegion_sigHistPDFUp.Scale(lumi/3.);      
+	signalRegion_sigHistPDFDown.Scale(lumi/3.);    
+	signalRegion_sigListJECUp     =binsToList( signalRegion_sigHistJECUp );
+	signalRegion_sigListJECDown   =binsToList( signalRegion_sigHistJECDown );
+	signalRegion_sigListScaleUp   =binsToList( signalRegion_sigHistScaleUp );
+	signalRegion_sigListScaleDown =binsToList( signalRegion_sigHistScaleDown );
+	signalRegion_sigListPUUp      =binsToList( signalRegion_sigHistPUUp );
+	signalRegion_sigListPUDown    =binsToList( signalRegion_sigHistPUDown );
+	signalRegion_sigListPDFUp      =binsToList( signalRegion_sigHistPDFUp );
+	signalRegion_sigListPDFDown    =binsToList( signalRegion_sigHistPDFDown );
 
 	signalRegion_sigListbtagCFuncUp = [];
 	signalRegion_sigListbtagCFuncDown = [];
@@ -655,33 +689,38 @@ if __name__ == '__main__':
 		pdf=1.10
 	signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.04);
 	signalRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.03);
-	signalRegion.addSingleSystematic('PUwUnc','lnN',['sig'],1.03);
-	signalRegion.addSingleSystematic('TrigEff','lnN',['sig'],1.02);
+	# signalRegion.addSingleSystematic('PUwUnc','lnN',['sig'],1.03);
+	# signalRegion.addSingleSystematic('TrigEff','lnN',['sig'],1.02);
 	signalRegion.addSingleSystematic('ISR','lnN',['sig'],ISR);
-	signalRegion.addSingleSystematic('pdf','lnN',['sig'],pdf);
+	# signalRegion.addSingleSystematic('pdf','lnN',['sig'],pdf);
 	signalRegion.addSingleSystematic('UnclEUnc', 'lnN', ['sig'], 1.01);
 	signalRegion.addSingleSystematic('JERUnc', 'lnN', ['sig'], 1.02);
 
 	for i in range(signalRegion.GetNbins()):
 		if( signalRegion_sigList[i]>0.000001):
+			
 			if not options.fastsim:
 				signalRegion.addAsymSystematic('MisTagSFunc', 'lnN', ['sig'], signalRegion_sigListMisSFUp[i]/signalRegion_sigList[i], signalRegion_sigListMisSFDown[i]/signalRegion_sigList[i], '', i)
 				signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], (signalRegion_sigListSFUp[i]/signalRegion_sigList[i]),signalRegion_sigListSFDown[i]/signalRegion_sigList[i],'', i)
 	
-			signalRegion.addAsymSystematic('TrigSystunc', 'lnN', ['sig'], signalRegion_sigListTrigSystUp[i]/signalRegion_sigList[i], signalRegion_sigListTrigSystDown[i]/signalRegion_sigList[i], '', i)
+			signalRegion.addAsymSystematic('TrigSystunc','lnN', ['sig'], signalRegion_sigListTrigSystUp[i]/signalRegion_sigList[i], signalRegion_sigListTrigSystDown[i]/signalRegion_sigList[i], '', i)
 			signalRegion.addAsymSystematic('TrigStatUnc','lnN', ['sig'], (signalRegion_sigListTrigStatUp[i]/signalRegion_sigList[i]),signalRegion_sigListTrigStatDown[i]/signalRegion_sigList[i],'', i)
+			signalRegion.addAsymSystematic('JECUnc','lnN', ['sig'], (signalRegion_sigListJECUp[i]/signalRegion_sigList[i]),signalRegion_sigListJECDown[i]/signalRegion_sigList[i],'', i)
+			signalRegion.addAsymSystematic('PileupUnc','lnN', ['sig'], (signalRegion_sigListPUUp[i]/signalRegion_sigList[i]),signalRegion_sigListPUDown[i]/signalRegion_sigList[i],'', i)
+			signalRegion.addAsymSystematic('PDFUnc','lnN', ['sig'], (signalRegion_sigListPDFUp[i]/signalRegion_sigList[i]),signalRegion_sigListPDFDown[i]/signalRegion_sigList[i],'', i)
+			signalRegion.addAsymSystematic('ScaleUnc','lnN', ['sig'], (signalRegion_sigListScaleUp[i]/signalRegion_sigList[i]),signalRegion_sigListScaleDown[i]/signalRegion_sigList[i],'', i)
 
 			if options.fastsim:
 				signalRegion.addAsymSystematic('btagCFunc', 'lnN', ['sig'], signalRegion_sigListbtagCFuncUp[i]/signalRegion_sigList[i], signalRegion_sigListbtagCFuncDown[i]/signalRegion_sigList[i], '', i)
 				signalRegion.addAsymSystematic('ctagCFUnc','lnN', ['sig'], (signalRegion_sigListctagCFuncUp[i]/signalRegion_sigList[i]),signalRegion_sigListctagCFuncDown[i]/signalRegion_sigList[i],'', i)
-			#	signalRegion.addAsymSystematic('mistagCFUnc','lnN', ['sig'], (signalRegion_sigListmistagCFuncUp[i]/signalRegion_sigList[i]),signalRegion_sigListmistagCFuncDown[i]/signalRegion_sigList[i],'', i)
+				signalRegion.addAsymSystematic('mistagCFUnc','lnN', ['sig'], (signalRegion_sigListmistagCFuncUp[i]/signalRegion_sigList[i]),signalRegion_sigListmistagCFuncDown[i]/signalRegion_sigList[i],'', i)
 
-	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.0, 'MHT0_HT0');
-	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT0_HT1');
-	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.1, 'MHT0_HT2');
-	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT1_HT3');
-	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT1_HT4');
-	signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.1, 'MHT2_HT5');
+	# signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.0, 'MHT0_HT0');
+	# signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT0_HT1');
+	# signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.1, 'MHT0_HT2');
+	# signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT1_HT3');
+	# signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT1_HT4');
+	# signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.1, 'MHT2_HT5');
 
 	### Zvv uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.zvvOnly:
