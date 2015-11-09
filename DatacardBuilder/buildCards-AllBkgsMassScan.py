@@ -685,19 +685,20 @@ if __name__ == '__main__':
 
 
 	# ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
-	pdf=1.3
+	pdf=1.2
 	ISR=1.01
 	if(sms=='SMSqqqq1400' or sms=='SMStttt1200' or sms=='SMSbbbb1000'):
 		ISR=1.08
-		pdf=1.10
+		pdf=1.20
 	signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.04);
 	signalRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.03);
 	# signalRegion.addSingleSystematic('PUwUnc','lnN',['sig'],1.03);
 	# signalRegion.addSingleSystematic('TrigEff','lnN',['sig'],1.02);
 	signalRegion.addSingleSystematic('ISR','lnN',['sig'],ISR);
-	# signalRegion.addSingleSystematic('pdf','lnN',['sig'],pdf);
 	signalRegion.addSingleSystematic('UnclEUnc', 'lnN', ['sig'], 1.01);
 	signalRegion.addSingleSystematic('JERUnc', 'lnN', ['sig'], 1.02);
+
+	signalRegion.addSingleSystematic('pdf','lnN',['sig'],pdf);
 
 	for i in range(signalRegion.GetNbins()):
 		if( signalRegion_sigList[i]>0.000001): 
@@ -710,14 +711,14 @@ if __name__ == '__main__':
 			signalRegion.addAsymSystematic('TrigStatUnc','lnN', ['sig'], (signalRegion_sigListTrigStatUp[i]/signalRegion_sigList[i]),signalRegion_sigListTrigStatDown[i]/signalRegion_sigList[i],'', i)
 			signalRegion.addAsymSystematic('JECUnc','lnN', ['sig'], (signalRegion_sigListJECUp[i]/signalRegion_sigList[i]),signalRegion_sigListJECDown[i]/signalRegion_sigList[i],'', i)
 			signalRegion.addAsymSystematic('PileupUnc','lnN', ['sig'], (signalRegion_sigListPUUp[i]/signalRegion_sigList[i]),signalRegion_sigListPUDown[i]/signalRegion_sigList[i],'', i)
-			if signalRegion_sigListPDFDown[i] > 0:
-				signalRegion.addAsymSystematic('PDFUnc','lnN', ['sig'], (signalRegion_sigListPDFUp[i]/signalRegion_sigList[i]),signalRegion_sigListPDFDown[i]/signalRegion_sigList[i],'', i)
-			else:
-				signalRegion.addAsymSystematic('PDFUnc','lnN', ['sig'], (signalRegion_sigListPDFUp[i]/signalRegion_sigList[i]),signalRegion_sigList[i]/signalRegion_sigListPDFUp[i],'', i)
-			if signalRegion_sigListScaleDown[i] > 0:
-				signalRegion.addAsymSystematic('ScaleUnc','lnN', ['sig'], (signalRegion_sigListScaleUp[i]/signalRegion_sigList[i]),signalRegion_sigListScaleDown[i]/signalRegion_sigList[i],'', i)
-			else: 
-				signalRegion.addAsymSystematic('ScaleUnc','lnN', ['sig'], (signalRegion_sigListScaleUp[i]/signalRegion_sigList[i]),signalRegion_sigList[i]/signalRegion_sigListScaleUp[i],'', i)	
+			# if signalRegion_sigListPDFDown[i] > 0:
+			# 	signalRegion.addAsymSystematic('PDFUnc','lnN', ['sig'], (signalRegion_sigListPDFUp[i]/signalRegion_sigList[i]),signalRegion_sigListPDFDown[i]/signalRegion_sigList[i],'', i)
+			# else:
+			# 	signalRegion.addAsymSystematic('PDFUnc','lnN', ['sig'], (signalRegion_sigListPDFUp[i]/signalRegion_sigList[i]),signalRegion_sigList[i]/signalRegion_sigListPDFUp[i],'', i)
+			# if signalRegion_sigListScaleDown[i] > 0:
+			# 	signalRegion.addAsymSystematic('ScaleUnc','lnN', ['sig'], (signalRegion_sigListScaleUp[i]/signalRegion_sigList[i]),signalRegion_sigListScaleDown[i]/signalRegion_sigList[i],'', i)
+			# else: 
+			# 	signalRegion.addAsymSystematic('ScaleUnc','lnN', ['sig'], (signalRegion_sigListScaleUp[i]/signalRegion_sigList[i]),signalRegion_sigList[i]/signalRegion_sigListScaleUp[i],'', i)	
 
 			if options.fastsim:
 				signalRegion.addAsymSystematic('btagCFunc', 'lnN', ['sig'], signalRegion_sigListbtagCFuncUp[i]/signalRegion_sigList[i], signalRegion_sigListbtagCFuncDown[i]/signalRegion_sigList[i], '', i)

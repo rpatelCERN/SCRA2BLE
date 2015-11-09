@@ -14,6 +14,7 @@ from ROOT import *
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option('-b', action='store_true', dest='noX', default=False, help='no X11 windows')
+parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='no X11 windows')
 
 (options, args) = parser.parse_args()
 
@@ -73,50 +74,57 @@ def condorize(command,tag,odir):
 
 if __name__ == '__main__':
 
-	# outDir = "/store/user/ntran/SUSY/statInterp/scanOutput"
+	if options.fastsim:
+		
+		outDir = "/store/user/ntran/SUSY/statInterp/scanOutput"
 
-	# # # tar it up for usage
-	
-	# os.system('tar -cvzf package.tar.gz *.py input*');
-
-
-	# signals = ['T1bbbb'];
-	# f = TFile("inputHistograms/histograms_1.3fb/fastsimSignalScan/RA2bin_signal.root");
-	# names = [k.GetName() for k in f.GetListOfKeys()]
-	# mGos=[]
-	# mLSPs=[]
-	# for n in names:
- #         	parse=n.split('_')
- #        	mGos.append(int(parse[2]))
-	#         mLSPs.append(int(parse[3]))
-	
-	# #print parse
-	# #mGos  = [1200];
-	# #mLSPs = [1150];
+		# # tar it up for usage
+		
+		os.system('tar -cvzf package.tar.gz *.py input*');
 
 
-	# for signal in signals:
-	# 	for m in range(len(mGos)):
-	# 	#	for mLSP in mLSPs:
-	# 		command = "python analysisBuilderCondor.py -b ";
-	# 		command += "--signal %s " % signal;
-	# 		command += "--mGo %i " % mGos[m];
-	# 		command += "--mLSP %i " % mLSPs[m];
-	# 		command += "--fastsim";
+		signals = ['T1bbbb'];
+		f = TFile("inputHistograms/histograms_1.3fb/fastsimSignalScan/RA2bin_signal.root");
+		names = [k.GetName() for k in f.GetListOfKeys()]
+		mGos=[]
+		mLSPs=[]
+		for n in names:
+	         	parse=n.split('_')
+	        	mGos.append(int(parse[2]))
+		        mLSPs.append(int(parse[3]))
+		
+		#print parse
+		#mGos  = [1200];
+		#mLSPs = [1150];
 
-	# 		tag = "%s_%i_%i" % (signal,mGos[m],mLSPs[m]);
 
-	# 		condorize( command, tag, outDir );
-	# 		time.sleep(0.1);
-					
-	# 		#os.system('rm package.tar.gz');
+		for signal in signals:
+			for m in range(len(mGos)):
+			#	for mLSP in mLSPs:
+				command = "python analysisBuilderCondor.py -b ";
+				command += "--signal %s " % signal;
+				command += "--mGo %i " % mGos[m];
+				command += "--mLSP %i " % mLSPs[m];
+				command += " --fastsim";
+				command += " --realData";
+				command += " --tag allBkgs";
 
-	os.system('python analysisBuilderCondor.py -b --signal T1bbbb --mGo 1500 --mLSP 100 --realData');
-	os.system('python analysisBuilderCondor.py -b --signal T1bbbb --mGo 1000 --mLSP 100 --realData');
-	os.system('python analysisBuilderCondor.py -b --signal T1tttt --mGo 1500 --mLSP 800 --realData');
-	os.system('python analysisBuilderCondor.py -b --signal T1tttt --mGo 1200 --mLSP 800 --realData');
-	os.system('python analysisBuilderCondor.py -b --signal T1qqqq --mGo 1400 --mLSP 800 --realData');
-	os.system('python analysisBuilderCondor.py -b --signal T1qqqq --mGo 1000 --mLSP 800 --realData');
+				tag = "%s_%i_%i" % (signal,mGos[m],mLSPs[m]);
+
+				condorize( command, tag, outDir );
+				time.sleep(0.1);
+						
+				#os.system('rm package.tar.gz');
+
+
+	else:
+
+		os.system('python analysisBuilderCondor.py -b --signal T1bbbb --mGo 1500 --mLSP 100 --realData --tag allBkgs');
+		os.system('python analysisBuilderCondor.py -b --signal T1bbbb --mGo 1000 --mLSP 100 --realData --tag allBkgs');
+		os.system('python analysisBuilderCondor.py -b --signal T1tttt --mGo 1500 --mLSP 800 --realData --tag allBkgs');
+		os.system('python analysisBuilderCondor.py -b --signal T1tttt --mGo 1200 --mLSP 800 --realData --tag allBkgs');
+		os.system('python analysisBuilderCondor.py -b --signal T1qqqq --mGo 1400 --mLSP 800 --realData --tag allBkgs');
+		os.system('python analysisBuilderCondor.py -b --signal T1qqqq --mGo 1000 --mLSP 800 --realData --tag allBkgs');
 
 
 

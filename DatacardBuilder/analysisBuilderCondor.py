@@ -37,12 +37,13 @@ def getFittedMu(fn):
 	return output
 
 def getLimit(fn):
-
+	limits = []
 	tf = TFile(fn);
 	tt = tf.Get("limit")
-	tt.GetEntry(2);
-	output = tt.limit;
-
+	for i in range(6):
+		tt.GetEntry(i);
+		limits.append(tt.limit);
+	output = limits
 	return output
 
 def getSignif(fn):
@@ -80,12 +81,22 @@ if __name__ == '__main__':
 	# identifier    = array( 'c', [ 'c' ] );  
 	mGo          = array( 'f', [ 0. ] );  
 	mLSP         = array( 'f', [ 0. ] );  
-	limit        = array( 'f', [ 0. ] );  
+	limit_exp        = array( 'f', [ 0. ] );  
+	limit_p1s        = array( 'f', [ 0. ] );  
+	limit_p2s        = array( 'f', [ 0. ] );  
+	limit_m1s        = array( 'f', [ 0. ] );  
+	limit_m2s        = array( 'f', [ 0. ] );  
+	limit_obs        = array( 'f', [ 0. ] );  				
 	significance = array( 'f', [ 0. ] );  
 	fittedMu     = array( 'f', [ 0. ] );
 	tout.Branch('mGo',mGo,'mGo/F');
 	tout.Branch('mLSP',mLSP,'mLSP/F');
-	tout.Branch("limit",limit,"limit/F");
+	tout.Branch("limit_exp",limit_exp,"limit_exp/F");
+	tout.Branch("limit_p1s",limit_p1s,"limit_p1s/F");
+	tout.Branch("limit_p2s",limit_p2s,"limit_p2s/F");
+	tout.Branch("limit_m1s",limit_m1s,"limit_m1s/F");
+	tout.Branch("limit_m2s",limit_m2s,"limit_m2s/F");
+	tout.Branch("limit_obs",limit_obs,"limit_obs/F");
 	tout.Branch("significance",significance,"significance/F");
 	tout.Branch("fittedMu",fittedMu,"fittedMu/F");
 
@@ -142,7 +153,13 @@ if __name__ == '__main__':
 					mLSP[0] = float(options.mLSP);
 					fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,signaltag,lumi,mu) )[0];
 					#significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
-					limit[0] = getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,signaltag,lumi,mu) ) ;
+					olims = getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,signaltag,lumi,mu));
+					limit_m2s[0] = olims[0];
+					limit_m1s[0] = olims[1];
+					limit_exp[0] = olims[2];
+					limit_p1s[0] = olims[3];
+					limit_p2s[0] = olims[4];
+					limit_obs[0] = olims[5];
 					
 					#fittedMu[0] = -99.;
 					significance[0] = -99.;
