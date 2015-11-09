@@ -14,6 +14,7 @@ parser.add_option("--tag", dest="tag", default = 'SinglePhoton1',help="mass of L
 parser.add_option("--mGo", dest="mGo", default='1000', help="Mass of Gluino", metavar="mGo")
 parser.add_option("--mLSP", dest="mLSP", default='900', help="Mass of LSP", metavar="mLSP")
 parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='no X11 windows')
+parser.add_option('--realData', action='store_true', dest='realData', default=False, help='no X11 windows')
 
 (options, args) = parser.parse_args()
 
@@ -93,7 +94,7 @@ if __name__ == '__main__':
 		for sig in signals:
 			for mu in mus:
 				for vary in variations: 
-					tag = vary;
+					tag = options.tag;
 					combOpt = '';
 					if vary == 'allBkgs':  combOpt = '--allBkgs'
 					if vary == 'qcdOnly':  combOpt = '--qcdOnly'
@@ -109,6 +110,7 @@ if __name__ == '__main__':
 
 					command = 'python buildCards-AllBkgsMassScan.py -b %s --signal  %s --tag %s --lumi %0.1f --mu %0.1f --mGo=%s --mLSP=%s' % (combOpt,options.signal,tag,lumi,mu, options.mGo, options.mLSP); 
 					if options.fastsim: command += " --fastsim"
+					if options.realData: command += " --realData"
 					os.system(command);
 					
 					signaltag = "SMS%s%s" % (options.signal[2:],options.mGo);
@@ -131,7 +133,7 @@ if __name__ == '__main__':
 					# # run max likelihood fit
 					combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); os.system(combine_cmmd);
 					# # run asymptotic
-					#combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); os.system(combine_cmmd);
+					combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); os.system(combine_cmmd);
 
 					dicttag = "%s_%s_%.1f" % (tag,sig,lumi);
 
@@ -140,11 +142,11 @@ if __name__ == '__main__':
 					mLSP[0] = float(options.mLSP);
 					fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,signaltag,lumi,mu) )[0];
 					#significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
-					#limit[0] = getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,signaltag,lumi,mu) ) ;
+					limit[0] = getLimit( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.Asymptotic.mH120.root" % (tag,signaltag,lumi,mu) ) ;
 					
 					#fittedMu[0] = -99.;
 					significance[0] = -99.;
-					limit[0] = -99.;
+					# limit[0] = -99.;
 					
 					tout.Fill();
 	fout.cd();
