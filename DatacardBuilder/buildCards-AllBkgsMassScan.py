@@ -58,6 +58,8 @@ if __name__ == '__main__':
 	signaltag = "RA2bin_"+sms;
 	if options.fastsim: signaltag+="_fast"
 
+	signalContamLL_file=TFile("inputHistograms/SignalContamin/LLContamination_T1bbbb.root")
+	
 	signalSFB_file =TFile(signaldirtag+"/RA2bin_signal.root");
 
 	signalSysSFUp_file=TFile(signaldirtag+"/RA2bin_signal_btagSFuncUp.root");
@@ -151,6 +153,8 @@ if __name__ == '__main__':
 		signalSysmistagCFuncUp_file=TFile(signaldirtag+"/RA2bin_signal_mistagCFuncUp.root");
 		signalSysmistagCFuncDown_file=TFile(signaldirtag+"/RA2bin_signal_mistagCFuncDown.root");
 
+		LLContamHist=signalContamLL_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
+		LLContamHist.Scale(lumi/3.0)	
 		signalRegion_sigHistbtagCFuncUp = signalSysbtagCFuncUp_file.Get(signaltag)
 		signalRegion_sigHistbtagCFuncUp.Scale(lumi/3.);
 		signalRegion_sigListbtagCFuncUp=binsToList( signalRegion_sigHistbtagCFuncUp );
@@ -246,7 +250,7 @@ if __name__ == '__main__':
 	signalRegion_WeightList=binsToList(LLWeight_Hist);
 	signalRegion_MCWeightList=binsToList(LLMCWeight_Hist);
 	signalRegion_CSList=binsToList(LLCS_Hist)
-
+	LLContamList=binsToList(LLContamHist)
 	LLSysElecQSquareUp=binsToList(LLSysElecQSquareUp_Hist)
 	LLSysElecQSquareDown=binsToList(LLSysElecQSquareDown_Hist)
 
@@ -644,7 +648,7 @@ if __name__ == '__main__':
 		print " ---", tagsForSignalRegion[i]
 
 		tmpList = [];
-		tmpList.append(signalRegion_sigList[i]);
+		tmpList.append(signalRegion_sigList[i]-LLContamList[i]);
 
 		# LL rate
 		
