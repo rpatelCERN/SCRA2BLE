@@ -153,7 +153,7 @@ if __name__ == '__main__':
 		signalSysctagCFuncDown_file=TFile(signaldirtag+"/RA2bin_signal_ctagCFuncDown.root");
 		signalSysmistagCFuncUp_file=TFile(signaldirtag+"/RA2bin_signal_mistagCFuncUp.root");
 		signalSysmistagCFuncDown_file=TFile(signaldirtag+"/RA2bin_signal_mistagCFuncDown.root");
-		TauContamHist =signalContamTau_file.Get(signaltag)
+		TauContamHist =signalContamTau_file.Get("SearchH_b/"+signaltag)
 		TauContamHist.Scale(lumi/3.0)
 		LLContamHist=signalContamLL_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
 		LLContamHist.Scale(lumi/3.0)	
@@ -449,17 +449,17 @@ if __name__ == '__main__':
 		QCDcontributionsPerBin.append( [ 'sig','qcd','contam' ] );
 		if(NCRForLowdphiRegion_QCDList[i]>0.0):
 			#BkgRateSubtracted=NCRForLowdphiRegion_QCDList[i]-ContaminForLowdphiRegion[i]
-			BkgRateSubtracted=NCRForLowdphiRegion_QCDList[i]
+			BkgRateSubtracted=NCRForLowdphiRegion_QCDList[i]*2.1/1.3
 			if BkgRateSubtracted>1:
 				ratesForLowdphiRegion_QCDList.append(BkgRateSubtracted)
-				ratesForSignalRegion_QCDList.append(NSRForSignalRegion_QCDList[i])			
+				ratesForSignalRegion_QCDList.append(NSRForSignalRegion_QCDList[i]*2.1/1.3)			
 			else:
 				ratesForLowdphiRegion_QCDList.append(1.0)
 				ratesForSignalRegion_QCDList.append(ratiosForLowdphiRegion[i]);
 		else:
 			ratesForLowdphiRegion_QCDList.append(1.0)
 			ratesForSignalRegion_QCDList.append(ratiosForLowdphiRegion[i]);
-		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] );
+		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] *2.1/1.3);
 
 	######################################################################
 	######################################################################
@@ -478,7 +478,7 @@ if __name__ == '__main__':
 		currateC = [];
 		currateC.append( 0. );
 		currateC.append( ratesForLowdphiRegion_QCDList[i] );
-		currateC.append( ContaminForLowdphiRegion[i] );	
+		currateC.append( ContaminForLowdphiRegion[i]*2.1/1.3 );	
 		#currateC.append(0.0)
 		qcdcontrolRegion_Rates.append(currateC);
 		qcdcontrollRegion_Observed.append(curobsC);	
