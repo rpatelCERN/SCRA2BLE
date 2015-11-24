@@ -449,17 +449,17 @@ if __name__ == '__main__':
 		QCDcontributionsPerBin.append( [ 'sig','qcd','contam' ] );
 		if(NCRForLowdphiRegion_QCDList[i]>0.0):
 			#BkgRateSubtracted=NCRForLowdphiRegion_QCDList[i]-ContaminForLowdphiRegion[i]
-			BkgRateSubtracted=NCRForLowdphiRegion_QCDList[i]*2.1/1.3
+			BkgRateSubtracted=NCRForLowdphiRegion_QCDList[i]
 			if BkgRateSubtracted>1:
 				ratesForLowdphiRegion_QCDList.append(BkgRateSubtracted)
-				ratesForSignalRegion_QCDList.append(NSRForSignalRegion_QCDList[i]*2.1/1.3)			
+				ratesForSignalRegion_QCDList.append(NSRForSignalRegion_QCDList[i])			
 			else:
 				ratesForLowdphiRegion_QCDList.append(1.0)
 				ratesForSignalRegion_QCDList.append(ratiosForLowdphiRegion[i]);
 		else:
 			ratesForLowdphiRegion_QCDList.append(1.0)
 			ratesForSignalRegion_QCDList.append(ratiosForLowdphiRegion[i]);
-		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] *2.1/1.3);
+		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] );
 
 	######################################################################
 	######################################################################
@@ -478,7 +478,7 @@ if __name__ == '__main__':
 		currateC = [];
 		currateC.append( 0. );
 		currateC.append( ratesForLowdphiRegion_QCDList[i] );
-		currateC.append( ContaminForLowdphiRegion[i]*2.1/1.3 );	
+		currateC.append( ContaminForLowdphiRegion[i]);	
 		#currateC.append(0.0)
 		qcdcontrolRegion_Rates.append(currateC);
 		qcdcontrollRegion_Observed.append(curobsC);	
