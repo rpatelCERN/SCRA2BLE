@@ -516,7 +516,7 @@ if __name__ == '__main__':
 	for i in range(len(GJet_Obs)):
 		if(GJet_Obs[i]>-1):sphotonObserved.append(GJet_Obs[i])
 		if(ZgRatio_List[i]>-1):RzgVals.append(ZgRatio_List[i])
-#		if(GJetPur_List[i]>-1):PurVals.append(GJetPur_List[i])
+		if(GJetPur_List[i]>-1):PurVals.append(GJetPur_List[i])
 		if(GJetPurErr_List[i]>-1):PurErrsAbs.append(GJetPurErr_List[i])
 		if(ZgRatioErr_List[i]>-1):RzgErrsAbs.append(ZgRatioErr_List[i])	
 
@@ -527,9 +527,9 @@ if __name__ == '__main__':
 	RzgErrs = [];
 	PurErrs = [];
 	for i in range(len(RzgVals)): RzgErrs.append( 1+RzgErrsAbs[i] );
-	#for i in range(len(PurVals)): PurErrs.append( 1+PurErrsAbs[i]);
-	PurVals=[0.892,0.892,0.892,0.810,0.810,0.810,0.892,0.892,0.892,0.810,0.810,0.810,0.892,0.892,0.892,0.810,0.810,0.810]
-	PurErrs=[1.089,1.089,1.089,1.114,1.115,1.113,1.090,1.089,1.089,1.116,1.115,1.113,1.090,1.091,1.086,1.113,1.115,1.115]
+	for i in range(len(PurVals)): PurErrs.append( 1+PurErrsAbs[i]);
+	#PurVals=[0.892,0.892,0.892,0.810,0.810,0.810,0.892,0.892,0.892,0.810,0.810,0.810,0.892,0.892,0.892,0.810,0.810,0.810]
+	#PurErrs=[1.089,1.089,1.089,1.114,1.115,1.113,1.090,1.089,1.089,1.116,1.115,1.113,1.090,1.091,1.086,1.113,1.115,1.115]
 	PhoRatios = [];
 	doubleRatioCentralValue = 0.92;
 	for i in range(len(RzgVals)): PhoRatios.append( 1./RzgVals[i]/PurVals[i]/ZgRdataMC[i] );
