@@ -565,6 +565,7 @@ if __name__ == '__main__':
 
 	ZvvYieldsInSignalRegion = [sphotonObservedExt[i]*RzgValsExt[i]*PurValsExt[i]*signalRegion_zvvList[i]*ZgRdataMCExt[i] for i in range(len(sphotonObservedExt))]
 	ZvvRatesInSignalRegion = [];
+#combine -M MaxLikelihoodFit allcards.root --saveWithUncertainties --saveNormalizations 
 	for i in range(len(sphotonObservedExt)):
 			if sphotonObservedExt[i] > 0: ZvvRatesInSignalRegion.append( ZvvYieldsInSignalRegion[i] );
 			else: ZvvRatesInSignalRegion.append(signalRegion_zvvList[i]);
@@ -644,8 +645,8 @@ if __name__ == '__main__':
 	zvv = TH1F( 'Zvv', 'Zvv', 72, 0, 72 )
 	ll = TH1F( 'LL', 'LL', 72, 0, 72 )
 	tau = TH1F( 'tau', 'tau', 72, 0, 72 )
-	DataHist_In=TFile("inputHistograms/histograms_1.3fb/RA2bin_signalUnblind.root")
-	Data_Hist=DataHist_In.Get("RA2bin_data")
+	DataHist_In=TFile("inputHistograms/histograms_2.1fb/data_hists.root")
+	Data_Hist=DataHist_In.Get("hObsAllBins")
 	Data_List=binsToList(Data_Hist)
 	for i in range(signalRegion._nBins):
 		srobs = 0;
