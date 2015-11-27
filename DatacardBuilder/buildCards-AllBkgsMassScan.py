@@ -182,7 +182,7 @@ if __name__ == '__main__':
 
 	# --------------------------------------------
 	# z invisible
-	sphotonRegion_file = TFile(idir+"/RA2bin_GJet_CleanVars.root");
+	sphotonRegion_file = TFile(idir+"/RA2bin_GJet_PhotonBins.root");
 
 	DYinputfile = TFile(idir+"/ZinvHistos_%1.1fifb.root" %lumi)
 	signalRegion_zvvRatesFromDY = DYinputfile.Get("hDYvalue")
@@ -645,8 +645,8 @@ if __name__ == '__main__':
 	zvv = TH1F( 'Zvv', 'Zvv', 72, 0, 72 )
 	ll = TH1F( 'LL', 'LL', 72, 0, 72 )
 	tau = TH1F( 'tau', 'tau', 72, 0, 72 )
-	DataHist_In=TFile("inputHistograms/histograms_2.1fb/data_hists.root")
-	Data_Hist=DataHist_In.Get("hObsAllBins")
+	DataHist_In=TFile("inputHistograms/histograms_%1.1ffb/RA2bin_signalUnblind.root" %lumi)
+	Data_Hist=DataHist_In.Get("RA2bin_data")
 	Data_List=binsToList(Data_Hist)
 	for i in range(signalRegion._nBins):
 		srobs = 0;
