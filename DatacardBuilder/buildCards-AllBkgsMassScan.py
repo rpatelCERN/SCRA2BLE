@@ -56,10 +56,13 @@ if __name__ == '__main__':
 	signaldirtag = idir;
 	if options.fastsim: signaldirtag += "/fastsimSignalScan";
 	signaltag = "RA2bin_"+sms;
+	parse=sms.split('_')
+	model=parse[0]
+	#print parse
 	if options.fastsim: signaltag+="_fast"
 
-	signalContamLL_file=TFile("inputHistograms/SignalContamin/LLContamination_T1bbbb.root")
-	signalContamTau_file=TFile("inputHistograms/SignalContamin/AllSignalFilesHtau.root")
+	signalContamLL_file=TFile("inputHistograms/SignalContamin/LLContamination_%s.root" %model)
+	signalContamTau_file=TFile("inputHistograms/SignalContamin/Signal%sHtauContamin.root" %model)
 	signalSFB_file =TFile(signaldirtag+"/RA2bin_signal.root");
 
 	signalSysSFUp_file=TFile(signaldirtag+"/RA2bin_signal_btagSFuncUp.root");
