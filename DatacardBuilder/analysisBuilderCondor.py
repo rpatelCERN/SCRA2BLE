@@ -142,8 +142,8 @@ if __name__ == '__main__':
 					os.system(combine_cmmd);
 					
 					# run significance
-					#combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.root -n %s" % (the_odir,the_odir); 
-					#os.system(combine_cmmd);
+					combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.root -n %s" % (the_odir,the_odir); 
+					os.system(combine_cmmd);
 					# # run max likelihood fit
 					#combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); os.system(combine_cmmd);
 					# # run asymptotic
@@ -166,7 +166,7 @@ if __name__ == '__main__':
 					limit_obs[0] = olims[5];
 					limit_obsErr[0]= olims[6]	
 					fittedMu[0] = -99.;
-					significance[0] = -99.;
+					#significance[0] = -99.;
 					# limit[0] = -99.;
 					
 					tout.Fill();

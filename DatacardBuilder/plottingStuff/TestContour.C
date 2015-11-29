@@ -53,7 +53,7 @@ c->Update();
    fill=1;
    for(i=0; i<curv->GetN(); ++i){
 	//std::cout<<mLSP[i]<<", "<<mGo[i]<<", "<<mGo[i]-mLSP[i]<<std::endl;
-//	if(mLSP[i]>1100)continue;
+	if(mLSP[i]>1100)continue;
 	if(mGo[i]-mLSP[i]<=25)continue;
 	ExpLimSup->SetPoint(i, mGo[i], mLSP[i]);
 	++fill;
@@ -73,7 +73,7 @@ c->Update();
    fill=1;
    for(i=0; i<curv->GetN(); ++i){
 	//std::cout<<mLSP[i]<<", "<<mGo[i]<<", "<<mGo[i]-mLSP[i]<<std::endl;
-	if(mLSP[i]>1100)continue;
+	if(mLSP[i]>1200)continue;
 	if(mGo[i]-mLSP[i]<=25)continue;
 	ExpLimSdn->SetPoint(i, mGo[i], mLSP[i]);
 	++fill;
