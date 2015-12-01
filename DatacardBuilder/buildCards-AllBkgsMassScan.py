@@ -812,11 +812,11 @@ if __name__ == '__main__':
 			#print len(RzgErrs),len(PurErrs)
 			sphotonRegion.addSingleSystematic('PhoRzgUnc','lnN',['zvv'],RzgErrs[i],'',i);	
 			sphotonRegion.addSingleSystematic('PhoEffUnc','lnN',['zvv'],PurErrs[i],'',i);	
-
+			sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, '',i);
 		## RZg double ratio from Jim H.
-		sphotonRegion.addAsymSystematic('PhoRZgDblRatioNJ0','lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, "NJets0"); # adjusted to make relative
-		sphotonRegion.addAsymSystematic('PhoRZgDblRatioNJ1','lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, "NJets1"); # adjusted to make relative
-		sphotonRegion.addAsymSystematic('PhoRZgDblRatioNJ2','lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, "NJets2"); # adjusted to make relative
+		#sphotonRegion.addAsymSystematic('PhoRZgDblRatioNJ0','lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, "NJets0"); # adjusted to make relative
+		#sphotonRegion.addAsymSystematic('PhoRZgDblRatioNJ1','lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, "NJets1"); # adjusted to make relative
+		#sphotonRegion.addAsymSystematic('PhoRZgDblRatioNJ2','lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, "NJets2"); # adjusted to make relative
 
 		## all the Drell-Yan systematics now nicely wrapped up in a bow
 		#signalRegion.addSystematicFromList('DYstat','lnN',['zvv'], binsToList(DYinputfile.Get("hDYstat")));
