@@ -61,8 +61,6 @@ if __name__ == '__main__':
 	#print parse
 	if options.fastsim: signaltag+="_fast"
 
-	signalContamLL_file=TFile("inputHistograms/SignalContamin/LLContamination_%s.root" %model)
-	signalContamTau_file=TFile("inputHistograms/SignalContamin/Signal%sHtauContamin.root" %model)
 	signalSFB_file =TFile(signaldirtag+"/RA2bin_signal.root");
 
 	signalSysSFUp_file=TFile(signaldirtag+"/RA2bin_signal_btagSFuncUp.root");
@@ -153,8 +151,7 @@ if __name__ == '__main__':
 	signalRegion_sigListctagCFuncDown = [];
 	signalRegion_sigListmistagCFuncUp = [];
 	signalRegion_sigListmistagCFuncDown = [];
-	LLContamList=[]
-	HadtauContamList=[]
+
 	if options.fastsim:
 
 		signalSysbtagCFuncUp_file=TFile(signaldirtag+"/RA2bin_signal_btagCFuncUp.root");
@@ -163,10 +160,7 @@ if __name__ == '__main__':
 		signalSysctagCFuncDown_file=TFile(signaldirtag+"/RA2bin_signal_ctagCFuncDown.root");
 		signalSysmistagCFuncUp_file=TFile(signaldirtag+"/RA2bin_signal_mistagCFuncUp.root");
 		signalSysmistagCFuncDown_file=TFile(signaldirtag+"/RA2bin_signal_mistagCFuncDown.root");
-		TauContamHist =signalContamTau_file.Get("SearchH_b/"+signaltag)
-		TauContamHist.Scale(lumi/3.0)
-		LLContamHist=signalContamLL_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
-		LLContamHist.Scale(lumi/3.0)	
+
 		signalRegion_sigHistbtagCFuncUp = signalSysbtagCFuncUp_file.Get(signaltag)
 		signalRegion_sigHistbtagCFuncUp.Scale(lumi/3.);
 		signalRegion_sigListbtagCFuncUp=binsToList( signalRegion_sigHistbtagCFuncUp );
@@ -187,9 +181,6 @@ if __name__ == '__main__':
 		signalRegion_sigHistmistagCFuncDown.Scale(lumi/3.);
 		signalRegion_sigListmistagCFuncDown=binsToList( signalRegion_sigHistmistagCFuncDown );	
 		
-		LLContamList=binsToList(LLContamHist)
-		HadtauContamList=binsToList(TauContamHist)
-
 	# --------------------------------------------
 	# z invisible
 	sphotonRegion_file = TFile(idir+"/RA2bin_GJet_PhotonBins.root");
@@ -391,17 +382,17 @@ if __name__ == '__main__':
 	tauNonClosure=binsToList(HadTauSysNC_Hist)
 	tauBMistagUp=binsToList(HadTauBMistagUp_Hist)
 	tauBMistagDown=binsToList(HadTauBMistagDown_Hist)	
-        HadTauMuonCorrUncUpHist=HadTau_file.Get("searchBin_MuRecoSysUp")
+	HadTauMuonCorrUncUpHist=HadTau_file.Get("searchBin_MuRecoSysUp")
 	HadTauMuonCorrUncDnHist=HadTau_file.Get("searchBin_MuRecoSysDn")	
-        HadTauMuonCorrIsoUncUpHist=HadTau_file.Get("searchBin_MuIsoSysUp")
-        HadTauMuonCorrIsoUncDnHist=HadTau_file.Get("searchBin_MuIsoSysDn")
+	HadTauMuonCorrIsoUncUpHist=HadTau_file.Get("searchBin_MuIsoSysUp")
+	HadTauMuonCorrIsoUncDnHist=HadTau_file.Get("searchBin_MuIsoSysDn")
 	HadTauStatUncertainties=HadTau_file.Get("searchBin_StatUncertainties")
 	
-        HadTauJECUncertUpHist=HadTau_file.Get("searchBin_JECSysUp")
-        HadTauJECUncertDownHist=HadTau_file.Get("searchBin_JECSysDn")	
+	HadTauJECUncertUpHist=HadTau_file.Get("searchBin_JECSysUp")
+	HadTauJECUncertDownHist=HadTau_file.Get("searchBin_JECSysDn")	
 
-        HadTauMTSysUpHist=HadTau_file.Get("searchBin_MTSysUp")
-        HadTauMTSysDownHist=HadTau_file.Get("searchBin_MTSysDn")
+	HadTauMTSysUpHist=HadTau_file.Get("searchBin_MTSysUp")
+	HadTauMTSysDownHist=HadTau_file.Get("searchBin_MTSysDn")
 	HadTauMTEffHist=HadTau_file.Get("seaerchBin_MtEffStat")
 	HadTauIsoTkEffHistStatHist=HadTau_file.Get("seaerchBin_IsoTrkVetoEffUncertaintyStat")
 	HadTauIsoTkEffHistSysHist=HadTau_file.Get("seaerchBin_IsoTrkVetoEffUncertaintySys")
@@ -409,24 +400,24 @@ if __name__ == '__main__':
 	HadTauMuFromTauStatHist=HadTau_file.Get("seaerchBin_MuFromTauStat")
 	HadTauMuDiLeptonHist=HadTau_file.Get("searchBin_DileptonUncertainty")
 	HadTauMuAccSysPDFUpHist=HadTau_file.Get("seaerchBin_AccSysPDFUp")
-        HadTauMuAccSysPDFDnHist=HadTau_file.Get("seaerchBin_AccSysPDFDn")
-        HadTauMuAccSysScaleUpHist=HadTau_file.Get("seaerchBin_AccSysScaleUp")
-        HadTauMuAccSysScaleDnHist=HadTau_file.Get("seaerchBin_AccSysScaleDn")
+	HadTauMuAccSysPDFDnHist=HadTau_file.Get("seaerchBin_AccSysPDFDn")
+	HadTauMuAccSysScaleUpHist=HadTau_file.Get("seaerchBin_AccSysScaleUp")
+	HadTauMuAccSysScaleDnHist=HadTau_file.Get("seaerchBin_AccSysScaleDn")
 	HadTauMuonCorrUncUp=binsToList(HadTauMuonCorrUncUpHist)
 	HadTauMuonCorrUncDn=binsToList(HadTauMuonCorrUncDnHist)
-        HadTauMuonIsoUncUp=binsToList(HadTauMuonCorrIsoUncUpHist)
-        HadTauMuonIsoUncDn=binsToList(HadTauMuonCorrIsoUncDnHist)
+	HadTauMuonIsoUncUp=binsToList(HadTauMuonCorrIsoUncUpHist)
+	HadTauMuonIsoUncDn=binsToList(HadTauMuonCorrIsoUncDnHist)
 	HadTauJECUncertUp=binsToList(HadTauJECUncertUpHist)
 	HadTauJECUncertDn=binsToList(HadTauJECUncertDownHist)	
-        HadTauMTSysDn=binsToList(HadTauMTSysDownHist)	
-        HadTauMTSysUp=binsToList(HadTauMTSysUpHist)	
-        HadTauMTEff=binsToList(HadTauMTEffHist)
+	HadTauMTSysDn=binsToList(HadTauMTSysDownHist)	
+	HadTauMTSysUp=binsToList(HadTauMTSysUpHist)	
+	HadTauMTEff=binsToList(HadTauMTEffHist)
 	HadTauAccStat=binsToList(HadTauAccStatHist)
 
 	HadTauMuAccSysPDFUp=binsToList(HadTauMuAccSysPDFUpHist)
-        HadTauMuAccSysPDFDn=binsToList(HadTauMuAccSysPDFDnHist)
-        HadTauMuAccSysScaleUp=binsToList(HadTauMuAccSysScaleUpHist)
-        HadTauMuAccSysScaleDn=binsToList(HadTauMuAccSysScaleDnHist)
+	HadTauMuAccSysPDFDn=binsToList(HadTauMuAccSysPDFDnHist)
+	HadTauMuAccSysScaleUp=binsToList(HadTauMuAccSysScaleUpHist)
+	HadTauMuAccSysScaleDn=binsToList(HadTauMuAccSysScaleDnHist)
 
 	HadTauIsoTkEffHistStat =binsToList(HadTauIsoTkEffHistStatHist)
 	HadTauIsoTkEffHistSys=binsToList(HadTauIsoTkEffHistSysHist)
@@ -437,7 +428,7 @@ if __name__ == '__main__':
 	HadTauAccStatDn=[]
 	HadTauIsoTkEffSysDn=[]
 	tauSqrtSumW2=binsToList(HadTauStatUncertainties)
-        for i in range(len(tauSqrtSumW2)):
+	for i in range(len(tauSqrtSumW2)):
 		if signalRegion_tauList[i]>0.0: tauSqrtSumW2[i]=tauSqrtSumW2[i]/signalRegion_tauList[i]
 		HadTauMTEffDn.append(1.0/HadTauMTEff[i])
 		HadTauMuDiLeptonDn.append(1.0/HadTauMuDiLepton[i])
@@ -680,6 +671,14 @@ if __name__ == '__main__':
 
 		tmpList = [];
 		if options.fastsim:
+			signalContamLL_file=TFile("inputHistograms/SignalContamin/LLContamination_%s.root" %model)
+			signalContamTau_file=TFile("inputHistograms/SignalContamin/Signal%sHtauContamin.root" %model)
+			TauContamHist =signalContamTau_file.Get("SearchH_b/"+signaltag)
+			TauContamHist.Scale(lumi/3.0)
+			LLContamHist=signalContamLL_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
+			LLContamHist.Scale(lumi/3.0)    
+			LLContamList=binsToList(LLContamHist)
+			HadtauContamList=binsToList(TauContamHist)  
 			tmpList.append(signalRegion_sigList[i]-LLContamList[i]-HadtauContamList[i]);
 		else:
 			tmpList.append(signalRegion_sigList[i])
@@ -829,19 +828,18 @@ if __name__ == '__main__':
 	### LL uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.llpOnly or (options.tauOnly and  options.llpOnly):
 		for i in range(signalRegion.GetNbins()):
-			if(signalRegion_CSList[i]>2):
- 				signalRegion.addAsymSystematic("LLSysNonClosSys"+tagsForSignalRegion[i],'lnN',['WTopSL'],(LLSysNCUp[i]), (LLSysNCDown[i]),'', i)				
-				signalRegion.addAsymSystematic("LLStatMuIso",'lnN',['WTopSL'],(LLStatMuIsoUp[i]), (LLStatMuIsoDown[i]),'', i)
-				signalRegion.addAsymSystematic("LLStatMuReco",'lnN',['WTopSL'],(LLStatMuRecoUp[i]), (LLStatMuRecoDown[i]),'', i)
-				signalRegion.addAsymSystematic("LLStatEleIso",'lnN',['WTopSL'],(LLStatElecIsoUp[i]), (LLStatElecIsoDown[i]),'', i)
-				signalRegion.addAsymSystematic("LLStatEleReco",'lnN',['WTopSL'],(LLStatElecRecoUp[i]), (LLStatElecRecoDown[i]),'', i)
+			signalRegion.addAsymSystematic("LLSysNonClosSys"+tagsForSignalRegion[i],'lnN',['WTopSL'],(LLSysNCUp[i]), (LLSysNCDown[i]),'', i)				
+			signalRegion.addAsymSystematic("LLStatMuIso",'lnN',['WTopSL'],(LLStatMuIsoUp[i]), (LLStatMuIsoDown[i]),'', i)
+			signalRegion.addAsymSystematic("LLStatMuReco",'lnN',['WTopSL'],(LLStatMuRecoUp[i]), (LLStatMuRecoDown[i]),'', i)
+			signalRegion.addAsymSystematic("LLStatEleIso",'lnN',['WTopSL'],(LLStatElecIsoUp[i]), (LLStatElecIsoDown[i]),'', i)
+			signalRegion.addAsymSystematic("LLStatEleReco",'lnN',['WTopSL'],(LLStatElecRecoUp[i]), (LLStatElecRecoDown[i]),'', i)
 
-				if options.llpOnly: signalRegion.addAsymSystematic("LLSysMuIso",'lnN',['WTopSL'],(LLSysMuIsoUp[i]), (LLSysMuIsoDown[i]),'', i)
-				else: signalRegion.addCorrelSystematicAsym("LLSysMuIso",'lnN',['WTopSL','WTopHad'],LLSysMuIsoUp[i], LLSysMuIsoDown[i],HadTauMuonIsoUncUp[i], HadTauMuonIsoUncDn[i],'', i)
-			 	if options.llpOnly: signalRegion.addAsymSystematic("LLSysMuReco",'lnN',['WTopSL'],(LLSysMuRecoUp[i]), (LLSysMuRecoDown[i]),'', i)
-				else: signalRegion.addCorrelSystematicAsym("LLSysMuIso",'lnN',['WTopSL','WTopHad'],LLSysMuRecoUp[i], LLSysMuRecoDown[i],HadTauMuonCorrUncUp[i], HadTauMuonCorrUncDn[i],'', i)
-				signalRegion.addAsymSystematic("LLSysEleIso",'lnN',['WTopSL'],(LLSysElecIsoUp[i]), (LLSysElecIsoDown[i]),'', i)
-				signalRegion.addAsymSystematic("LLSysEleReco",'lnN',['WTopSL'],(LLSysElecRecoUp[i]), (LLSysElecRecoDown[i]),'', i)	
+			if options.llpOnly: signalRegion.addAsymSystematic("LLSysMuIso",'lnN',['WTopSL'],(LLSysMuIsoUp[i]), (LLSysMuIsoDown[i]),'', i)
+			else: signalRegion.addCorrelSystematicAsym("LLSysMuIso",'lnN',['WTopSL','WTopHad'],LLSysMuIsoUp[i], LLSysMuIsoDown[i],HadTauMuonIsoUncUp[i], HadTauMuonIsoUncDn[i],'', i)
+		 	if options.llpOnly: signalRegion.addAsymSystematic("LLSysMuReco",'lnN',['WTopSL'],(LLSysMuRecoUp[i]), (LLSysMuRecoDown[i]),'', i)
+			else: signalRegion.addCorrelSystematicAsym("LLSysMuIso",'lnN',['WTopSL','WTopHad'],LLSysMuRecoUp[i], LLSysMuRecoDown[i],HadTauMuonCorrUncUp[i], HadTauMuonCorrUncDn[i],'', i)
+			signalRegion.addAsymSystematic("LLSysEleIso",'lnN',['WTopSL'],(LLSysElecIsoUp[i]), (LLSysElecIsoDown[i]),'', i)
+			signalRegion.addAsymSystematic("LLSysEleReco",'lnN',['WTopSL'],(LLSysElecRecoUp[i]), (LLSysElecRecoDown[i]),'', i)	
 
 		if options.llpOnly:
 			signalRegion.addAsymSystematic("LLSysMTW_NJet0",'lnN',['WTopSL'],LLSysMTUp, LLSysMTDown,'NJets0')
