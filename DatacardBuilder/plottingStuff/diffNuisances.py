@@ -109,8 +109,8 @@ for i in range(fpf_s.getSize()):
     if flag or options.all: table[name] = row
 
 fmtstring = "%-40s     %15s    %15s  %10s"
-highlight = "*%s*"
-morelight = "!%s!"
+highlight = "%s"
+morelight = "%s"
 pmsub, sigsub = None, None
 if options.format == 'text':
     if options.abs:

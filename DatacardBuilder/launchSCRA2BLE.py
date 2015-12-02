@@ -76,45 +76,43 @@ if __name__ == '__main__':
 
 	if options.fastsim:
 		
-		outDir = "/store/user/ntran/SUSY/statInterp/scanOutput"
+		outDir = "/store/user/ntran/SUSY/statInterp/scanOutput/Dec1"
 
 		# # tar it up for usage
 		
 		os.system('tar -cvzf package.tar.gz *.py input*');
 
-
-		signals = ['T1bbbb'];
-		f = TFile("inputHistograms/histograms_1.3fb/fastsimSignalScan/RA2bin_signal.root");
+		f = TFile("inputHistograms/histograms_2.1fb/fastsimSignalScan/RA2bin_signal.root");
 		names = [k.GetName() for k in f.GetListOfKeys()]
+		models = []
 		mGos=[]
 		mLSPs=[]
 		for n in names:
-	         	parse=n.split('_')
-	        	mGos.append(int(parse[2]))
-		        mLSPs.append(int(parse[3]))
-		
+			parse=n.split('_')
+			models.append(parse[1])
+			mGos.append(int(parse[2]))
+			mLSPs.append(int(parse[3]))
+
 		#print parse
 		#mGos  = [1200];
 		#mLSPs = [1150];
 
 
-		for signal in signals:
-			for m in range(len(mGos)):
+		# for signal in signals:
+		for m in range(len(mGos)):
 			#	for mLSP in mLSPs:
-				command = "python analysisBuilderCondor.py -b ";
-				command += "--signal %s " % signal;
-				command += "--mGo %i " % mGos[m];
-				command += "--mLSP %i " % mLSPs[m];
-				command += " --fastsim";
-				command += " --realData";
-				command += " --tag allBkgs";
+			command = "python analysisBuilderCondor.py -b ";
+			command += "--signal %s " % models[m];
+			command += "--mGo %i " % mGos[m];
+			command += "--mLSP %i " % mLSPs[m];
+			command += " --fastsim";
+			command += " --realData";
+			command += " --tag allBkgs";
 
-				tag = "%s_%i_%i" % (signal,mGos[m],mLSPs[m]);
+			tag = "%s_%i_%i" % (signal,mGos[m],mLSPs[m]);
 
-				condorize( command, tag, outDir );
-				time.sleep(0.1);
-						
-				#os.system('rm package.tar.gz');
+			condorize( command, tag, outDir );
+			time.sleep(0.05);
 
 
 	else:
