@@ -753,11 +753,11 @@ if __name__ == '__main__':
 			signalRegion.addAsymSystematic('JECUnc','lnN', ['sig'], (signalRegion_sigListJECUp[i]/signalRegion_sigList[i]),signalRegion_sigListJECDown[i]/signalRegion_sigList[i],'', i)
 			signalRegion.addAsymSystematic('PileupUnc','lnN', ['sig'], (signalRegion_sigListPUUp[i]/signalRegion_sigList[i]),signalRegion_sigListPUDown[i]/signalRegion_sigList[i],'', i)
 			signalRegion.addAsymSystematic('ISRSystem','lnN', ['sig'],signalRegion_sigListISRUp[i]/signalRegion_sigList[i], signalRegion_sigListISRDown[i]/signalRegion_sigList[i], '',i)
-			if signalRegion_sigListPDFDown[i] > 0:
+			if signalRegion_sigListPDFDown[i] > 0.00001:
 			 	signalRegion.addAsymSystematic('PDFUnc','lnN', ['sig'], (signalRegion_sigListPDFUp[i]/signalRegion_sigList[i]),signalRegion_sigListPDFDown[i]/signalRegion_sigList[i],'', i)
 			else:
 			 	signalRegion.addAsymSystematic('PDFUnc','lnN', ['sig'], (signalRegion_sigListPDFUp[i]/signalRegion_sigList[i]),signalRegion_sigList[i]/signalRegion_sigListPDFUp[i],'', i)
-		 	if signalRegion_sigListScaleDown[i] > 0:
+		 	if signalRegion_sigListScaleDown[i] > 0.00001:
 			 	signalRegion.addAsymSystematic('ScaleUnc','lnN', ['sig'], (signalRegion_sigListScaleUp[i]/signalRegion_sigList[i]),signalRegion_sigListScaleDown[i]/signalRegion_sigList[i],'', i)
 			else: 
 			 	signalRegion.addAsymSystematic('ScaleUnc','lnN', ['sig'], (signalRegion_sigListScaleUp[i]/signalRegion_sigList[i]),signalRegion_sigList[i]/signalRegion_sigListScaleUp[i],'', i)	
