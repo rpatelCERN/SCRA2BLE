@@ -158,7 +158,7 @@ if __name__ == '__main__':
 					mLSP[0] = float(options.mLSP);
 					#fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,signaltag,lumi,mu) )[0];
 					#significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
-					# olims = getLimit( "higgsCombine%s.Asymptotic.mH120.root" % (the_odir));
+					olims = getLimit( "higgsCombine%s.Asymptotic.mH120.root" % (the_odir));
 					limit_m2s[0] = olims[0];
 					limit_m1s[0] = olims[1];
 					limit_exp[0] = olims[2];
