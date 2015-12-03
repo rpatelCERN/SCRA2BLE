@@ -109,7 +109,7 @@ if __name__ == '__main__':
 			command += " --realData";
 			command += " --tag allBkgs";
 
-			tag = "%s_%i_%i" % (signal,mGos[m],mLSPs[m]);
+			tag = "%s_%i_%i" % (models[m],mGos[m],mLSPs[m]);
 
 			condorize( command, tag, outDir );
 			time.sleep(0.05);
@@ -117,8 +117,8 @@ if __name__ == '__main__':
 
 	else:
 
-		#os.system('python analysisBuilderCondor.py -b --signal T1bbbb --mGo 1500 --mLSP 100 --realData --tag allBkgs');
-		os.system('python analysisBuilderCondor.py -b --signal T1bbbb --mGo 1000 --mLSP 100 --realData --tag allBkgs');
+		os.system('python analysisBuilderCondor.py -b --signal T1bbbb --mGo 1500 --mLSP 100 --realData --tag allBkgs');
+		# os.system('python analysisBuilderCondor.py -b --signal T1bbbb --mGo 1000 --mLSP 100 --realData --tag allBkgs');
 		#os.system('python analysisBuilderCondor.py -b --signal T1tttt --mGo 1500 --mLSP 800 --realData --tag allBkgs');
 		#os.system('python analysisBuilderCondor.py -b --signal T1tttt --mGo 1200 --mLSP 800 --realData --tag allBkgs');
 		#os.system('python analysisBuilderCondor.py -b --signal T1qqqq --mGo 1400 --mLSP 800 --realData --tag allBkgs');

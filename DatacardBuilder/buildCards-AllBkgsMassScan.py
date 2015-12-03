@@ -80,8 +80,8 @@ if __name__ == '__main__':
 	signalSysPUDown_file       =TFile(signaldirtag+"/RA2bin_signal_puuncDown.root");
 	signalSysPDFUp_file         =TFile(signaldirtag+"/RA2bin_signal_pdfuncUp.root");
 	signalSysPDFDown_file       =TFile(signaldirtag+"/RA2bin_signal_pdfuncDown.root");
-        signalSysISRUp_file         =TFile(signaldirtag+"/RA2bin_signal_isruncUp.root");
-        signalSysISRDown_file       =TFile(signaldirtag+"/RA2bin_signal_isruncDown.root");
+	signalSysISRUp_file         =TFile(signaldirtag+"/RA2bin_signal_isruncUp.root");
+	signalSysISRDown_file       =TFile(signaldirtag+"/RA2bin_signal_isruncDown.root");
 	signalRegion_sigHist          = signalSFB_file.Get(signaltag);
 	tagsForSignalRegion = binLabelsToList(signalRegion_sigHist);
 
@@ -94,10 +94,10 @@ if __name__ == '__main__':
 	signalRegion_sigHistTrigStatUp   = signalSysTrigStatUp_file.Get(signaltag)
 	signalRegion_sigHistTrigStatDown = signalSysTrigStatDown_file.Get(signaltag)
 	signalSysISRUpHist =signalSysISRUp_file.Get(signaltag)
-        signalSysISRDnHist =signalSysISRDown_file.Get(signaltag)
+	signalSysISRDnHist =signalSysISRDown_file.Get(signaltag)
 
 	signalSysISRUpHist.Scale(lumi/3.)
-        signalSysISRDnHist.Scale(lumi/3.)
+	signalSysISRDnHist.Scale(lumi/3.)
 	signalRegion_sigHist.Scale(lumi/3.);
 	signalRegion_sigHistSFUp.Scale(lumi/3.);
 	signalRegion_sigHistSFDown.Scale(lumi/3.);
@@ -248,9 +248,9 @@ if __name__ == '__main__':
 	LLSysNCDown_Hist=LL_file.Get("Prediction_data/totalPredNonClosureDown_LL")
 
 	LLSysElecQSquareUp_Hist=LL_file.Get("Prediction_data/totalPredElecAccQsquareSysUp_LL");
-        LLSysElecQSquareDown_Hist=LL_file.Get("Prediction_data/totalPredElecAccQsquareSysDown_LL")
+	LLSysElecQSquareDown_Hist=LL_file.Get("Prediction_data/totalPredElecAccQsquareSysDown_LL")
 	LLSysMuQSquareUp_Hist=LL_file.Get("Prediction_data/totalPredMuAccQsquareSysUp_LL");
-        LLSysMuQSquareDown_Hist=LL_file.Get("Prediction_data/totalPredMuAccQsquareSysDown_LL")
+	LLSysMuQSquareDown_Hist=LL_file.Get("Prediction_data/totalPredMuAccQsquareSysDown_LL")
 
 	signalRegion_LLList = binsToList( LLPrediction_Hist );
 	signalRegion_WeightList=binsToList(LLWeight_Hist);
@@ -259,9 +259,8 @@ if __name__ == '__main__':
 	LLSysElecQSquareUp=binsToList(LLSysElecQSquareUp_Hist)
 	LLSysElecQSquareDown=binsToList(LLSysElecQSquareDown_Hist)
 
-        LLSysMuQSquareUp=binsToList(LLSysMuQSquareUp_Hist)
-        LLSysMuQSquareDown=binsToList(LLSysMuQSquareDown_Hist)
-	
+	LLSysMuQSquareUp=binsToList(LLSysMuQSquareUp_Hist)
+	LLSysMuQSquareDown=binsToList(LLSysMuQSquareDown_Hist)
 	
 	LLStatIsoTrackUp=binsToList(LLStatIsoTrackUp_Hist)
 	LLStatIsoTrackDown=binsToList(LLStatIsoTrackDown_Hist)
@@ -384,8 +383,8 @@ if __name__ == '__main__':
 	tauBMistagDown=binsToList(HadTauBMistagDown_Hist)	
 	HadTauMuonCorrUncUpHist=HadTau_file.Get("searchBin_MuRecoSysUp")
 	HadTauMuonCorrUncDnHist=HadTau_file.Get("searchBin_MuRecoSysDn")	
-        HadTauMuonIsoRecoStatUncUpHist=HadTau_file.Get("searchBin_MuRecoIsoUp")
-        HadTauMuonIsoRecoStatUncDnHist=HadTau_file.Get("searchBin_MuRecoIsoDn")
+	HadTauMuonIsoRecoStatUncUpHist=HadTau_file.Get("searchBin_MuRecoIsoUp")
+	HadTauMuonIsoRecoStatUncDnHist=HadTau_file.Get("searchBin_MuRecoIsoDn")
 	HadTauMuonCorrIsoUncUpHist=HadTau_file.Get("searchBin_MuIsoSysUp")
 	HadTauMuonCorrIsoUncDnHist=HadTau_file.Get("searchBin_MuIsoSysDn")
 	HadTauStatUncertainties=HadTau_file.Get("searchBin_StatUncertainties")
@@ -407,8 +406,8 @@ if __name__ == '__main__':
 	HadTauMuAccSysScaleDnHist=HadTau_file.Get("seaerchBin_AccSysScaleDn")
 	HadTauMuonCorrUncUp=binsToList(HadTauMuonCorrUncUpHist)
 	HadTauMuonCorrUncDn=binsToList(HadTauMuonCorrUncDnHist)
-        HadTauMuonIsoRecoStatUncUp=binsToList(HadTauMuonIsoRecoStatUncUpHist)
-        HadTauMuonIsoRecoStatUncDn=binsToList(HadTauMuonIsoRecoStatUncDnHist)
+	HadTauMuonIsoRecoStatUncUp=binsToList(HadTauMuonIsoRecoStatUncUpHist)
+	HadTauMuonIsoRecoStatUncDn=binsToList(HadTauMuonIsoRecoStatUncDnHist)
 	HadTauMuonIsoUncUp=binsToList(HadTauMuonCorrIsoUncUpHist)
 	HadTauMuonIsoUncDn=binsToList(HadTauMuonCorrIsoUncDnHist)
 	HadTauJECUncertUp=binsToList(HadTauJECUncertUpHist)
@@ -495,18 +494,16 @@ if __name__ == '__main__':
 	# --------------------------------------------
 	# single photon control regions
 
-	GJet_Obs=binsToList( DYinputfile.Get("hgJNobs") )
-	ZgRatio_List=binsToList( DYinputfile.Get("hgJZgR") )
+	GJet_Obs        = binsToList( DYinputfile.Get("hgJNobs") )
+	ZgRatio_List    = binsToList( DYinputfile.Get("hgJZgR") )
+	GJetPur_List    = binsToList(DYinputfile.Get("hgJPur"))
+	ZgRdataMC_List  = binsToList( DYinputfile.Get("hgJZgRdataMC") );
+
 
 	ZgRatioErr_List      = binsToList( DYinputfile.Get("hgJZgRerr") )
-	GJetPurErr_Hist=DYinputfile.Get("hgJPurErr")
-	GJetPurErr_List=binsToList(GJetPurErr_Hist)
-	GJetPur_Hist=DYinputfile.Get("hgJPur")	
-	GJetPur_List=binsToList(GJetPur_Hist)
-	
-	ZgRdataMC_List     =binsToList( DYinputfile.Get("hgJZgRdataMC") );
-	ZgRdataMCErrUp_List=binsToList( DYinputfile.Get("hgJZgRdataMCerrUp") );
-	ZgRdataMCErrDn_List=binsToList( DYinputfile.Get("hgJZgRdataMCerrLow") );
+	GJetPurErr_List      = binsToList(DYinputfile.Get("hgJPurErr"))
+	ZgRdataMCErrUp_List  = binsToList( DYinputfile.Get("hgJZgRdataMCerrUp") );
+	ZgRdataMCErrDn_List  = binsToList( DYinputfile.Get("hgJZgRdataMCerrLow") );
 
 	sphotonObserved=[]
 	RzgVals=[]
@@ -524,7 +521,6 @@ if __name__ == '__main__':
 		if(GJetPur_List[i]>-1):PurVals.append(GJetPur_List[i])
 		if(GJetPurErr_List[i]>-1):PurErrsAbs.append(GJetPurErr_List[i])
 		if(ZgRatioErr_List[i]>-1):RzgErrsAbs.append(ZgRatioErr_List[i])	
-
 		if (ZgRdataMC_List[i] > -1): ZgRdataMC.append( ZgRdataMC_List[i] )
 		if (ZgRdataMCErrUp_List[i] > -1): ZgRdataMCErrUp.append( 1.+ZgRdataMCErrUp_List[i] )
 		if (ZgRdataMCErrDn_List[i] > -1): ZgRdataMCErrDn.append( 1.-ZgRdataMCErrDn_List[i] )
@@ -533,10 +529,8 @@ if __name__ == '__main__':
 	PurErrs = [];
 	for i in range(len(RzgVals)): RzgErrs.append( 1+RzgErrsAbs[i] );
 	for i in range(len(PurVals)): PurErrs.append( 1+PurErrsAbs[i]);
-	#PurVals=[0.892,0.892,0.892,0.810,0.810,0.810,0.892,0.892,0.892,0.810,0.810,0.810,0.892,0.892,0.892,0.810,0.810,0.810]
-	#PurErrs=[1.089,1.089,1.089,1.114,1.115,1.113,1.090,1.089,1.089,1.116,1.115,1.113,1.090,1.091,1.086,1.113,1.115,1.115]
+
 	PhoRatios = [];
-	doubleRatioCentralValue = 0.92;
 	for i in range(len(RzgVals)): PhoRatios.append( 1./RzgVals[i]/PurVals[i]/ZgRdataMC[i] );
 
 	phoRegion_sigHist = sphotonRegion_file.Get("RA2bin_SMSbbbb1000") # this is just for the right bin labels for the 18 bins
@@ -570,12 +564,10 @@ if __name__ == '__main__':
 
 	ZvvYieldsInSignalRegion = [sphotonObservedExt[i]*RzgValsExt[i]*PurValsExt[i]*signalRegion_zvvList[i]*ZgRdataMCExt[i] for i in range(len(sphotonObservedExt))]
 	ZvvRatesInSignalRegion = [];
-#combine -M MaxLikelihoodFit allcards.root --saveWithUncertainties --saveNormalizations 
+
 	for i in range(len(sphotonObservedExt)):
 			if sphotonObservedExt[i] > 0: ZvvRatesInSignalRegion.append( ZvvYieldsInSignalRegion[i] );
 			else: ZvvRatesInSignalRegion.append(signalRegion_zvvList[i]);
-
-	#print ZvvYieldsInSignalRegion
 
 	# --------------------------------------------
 	# lost lepton and had tau control regions
@@ -785,6 +777,7 @@ if __name__ == '__main__':
 		ZgRatioErrUp_List    = binsToList( DYinputfile.Get("hgJZgRerrUp") )
 		ZgRatioErrDown_List  = binsToList( DYinputfile.Get("hgJZgRerrLow") )
 		DYStatErr_List       = binsToList( DYinputfile.Get("hDYstat") )
+		DYMCStatErr_List     = binsToList( DYinputfile.Get("hDYMCstat") );
 		DYPurErr_List        = binsToList( DYinputfile.Get("hDYsysPur") )
 		DYsysKin_List        = binsToList( DYinputfile.Get("hDYsysKin") )
 
@@ -796,6 +789,7 @@ if __name__ == '__main__':
 			if(ZgRatioErrUp_List[i]>-1):PhoCSZgRatioUp.append(ZgRatioErrUp_List[i])
 			if(ZgRatioErrDown_List[i]>-1):PhoCSZgRatioDown.append(ZgRatioErrDown_List[i])
 			DYStatErr_List[i]=1+DYStatErr_List[i]
+			DYMCStatErr_List[i]=1+DYMCStatErr_List[i]
 			DYPurErr_List[i]=1+DYPurErr_List[i]
 			DYsysKin_List[i]=1+DYsysKin_List[i]
 			signalRegion.addSingleSystematic('DYsysKin'+str(i),'lnN',['zvv'], DYsysKin_List,'', i);
@@ -803,6 +797,14 @@ if __name__ == '__main__':
 		signalRegion.addSingleSystematic("DYstat"+"_BTag1", 'lnN', ['zvv'], DYStatErr_List, 'BTags1')
 		signalRegion.addSingleSystematic("DYstat"+"_BTag2", 'lnN', ['zvv'], DYStatErr_List, 'BTags2')			
 		signalRegion.addSingleSystematic("DYstat"+"_BTag3", 'lnN', ['zvv'], DYStatErr_List, 'BTags3')
+
+		signalRegion.addSingleSystematic("DYMCstat_Nj1_Btag1", 'lnN', ['zvv'], DYMCStatErr_List, 'NJets1_BTags1')
+		signalRegion.addSingleSystematic("DYMCstat_Nj1_Btag2", 'lnN', ['zvv'], DYMCStatErr_List, 'NJets1_BTags2')
+		signalRegion.addSingleSystematic("DYMCstat_Nj1_Btag3", 'lnN', ['zvv'], DYMCStatErr_List, 'NJets1_BTags3')
+		signalRegion.addSingleSystematic("DYMCstat_Nj2_Btag1", 'lnN', ['zvv'], DYMCStatErr_List, 'NJets2_BTags1')
+		signalRegion.addSingleSystematic("DYMCstat_Nj2_Btag2", 'lnN', ['zvv'], DYMCStatErr_List, 'NJets2_BTags2')
+		signalRegion.addSingleSystematic("DYMCstat_Nj2_Btag3", 'lnN', ['zvv'], DYMCStatErr_List, 'NJets2_BTags3')
+
 		signalRegion.addSingleSystematic("DYPur"+"_BTag1", 'lnN', ['zvv'], DYPurErr_List, "BTags1")
 		signalRegion.addSingleSystematic("DYPur"+"_BTag1Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags2")
 		signalRegion.addSingleSystematic("DYPur"+"_BTag1Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags3")
@@ -810,24 +812,18 @@ if __name__ == '__main__':
 		for i in range(len(singlePhotonBins)):
 			signalRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],10000,singlePhotonBins[i]);
 			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],10000,singlePhotonBins[i]);
-			sphotonRegion.addAsymSystematic('ZgRatioAsymErr'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
-			# added to all bins (photon efficiency)
-			#print len(RzgErrs),len(PurErrs)
-			sphotonRegion.addSingleSystematic('PhoRzgUnc','lnN',['zvv'],RzgErrs[i],'',i);	
-			sphotonRegion.addSingleSystematic('PhoEffUnc','lnN',['zvv'],PurErrs[i],'',i);	
-			sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, '',i);
-		## RZg double ratio from Jim H.
-		#sphotonRegion.addAsymSystematic('PhoRZgDblRatioNJ0','lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, "NJets0"); # adjusted to make relative
-		#sphotonRegion.addAsymSystematic('PhoRZgDblRatioNJ1','lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, "NJets1"); # adjusted to make relative
-		#sphotonRegion.addAsymSystematic('PhoRZgDblRatioNJ2','lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, "NJets2"); # adjusted to make relative
+			
+			# WTF,are these double counting
+			# sphotonRegion.addAsymSystematic('ZgRatioAsymErr'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
+			sphotonRegion.addSingleSystematic('PhoRzgAndDblRatioUnc'+str(i),'lnN',['zvv'],RzgErrs[i],'',i);	# different per bin
+			# sphotonRegion.addSingleSystematic('PhoPurUnc','lnN',['zvv'],PurErrs[i],'',i);	 # this is getting split up now
+			# sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, '',i); #### this is now merged with ZGratio uncertainty
 
-		## all the Drell-Yan systematics now nicely wrapped up in a bow
-		#signalRegion.addSystematicFromList('DYstat','lnN',['zvv'], binsToList(DYinputfile.Get("hDYstat")));
-		
-		#signalRegion.addSystematicFromList('DYsysKin','lnN',['zvv'], binsToList(DYinputfile.Get("hDYsysKin")));
-		#print binsToList(DYinputfile.Get("hDYsysNjUp"))
+		sphotonRegion.addSingleSystematic('PhoPurUncMHT0','lnN',['zvv'],PurErrs[i],'MT0');	
+		sphotonRegion.addSingleSystematic('PhoPurUncMHT1','lnN',['zvv'],PurErrs[i],'MT1');	
+		sphotonRegion.addSingleSystematic('PhoPurUncMHT2','lnN',['zvv'],PurErrs[i],'MT2');	
+
 		signalRegion.addAsymSystematicFromList('DYsysNj','lnN',['zvv'], binsToList(DYinputfile.Get("hDYsysNjUp")), binsToList(DYinputfile.Get("hDYsysNjLow")));
-
 
 	### LL uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.llpOnly or (options.tauOnly and  options.llpOnly):

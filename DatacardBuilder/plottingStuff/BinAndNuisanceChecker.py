@@ -170,8 +170,8 @@ if __name__ == '__main__':
 		total = 0.;
 		for i in range(len(nameOfNuisances_Zinv)):
 			if valsOfNuisances_Zinv[i] < 100:
-				print nameOfNuisances_Zinv[i],", value in card: ",round(float(valsOfNuisances_Zinv[i]),4)
 				preNuis,posNuis = getPrefitAndPostfitNuisance(nameOfNuisances_Zinv[i]);
+				print nameOfNuisances_Zinv[i],", value in card: ",round(float(valsOfNuisances_Zinv[i]),4),", theta postfit = ",round(posNuis,3)
 				change = math.pow(float(valsOfNuisances_Zinv[i]),posNuis);
 				print "    change (nevt) = ", round((change-1)*Z.getVal(),3)
 				total += (change-1)*Z.getVal();
