@@ -814,8 +814,8 @@ if __name__ == '__main__':
 			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],10000,singlePhotonBins[i]);
 			
 			# WTF,are these double counting
-			# sphotonRegion.addAsymSystematic('ZgRatioAsymErr'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
-			sphotonRegion.addSingleSystematic('PhoRzgAndDblRatioUnc'+str(i),'lnN',['zvv'],RzgErrs[i],'',i);	# different per bin
+			sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
+			sphotonRegion.addSingleSystematic('ZgRatioErr'+str(i),'lnN',['zvv'],RzgErrs[i],'',i);	# different per bin
 			# sphotonRegion.addSingleSystematic('PhoPurUnc','lnN',['zvv'],PurErrs[i],'',i);	 # this is getting split up now
 			# sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, '',i); #### this is now merged with ZGratio uncertainty
 
