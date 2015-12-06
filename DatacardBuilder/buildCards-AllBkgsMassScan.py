@@ -109,6 +109,7 @@ if __name__ == '__main__':
 	signalRegion_sigHistTrigStatDown.Scale(lumi/3.);
 
 	signalRegion_sigList = binsToList( signalRegion_sigHist );
+	signalRegion_sigListMCstatErr = binsErrorsToList( signalRegion_sigHist );	
 	signalRegion_sigListSFUp=binsToList( signalRegion_sigHistSFUp );
 	signalRegion_sigListSFDown=binsToList( signalRegion_sigHistSFDown );
 	signalRegion_sigListMisSFUp=binsToList( signalRegion_sigHistMisSFUp );
@@ -666,7 +667,7 @@ if __name__ == '__main__':
 		print " ---", tagsForSignalRegion[i]
 
 		tmpList = [];
-		if options.fastsim:
+		if options.fastsim and not 'T1q' in model:
 			signalContamLL_file=TFile("inputHistograms/SignalContamin/LLContamination_%s.root" %model)
 			signalContamTau_file=TFile("inputHistograms/SignalContamin/Signal%sHtauContamin.root" %model)
 			TauContamHist =signalContamTau_file.Get("SearchH_b/"+signaltag)
@@ -759,6 +760,10 @@ if __name__ == '__main__':
 				signalRegion.addAsymSystematic('ctagCFUnc','lnN', ['sig'], (signalRegion_sigListctagCFuncUp[i]/signalRegion_sigList[i]),signalRegion_sigListctagCFuncDown[i]/signalRegion_sigList[i],'', i)
 				signalRegion.addAsymSystematic('mistagCFUnc','lnN', ['sig'], (signalRegion_sigListmistagCFuncUp[i]/signalRegion_sigList[i]),signalRegion_sigListmistagCFuncDown[i]/signalRegion_sigList[i],'', i)
 
+			signalRegion_sigListMCstatErr[i] = signalRegion_sigListMCstatErr[i]/signalRegion_sigList[i] + 1.;
+			signalRegion.addSingleSystematic('SignalMCStatErr','lnN', ['sig'], signalRegion_sigListMCstatErr, '', i)
+
+
 	# signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.0, 'MHT0_HT0');
 	# signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT0_HT1');
 	# signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.1, 'MHT0_HT2');
@@ -814,14 +819,15 @@ if __name__ == '__main__':
 			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],10000,singlePhotonBins[i]);
 			
 			# WTF,are these double counting
+			# sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
 			sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
 			sphotonRegion.addSingleSystematic('ZgRatioErr'+str(i),'lnN',['zvv'],RzgErrs[i],'',i);	# different per bin
 			# sphotonRegion.addSingleSystematic('PhoPurUnc','lnN',['zvv'],PurErrs[i],'',i);	 # this is getting split up now
 			# sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, '',i); #### this is now merged with ZGratio uncertainty
 
-		sphotonRegion.addSingleSystematic('PhoPurUncMHT0','lnN',['zvv'],PurErrs[i],'MT0');	
-		sphotonRegion.addSingleSystematic('PhoPurUncMHT1','lnN',['zvv'],PurErrs[i],'MT1');	
-		sphotonRegion.addSingleSystematic('PhoPurUncMHT2','lnN',['zvv'],PurErrs[i],'MT2');	
+		sphotonRegion.addSingleSystematic('PhoPurUncMHT0','lnN',['zvv'],PurErrs[i],'MHT0');	
+		sphotonRegion.addSingleSystematic('PhoPurUncMHT1','lnN',['zvv'],PurErrs[i],'MHT1');	
+		sphotonRegion.addSingleSystematic('PhoPurUncMHT2','lnN',['zvv'],PurErrs[i],'MHT2');	
 
 		signalRegion.addAsymSystematicFromList('DYsysNj','lnN',['zvv'], binsToList(DYinputfile.Get("hDYsysNjUp")), binsToList(DYinputfile.Get("hDYsysNjLow")));
 

@@ -94,6 +94,13 @@ def binsToList(h_in):
 	for i in range(h_in.GetNbinsX()): olist.append( h_in.GetBinContent(i+1) );
 	return olist;
 
+def binsErrorsToList(h_in):
+
+	olist = [];
+	for i in range(h_in.GetNbinsX()): olist.append( h_in.GetBinError(i+1) );
+	return olist;
+
+
 def binLabelsToList(h_in):
 
 	olist = [];

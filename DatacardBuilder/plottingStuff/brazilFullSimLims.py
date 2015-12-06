@@ -48,13 +48,26 @@ def ExtractFile(iname, tag):
 
 if __name__ == '__main__':
 
+	#idir = "/eos/uscms/store/user/ntran/SUSY/statInterp/scanOutput/Dec6";
+	idir = "..";
+
 	results = [];
-	results.append( ExtractFile('../results_T1bbbb_1500_100.root','T1bbbb1500') );
-	results.append( ExtractFile('../results_T1bbbb_1000_100.root','T1bbbb1000') );
-	results.append( ExtractFile('../results_T1tttt_1500_800.root','T1tttt1500') );
-	results.append( ExtractFile('../results_T1tttt_1200_800.root','T1tttt1200') );
-	results.append( ExtractFile('../results_T1qqqq_1400_800.root','T1qqqq1400') );
-	results.append( ExtractFile('../results_T1qqqq_1000_800.root','T1qqqq1000') );
+	# results.append( ExtractFile(idir+'/results_T1bbbb_1500_100.root','T1bbbb1500') );
+	# results.append( ExtractFile(idir+'/results_T1bbbb_1000_800.root','T1bbbb1000') );
+	# #results.append( ExtractFile(idir+'/results_T1tttt_1500_100.root','T1tttt1500') );
+	# results.append( ExtractFile(idir+'/results_T1tttt_1200_800.root','T1tttt1200') );
+	# results.append( ExtractFile(idir+'/results_T1tttt_1200_800.root','T1tttt1200') );
+	# results.append( ExtractFile(idir+'/results_T1qqqq_1400_100.root','T1qqqq1400') );
+	# results.append( ExtractFile(idir+'/results_T1qqqq_1000_900.root','T1qqqq1000') );
+
+	results.append( ExtractFile(idir+'/results_T1bbbb_1500_100.root','T1bbbb1500') );
+	results.append( ExtractFile(idir+'/results_T1bbbb_1000_100.root','T1bbbb1000') );
+	#results.append( ExtractFile(idir+'/results_T1tttt_1500_100.root','T1tttt1500') );
+	results.append( ExtractFile(idir+'/results_T1tttt_1500_800.root','T1tttt1200') );
+	results.append( ExtractFile(idir+'/results_T1tttt_1200_800.root','T1tttt1200') );
+	results.append( ExtractFile(idir+'/results_T1qqqq_1400_800.root','T1qqqq1400') );
+	results.append( ExtractFile(idir+'/results_T1qqqq_1000_800.root','T1qqqq1000') );
+
 
 	names   = [];
 	l_obs   = [];
@@ -72,8 +85,8 @@ if __name__ == '__main__':
 		l_p2sig.append(r[5]);
 		l_obs.append(r[6]);
 
-	print l_m2sig
-	print l_p2sig
+	print "l_exp = ", l_exp
+	print "l_obs = ", l_obs
 
 	a_xax = array('d', []);
 	a2_xax = array('d', []);

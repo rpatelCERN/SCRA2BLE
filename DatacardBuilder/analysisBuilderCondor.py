@@ -146,6 +146,7 @@ if __name__ == '__main__':
 					# os.system(combine_cmmd);
 					# # run max likelihood fit
 					combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); 
+					print combine_cmmd;
 					os.system(combine_cmmd);
 					# # run asymptotic
 					combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); 

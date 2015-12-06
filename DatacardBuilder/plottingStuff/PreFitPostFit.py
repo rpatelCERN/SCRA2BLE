@@ -14,6 +14,19 @@ ROOT.gStyle.SetPalette(1);
 
 
 #########################################################################################################
+def GetPrefitErrorsFromJack(fn):
+	f = open(fn,'r');
+
+	errup = [];
+	errdn = [];
+	for line in f:
+		linelist = line.strip().split();
+		# print linelist;
+		errup.append( math.sqrt( float(linelist[4])*float(linelist[4]) + float(linelist[6])*float(linelist[6]) ) );
+		errdn.append( math.sqrt( float(linelist[8])*float(linelist[8]) + float(linelist[10])*float(linelist[10]) ) );
+
+	return (errup,errdn);
+
 def getErrorFromCard(card,chan):
 
 	lnNSystematics = [];
@@ -44,9 +57,10 @@ def getErrorFromCard(card,chan):
 
 if __name__ == '__main__':
 	
-	theDir = 'testCards-allBkgs-SMSbbbb1500-1.3-mu0.0'
+	#theDir = 'testCards-allBkgs-SMSbbbb1500-2.1-mu0.0'
+	theDir = 'testCards-allBkgs-SMSbbbb1500-2.1-mu0.0'
 
-	fin=TFile("../"+theDir+"/mlfit"+theDir+".root", "READ")
+	fin=TFile("../mlfit"+theDir+".root", "READ")
 	BinProcesses=fin.Get("norm_prefit");
 	mybins=[]
 	searchbins=[]
@@ -147,6 +161,11 @@ if __name__ == '__main__':
 		Q=BinProcessesPostFit.find("ch%d/qcd" %mybins[c])
 		T=BinProcessesPostFit.find("ch%d/WTopHad" %mybins[c])
 		L=BinProcessesPostFit.find("ch%d/WTopSL" %mybins[c])
+
+		TZ   = BinProcessesPostFit.find("ch%d/WTopSLHighW" %mybins[c])
+		LZ   = BinProcessesPostFit.find("ch%d/WTopHadHighW" %mybins[c])
+		print (c+1),"TZ,LZ = ", TZ.getVal(), LZ.getVal()
+
 		histZpost.SetBinContent(searchbins[c]+1, Z.getVal())
 		histZpost.SetBinError(searchbins[c]+1, Z.getError())
 		histqcdpost.SetBinContent(searchbins[c]+1, Q.getVal())
@@ -158,10 +177,11 @@ if __name__ == '__main__':
 		qerr = Q.getError()
 		if Q.getError()/Q.getVal() > 100 and Q.getError() > 1.0: 
 			qerr = 0.0;
-			print "Outlier Rejection!!"
+			# print "Outlier Rejection!!"
 		histqcdpost.SetBinError(searchbins[c]+1, qerr)
 
-		print "XX content, bin {0:2}: {1:6.4f} +- {2:6.4f}, {3:6.4f} +- {4:6.4f}, {5:6.4f} +- {6:6.4f}, {7:6.4f} +- {8:6.4f}".format(c,Z.getVal(),Z.getError(),Q.getVal(),Q.getError(),L.getVal(),L.getError(),T.getVal(),T.getError());
+		# print "XX content, bin {0:2}: {1:6.4f} +- {2:6.4f}, {3:6.4f} +- {4:6.4f}, {5:6.4f} +- {6:6.4f}, {7:6.4f} +- {8:6.4f}".format(c,Z.getVal(),Z.getError(),Q.getVal(),Q.getError(),L.getVal(),L.getError(),T.getVal(),T.getError());
+		# print "{0:2} & {1:6.2f} \pm {2:6.2f} & {3:6.2f} \pm {4:6.2f} & {5:6.2f} \pm {6:6.2f} & {7:6.2f} \pm {8:6.2f} \\\\".format(c,Z.getVal(),Z.getError(),Q.getVal(),Q.getError(),L.getVal(),L.getError(),T.getVal(),T.getError());		
 
 	hspostfit.Add(histqcdpost)
 	hspostfit.Add(histZpost)
@@ -170,14 +190,14 @@ if __name__ == '__main__':
 	hspostfit_tot = hspostfit.GetStack().Last();
 
 	hspostfit_tot_clone = hspostfit_tot.Clone();
-	hspostfit_tot_clone.SetFillStyle(3001);
+	hspostfit_tot_clone.SetFillStyle(3013);
 	hspostfit_tot_clone.SetFillColor(13);
 	hspostfit_tot_clone.SetMarkerSize(0);
 
 	# for i in range(hsprefit_tot.GetNbinsX()):
 	# 	print "bin {0:2}: {1:6.2f} {2:6.2f}".format(i,hsprefit_tot.GetBinContent(i+1),hspostfit_tot.GetBinContent(i+1));
 
-	DataIn = TFile("../inputHistograms/histograms_1.3fb/RA2bin_signalUnblind.root");
+	DataIn = TFile("../inputHistograms/histograms_2.1fb/RA2bin_signalUnblind.root");
 	DataHist = DataIn.Get("RA2bin_data");
 	DataHist.SetBinErrorOption(ROOT.TH1F.kPoisson);
 	DataHist.SetMarkerStyle(34);
@@ -206,7 +226,13 @@ if __name__ == '__main__':
 	tmptot2 = 0;
 	DataHistNew = ROOT.TH1F("DataHistNew",";yield;bins",72,0.5,72.5);
 	DataHistNew.SetBinErrorOption(ROOT.TH1.kPoisson);
+	errorsPrefitFromJack_Up,errorsPrefitFromJack_Dn  = GetPrefitErrorsFromJack("PreFitErrorsFromJack.txt");
 	for i in range(dat_rat.GetNbinsX()):
+		Z=BinProcessesPostFit.find("ch%d/zvv" %mybins[i])
+		Q=BinProcessesPostFit.find("ch%d/qcd" %mybins[i])
+		T=BinProcessesPostFit.find("ch%d/WTopHad" %mybins[i])
+		L=BinProcessesPostFit.find("ch%d/WTopSL" %mybins[i])
+
 		DataHistNew.SetBinContent(i+1,DataHist.GetBinContent(i+1));
 		staterr_dat = max(DataHistNew.GetBinErrorUp(i+1),DataHistNew.GetBinErrorLow(i+1));
 		staterr_post = sqrt(hspostfit_tot_clone.GetBinContent(i+1));
@@ -218,7 +244,12 @@ if __name__ == '__main__':
 		curpre = hsprefit_tot.GetBinContent(i+1);
 		curpos = hspostfit_tot.GetBinContent(i+1);
 		i_dat_rat = (curdat-curpos)/curerr_dat;
-		i_pre_rat = (curpre-curpos)/curerr_pre;
+		
+		# print errorsPrefitFromJack_Up[i],errorsPrefitFromJack_Dn[i],curpre,curpos
+		i_pre_rat = (curpre-curpos)/errorsPrefitFromJack_Up[i];
+		if curpre-curpos < 0: i_pre_rat = (curpre-curpos)/errorsPrefitFromJack_Dn[i]
+		hsprefit_tot.SetBinError(i+1,max(errorsPrefitFromJack_Dn[i],errorsPrefitFromJack_Up[i]))
+
 		dat_rat.SetBinContent(i+1,i_dat_rat)
 		dat_rat_nounc.SetBinContent(i+1,curdat/curpos)
 		pre_rat.SetBinContent(i+1,i_pre_rat)
@@ -237,6 +268,10 @@ if __name__ == '__main__':
 		if i >= 60: tmptot2 += curpre;
 		# print "bin{0:2}: {1:4} {2:6} +/- {7:6f} +/- {8:6f} ||| Z={3:4f} Q={4:4f} L={5:4f} T={6:4f}".format(i,curdat,curpos,histZpost.GetBinContent(i+1),histqcdpost.GetBinContent(i+1),histLLpost.GetBinContent(i+1),histTaupost.GetBinContent(i+1),hspostfit_tot_clone.GetBinError(i+1),staterr_post)
 		print "bin{0:2}: {1:4.4} {2:4.4} +/- {3:4.4f} +/- {4:4.4f} | prefit = {5:4.4f}".format(i,curdat,curpos,hspostfit_tot_clone.GetBinError(i+1),staterr_post,curpre)
+
+		#print "{0:2} & ${1:6.2f} \pm {2:6.2f}$ & ${3:6.2f} \pm {4:6.2f}$ & ${5:6.2f} \pm {6:6.2f}$ & ${7:6.2f} \pm {8:6.2f}$ & ${9:6.2f} \pm {10:6.2f}$ & ${11:3}$ \\\\ \hline".format(i+1,L.getVal(),L.getError(),T.getVal(),T.getError(),Z.getVal(),Z.getError(),Q.getVal(),Q.getError(),curpos,curerr_dat,curdat);		
+		# print "bin{0:2}: {1:4} {2:4.2f} {5:4.2f}".format(i+1,curdat,curpos,hspostfit_tot_clone.GetBinError(i+1),staterr_post,curpre)
+
 	print "tmptot = ", tmptot, tmptot2
 
 	###################################################################################################
@@ -251,17 +286,19 @@ if __name__ == '__main__':
 	pre_rat.SetMarkerStyle(24);
 	pre_rat.SetMarkerSize(2);
 
-	leg = TLegend(0.7,0.6,0.9,0.9);
+	leg = TLegend(0.55,0.6,0.9,0.87);
 	leg.SetFillStyle(0);
 	leg.SetBorderSize(0);
+	leg.SetTextSize(0.04);	
 	leg.AddEntry(DataHist,"Data","pe")
-	leg.AddEntry(hsprefit_tot,"PreFit","p")
-	leg.AddEntry(histqcdpost,"QCD postfit","f")
-	leg.AddEntry(histZpost,"Zinv postfit","f")
-	leg.AddEntry(histTaupost,"Tau postfit","f")
-	leg.AddEntry(histLLpost,"LL postfit","f")
+	leg.AddEntry(hsprefit_tot,"Pre-fit total background","p")
+	leg.AddEntry(None,"Post-fit backgrounds:","")
+	leg.AddEntry(histqcdpost,"QCD","f")
+	leg.AddEntry(histZpost,"Z#rightarrow#nu#bar{#nu}","f")
+	leg.AddEntry(histTaupost,"Hadronic #tau lepton","f")
+	leg.AddEntry(histLLpost,"Lost lepton","f")
 
-	leg2 = TLegend(0.7,0.6,0.9,0.9);
+	leg2 = TLegend(0.55,0.55,0.9,0.87);
 	leg2.SetFillStyle(0);
 	leg2.SetBorderSize(0);
 	leg2.AddEntry(DataHist,"Data","pe")
@@ -274,8 +311,13 @@ if __name__ == '__main__':
 	txta.SetNDC(); txta.SetTextSize(0.035);
 	txtb = TLatex(0.22,0.94,"Preliminary");
 	txtb.SetNDC(); txtb.SetTextFont(52); txtb.SetTextSize(0.035);
-	txtc = TLatex(0.70,0.94,"1.3 fb^{-1} (13 TeV)");
+	txtc = TLatex(0.70,0.94,"2.1 fb^{-1} (13 TeV)");
 	txtc.SetNDC(); txtc.SetTextFont(42); txtc.SetTextSize(0.035);	
+
+	txt1 = TLatex(0.25,0.25,"pull_{data} = (N_{obs}-N_{post})/#sigma_{post}");
+	txt1.SetNDC(); txt1.SetTextFont(42); txt1.SetTextSize(0.030);
+	txt2 = TLatex(0.55,0.25,"pull_{prefit} = (N_{post}-N_{pre})/#sigma_{pre}");
+	txt2.SetNDC(); txt2.SetTextFont(42); txt2.SetTextSize(0.030);
 
 	canPost = TCanvas("canPost","canPost",1600,1200);
 	p1 = TPad("p1","p1",0.0,0.3,1.0,0.97)
@@ -327,19 +369,21 @@ if __name__ == '__main__':
 	hspostfit.GetYaxis().SetTitleOffset(0.7);
 	hspostfit.SetTitle('; bin; yield')
 	DataHistNew.Draw('pesames');
-	hsprefit_tot.Draw('psames');
+	hsprefit_tot.Draw('pesames');
 	hspostfit_tot_clone.Draw('e2sames');	
 	leg.Draw();
 	canPostAN.cd()	
 	p2AN.Draw(); p2AN.cd();
-	dat_rat.SetMinimum(-10.);
-	dat_rat.SetMaximum(10.);	
+	dat_rat.SetMinimum(-4.);
+	dat_rat.SetMaximum(4.);	
 	dat_rat.Draw('p');
 	pre_rat.Draw('psames');
 	canPostAN.cd()
 	txta.Draw();
 	txtb.Draw();
 	txtc.Draw();		
+	txt1.Draw();
+	txt2.Draw();	
 	p1AN.SetLogy(0);
 	canPostAN.SaveAs("plotstacks/poststack.pdf");
 	p1AN.SetLogy(1);
