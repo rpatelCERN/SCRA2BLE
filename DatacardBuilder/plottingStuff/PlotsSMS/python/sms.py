@@ -13,10 +13,10 @@ class sms():
         # decay chain
         self.label= "pp #rightarrow #tilde{g} #tilde{g}, #tilde{g} #rightarrow t #bar{t} #tilde{#chi}^{0}_{1}";
         # scan range to plot
-        self.Xmin = 0.6
-        self.Xmax = 2.0
+        self.Xmin = 600
+        self.Xmax = 2000
         self.Ymin = 0
-        self.Ymax = 2.000
+        self.Ymax = 2000
         # produce sparticle
         self.sParticle = "m_{#tilde{g}} (TeV)"
         # LSP
@@ -32,10 +32,10 @@ class sms():
         # decay chain
         self.label= "pp #rightarrow #tilde{g} #tilde{g}, #tilde{g} #rightarrow q #bar{q} #tilde{#chi}^{0}_{1}";
         # scan range to plot
-        self.Xmin = 0.6
-        self.Xmax = 2.0
-        self.Ymin = 0
-        self.Ymax = 2.000
+        self.Xmin = 600
+        self.Xmax = 2000
+        self.Ymin = 0.0
+        self.Ymax = 2000
         # produce sparticle
         self.sParticle = "m_{#tilde{g}} (TeV)"
         # LSP
@@ -51,10 +51,10 @@ class sms():
         # decay chain
         self.label= "pp #rightarrow #tilde{g} #tilde{g}, #tilde{g} #rightarrow b #bar{b} #tilde{#chi}^{0}_{1}";
         # plot boundary. The top 1/4 of the y axis is taken by the legend
-        self.Xmin = 0.6
-        self.Xmax = 2.0
+        self.Xmin = 600
+        self.Xmax = 2000.0
         self.Ymin = 0
-        self.Ymax = 2.000
+        self.Ymax = 2000
         # produce sparticle
         self.sParticle = "m_{#tilde{g}} (TeV)"
         # LSP
