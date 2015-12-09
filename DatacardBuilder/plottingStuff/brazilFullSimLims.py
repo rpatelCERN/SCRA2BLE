@@ -52,21 +52,21 @@ if __name__ == '__main__':
 	idir = "..";
 
 	results = [];
-	# results.append( ExtractFile(idir+'/results_T1bbbb_1500_100.root','T1bbbb1500') );
-	# results.append( ExtractFile(idir+'/results_T1bbbb_1000_800.root','T1bbbb1000') );
-	# #results.append( ExtractFile(idir+'/results_T1tttt_1500_100.root','T1tttt1500') );
-	# results.append( ExtractFile(idir+'/results_T1tttt_1200_800.root','T1tttt1200') );
-	# results.append( ExtractFile(idir+'/results_T1tttt_1200_800.root','T1tttt1200') );
-	# results.append( ExtractFile(idir+'/results_T1qqqq_1400_100.root','T1qqqq1400') );
-	# results.append( ExtractFile(idir+'/results_T1qqqq_1000_900.root','T1qqqq1000') );
-
 	results.append( ExtractFile(idir+'/results_T1bbbb_1500_100.root','T1bbbb1500') );
-	results.append( ExtractFile(idir+'/results_T1bbbb_1000_100.root','T1bbbb1000') );
-	#results.append( ExtractFile(idir+'/results_T1tttt_1500_100.root','T1tttt1500') );
-	results.append( ExtractFile(idir+'/results_T1tttt_1500_800.root','T1tttt1200') );
+	results.append( ExtractFile(idir+'/results_T1bbbb_1000_800.root','T1bbbb1000') );
+	results.append( ExtractFile(idir+'/results_T1tttt_1500_100.root','T1tttt1500') );
+	# results.append( ExtractFile(idir+'/results_T1tttt_1200_800.root','T1tttt1200') );
 	results.append( ExtractFile(idir+'/results_T1tttt_1200_800.root','T1tttt1200') );
-	results.append( ExtractFile(idir+'/results_T1qqqq_1400_800.root','T1qqqq1400') );
-	results.append( ExtractFile(idir+'/results_T1qqqq_1000_800.root','T1qqqq1000') );
+	results.append( ExtractFile(idir+'/results_T1qqqq_1400_100.root','T1qqqq1400') );
+	results.append( ExtractFile(idir+'/results_T1qqqq_1000_900.root','T1qqqq1000') );
+
+	# results.append( ExtractFile(idir+'/results_T1bbbb_1500_100.root','T1bbbb1500') );
+	# results.append( ExtractFile(idir+'/results_T1bbbb_1000_100.root','T1bbbb1000') );
+	# #results.append( ExtractFile(idir+'/results_T1tttt_1500_100.root','T1tttt1500') );
+	# results.append( ExtractFile(idir+'/results_T1tttt_1500_800.root','T1tttt1200') );
+	# results.append( ExtractFile(idir+'/results_T1tttt_1200_800.root','T1tttt1200') );
+	# results.append( ExtractFile(idir+'/results_T1qqqq_1400_800.root','T1qqqq1400') );
+	# results.append( ExtractFile(idir+'/results_T1qqqq_1000_800.root','T1qqqq1000') );
 
 
 	names   = [];
@@ -140,7 +140,7 @@ if __name__ == '__main__':
 	txta.SetNDC();
 	txtb = ROOT.TLatex(0.78,0.90,"Preliminary");
 	txtb.SetNDC(); txtb.SetTextFont(52);
-	txtc = ROOT.TLatex(0.81,0.96,"1.3 fb^{-1} (13 TeV)");
+	txtc = ROOT.TLatex(0.81,0.96,"2.1 fb^{-1} (13 TeV)");
 	txtc.SetNDC(); txtc.SetTextFont(42); txtc.SetTextSize(0.04);
 
 	leg = ROOT.TLegend(0.20,0.73,0.4,0.90);

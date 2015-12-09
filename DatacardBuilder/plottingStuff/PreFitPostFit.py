@@ -58,7 +58,8 @@ def getErrorFromCard(card,chan):
 if __name__ == '__main__':
 	
 	#theDir = 'testCards-allBkgs-SMSbbbb1500-2.1-mu0.0'
-	theDir = 'testCards-allBkgs-SMSbbbb1500-2.1-mu0.0'
+	# theDir = 'testCards-allBkgswithPho-SMSbbbb1500-2.1-mu0.0'
+	theDir = 'testCards-allBkgsTestingFit-SMSbbbb1500-2.1-mu0.0';
 
 	fin=TFile("../mlfit"+theDir+".root", "READ")
 	BinProcesses=fin.Get("norm_prefit");
@@ -226,6 +227,14 @@ if __name__ == '__main__':
 	tmptot2 = 0;
 	DataHistNew = ROOT.TH1F("DataHistNew",";yield;bins",72,0.5,72.5);
 	DataHistNew.SetBinErrorOption(ROOT.TH1.kPoisson);
+	
+	PostFitErrorsNew = ROOT.TH1F("PostFitErrorsNew",";yield;bins",72,0.5,72.5);
+	PostFitErrorsNew.SetBinErrorOption(ROOT.TH1.kPoisson);
+	PostFitErrorsNew.SetFillStyle(3013);
+	PostFitErrorsNew.SetFillColor(13);
+	PostFitErrorsNew.SetMarkerSize(0);
+
+	TMP1 = ROOT.TH1F("TMP1","TMP1",1,0,1);
 	errorsPrefitFromJack_Up,errorsPrefitFromJack_Dn  = GetPrefitErrorsFromJack("PreFitErrorsFromJack.txt");
 	for i in range(dat_rat.GetNbinsX()):
 		Z=BinProcessesPostFit.find("ch%d/zvv" %mybins[i])
@@ -235,7 +244,11 @@ if __name__ == '__main__':
 
 		DataHistNew.SetBinContent(i+1,DataHist.GetBinContent(i+1));
 		staterr_dat = max(DataHistNew.GetBinErrorUp(i+1),DataHistNew.GetBinErrorLow(i+1));
-		staterr_post = sqrt(hspostfit_tot_clone.GetBinContent(i+1));
+
+		PostFitErrorsNew.SetBinContent(i+1,hspostfit_tot.GetBinContent(i+1));
+		staterr_post = max(PostFitErrorsNew.GetBinErrorUp(i+1),PostFitErrorsNew.GetBinErrorLow(i+1));
+
+		# print DataHistNew.GetBinErrorUp(i+1),DataHistNew.GetBinErrorLow(i+1)
 		# print DataHist.GetBinContent(i+1),TMP1.GetBinErrorUp(i+1),TMP1.GetBinErrorLow(i+1),hsprefit_tot.GetBinError(i+1)
 
 		curerr_dat = math.sqrt(hspostfit_tot_clone.GetBinError(i+1)*hspostfit_tot_clone.GetBinError(i+1) + staterr_post*staterr_post);
@@ -246,7 +259,8 @@ if __name__ == '__main__':
 		i_dat_rat = (curdat-curpos)/curerr_dat;
 		
 		# print errorsPrefitFromJack_Up[i],errorsPrefitFromJack_Dn[i],curpre,curpos
-		i_pre_rat = (curpre-curpos)/errorsPrefitFromJack_Up[i];
+		# i_pre_rat = (curpre-curpos)/errorsPrefitFromJack_Up[i];
+		i_pre_rat = (curpre-curpos)/curerr_dat;
 		if curpre-curpos < 0: i_pre_rat = (curpre-curpos)/errorsPrefitFromJack_Dn[i]
 		hsprefit_tot.SetBinError(i+1,max(errorsPrefitFromJack_Dn[i],errorsPrefitFromJack_Up[i]))
 
@@ -316,7 +330,7 @@ if __name__ == '__main__':
 
 	txt1 = TLatex(0.25,0.25,"pull_{data} = (N_{obs}-N_{post})/#sigma_{post}");
 	txt1.SetNDC(); txt1.SetTextFont(42); txt1.SetTextSize(0.030);
-	txt2 = TLatex(0.55,0.25,"pull_{prefit} = (N_{post}-N_{pre})/#sigma_{pre}");
+	txt2 = TLatex(0.55,0.25,"pull_{prefit} = (N_{pre}-N_{post})/#sigma_{post}");
 	txt2.SetNDC(); txt2.SetTextFont(42); txt2.SetTextSize(0.030);
 
 	canPost = TCanvas("canPost","canPost",1600,1200);
@@ -333,7 +347,8 @@ if __name__ == '__main__':
 	hspostfit.GetYaxis().SetTitleOffset(0.7);
 	hspostfit.SetTitle('; bin; yield')
 	DataHistNew.Draw('pesames');
-	hspostfit_tot_clone.Draw('e2sames');
+	#hspostfit_tot_clone.Draw('e2sames');
+	PostFitErrorsNew.Draw('e2sames');
 	leg2.Draw();
 	canPost.cd()
 	p2.Draw(); p2.cd();
@@ -370,7 +385,7 @@ if __name__ == '__main__':
 	hspostfit.SetTitle('; bin; yield')
 	DataHistNew.Draw('pesames');
 	hsprefit_tot.Draw('pesames');
-	hspostfit_tot_clone.Draw('e2sames');	
+	PostFitErrorsNew.Draw('e3sames');
 	leg.Draw();
 	canPostAN.cd()	
 	p2AN.Draw(); p2AN.cd();
