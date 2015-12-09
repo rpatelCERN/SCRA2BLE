@@ -47,7 +47,7 @@ class smsPlotXSEC(smsPlotABS):
         palette.SetLabelSize(0.035)
 
     def DrawPaletteLabel(self):
-        textCOLZ = rt.TLatex(0.98,0.15,"95% C.L. upper limit on cross section (pb)")
+        textCOLZ = rt.TLatex(0.98,0.15,"95% C.L. upper limit on cross section [pb]")
         textCOLZ.SetNDC()
         #textCOLZ.SetTextAlign(13)
         textCOLZ.SetTextFont(42)
@@ -59,11 +59,6 @@ class smsPlotXSEC(smsPlotABS):
     def Draw(self):
         self.emptyHisto.GetXaxis().SetRangeUser(self.model.Xmin, self.model.Xmax)
         self.emptyHisto.GetYaxis().SetRangeUser(self.model.Ymin, self.model.Ymax)
-		
-	for i in range(1,self.emptyHisto.GetNbinsX()+1):
-		print self.emptyHisto.GetXaxis().GetBinLabel(i)
-		#self.emptyHisto.GetXaxis().SetBinLabel(i, "%1.1f" %float(self.emptyHisto.GetXaxis().GetBinLabel(i))/1000.)
-	
         self.emptyHisto.Draw()
         self.histo.Draw("COLZSAME")
         self.DrawDiagonal()
