@@ -30,8 +30,9 @@ class smsPlotABS(object):
         self.emptyhisto = self.emptyHistogramFromModel()
 
     def emptyHistogramFromModel(self):
+	print self.model
         self.emptyHisto = rt.TH2D("emptyHisto", "", 1, self.model.Xmin, self.model.Xmax, 1, self.model.Ymin, self.model.Ymax)
-        
+       
     # define the plot canvas
     def setStyle(self):
         # canvas style
