@@ -186,13 +186,13 @@ if __name__ == '__main__':
 	# z invisible
 	sphotonRegion_file = TFile(idir+"/RA2bin_GJet_PhotonBins.root");
 
-	DYinputfile = TFile(idir+"/ZinvHistos_%1.1fifb.root" %lumi)
+	DYinputfile = TFile(idir+"/ZinvHistos.root")
 	signalRegion_zvvRatesFromDY = DYinputfile.Get("hDYvalue")
 	signalRegion_zvvList = binsToList( signalRegion_zvvRatesFromDY );
 
 	# --------------------------------------------
 	# lost lepton
-	LL_file = TFile(idir+"/LLPrediction_%1.1fifb.root" %lumi);
+	LL_file = TFile(idir+"/LLPrediction.root");
 	LLPrediction_Hist=LL_file.Get("Prediction_data/totalPred_LL");
 	LLCS_Hist=LL_file.Get("Prediction_data/totalCS_LL");
 	LLWeight_Hist=LL_file.Get("Prediction_data/avgWeight_LL");
@@ -372,7 +372,7 @@ if __name__ == '__main__':
 
 	# --------------------------------------------
 	# hadronic tau
-	HadTau_file = TFile(idir+"/HadTauEstimation_data_%1.1fifb.root" % ((lumi)) );
+	HadTau_file = TFile(idir+"/HadTauEstimation_data.root");
 	HadTauPrediction_Hist=HadTau_file.Get("searchBin_nominal")
 	#HadTauSqrtSumw2_Hist=HadTauSumw_file.Get("SqrtSumW2")
 	HadTauBMistagUp_Hist=HadTau_file.Get("searchBin_BMistagUp")	
@@ -442,12 +442,12 @@ if __name__ == '__main__':
 	# QCD, low delta phi
 
 	ratesForSignalRegion_QCDList = [];
-	NSRForSignalRegion_QCDList = textToList(idir+"/qcd-bg-combine-input-%1.1fifb.txt" %(lumi),6);
+	NSRForSignalRegion_QCDList = textToList(idir+"/qcd-bg-combine-input.txt",6);
 	ratesForLowdphiRegion_QCDList = [];
-	NCRForLowdphiRegion_QCDList = textToList(idir+"/qcd-bg-combine-input-%1.1fifb.txt" %(lumi),2);
+	NCRForLowdphiRegion_QCDList = textToList(idir+"/qcd-bg-combine-input.txt",2);
 	obsForLowdphiRegion_QCDList = [];
-	ratiosForLowdphiRegion = textToList(idir+"/qcd-bg-combine-input-%1.1fifb.txt" %(lumi),5);
-	ContaminForLowdphiRegion = textToList(idir+"/qcd-bg-combine-input-%1.1fifb.txt" %(lumi),3);
+	ratiosForLowdphiRegion = textToList(idir+"/qcd-bg-combine-input.txt",5);
+	ContaminForLowdphiRegion = textToList(idir+"/qcd-bg-combine-input.txt",3);
 	tagsForLowDPhiRegion = tagsForSignalRegion[:]
 	QCDcontributionsPerBin = [];
 	for i in range(len(tagsForLowDPhiRegion)): 
@@ -718,13 +718,13 @@ if __name__ == '__main__':
 
 
 	# ['SMSqqqq1000','SMSqqqq1400','SMStttt1200','SMStttt1500','SMSbbbb1000','SMSbbbb1500']
-	pdf=1.2
+	pdf=1.1
 	ISR=1.01
 	if(sms=='SMSqqqq1400' or sms=='SMStttt1200' or sms=='SMSbbbb1000'):
 		ISR=1.08
 		pdf=1.20
 	signalRegion.addSingleSystematic('IsoTrackSigEff','lnN',['sig'],1.02);
-	signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.12);
+	signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.046);
 	signalRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.03);
 	# signalRegion.addSingleSystematic('PUwUnc','lnN',['sig'],1.03);
 	# signalRegion.addSingleSystematic('TrigEff','lnN',['sig'],1.02);
@@ -732,7 +732,7 @@ if __name__ == '__main__':
 	signalRegion.addSingleSystematic('UnclEUnc', 'lnN', ['sig'], 1.01);
 	signalRegion.addSingleSystematic('JERUnc', 'lnN', ['sig'], 1.02);
 
-	#signalRegion.addSingleSystematic('pdf','lnN',['sig'],pdf);
+	signalRegion.addSingleSystematic('PDFUnc','lnN',['sig'],pdf);
 
 	for i in range(signalRegion.GetNbins()):
 		if( signalRegion_sigList[i]>0.000001): 
@@ -746,11 +746,11 @@ if __name__ == '__main__':
 			signalRegion.addAsymSystematic('JECUnc','lnN', ['sig'], (signalRegion_sigListJECUp[i]/signalRegion_sigList[i]),signalRegion_sigListJECDown[i]/signalRegion_sigList[i],'', i)
 			signalRegion.addAsymSystematic('PileupUnc','lnN', ['sig'], (signalRegion_sigListPUUp[i]/signalRegion_sigList[i]),signalRegion_sigListPUDown[i]/signalRegion_sigList[i],'', i)
 			signalRegion.addAsymSystematic('ISRSystem','lnN', ['sig'],signalRegion_sigListISRUp[i]/signalRegion_sigList[i], signalRegion_sigListISRDown[i]/signalRegion_sigList[i], '',i)
-			if signalRegion_sigListPDFDown[i] > 0.00001:
-			 	signalRegion.addAsymSystematic('PDFUnc','lnN', ['sig'], (signalRegion_sigListPDFUp[i]/signalRegion_sigList[i]),signalRegion_sigListPDFDown[i]/signalRegion_sigList[i],'', i)
-			else:
-			 	signalRegion.addAsymSystematic('PDFUnc','lnN', ['sig'], (signalRegion_sigListPDFUp[i]/signalRegion_sigList[i]),signalRegion_sigList[i]/signalRegion_sigListPDFUp[i],'', i)
-		 	if signalRegion_sigListScaleDown[i] > 0.00001:
+			# if signalRegion_sigListPDFDown[i] > 0.00001:
+			#  	signalRegion.addAsymSystematic('PDFUnc','lnN', ['sig'], (signalRegion_sigListPDFUp[i]/signalRegion_sigList[i]),signalRegion_sigListPDFDown[i]/signalRegion_sigList[i],'', i)
+			# else:
+			#  	signalRegion.addAsymSystematic('PDFUnc','lnN', ['sig'], (signalRegion_sigListPDFUp[i]/signalRegion_sigList[i]),signalRegion_sigList[i]/signalRegion_sigListPDFUp[i],'', i)
+		 # 	if signalRegion_sigListScaleDown[i] > 0.00001:
 			 	signalRegion.addAsymSystematic('ScaleUnc','lnN', ['sig'], (signalRegion_sigListScaleUp[i]/signalRegion_sigList[i]),signalRegion_sigListScaleDown[i]/signalRegion_sigList[i],'', i)
 			else: 
 			 	signalRegion.addAsymSystematic('ScaleUnc','lnN', ['sig'], (signalRegion_sigListScaleUp[i]/signalRegion_sigList[i]),signalRegion_sigList[i]/signalRegion_sigListScaleUp[i],'', i)	
@@ -967,18 +967,18 @@ if __name__ == '__main__':
 	### QCD uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.qcdOnly:	
 
-		ListOfQCDSysK1 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),7)
-		ListOfQCDSysK2 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),8)
-		ListOfQCDSysK3 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),9)
-		ListOfQCDSysK4 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),10)
-		ListOfQCDSysK5 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),11)
-		ListOfQCDSysK6 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),12)
-		ListOfQCDSysK7 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),13)
-		ListOfQCDSysK8 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),14)	
+		ListOfQCDSysK1 = textToListStr(idir+"/qcd-bg-combine-input.txt",7)
+		ListOfQCDSysK2 = textToListStr(idir+"/qcd-bg-combine-input.txt",8)
+		ListOfQCDSysK3 = textToListStr(idir+"/qcd-bg-combine-input.txt",9)
+		ListOfQCDSysK4 = textToListStr(idir+"/qcd-bg-combine-input.txt",10)
+		ListOfQCDSysK5 = textToListStr(idir+"/qcd-bg-combine-input.txt",11)
+		ListOfQCDSysK6 = textToListStr(idir+"/qcd-bg-combine-input.txt",12)
+		ListOfQCDSysK7 = textToListStr(idir+"/qcd-bg-combine-input.txt",13)
+		ListOfQCDSysK8 = textToListStr(idir+"/qcd-bg-combine-input.txt",14)	
 
-		ListOfQCDSysK9 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),15)
-		ListOfQCDSysK10 = textToListStr(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),16)
-		ContaminUncForLowdphiRegion = textToList(idir+"/qcd-bg-combine-input-%1.1fifb.txt"%(lumi),4);
+		ListOfQCDSysK9 = textToListStr(idir+"/qcd-bg-combine-input.txt",15)
+		ListOfQCDSysK10 = textToListStr(idir+"/qcd-bg-combine-input.txt",16)
+		ContaminUncForLowdphiRegion = textToList(idir+"/qcd-bg-combine-input.txt",4);
 		for i in range(len(tagsForSignalRegion)):
 			signalRegion.addSingleSystematic("ldpCR"+str(i),'lnU','qcd',10000,'',i);
 			LowdphiControlRegion.addSingleSystematic("ldpCR"+str(i),'lnU','qcd',10000,'',i);	
