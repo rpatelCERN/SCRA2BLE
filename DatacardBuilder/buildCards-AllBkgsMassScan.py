@@ -727,7 +727,7 @@ if __name__ == '__main__':
 	signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.046);
 	signalRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.03);
 	# signalRegion.addSingleSystematic('PUwUnc','lnN',['sig'],1.03);
-	# signalRegion.addSingleSystematic('TrigEff','lnN',['sig'],1.02);
+	signalRegion.addSingleSystematic('JetIDUnc','lnN',['sig'],1.01);
 	#signalRegion.addSingleSystematic('ISR','lnN',['sig'],ISR);
 	signalRegion.addSingleSystematic('UnclEUnc', 'lnN', ['sig'], 1.01);
 	signalRegion.addSingleSystematic('JERUnc', 'lnN', ['sig'], 1.02);
@@ -743,7 +743,13 @@ if __name__ == '__main__':
 
 			signalRegion.addAsymSystematic('TrigSystunc','lnN', ['sig'], signalRegion_sigListTrigSystUp[i]/signalRegion_sigList[i], signalRegion_sigListTrigSystDown[i]/signalRegion_sigList[i], '', i)
 			signalRegion.addAsymSystematic('TrigStatUnc','lnN', ['sig'], (signalRegion_sigListTrigStatUp[i]/signalRegion_sigList[i]),signalRegion_sigListTrigStatDown[i]/signalRegion_sigList[i],'', i)
-			signalRegion.addAsymSystematic('JECUnc','lnN', ['sig'], (signalRegion_sigListJECUp[i]/signalRegion_sigList[i]),signalRegion_sigListJECDown[i]/signalRegion_sigList[i],'', i)
+			#signalRegion.addAsymSystematic('JECUnc','lnN', ['sig'], (signalRegion_sigListJECUp[i]/signalRegion_sigList[i]),signalRegion_sigListJECDown[i]/signalRegion_sigList[i],'', i)
+                        if signalRegion_sigListJECUp[i]>0.0 and signalRegion_sigListJECDown[i]>0.0:
+                                signalRegion.addAsymSystematic('JECUnc','lnN', ['sig'], (signalRegion_sigListJECUp[i]/signalRegion_sigList[i]),signalRegion_sigListJECDown[i]/signalRegion_sigList[i],'', i)
+                        if signalRegion_sigListJECUp[i]>0.0 and signalRegion_sigListJECDown[i]<0.00001:
+                                signalRegion.addAsymSystematic('JECUnc','lnN', ['sig'], (signalRegion_sigListJECUp[i]/signalRegion_sigList[i]),signalRegion_sigList[i]/signalRegion_sigListJECUp[i],'', i)
+                        if signalRegion_sigListJECUp[i]<0.0001 and signalRegion_sigListJECDown[i]>0.0:
+                                signalRegion.addAsymSystematic('JECUnc','lnN', ['sig'], (signalRegion_sigList[i]/signalRegion_sigListJECDown[i]),signalRegion_sigListJECDown[i]/signalRegion_sigList[i],'', i)
 			signalRegion.addAsymSystematic('PileupUnc','lnN', ['sig'], (signalRegion_sigListPUUp[i]/signalRegion_sigList[i]),signalRegion_sigListPUDown[i]/signalRegion_sigList[i],'', i)
 			signalRegion.addAsymSystematic('ISRSystem','lnN', ['sig'],signalRegion_sigListISRUp[i]/signalRegion_sigList[i], signalRegion_sigListISRDown[i]/signalRegion_sigList[i], '',i)
 			# if signalRegion_sigListPDFDown[i] > 0.00001:
