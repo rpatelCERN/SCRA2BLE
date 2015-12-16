@@ -750,7 +750,7 @@ if __name__ == '__main__':
 			#  	signalRegion.addAsymSystematic('PDFUnc','lnN', ['sig'], (signalRegion_sigListPDFUp[i]/signalRegion_sigList[i]),signalRegion_sigListPDFDown[i]/signalRegion_sigList[i],'', i)
 			# else:
 			#  	signalRegion.addAsymSystematic('PDFUnc','lnN', ['sig'], (signalRegion_sigListPDFUp[i]/signalRegion_sigList[i]),signalRegion_sigList[i]/signalRegion_sigListPDFUp[i],'', i)
-		 # 	if signalRegion_sigListScaleDown[i] > 0.00001:
+		  	if signalRegion_sigListScaleDown[i] > 0.00001:
 			 	signalRegion.addAsymSystematic('ScaleUnc','lnN', ['sig'], (signalRegion_sigListScaleUp[i]/signalRegion_sigList[i]),signalRegion_sigListScaleDown[i]/signalRegion_sigList[i],'', i)
 			else: 
 			 	signalRegion.addAsymSystematic('ScaleUnc','lnN', ['sig'], (signalRegion_sigListScaleUp[i]/signalRegion_sigList[i]),signalRegion_sigList[i]/signalRegion_sigListScaleUp[i],'', i)	

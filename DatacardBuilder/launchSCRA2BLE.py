@@ -92,8 +92,8 @@ if __name__ == '__main__':
 		mLSPs.append(int(parse[3]))
 
 	#print parse
-	#mGos  = [1200];
-	#mLSPs = [1150];
+	mGos  = [1200];
+	mLSPs = [1150];
 
 	if not options.fastsim:
 		models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq','T1qqqq'];
