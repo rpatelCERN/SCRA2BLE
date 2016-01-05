@@ -723,7 +723,8 @@ if __name__ == '__main__':
 	if(sms=='SMSqqqq1400' or sms=='SMStttt1200' or sms=='SMSbbbb1000'):
 		ISR=1.08
 		pdf=1.20
-	signalRegion.addSingleSystematic('IsoTrackSigEff','lnN',['sig'],1.02);
+	if ('T1t' in model or 'T5qqqqVV' in model) :
+		signalRegion.addSingleSystematic('IsoTrackSigEff','lnN',['sig'],1.02);
 	signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.046);
 	signalRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.03);
 	# signalRegion.addSingleSystematic('PUwUnc','lnN',['sig'],1.03);
