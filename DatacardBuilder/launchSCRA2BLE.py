@@ -80,7 +80,7 @@ if __name__ == '__main__':
 	
 	os.system('tar -cvzf package.tar.gz *.py input*');
 
-	f = TFile("inputHistograms/histograms_2.1fb/fastsimSignalScan/RA2bin_signal.root");
+	f = TFile("inputHistograms/histograms_2.3fb/fastsimSignalScan/RA2bin_signal.root");
 	names = [k.GetName() for k in f.GetListOfKeys()]
 	models = []
 	mGos=[]
@@ -92,8 +92,9 @@ if __name__ == '__main__':
 		mLSPs.append(int(parse[3]))
 
 	#print parse
-	mGos  = [1200];
-	mLSPs = [1150];
+	models=["T5qqqqVV"]
+	mGos  = [975];
+	mLSPs = [775];
 
 	if not options.fastsim:
 		models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq','T1qqqq'];
