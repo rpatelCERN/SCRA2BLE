@@ -667,7 +667,7 @@ if __name__ == '__main__':
 		print " ---", tagsForSignalRegion[i]
 
 		tmpList = [];
-		if options.fastsim and 'T1t' in model:
+		if options.fastsim and ('T1t' in model or 'T5qqqqVV' in model) :
 			signalContamLL_file=TFile("inputHistograms/SignalContamin/LLContamination_%s.root" %model)
 			signalContamTau_file=TFile("inputHistograms/SignalContamin/Signal%sHtauContamin.root" %model)
 			TauContamHist =signalContamTau_file.Get("SearchH_b/"+signaltag)
