@@ -74,8 +74,7 @@ def condorize(command,tag,odir):
 
 if __name__ == '__main__':
 		
-	outDir = "/store/user/ntran/SUSY/statInterp/scanOutput/Dec6"
-
+	outDir = "/store/user/rgp230/SUSY/statInterp/scanOutput/Paper/Final/"
 	# # tar it up for usage
 	
 	os.system('tar -cvzf package.tar.gz *.py input*');
@@ -87,14 +86,15 @@ if __name__ == '__main__':
 	mLSPs=[]
 	for n in names:
 		parse=n.split('_')
+		#if parse[1]=="T1bbbb":
 		models.append(parse[1])
 		mGos.append(int(parse[2]))
 		mLSPs.append(int(parse[3]))
 
 	#print parse
-	models=["T5qqqqVV"]
-	mGos  = [975];
-	mLSPs = [775];
+	#models=["T5qqqqVV"]
+	#mGos  = [975];
+	#mLSPs = [775];
 
 	if not options.fastsim:
 		models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq','T1qqqq'];
