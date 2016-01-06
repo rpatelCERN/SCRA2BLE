@@ -673,7 +673,7 @@ if __name__ == '__main__':
 			TauContamHist =signalContamTau_file.Get("SearchH_b/"+signaltag)
 			TauContamHist.Scale(lumi/3.0)
 			LLContamHist=signalContamLL_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
-			LLContamHist.Scale(lumi/3.0)    
+		#	LLContamHist.Scale(lumi/3.0)    
 			LLContamList=binsToList(LLContamHist)
 			HadtauContamList=binsToList(TauContamHist)  
 			tmpList.append(signalRegion_sigList[i]-LLContamList[i]-HadtauContamList[i]);
