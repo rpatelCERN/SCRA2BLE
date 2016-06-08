@@ -125,7 +125,7 @@ if __name__ == '__main__':
                     command = 'python buildCards-AllBkgsMassScan.py %s --signal %s --tag %s --lumi %0.1f --mu %0.1f --mGo=%s --mLSP=%s' % (combOpt,options.signal,tag,lumi,mu, options.mGo, options.mLSP); 
                     if options.fastsim: command += " --fastsim"
                     if options.realData: command += " --realData"
-                    if len(options.eos)>0: command += " --eos %s" % (options.eos)
+                    #if len(options.eos)>0: command += " --eos %s" % (options.eos)
                     os.system(command);
                     
                     signaltag = "SMS%s%s" % (options.signal[2:],options.mGo);
@@ -141,7 +141,7 @@ if __name__ == '__main__':
                     os.system(command);
                     combine_cmmd = "text2workspace.py %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);
                     os.system(combine_cmmd);
-                    
+		    #os.system("xrdcp -f %s/allcards.txt %s/card_%s_%s_%s.txt" %(the_odir,options.eos,options.signal,options.mGo, options.mLSP) )
                     # run significance
                     # combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.root -n %s" % (the_odir,the_odir); 
                     # os.system(combine_cmmd);

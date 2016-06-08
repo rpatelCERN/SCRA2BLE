@@ -55,12 +55,15 @@ if __name__ == '__main__':
 	# signal 
 	signaldirtag = idir;
 	if options.fastsim: signaldirtag += "/fastsimSignalScan";
-	signaltag = "RA2bin_"+sms+"_2bd";
+	if ("T1" in sms or "T5qqqqVV" in sms): signaldirtag +="Gluino"
+	if ("T2tt" in sms): signaldirtag +="Stop"
+	if "T1ttbb" in sms or "T1tbtb" in sms: signaldirtag="/fastsimSignalScanMixedFinalState"
+	signaltag = "RA2bin_"+sms;
 	parse=sms.split('_')
 	model=parse[0]
 	#print parse
 	if options.fastsim: signaltag+="_fast"
-
+	
 	signalSFB_file =TFile(signaldirtag+"/RA2bin_signal.root");
 
 	signalSysSFUp_file=TFile(signaldirtag+"/RA2bin_signal_btagSFuncUp.root");
@@ -643,6 +646,7 @@ if __name__ == '__main__':
 	zvv = TH1F( 'Zvv', 'Zvv', 72, 0, 72 )
 	ll = TH1F( 'LL', 'LL', 72, 0, 72 )
 	tau = TH1F( 'tau', 'tau', 72, 0, 72 )
+	sig = TH1F( 'sig', 'sig', 72, 0, 72 )
 	DataHist_In=TFile("inputHistograms/histograms_%1.1ffb/RA2bin_signalUnblind.root" %lumi)
 	Data_Hist=DataHist_In.Get("RA2bin_data")
 	Data_List=binsToList(Data_Hist)
@@ -661,7 +665,7 @@ if __name__ == '__main__':
 		zvv.Fill(i+.5, ZvvYieldsInSignalRegion[i])
 		ll.Fill(i+.5, signalRegion_LLList[i])
 		tau.Fill(i+.5, signalRegion_tauList[i])	
-
+		sig.Fill(i+.5,signalRegion_sigList[i]*signalmu)
 
 		print "bin {0:2}: {1:6.2f} {2:6.2f} ||| {3:6.2f} {4:6.2f} {5:6.2f} {6:6.2f}".format(i,signalRegion_sigList[i]*signalmu,srobs-signalRegion_sigList[i]*signalmu,NSRForSignalRegion_QCDList[i],ZvvYieldsInSignalRegion[i],signalRegion_LLList[i],signalRegion_tauList[i]),
 		print " ---", tagsForSignalRegion[i]
@@ -670,7 +674,7 @@ if __name__ == '__main__':
 		if options.fastsim and ('T1t' in model or 'T5qqqqVV' in model or 'T2tt' in model) :
 			signalContamLL_file=TFile("inputHistograms/SignalContamin/LLContamination_%s.root" %model)
 			signalContamTau_file=TFile("inputHistograms/SignalContamin/Signal%sHtauContamin.root" %model)
-			TauContamHist =signalContamTau_file.Get("SearchH_b/"+signaltag+"fast")
+			TauContamHist =signalContamTau_file.Get("SearchH_b/"+signaltag)
 			print signaltag
 			#print "inputHistograms/SignalContamin/Signal%sHtauContamin.root" %model
 			TauContamHist.GetNbinsX()	

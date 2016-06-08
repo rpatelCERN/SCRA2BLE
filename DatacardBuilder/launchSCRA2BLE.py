@@ -15,7 +15,7 @@ from optparse import OptionParser
 parser = OptionParser()
 parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='use fastsim signal (default = %default)')
 parser.add_option('--keeptar', action='store_true', dest='keeptar', default=False, help='keep old tarball for condor jobs (default = %default)')
-parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Paper/Final/",help="EOS output directory  (default = %default)", metavar="outDir")
+parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Cards2015/",help="EOS output directory  (default = %default)", metavar="outDir")
 
 (options, args) = parser.parse_args()
 
@@ -50,7 +50,7 @@ def condorize(command,tag,odir,CMSSWVER):
     # setup environment
     f1.write("tar -xzf %s.tar.gz \n" % (CMSSWVER));
     f1.write("cd %s \n" % (CMSSWVER));
-    f1.write("scram b ProjectRename \n");
+    #f1.write("scram b ProjectRename \n");
     f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
     f1.write("eval `scramv1 runtime -sh`\n")
     f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
@@ -100,20 +100,20 @@ if __name__ == '__main__':
         cachedir('tmp')
     if not options.keeptar:
         os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
-
-    f = TFile.Open("inputHistograms/histograms_2.3fb/fastsimSignalScan/RA2bin_signal.root");
+    f = TFile.Open("inputHistograms/histograms_2.3fb/fastsimSignalScanGluino/RA2bin_signal.root");
     names = [k.GetName() for k in f.GetListOfKeys()]
     models = []
     mGos=[]
     mLSPs=[]
+    #print names
     for n in names:
         parse=n.split('_')
-        #if parse[1]=="T1bbbb":
+        #if parse[1] =="T1qqqq" or parse[1] =="T5qqqqVV":
         models.append(parse[1])
         mGos.append(int(parse[2]))
         mLSPs.append(int(parse[3]))
 
-    #print parse
+	    	#print parse
     #models=["T5qqqqVV"]
     #mGos  = [975];
     #mLSPs = [775];
@@ -137,7 +137,8 @@ if __name__ == '__main__':
         command += " --eos %s" % (eosDir);
 
         tag = "%s_%i_%i" % (models[m],mGos[m],mLSPs[m]);
-
+	#os.system(command)
+	print command
         condorize( command, tag, outDir, CMSSWVER );
         time.sleep(0.05);
 
