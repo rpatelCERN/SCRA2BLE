@@ -15,8 +15,7 @@ from optparse import OptionParser
 parser = OptionParser()
 parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='use fastsim signal (default = %default)')
 parser.add_option('--keeptar', action='store_true', dest='keeptar', default=False, help='keep old tarball for condor jobs (default = %default)')
-parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Cards2015/",help="EOS output directory  (default = %default)", metavar="outDir")
-
+parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Cards2016/FullSim",help="EOS output directory  (default = %default)", metavar="outDir")
 (options, args) = parser.parse_args()
 
 # -----------------------------------------------------------------
@@ -42,53 +41,56 @@ def condorize(command,tag,odir,CMSSWVER):
 
     #change to a tmp dir
     os.chdir("tmp");
-
+    #startdir = os.getcwd();
     f1n = "tmp_%s.sh" %(tag);
     f1=open(f1n, 'w')
     f1.write("#!/bin/sh \n");
 
     # setup environment
-    #f1.write("tar -xzf %s.tar.gz \n" % (CMSSWVER));
-    f1.write("cd /fdata/hepx/store/user/rish/CombineCards/Final2016Version/%s \n" % (CMSSWVER));
+    #f1.write("cd ${_CONDOR_SCRATCH_DIR} \n");
+    f1.write("tar -xzf %s.tar.gz \n" % (CMSSWVER));
     #f1.write("scram b ProjectRename \n");
-    #f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
-    f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
-    f1.write("#SBATCH -p hepx\n")
-    f1.write("#SBATCH --time=02:00:00\n")
-    f1.write("#SBATCH --mem-per-cpu=8000 \n")
-    f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
-    f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
-    f1.write("set SCRAM_ARCH=slc6_amd64_gcc481\n")
+    f1.write("cd %s \n" % (CMSSWVER));
+    f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
+#    f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
+#    f1.write("#SBATCH -p hepx\n")
+#    f1.write("#SBATCH --time=02:00:00\n")
+#    f1.write("#SBATCH --mem-per-cpu=8000 \n")
+#    f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
+#    f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
+#    f1.write("set SCRAM_ARCH=slc6_amd64_gcc481\n"
+    #f1.write("cd ${_CONDOR_SCRATCH_DIR} \n")
     f1.write("eval `scramv1 runtime -sh`\n")
+
     f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
     f1.write("ls \n");
-    f1.write(command+" \n")
-    #f1.write("xrdcp -f results_%s.root root://cmseos.fnal.gov/%s/results_%s.root 2>&1 \n" % (tag,odir,tag));
-    #f1.write("rm -r *.py input* *.root *.tar.gz \n")
+    f1.write(command+" \n") 
+    for mu in range(0,6):
+    	f1.write("xrdcp -f results_%s_mu%1.1f.root root://cmseos.fnal.gov/%s/results_%s_mu%1.1f.root 2>&1 \n" % (tag,float(mu),odir,tag,float(mu)));
+    f1.write("rm -r *.py input* *.root *.tar.gz \n")
     f1.close();
-    '''
     f2n = "tmp_%s.condor" % (tag);
     outtag = "out_%s_$(Cluster)" % (tag)
+     
     f2=open(f2n, 'w')
     f2.write("universe = vanilla \n");
     f2.write("Executable = %s \n" % (f1n) );
     f2.write("Requirements = OpSys == \"LINUX\"&& (Arch != \"DUMMY\" ) \n");
     f2.write("request_disk = 10000000 \n");
-    f2.write("request_memory = 2100 \n");
+    f2.write("request_memory = 21000 \n");
     f2.write("Should_Transfer_Files = YES \n");
-    f2.write("WhenToTransferOutput  = ON_EXIT_OR_EVICT \n");
+    f2.write("WhenToTransferOutput  = ON_EXIT \n");
     f2.write("Transfer_Input_Files = %s, %s.tar.gz \n" % (f1n,CMSSWVER));
     f2.write("Output = "+outtag+".stdout \n");
     f2.write("Error = "+outtag+".stderr \n");
     f2.write("Log = "+outtag+".log \n");
     f2.write("Notification    = Error \n");
     f2.write("x509userproxy = $ENV(X509_USER_PROXY) \n")
-    '''
-    #f2.write("Queue 1 \n");
-    #f2.close();
+    f2.write("Queue 1 \n");
+    f2.close();
 
-    #os.system("condor_submit %s" % (f2n));
-    os.system("qsub -q hepx %s " %f1n)
+    os.system("condor_submit %s" % (f2n));
+    #os.system("qsub -q hepx %s " %f1n)
     os.chdir("../.");
 
 
@@ -100,13 +102,14 @@ if __name__ == '__main__':
     # get some info from the OS
     CMSSWVER = os.getenv("CMSSW_VERSION")
     CMSSWBASE = os.getenv("CMSSW_BASE")
-    ''' 
     # tar it up for usage
     if not os.path.exists('tmp'):
         os.makedirs('tmp')
         cachedir('tmp')
-    if not options.keeptar:
-        os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
+
+    #if not options.keeptar:
+    os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
+    '''
     f = TFile.Open("inputHistograms/histograms_2.3fb/fastsimSignalScanGluino/RA2bin_signal.root");
     names = [k.GetName() for k in f.GetListOfKeys()]
     models = []

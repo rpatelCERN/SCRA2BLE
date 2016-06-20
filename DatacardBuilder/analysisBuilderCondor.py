@@ -95,7 +95,7 @@ if __name__ == '__main__':
         for sig in signals:
             for mu in mus:
     		job_postfix = "%s_%s_%s" % (options.signal,options.mGo,options.mLSP);
-    		fout = TFile("results_%s_lumi%1.1f.root" % (job_postfix, lumi), "RECREATE");
+    		fout = TFile("results_%s_mu%1.1f.root" % (job_postfix, mu), "RECREATE");
     		tout = TTree("results","results");
     		tout.Branch('mGo',mGo,'mGo/F');
     		tout.Branch('mLSP',mLSP,'mLSP/F');
@@ -141,19 +141,19 @@ if __name__ == '__main__':
                         if 'card_' in cn: command += " " + the_odir+'/'+cn;
                     command += " > "+the_odir+'/allcards.txt'
                     os.system(command);
-                    combine_cmmd = "text2workspace.py %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);
-                    os.system(combine_cmmd);
-		    #os.system("xrdcp -f %s/allcards.txt %s/card_%s_%s_%s.txt" %(the_odir,options.eos,options.signal,options.mGo, options.mLSP) )
+                    #combine_cmmd = "text2workspace.py %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);
+                    #os.system(combine_cmmd);
+		    os.system("xrdcp -f %s/allcards.txt %s/card_%s_%s_%s.txt" %(the_odir,options.eos,options.signal,options.mGo, options.mLSP) )
                     # run significance
                     # combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.root -n %s" % (the_odir,the_odir); 
                     # os.system(combine_cmmd);
-                    # # run max likelihood fit
-                    combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); 
-                    print combine_cmmd;
-                    #os.system(combine_cmmd);
-                    # run asymptotic
-                    combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); 
+                    # # run m/ax likelihood fit
+                    combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.txt -n %s --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); 
+                    #print combine_cmmd;
                     os.system(combine_cmmd);
+                    # run asymptotic
+                    #combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); 
+                    #os.system(combine_cmmd);
 
                     dicttag = "%s_%s_%.1f" % (tag,sig,lumi);
 
@@ -162,6 +162,7 @@ if __name__ == '__main__':
                     mLSP[0] = float(options.mLSP);
                     fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,signaltag,lumi,mu) )[0];
                     #significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
+		    '''
                     olims = getLimit( "higgsCombine%s.Asymptotic.mH120.root" % (the_odir));
                     limit_m2s[0] = olims[0];
                     limit_m1s[0] = olims[1];
@@ -173,7 +174,7 @@ if __name__ == '__main__':
                     # fittedMu[0] = -99.;
                     #significance[0] = -99.;
                     # limit[0] = -99.;
-                    
+             	    '''       
                     tout.Fill();
     		fout.cd();
     		tout.Write();
