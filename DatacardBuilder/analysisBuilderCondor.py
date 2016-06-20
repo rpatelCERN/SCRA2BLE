@@ -62,7 +62,7 @@ if __name__ == '__main__':
 
     signalmodel=options.signal+options.mGo
     signals = [signalmodel]
-    mus=[0.0]
+    mus=[0.0,1.0,2.0,3.0,4.0,5.0]
     lumis = [0.814];
 
     #variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
@@ -76,9 +76,6 @@ if __name__ == '__main__':
     #variations=['tauOnly']
     variations=['allBkgs']
 
-    job_postfix = "%s_%s_%s" % (options.signal,options.mGo,options.mLSP);
-    fout = TFile("results_%s.root" % (job_postfix), "RECREATE");
-    tout = TTree("results","results");
     # identifier    = array( 'c', [ 'c' ] );
     mGo          = array( 'f', [ 0. ] ); 
     mLSP         = array( 'f', [ 0. ] ); 
@@ -91,22 +88,27 @@ if __name__ == '__main__':
     limit_obsErr        = array( 'f', [ 0. ] );
     significance = array( 'f', [ 0. ] );  
     fittedMu     = array( 'f', [ 0. ] );
-    tout.Branch('mGo',mGo,'mGo/F');
-    tout.Branch('mLSP',mLSP,'mLSP/F');
-    tout.Branch("limit_exp",limit_exp,"limit_exp/F");
-    tout.Branch("limit_p1s",limit_p1s,"limit_p1s/F");
-    tout.Branch("limit_p2s",limit_p2s,"limit_p2s/F");
-    tout.Branch("limit_m1s",limit_m1s,"limit_m1s/F");
-    tout.Branch("limit_m2s",limit_m2s,"limit_m2s/F");
-    tout.Branch("limit_obs",limit_obs,"limit_obs/F");
-    tout.Branch("limit_obsErr",limit_obsErr,"limit_obsErr/F");
-    tout.Branch("significance",significance,"significance/F");
-    tout.Branch("fittedMu",fittedMu,"fittedMu/F");
 
     for lumi in lumis: 
+    
         print "=========>>> LUMI is ", lumi
         for sig in signals:
             for mu in mus:
+    		job_postfix = "%s_%s_%s" % (options.signal,options.mGo,options.mLSP);
+    		fout = TFile("results_%s_lumi%1.1f.root" % (job_postfix, lumi), "RECREATE");
+    		tout = TTree("results","results");
+    		tout.Branch('mGo',mGo,'mGo/F');
+    		tout.Branch('mLSP',mLSP,'mLSP/F');
+    		tout.Branch("limit_exp",limit_exp,"limit_exp/F");
+ 		tout.Branch("limit_p1s",limit_p1s,"limit_p1s/F");
+		tout.Branch("limit_p2s",limit_p2s,"limit_p2s/F");
+    		tout.Branch("limit_m1s",limit_m1s,"limit_m1s/F");
+    		tout.Branch("limit_m2s",limit_m2s,"limit_m2s/F");
+    		tout.Branch("limit_obs",limit_obs,"limit_obs/F");
+    		tout.Branch("limit_obsErr",limit_obsErr,"limit_obsErr/F");
+    		tout.Branch("significance",significance,"significance/F");
+    		tout.Branch("fittedMu",fittedMu,"fittedMu/F");
+		
                 for vary in variations: 
                     tag = options.tag;
                     combOpt = '';
@@ -146,8 +148,8 @@ if __name__ == '__main__':
                     # combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.root -n %s" % (the_odir,the_odir); 
                     # os.system(combine_cmmd);
                     # # run max likelihood fit
-                    #combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); 
-                    #print combine_cmmd;
+                    combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); 
+                    print combine_cmmd;
                     #os.system(combine_cmmd);
                     # run asymptotic
                     combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); 
@@ -158,7 +160,7 @@ if __name__ == '__main__':
                     identifier = dicttag;
                     mGo[0] = float(options.mGo);
                     mLSP[0] = float(options.mLSP);
-                    #fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,signaltag,lumi,mu) )[0];
+                    fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,signaltag,lumi,mu) )[0];
                     #significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
                     olims = getLimit( "higgsCombine%s.Asymptotic.mH120.root" % (the_odir));
                     limit_m2s[0] = olims[0];
@@ -173,9 +175,9 @@ if __name__ == '__main__':
                     # limit[0] = -99.;
                     
                     tout.Fill();
-    fout.cd();
-    tout.Write();
-    fout.Close();
+    		fout.cd();
+    		tout.Write();
+    		fout.Close();
 
 
 

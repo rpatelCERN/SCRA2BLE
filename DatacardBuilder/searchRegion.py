@@ -77,14 +77,15 @@ class searchRegion:
                                                                          self._singleBins[i].addCorrelSystematicAsym( sysname, systype, channel, val1up,val1down,val2up, val2down );
 	def addSystematicFromList(self,sysname,systype,channel,inputlist):
 
-		if len(inputlist) != self._nBins: print "There is a problem mistaching in searchRegion:addSystematicFromList!!";
+		if len(inputlist) != self._nBins: print "There is a problem mistaching in searchRegion:addSystematicFromList!! %s %d" %(sysname, len(inputlist));
 		for i in range(self._nBins): 
 			if(inputlist[i]>-99):self._singleBins[i].addSystematic( sysname, systype, channel, 1+inputlist[i] );
 			else: self._singleBins[i].addSystematic( sysname, systype, channel, 1 );
 	def addAsymSystematicFromList(self,sysname,systype,channel,inputListUp,inputListDn):
 
-		if len(inputListUp) != self._nBins: print "There is a problem mistaching in searchRegion:addSystematicFromList!!";
+		if len(inputListUp) != self._nBins: print "There is a problem mistaching in searchRegion:addSystematicFromList!! %s %d %d" %(sysname, len(inputListUp), len(inputListDn));
 		for i in range(self._nBins): 
+			
 			#print inputListUp[i]
 			#if(inputlistUp[i]>-99 and inputlistDn[i]>-99):
 			self._singleBins[i].addAsymSystematic( sysname, systype, channel, 1+inputListUp[i], 1-inputListDn[i] );

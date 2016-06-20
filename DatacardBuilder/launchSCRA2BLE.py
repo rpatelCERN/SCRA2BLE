@@ -48,18 +48,25 @@ def condorize(command,tag,odir,CMSSWVER):
     f1.write("#!/bin/sh \n");
 
     # setup environment
-    f1.write("tar -xzf %s.tar.gz \n" % (CMSSWVER));
-    f1.write("cd %s \n" % (CMSSWVER));
+    #f1.write("tar -xzf %s.tar.gz \n" % (CMSSWVER));
+    f1.write("cd /fdata/hepx/store/user/rish/CombineCards/Final2016Version/%s \n" % (CMSSWVER));
     #f1.write("scram b ProjectRename \n");
-    f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
+    #f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
+    f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
+    f1.write("#SBATCH -p hepx\n")
+    f1.write("#SBATCH --time=02:00:00\n")
+    f1.write("#SBATCH --mem-per-cpu=8000 \n")
+    f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
+    f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
+    f1.write("set SCRAM_ARCH=slc6_amd64_gcc481\n")
     f1.write("eval `scramv1 runtime -sh`\n")
     f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
     f1.write("ls \n");
     f1.write(command+" \n")
-    f1.write("xrdcp -f results_%s.root root://cmseos.fnal.gov/%s/results_%s.root 2>&1 \n" % (tag,odir,tag));
-    f1.write("rm -r *.py input* *.root *.tar.gz \n")
+    #f1.write("xrdcp -f results_%s.root root://cmseos.fnal.gov/%s/results_%s.root 2>&1 \n" % (tag,odir,tag));
+    #f1.write("rm -r *.py input* *.root *.tar.gz \n")
     f1.close();
-
+    '''
     f2n = "tmp_%s.condor" % (tag);
     outtag = "out_%s_$(Cluster)" % (tag)
     f2=open(f2n, 'w')
@@ -76,12 +83,12 @@ def condorize(command,tag,odir,CMSSWVER):
     f2.write("Log = "+outtag+".log \n");
     f2.write("Notification    = Error \n");
     f2.write("x509userproxy = $ENV(X509_USER_PROXY) \n")
+    '''
+    #f2.write("Queue 1 \n");
+    #f2.close();
 
-    f2.write("Queue 1 \n");
-    f2.close();
-
-    os.system("condor_submit %s" % (f2n));
-
+    #os.system("condor_submit %s" % (f2n));
+    os.system("qsub -q hepx %s " %f1n)
     os.chdir("../.");
 
 
@@ -93,7 +100,7 @@ if __name__ == '__main__':
     # get some info from the OS
     CMSSWVER = os.getenv("CMSSW_VERSION")
     CMSSWBASE = os.getenv("CMSSW_BASE")
-    
+    ''' 
     # tar it up for usage
     if not os.path.exists('tmp'):
         os.makedirs('tmp')
@@ -112,16 +119,16 @@ if __name__ == '__main__':
         models.append(parse[1])
         mGos.append(int(parse[2]))
         mLSPs.append(int(parse[3]))
-
+    '''
 	    	#print parse
     #models=["T5qqqqVV"]
     #mGos  = [975];
     #mLSPs = [775];
 
     if not options.fastsim:
-        models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq','T1qqqq'];
+        models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq', 'T1qqqq'];
         mGos = [1500,1000,1500,1200,1400,1000];
-        mLSPs = [100,800,100,800,100,900];
+        mLSPs = [100,800,100,800,100,800,900];
 
 
     # for signal in signals:
@@ -131,8 +138,8 @@ if __name__ == '__main__':
         command += "--signal %s " % models[m];
         command += "--mGo %i " % mGos[m];
         command += "--mLSP %i " % mLSPs[m];
-        if options.fastsim: command += " --fastsim";
-        command += " --realData";
+        #if options.fastsim: command += " --fastsim";
+        #command += " --realData";
         command += " --tag allBkgs";
         command += " --eos %s" % (eosDir);
 
