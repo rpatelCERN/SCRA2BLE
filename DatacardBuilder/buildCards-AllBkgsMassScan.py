@@ -437,7 +437,21 @@ if __name__ == '__main__':
 	HadTauIsoTkEffSysDn=[]
 	tauSqrtSumW2=[]
 	for i in range(len(signalRegion_tauList)):
-		
+		if(HadTauMuonCorrUncUp[i]<-99):HadTauMuonCorrUncUp[i]=1.0	
+		if(HadTauMuonCorrUncDn[i]<-99):HadTauMuonCorrUncDn[i]=1.0
+		if(HadTauMuonIsoRecoStatUncUp[i]<-99):HadTauMuonIsoRecoStatUncUp[i]=1.0	
+		if(HadTauMuonIsoRecoStatUncDn[i]<-99):HadTauMuonIsoRecoStatUncDn[i]=1.0	
+		if(HadTauMuonIsoUncUp[i]<-99):HadTauMuonIsoUncUp[i]=1.0	
+		if(HadTauMuonIsoUncDn[i]<-99):HadTauMuonIsoUncDn[i]=1.0	
+		if(HadTauMTSysUp[i]<-99):HadTauMTSysUp[i]=1.0
+		if(HadTauMTSysDn[i]<-99):HadTauMTSysDn[i]=1.0
+		if(HadTauMTEff[i]<-99):HadTauMTEff[i]=1.0
+		if(HadTauAccStat[i]<-99):HadTauAccStat[i]=1.0
+		if(HadTauMuAccSysPDFUp[i]<-99):HadTauMuAccSysPDFUp[i]=1.0	
+		if(HadTauMuAccSysPDFDn[i]<-99):HadTauMuAccSysPDFDn[i]=1.0
+		if(HadTauMuAccSysScaleUp[i]<-99):HadTauMuAccSysScaleUp[i]=1.0	
+		if(HadTauMuAccSysScaleDn[i]<-99):HadTauMuAccSysScaleDn[i]=1.0
+		if(HadTauMuDiLepton[i]<-99):HadTauMuDiLepton[i]=1.0
 		if signalRegion_tauList[i]>0.0: tauSqrtSumW2.append(HadTauPrediction_Hist.GetBinError(i+1)/signalRegion_tauList[i])
 		else: tauSqrtSumW2.append(1.)
 		HadTauMTEffDn.append(1.0/HadTauMTEff[i])
