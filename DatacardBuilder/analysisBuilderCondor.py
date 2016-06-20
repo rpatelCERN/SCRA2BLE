@@ -148,9 +148,9 @@ if __name__ == '__main__':
                     # combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.root -n %s" % (the_odir,the_odir); 
                     # os.system(combine_cmmd);
                     # # run m/ax likelihood fit
-                    combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.txt -n %s --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); 
+                    #combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.txt -n %s --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); 
                     #print combine_cmmd;
-                    os.system(combine_cmmd);
+                    #os.system(combine_cmmd);
                     # run asymptotic
                     #combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); 
                     #os.system(combine_cmmd);
@@ -160,9 +160,8 @@ if __name__ == '__main__':
                     identifier = dicttag;
                     mGo[0] = float(options.mGo);
                     mLSP[0] = float(options.mLSP);
-                    fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,signaltag,lumi,mu) )[0];
+                    #fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,signaltag,lumi,mu) )[0];
                     #significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
-		    '''
                     olims = getLimit( "higgsCombine%s.Asymptotic.mH120.root" % (the_odir));
                     limit_m2s[0] = olims[0];
                     limit_m1s[0] = olims[1];
@@ -174,7 +173,6 @@ if __name__ == '__main__':
                     # fittedMu[0] = -99.;
                     #significance[0] = -99.;
                     # limit[0] = -99.;
-             	    '''       
                     tout.Fill();
     		fout.cd();
     		tout.Write();
