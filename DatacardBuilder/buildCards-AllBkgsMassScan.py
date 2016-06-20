@@ -995,30 +995,30 @@ if __name__ == '__main__':
 			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet0",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets0')
 			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet1",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets1')
 			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet2",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets2')
-			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet2",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets3')
+			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet3",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets3')
 			signalRegion.addCorrelSystematicAsym("LLStatMTW_NJet0",'lnN',['WTopSL','WTopHad'],LLStatMTUp, LLStatMTDown,HadTauMTEff,HadTauMTEffDn,'NJets0')
 			signalRegion.addCorrelSystematicAsym("LLStatMTW_NJet1",'lnN',['WTopSL','WTopHad'],LLStatMTUp, LLStatMTDown,HadTauMTEff,HadTauMTEffDn,'NJets1')
 			signalRegion.addCorrelSystematicAsym("LLStatMTW_NJet2",'lnN',['WTopSL','WTopHad'],LLStatMTUp, LLStatMTDown,HadTauMTEff,HadTauMTEffDn,'NJets2')
-			signalRegion.addCorrelSystematicAsym("LLStatMTW_NJet2",'lnN',['WTopSL','WTopHad'],LLStatMTUp, LLStatMTDown,HadTauMTEff,HadTauMTEffDn,'NJets3')
+			signalRegion.addCorrelSystematicAsym("LLStatMTW_NJet3",'lnN',['WTopSL','WTopHad'],LLStatMTUp, LLStatMTDown,HadTauMTEff,HadTauMTEffDn,'NJets3')
 			signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet0",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets0')
 			signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet1",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets1')
 			signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet2",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets2')
-			signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet2",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets3')
+			signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet3",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets3')
 		signalRegion.addAsymSystematic("LLStatDiLepPurity_NJet0",'lnN',['WTopSL'],LLStatDiLepPurUp, LLStatDiLepPurDown,'NJets0')
 		signalRegion.addAsymSystematic("LLStatDiLepPurity_NJet1",'lnN',['WTopSL'],LLStatDiLepPurUp, LLStatDiLepPurDown,'NJets1')
 		signalRegion.addAsymSystematic("LLStatDiLepPurity_NJet2",'lnN',['WTopSL'],LLStatDiLepPurUp, LLStatDiLepPurDown,'NJets2')	
-		signalRegion.addAsymSystematic("LLStatDiLepPurity_NJet2",'lnN',['WTopSL'],LLStatDiLepPurUp, LLStatDiLepPurDown,'NJets3')	
+		signalRegion.addAsymSystematic("LLStatDiLepPurity_NJet3",'lnN',['WTopSL'],LLStatDiLepPurUp, LLStatDiLepPurDown,'NJets3')	
 
 		signalRegion.addAsymSystematic("LLSysSingleLepPurity_NJet0",'lnN',['WTopSL'],LLSysPurUp, LLSysPurDown,'NJets0')
 		signalRegion.addAsymSystematic("LLSysSingleLepPurity_NJet1",'lnN',['WTopSL'],LLSysPurUp, LLSysPurDown,'NJets1')
 		signalRegion.addAsymSystematic("LLSysSingleLepPurity_NJet2",'lnN',['WTopSL'],LLSysPurUp, LLSysPurDown,'NJets2')	
-		signalRegion.addAsymSystematic("LLSysSingleLepPurity_NJet2",'lnN',['WTopSL'],LLSysPurUp, LLSysPurDown,'NJets3')	
+		signalRegion.addAsymSystematic("LLSysSingleLepPurity_NJet3",'lnN',['WTopSL'],LLSysPurUp, LLSysPurDown,'NJets3')	
 		signalRegion.addAsymSystematic("LLStatSingleLepPurity_NJet0",'lnN',['WTopSL'],LLStatPurUp, LLStatPurDown,'NJets0')
 		signalRegion.addAsymSystematic("LLStatSingleLepPurity_NJet1",'lnN',['WTopSL'],LLStatPurUp, LLStatPurDown,'NJets1')
 		signalRegion.addAsymSystematic("LLStatSingleLepPurity_NJet2",'lnN',['WTopSL'],LLStatPurUp, LLStatPurDown,'NJets2')
-		signalRegion.addAsymSystematic("LLStatSingleLepPurity_NJet2",'lnN',['WTopSL'],LLStatPurUp, LLStatPurDown,'NJets3')
+		signalRegion.addAsymSystematic("LLStatSingleLepPurity_NJet3",'lnN',['WTopSL'],LLStatPurUp, LLStatPurDown,'NJets3')
 
-		NJbinsLL=['NJets1', 'NJets2']
+		NJbinsLL=['NJets2', 'NJets3']
 		MHTHTBinsLL=['MHT0_HT0','MHT0_HT1','MHT0_HT2','MHT1_HT3','MHT1_HT4','MHT1_HT5', 'MHT2_HT6','MHT2_HT7','MHT3_HT8', 'MHT3_HT9']
 		for h in range(len(MHTHTBinsLL)):
 			signalRegion.addAsymSystematic("LLSysIsoTrackNJets0_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysIsoTrackUp), (LLSysIsoTrackDown),'NJets0_BTags._'+str(MHTHTBinsLL[h]))
