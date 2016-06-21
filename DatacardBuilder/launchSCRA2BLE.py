@@ -67,7 +67,7 @@ def condorize(command,tag,odir,CMSSWVER):
     f1.write(command+" \n") 
     for mu in range(0,6):
     	f1.write("xrdcp -f results_%s_mu%1.1f.root root://cmseos.fnal.gov/%s/results_%s_mu%1.1f.root 2>&1 \n" % (tag,float(mu),odir,tag,float(mu)));
-    f1.write("rm -r *.py input* *.root *.tar.gz \n")
+    #f1.write("rm -r *.py input* *.root *.tar.gz \n")
     f1.close();
     f2n = "tmp_%s.condor" % (tag);
     outtag = "out_%s_$(Cluster)" % (tag)

@@ -152,7 +152,7 @@ if __name__ == '__main__':
                     #print combine_cmmd;
                     #os.system(combine_cmmd);
                     # run asymptotic
-                    combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); 
+                    combine_cmmd = "combine -M Asymptotic %s/allcards.txt -n %s" % (the_odir,the_odir); 
                     os.system(combine_cmmd);
 			
                     dicttag = "%s_%s_%.1f" % (tag,sig,lumi);
