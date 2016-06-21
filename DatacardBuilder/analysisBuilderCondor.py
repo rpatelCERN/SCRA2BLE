@@ -143,7 +143,7 @@ if __name__ == '__main__':
                     os.system(command);
                     #combine_cmmd = "text2workspace.py %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);
                     #os.system(combine_cmmd);
-		    os.system("xrdcp -f %s/allcards.txt %s/card_%s_%s_%s.txt" %(the_odir,options.eos,options.signal,options.mGo, options.mLSP) )
+		    #os.system("xrdcp -f %s/allcards.txt %s/card_%s_%s_%s.txt" %(the_odir,options.eos,options.signal,options.mGo, options.mLSP) )
                     # run significance
                     # combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.root -n %s" % (the_odir,the_odir); 
                     # os.system(combine_cmmd);
@@ -152,9 +152,9 @@ if __name__ == '__main__':
                     #print combine_cmmd;
                     #os.system(combine_cmmd);
                     # run asymptotic
-                    #combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); 
-                    #os.system(combine_cmmd);
-
+                    combine_cmmd = "combine -M Asymptotic %s/allcards.root -n %s" % (the_odir,the_odir); 
+                    os.system(combine_cmmd);
+			
                     dicttag = "%s_%s_%.1f" % (tag,sig,lumi);
 
                     identifier = dicttag;
@@ -173,7 +173,8 @@ if __name__ == '__main__':
                     # fittedMu[0] = -99.;
                     #significance[0] = -99.;
                     # limit[0] = -99.;
-                    tout.Fill();
+		    tout.Fill();
+		   
     		fout.cd();
     		tout.Write();
     		fout.Close();
