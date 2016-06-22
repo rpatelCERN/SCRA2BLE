@@ -481,7 +481,10 @@ if __name__ == '__main__':
 	ContaminForLowdphiRegion=[]
 	for i in range(len(tagsForLowDPhiRegion)):
 		QCDcontributionsPerBin.append([ 'sig','qcd','contam' ] );
-		ratesForLowdphiRegion_QCDList.append(NCRForLowdphiRegion_QCDList[i])
+		if NCRForLowdphiRegion_QCDList[i]>0.0:
+			ratesForLowdphiRegion_QCDList.append(NCRForLowdphiRegion_QCDList[i])
+		else: 
+			ratesForLowdphiRegion_QCDList.append(1.0)
                 ratesForSignalRegion_QCDList.append(NSRForSignalRegion_QCDList[i])		
 		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] );
 		ContaminForLowdphiRegion.append(0.0)
@@ -512,7 +515,10 @@ if __name__ == '__main__':
         ContaminForLowdPhiLowMHTRegion=[]
         for i in range(len(tagsForLowDPhiLowMHTRegion)):
                 QCDcontributionsPerBin.append([ 'sig','qcd','contam' ] );
-                ratesForLowdphiLowMHTRegion_QCDList.append(NCRForLowdPhiLowMHTRegion_QCDList[i])
+		if NCRForLowdPhiLowMHTRegion_QCDList[i]>0.0:
+                	ratesForLowdphiLowMHTRegion_QCDList.append(NCRForLowdPhiLowMHTRegion_QCDList[i])
+		else:
+			ratesForLowdphiLowMHTRegion_QCDList.append(1.0)
                 obsForLowdPhiLowMHTRegion_QCDList.append( NCRForLowdPhiLowMHTRegion_QCDList[i] );
                 ContaminForLowdPhiLowMHTRegion.append(0.0)
         LowdPhiLowMHTControlRegion = searchRegion('LowdPhiLowMHT', QCDcontributionsPerBin, tagsForLowDPhiLowMHTRegion);
@@ -541,7 +547,10 @@ if __name__ == '__main__':
         ContaminForHighdPhiLowMHTRegion=[]
         for i in range(len(tagsForLowDPhiLowMHTRegion)):
                 QCDcontributionsPerBin.append([ 'sig','qcd','contam' ] );
-                ratesForHighdphiLowMHTRegion_QCDList.append(NCRForHighdPhiLowMHTRegion_QCDList[i])
+		if NCRForHighdPhiLowMHTRegion_QCDList[i]>0.0:
+                	ratesForHighdphiLowMHTRegion_QCDList.append(NCRForHighdPhiLowMHTRegion_QCDList[i])
+		else:
+			ratesForHighdphiLowMHTRegion_QCDList.append(1.0)
                 obsForHighdPhiLowMHTRegion_QCDList.append( NCRForHighdPhiLowMHTRegion_QCDList[i] );
                 ContaminForHighdPhiLowMHTRegion.append(0.0)
         HighdPhiLowMHTControlRegion = searchRegion('HighdPhiLowMHT', QCDcontributionsPerBin, tagsForLowDPhiLowMHTRegion);
@@ -954,8 +963,8 @@ if __name__ == '__main__':
 		signalRegion.addSingleSystematic("DYPur"+"_BTag1Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags3")
 		
 		for i in range(len(tagsForSinglePhoton)):
-			signalRegion.addSingleSystematic('SPhoCR'+tagsForSinglePhoton[i],'lnU',['zvv'],10000,tagsForSinglePhoton[i]);
-			sphotonRegion.addSingleSystematic('SPhoCR'+tagsForSinglePhoton[i],'lnU',['zvv'],10000,tagsForSinglePhoton[i]);
+			signalRegion.addSingleSystematic('SPhoCR'+tagsForSinglePhoton[i],'lnU',['zvv'],1000,tagsForSinglePhoton[i]);
+			sphotonRegion.addSingleSystematic('SPhoCR'+tagsForSinglePhoton[i],'lnU',['zvv'],1000,tagsForSinglePhoton[i]);
 			
 			# WTF,are these double counting
 			# sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
@@ -1124,18 +1133,18 @@ if __name__ == '__main__':
 		QCDLowMHTDict={"HT0":"HT0", "HT1":"HT1", "HT2":"HT2", "HT3":"HT0", "HT4":"HT1", "HT5":"HT2","HT6":"HT1","HT7":"HT2", "HT8":"HT1", "HT9":"HT2" }
 		for i in range(len(tagsForSignalRegion)):
 			parse=tagsForSignalRegion[i].split("_")
-			signalRegion.addSingleSystematic("QCDControlC"+tagsForSignalRegion[i],'lnU','qcd',10000,'',i);
-			LowdphiControlRegion.addSingleSystematic("QCDControlC"+tagsForSignalRegion[i],'lnU','qcd',10000,'',i);				
-			signalRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnU','qcd',10000,'',i);	
+			signalRegion.addSingleSystematic("QCDControlC"+tagsForSignalRegion[i],'lnU','qcd',1000,'',i);
+			LowdphiControlRegion.addSingleSystematic("QCDControlC"+tagsForSignalRegion[i],'lnU','qcd',1000,'',i);				
+			signalRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnU','qcd',1000,'',i);	
 			#add the nuisance to the low MHT bin at high dphi
 			#for i in range(len(tagsForLowDPhiLowMHTRegion)):
 			mappedControlBin=QCDLowMHTDict[parse[3]]
         		mappedControlBin=parse[0]+"_"+parse[1]+"_"+"MHT0"+"_"+mappedControlBin
-			HighdPhiLowMHTControlRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnU','qcd',10000,mappedControlBin)
+			HighdPhiLowMHTControlRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnU','qcd',1000,mappedControlBin)
 		for i in range(len(tagsForLowDPhiLowMHTRegion)):
 			parse=tagsForSignalRegion[i].split("_")
-			LowdPhiLowMHTControlRegion.addSingleSystematic("DphiDoubleRControlBin"+"%s_%s_%s" %(parse[0], parse[1],parse[3]),'lnU','qcd',10000,'',i)
-			HighdPhiLowMHTControlRegion.addSingleSystematic("DphiDoubleRControlBin"+"%s_%s_%s" %(parse[0], parse[1],parse[3]),'lnU','qcd',10000,'',i)
+			LowdPhiLowMHTControlRegion.addSingleSystematic("DphiDoubleRControlBin"+"%s_%s_%s" %(parse[0], parse[1],parse[3]),'lnU','qcd',1000,'',i)
+			HighdPhiLowMHTControlRegion.addSingleSystematic("DphiDoubleRControlBin"+"%s_%s_%s" %(parse[0], parse[1],parse[3]),'lnU','qcd',1000,'',i)
 		#LowdPhiLowMHTControlRegion.addSingleSystematic;
                 #HighdPhiLowMHTControlRegion.writeCards(odir)		
 			#if(ContaminForLowdphiRegion[i]>0.000001):LowdphiControlRegion.addSingleSystematic("contamUnc"+str(i), 'lnN','contam',1+(ContaminUncForLowdphiRegion[i]/ContaminForLowdphiRegion[i]),'',i)

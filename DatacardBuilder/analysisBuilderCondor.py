@@ -67,14 +67,14 @@ if __name__ == '__main__':
 
     #variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
     #variations = ['allNotau','llpOnly', 'tauOnly']
-    # variations = ['allBkgs','allNoqcd','allNozvv','allNollp','allNotau']
+    variations = ['allNotau']
     #variations=['allNoqcd','allNozvv','allNollp','allNotau']
     #variations = ['zvvOnly' ]
     #variations = ['allBkgs','tauOnly','llpOnly']
     #variations=['allNozvv']
     # variations=['onlyLep']
     #variations=['tauOnly']
-    variations=['allBkgs']
+    #variations=['allBkgs']
 
     # identifier    = array( 'c', [ 'c' ] );
     mGo          = array( 'f', [ 0. ] ); 
