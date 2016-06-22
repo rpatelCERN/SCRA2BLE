@@ -485,7 +485,10 @@ if __name__ == '__main__':
 			ratesForLowdphiRegion_QCDList.append(NCRForLowdphiRegion_QCDList[i])
 		else: 
 			ratesForLowdphiRegion_QCDList.append(1.0)
-                ratesForSignalRegion_QCDList.append(NSRForSignalRegion_QCDList[i])		
+                if NSRForSignalRegion_QCDList[i]>0.0:
+			ratesForSignalRegion_QCDList.append(NSRForSignalRegion_QCDList[i])		
+		else:
+			ratesForSignalRegion_QCDList.append(0.1)
 		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] );
 		ContaminForLowdphiRegion.append(0.0)
 	LowdphiControlRegion = searchRegion('Lowdphi', QCDcontributionsPerBin, tagsForLowDPhiRegion);	
