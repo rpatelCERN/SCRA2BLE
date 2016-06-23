@@ -1088,10 +1088,10 @@ if __name__ == '__main__':
 		ListOfQCDSysK10 = textToListStr(idir+"/qcd-bg-combine-input.txt",16)
 		ContaminUncForLowdphiRegion = textToList(idir+"/qcd-bg-combine-input.txt",4);
 		'''
-		signalRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnN','qcd', 1.3, "MHT0")
-		signalRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnN','qcd', 1.6, "MHT1")
-		signalRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnN','qcd', 2.2, "MHT2")
-		signalRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnN','qcd', 4.0, "MHT3")
+		signalRegion.addSingleSystematic("QCDSysMHT0",'lnN','qcd', 1.3, "MHT0")
+		signalRegion.addSingleSystematic("QCDSysMHT1",'lnN','qcd', 1.6, "MHT1")
+		signalRegion.addSingleSystematic("QCDSysMHT2",'lnN','qcd', 2.2, "MHT2")
+		signalRegion.addSingleSystematic("QCDSysMHT3",'lnN','qcd', 4.0, "MHT3")
 		QCDLowMHTDict={"HT0":"HT0", "HT1":"HT1", "HT2":"HT2", "HT3":"HT0", "HT4":"HT1", "HT5":"HT2","HT6":"HT1","HT7":"HT2", "HT8":"HT1", "HT9":"HT2" }
 		for i in range(len(tagsForSignalRegion)):
 			parse=tagsForSignalRegion[i].split("_")
