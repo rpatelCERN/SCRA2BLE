@@ -62,19 +62,19 @@ if __name__ == '__main__':
 
     signalmodel=options.signal+options.mGo
     signals = [signalmodel]
-    mus=[0.0,1.0,2.0,3.0,4.0,5.0]
+    mus=[0.0]
     lumis = [0.814];
 
     #variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
     #variations = ['allNotau','llpOnly', 'tauOnly']
-    variations = ['allNotau']
+    #variations = ['allNotau']
     #variations=['allNoqcd','allNozvv','allNollp','allNotau']
     #variations = ['zvvOnly' ]
     #variations = ['allBkgs','tauOnly','llpOnly']
     #variations=['allNozvv']
     # variations=['onlyLep']
     #variations=['tauOnly']
-    #variations=['allBkgs']
+    variations=['allBkgs']
 
     # identifier    = array( 'c', [ 'c' ] );
     mGo          = array( 'f', [ 0. ] ); 

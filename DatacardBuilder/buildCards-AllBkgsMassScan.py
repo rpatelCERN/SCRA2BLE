@@ -101,17 +101,17 @@ if __name__ == '__main__':
 	signalSysISRUpHist =signalSysISRUp_file.Get(signaltag)
 	signalSysISRDnHist =signalSysISRDown_file.Get(signaltag)
 
-	signalSysISRUpHist.Scale(lumi/3.)
-	signalSysISRDnHist.Scale(lumi/3.)
-	signalRegion_sigHist.Scale(lumi/3.);
-	signalRegion_sigHistSFUp.Scale(lumi/3.);
-	signalRegion_sigHistSFDown.Scale(lumi/3.);
-	signalRegion_sigHistMisSFUp.Scale(lumi/3.);
-	signalRegion_sigHistMisSFDown.Scale(lumi/3.);
-	signalRegion_sigHistTrigSystUp.Scale(lumi/3.);
-	signalRegion_sigHistTrigSystDown.Scale(lumi/3.);
-	signalRegion_sigHistTrigStatUp.Scale(lumi/3.);  
-	signalRegion_sigHistTrigStatDown.Scale(lumi/3.);
+	signalSysISRUpHist.Scale(lumi/1.)
+	signalSysISRDnHist.Scale(lumi/1.)
+	signalRegion_sigHist.Scale(lumi/1.);
+	signalRegion_sigHistSFUp.Scale(lumi/1.);
+	signalRegion_sigHistSFDown.Scale(lumi/1.);
+	signalRegion_sigHistMisSFUp.Scale(lumi/1.);
+	signalRegion_sigHistMisSFDown.Scale(lumi/1.);
+	signalRegion_sigHistTrigSystUp.Scale(lumi/1.);
+	signalRegion_sigHistTrigSystDown.Scale(lumi/1.);
+	signalRegion_sigHistTrigStatUp.Scale(lumi/1.);  
+	signalRegion_sigHistTrigStatDown.Scale(lumi/1.);
 
 	signalRegion_sigList = binsToList( signalRegion_sigHist );
 	signalRegion_sigListMCstatErr = binsErrorsToList( signalRegion_sigHist );	
@@ -132,14 +132,14 @@ if __name__ == '__main__':
 	signalRegion_sigHistPDFUp      = signalSysPDFUp_file.Get(signaltag);
 	signalRegion_sigHistPDFDown    = signalSysPDFDown_file.Get(signaltag);
 
-	signalRegion_sigHistJECUp.Scale(lumi/3.);   
-	signalRegion_sigHistJECDown.Scale(lumi/3.);   
-	signalRegion_sigHistScaleUp.Scale(lumi/3.);   
-	signalRegion_sigHistScaleDown.Scale(lumi/3.); 
-	signalRegion_sigHistPUUp.Scale(lumi/3.);      
-	signalRegion_sigHistPUDown.Scale(lumi/3.);    
-	signalRegion_sigHistPDFUp.Scale(lumi/3.);      
-	signalRegion_sigHistPDFDown.Scale(lumi/3.);    
+	signalRegion_sigHistJECUp.Scale(lumi/1.);   
+	signalRegion_sigHistJECDown.Scale(lumi/1.);   
+	signalRegion_sigHistScaleUp.Scale(lumi/1.);   
+	signalRegion_sigHistScaleDown.Scale(lumi/1.); 
+	signalRegion_sigHistPUUp.Scale(lumi/1.);      
+	signalRegion_sigHistPUDown.Scale(lumi/1.);    
+	signalRegion_sigHistPDFUp.Scale(lumi/1.);      
+	signalRegion_sigHistPDFDown.Scale(lumi/1.);    
 	signalRegion_sigListJECUp     =binsToList( signalRegion_sigHistJECUp );
 	signalRegion_sigListJECDown   =binsToList( signalRegion_sigHistJECDown );
 	signalRegion_sigListScaleUp   =binsToList( signalRegion_sigHistScaleUp );
@@ -168,23 +168,23 @@ if __name__ == '__main__':
 		signalSysmistagCFuncDown_file=TFile(signaldirtag+"/RA2bin_signal_mistagCFuncDown.root");
 
 		signalRegion_sigHistbtagCFuncUp = signalSysbtagCFuncUp_file.Get(signaltag)
-		signalRegion_sigHistbtagCFuncUp.Scale(lumi/3.);
+		signalRegion_sigHistbtagCFuncUp.Scale(lumi/1.);
 		signalRegion_sigListbtagCFuncUp=binsToList( signalRegion_sigHistbtagCFuncUp );
 		signalRegion_sigHistctagCFuncUp = signalSysctagCFuncUp_file.Get(signaltag)
-		signalRegion_sigHistctagCFuncUp.Scale(lumi/3.);
+		signalRegion_sigHistctagCFuncUp.Scale(lumi/1.);
 		signalRegion_sigListctagCFuncUp=binsToList( signalRegion_sigHistctagCFuncUp );
 		signalRegion_sigHistmistagCFuncUp = signalSysmistagCFuncUp_file.Get(signaltag)
-		signalRegion_sigHistmistagCFuncUp.Scale(lumi/3.);
+		signalRegion_sigHistmistagCFuncUp.Scale(lumi/1.);
 		signalRegion_sigListmistagCFuncUp=binsToList( signalRegion_sigHistmistagCFuncUp );	
 
 		signalRegion_sigHistbtagCFuncDown = signalSysbtagCFuncDown_file.Get(signaltag)
-		signalRegion_sigHistbtagCFuncDown.Scale(lumi/3.);
+		signalRegion_sigHistbtagCFuncDown.Scale(lumi/1.);
 		signalRegion_sigListbtagCFuncDown=binsToList( signalRegion_sigHistbtagCFuncDown );
 		signalRegion_sigHistctagCFuncDown = signalSysctagCFuncDown_file.Get(signaltag)
-		signalRegion_sigHistctagCFuncDown.Scale(lumi/3.);
+		signalRegion_sigHistctagCFuncDown.Scale(lumi/1.);
 		signalRegion_sigListctagCFuncDown=binsToList( signalRegion_sigHistctagCFuncDown );
 		signalRegion_sigHistmistagCFuncDown = signalSysmistagCFuncDown_file.Get(signaltag)
-		signalRegion_sigHistmistagCFuncDown.Scale(lumi/3.);
+		signalRegion_sigHistmistagCFuncDown.Scale(lumi/1.);
 		signalRegion_sigListmistagCFuncDown=binsToList( signalRegion_sigHistmistagCFuncDown );	
 		
 	# --------------------------------------------
@@ -575,66 +575,19 @@ if __name__ == '__main__':
         HighdPhiLowMHTControlRegion.writeRates();	
 
 
-	'''
-	ratiosForLowdphiRegion = textToList(idir+"/qcd-bg-combine-input.txt",5);
-	ContaminForLowdphiRegion = textToList(idir+"/qcd-bg-combine-input.txt",3);
-	QCDcontributionsPerBin = [];
-	for i in range(len(tagsForLowDPhiRegion)): 
-		QCDcontributionsPerBin.append( [ 'sig','qcd','contam' ] );
-		if(NCRForLowdphiRegion_QCDList[i]>0.0):
-			#BkgRateSubtracted=NCRForLowdphiRegion_QCDList[i]-ContaminForLowdphiRegion[i]
-			BkgRateSubtracted=NCRForLowdphiRegion_QCDList[i]
-			if BkgRateSubtracted>1:
-				ratesForLowdphiRegion_QCDList.append(BkgRateSubtracted)
-				ratesForSignalRegion_QCDList.append(NSRForSignalRegion_QCDList[i])			
-			else:
-				ratesForLowdphiRegion_QCDList.append(1.0)
-				ratesForSignalRegion_QCDList.append(ratiosForLowdphiRegion[i]);
-		else:
-			ratesForLowdphiRegion_QCDList.append(1.0)
-			ratesForSignalRegion_QCDList.append(ratiosForLowdphiRegion[i]);
-		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] );
-	
-	######################################################################
-	######################################################################
-	## 2. Build the control regions and the signal regions
-	######################################################################
-	######################################################################
-
-	# --------------------------------------------
-	# QCD, low delta phi
-	LowdphiControlRegion = searchRegion('Lowdphi', QCDcontributionsPerBin, tagsForLowDPhiRegion);	
-	qcdcontrolRegion_Rates = [];
-	qcdcontrollRegion_Observed = [];
-	for i in range(LowdphiControlRegion._nBins):
-		curobsC = 0;
-		curobsC += obsForLowdphiRegion_QCDList[i]
-		currateC = [];
-		currateC.append( 0. );
-		currateC.append( ratesForLowdphiRegion_QCDList[i] );
-		currateC.append( ContaminForLowdphiRegion[i]);	
-		#currateC.append(0.0)
-		qcdcontrolRegion_Rates.append(currateC);
-		qcdcontrollRegion_Observed.append(curobsC);	
-
-	LowdphiControlRegion.fillRates(qcdcontrolRegion_Rates);
-	LowdphiControlRegion.setObservedManually(qcdcontrollRegion_Observed);
-	LowdphiControlRegion.writeRates();
-	'''
-
 	# --------------------------------------------
 	# single photon control regions
 
 	GJet_Obs        = binsToList( DYinputfile.Get("hgJNobs") )
 	ZgRatio_List    = binsToList( DYinputfile.Get("hgJZgR") )
-	#GJetPur_List    = binsToList(DYinputfile.Get("hgJPur"))
-	#ZgRdataMC_List  = binsToList( DYinputfile.Get("hgJZgRdataMC") );
+	GJetPur_List    = binsToList(DYinputfile.Get("hgJPur"))
+	ZgRdataMC_List  = binsToList( DYinputfile.Get("hgJZgRdataMC") );
 
 
 	ZgRatioErr_List      = binsToList( DYinputfile.Get("hgJZgRerr") )
 	GJetPurErr_List      = binsToList(DYinputfile.Get("hgJPurErr"))
-	#ZgRdataMCErrUp_List  = binsToList( DYinputfile.Get("hgJZgRdataMCerrUp") );
-	#ZgRdataMCErrDn_List  = binsToList( DYinputfile.Get("hgJZgRdataMCerrLow") );
+	ZgRdataMCErrUp_List  = binsToList( DYinputfile.Get("hgJZgRdataMCerrUp") );
+	ZgRdataMCErrDn_List  = binsToList( DYinputfile.Get("hgJZgRdataMCerrLow") );
 
 	sphotonObserved=[]
 	RzgVals=[]
@@ -649,26 +602,23 @@ if __name__ == '__main__':
 	for i in range(len(GJet_Obs)):
 		if(GJet_Obs[i]>-1):sphotonObserved.append(GJet_Obs[i])
 		if(ZgRatio_List[i]>-1):RzgVals.append(ZgRatio_List[i])
-		#if(GJetPur_List[i]>-1):PurVals.append(GJetPur_List[i])
+		if(GJetPur_List[i]>-1):PurVals.append(GJetPur_List[i])
 		if(GJetPurErr_List[i]>-1):PurErrsAbs.append(GJetPurErr_List[i])
 		if(ZgRatioErr_List[i]>-1):RzgErrsAbs.append(ZgRatioErr_List[i])	
-		#if (ZgRdataMC_List[i] > -1): ZgRdataMC.append( ZgRdataMC_List[i] )
+		if(ZgRdataMC_List[i] > -1): ZgRdataMC.append( ZgRdataMC_List[i] )
 		#if (ZgRdataMCErrUp_List[i] > -1): ZgRdataMCErrUp.append( 1.+ZgRdataMCErrUp_List[i] )
 		#if (ZgRdataMCErrDn_List[i] > -1): ZgRdataMCErrDn.append( 1.-ZgRdataMCErrDn_List[i] )
-	
 	RzgErrs = [];
 	PurErrs = [];
 	for i in range(len(RzgVals)): RzgErrs.append( 1+RzgErrsAbs[i] );
-	#for i in range(len(PurVals)): PurErrs.append( 1+PurErrsAbs[i]);
-	for i in range(len(RzgVals)):PurErrs.append( 1+PurErrsAbs[i]);
-	print PurErrs
+	for i in range(len(PurVals)): PurErrs.append( 1+PurErrsAbs[i]);
 	PhoRatios = [];
-	#for i in range(len(RzgVals)): PhoRatios.append( 1./RzgVals[i]/PurVals[i]/ZgRdataMC[i] );
+	print RzgVals
+	for i in range(len(RzgVals)): PhoRatios.append( 1./RzgVals[i]/PurVals[i]/ZgRdataMC[i] );
+
 	
-	print len(PurErrs),PurErrs
-	for i in range(len(RzgVals)): PhoRatios.append(1./RzgVals[i])
 	phoRegion_sigHist = sphotonRegion_file.Get("RA2bin_GJet") # this is just for the right bin labels for the 18 bins
-	tagsForSinglePhoton = binLabelsToList(phoRegion_sigHist)
+	tagsForSinglePhoton = binLabelsToList(phoRegion_sigHist) 
 	contributionsPerBin = [];
 	for i in range(len(tagsForSinglePhoton)): contributionsPerBin.append(['sig','zvv']);
 	sphotonRegion = searchRegion('sphoton', contributionsPerBin, tagsForSinglePhoton);              
@@ -684,29 +634,36 @@ if __name__ == '__main__':
 	sphotonRegion.fillRates( phoRegion_Rates );
 	sphotonRegion.setObservedManually(sphotonObserved);
    	#compute the Zvv actual yields to be put in the observed lines
-	'''
 	sphotonObservedExt = [];
 	RzgValsExt = [];
 	PurValsExt = [];
 	ZgRdataMCExt = [];
 	
+	'''	
 	for i in range(4):
-			sphotonObservedExt.extend(sphotonObserved[0:6]); RzgValsExt.extend(RzgVals[0:6]); #PurValsExt.extend(PurVals[0:6]); ZgRdataMCExt.extend(ZgRdataMC[0:6]);
+			sphotonObservedExt.extend(sphotonObserved[0:10]); RzgValsExt.extend(RzgVals[0:10]); PurValsExt.extend(PurVals[0:10]); ZgRdataMCExt.extend(ZgRdataMC[0:10]);
 	for i in range(4):
-			sphotonObservedExt.extend(sphotonObserved[6:12]); RzgValsExt.extend(RzgVals[6:12]); #PurValsExt.extend(PurVals[6:12]); ZgRdataMCExt.extend(ZgRdataMC[6:12]);
-	for i in range(4):
-			sphotonObservedExt.extend(sphotonObserved[12:18]); RzgValsExt.extend(RzgVals[12:18]); #PurValsExt.extend(PurVals[12:18]); ZgRdataMCExt.extend(ZgRdataMC[12:18]);
+			sphotonObservedExt.extend(sphotonObserved[10:20]); RzgValsExt.extend(RzgVals[10:20]); PurValsExt.extend(PurVals[10:20]); ZgRdataMCExt.extend(ZgRdataMC[10:20]);
 
-	ZvvYieldsInSignalRegion = [sphotonObservedExt[i]*RzgValsExt[i]*PurValsExt[i]*signalRegion_zvvList[i]*ZgRdataMCExt[i] for i in range(len(sphotonObservedExt))]
+	for i in range(4):
+			sphotonObservedExt.extend(sphotonObserved[20:30]); RzgValsExt.extend(RzgVals[20:30]); PurValsExt.extend(PurVals[20:30]); ZgRdataMCExt.extend(ZgRdataMC[20:30]);
+	for i in range(4):
+			sphotonObservedExt.extend(sphotonObserved[30:40]); RzgValsExt.extend(RzgVals[30:40]); PurValsExt.extend(PurVals[30:40]); ZgRdataMCExt.extend(ZgRdataMC[30:40]);
 	'''
+	ZvvYieldsInSignalRegion=[]
+	for i in range(0,160):
+		if( signalRegion_zvvList[i]>0.0):ZvvYieldsInSignalRegion.append(signalRegion_zvvList[i])
+		else: ZvvYieldsInSignalRegion.append(0.01)		
+	#ZvvYieldsInSignalRegion = [sphotonObservedExt[i]*RzgValsExt[i]*PurValsExt[i]*signalRegion_zvvList[i]*ZgRdataMCExt[i] for i in range(len(sphotonObservedExt))]
+	#for i in range(len(sphotonObservedExt)):print sphotonObservedExt[i], RzgValsExt[i], ZgRdataMCExt[i], signalRegion_zvvList[i]
 	ZvvRatesInSignalRegion = [];
-	ZvvYieldsInSignalRegion=[];
+	#ZvvYieldsInSignalRegion=[];
+	#print len(ZvvYieldsInSignalRegion),len(signalRegion_zvvList)
 	for i in range(len(signalRegion_zvvList)):
+			#print ZvvYieldsInSignalRegion[i]
 			#if sphotonObservedExt[i] > 0: ZvvRatesInSignalRegion.append( ZvvYieldsInSignalRegion[i] );
-			#else: 
-			ZvvYieldsInSignalRegion.append(signalRegion_zvvList[i])
- 			ZvvRatesInSignalRegion.append(signalRegion_zvvList[i]);
-
+			#else: ZvvRatesInSignalRegion.append(signalRegion_zvvList[i]);
+			ZvvRatesInSignalRegion.append( ZvvYieldsInSignalRegion[i] );
 	# --------------------------------------------
 	# lost lepton and had tau control regions
 
@@ -966,8 +923,8 @@ if __name__ == '__main__':
 		signalRegion.addSingleSystematic("DYPur"+"_BTag1Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags3")
 		
 		for i in range(len(tagsForSinglePhoton)):
-			signalRegion.addSingleSystematic('SPhoCR'+tagsForSinglePhoton[i],'lnU',['zvv'],1000,tagsForSinglePhoton[i]);
-			sphotonRegion.addSingleSystematic('SPhoCR'+tagsForSinglePhoton[i],'lnU',['zvv'],1000,tagsForSinglePhoton[i]);
+			signalRegion.addSingleSystematic('SPhoCR'+tagsForSinglePhoton[i],'lnU',['zvv'],10000,tagsForSinglePhoton[i]);
+			sphotonRegion.addSingleSystematic('SPhoCR'+tagsForSinglePhoton[i],'lnU',['zvv'],10000,tagsForSinglePhoton[i]);
 			
 			# WTF,are these double counting
 			# sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
@@ -1136,18 +1093,18 @@ if __name__ == '__main__':
 		QCDLowMHTDict={"HT0":"HT0", "HT1":"HT1", "HT2":"HT2", "HT3":"HT0", "HT4":"HT1", "HT5":"HT2","HT6":"HT1","HT7":"HT2", "HT8":"HT1", "HT9":"HT2" }
 		for i in range(len(tagsForSignalRegion)):
 			parse=tagsForSignalRegion[i].split("_")
-			signalRegion.addSingleSystematic("QCDControlC"+tagsForSignalRegion[i],'lnU','qcd',1000,'',i);
-			LowdphiControlRegion.addSingleSystematic("QCDControlC"+tagsForSignalRegion[i],'lnU','qcd',1000,'',i);				
-			signalRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnU','qcd',1000,'',i);	
+			signalRegion.addSingleSystematic("QCDControlC"+tagsForSignalRegion[i],'lnU','qcd',10000,'',i);
+			LowdphiControlRegion.addSingleSystematic("QCDControlC"+tagsForSignalRegion[i],'lnU','qcd',10000,'',i);				
+			signalRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnU','qcd',10000,'',i);	
 			#add the nuisance to the low MHT bin at high dphi
 			#for i in range(len(tagsForLowDPhiLowMHTRegion)):
 			mappedControlBin=QCDLowMHTDict[parse[3]]
         		mappedControlBin=parse[0]+"_"+parse[1]+"_"+"MHT0"+"_"+mappedControlBin
-			HighdPhiLowMHTControlRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnU','qcd',1000,mappedControlBin)
+			HighdPhiLowMHTControlRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnU','qcd',10000,mappedControlBin)
 		for i in range(len(tagsForLowDPhiLowMHTRegion)):
 			parse=tagsForSignalRegion[i].split("_")
-			LowdPhiLowMHTControlRegion.addSingleSystematic("DphiDoubleRControlBin"+"%s_%s_%s" %(parse[0], parse[1],parse[3]),'lnU','qcd',1000,'',i)
-			HighdPhiLowMHTControlRegion.addSingleSystematic("DphiDoubleRControlBin"+"%s_%s_%s" %(parse[0], parse[1],parse[3]),'lnU','qcd',1000,'',i)
+			LowdPhiLowMHTControlRegion.addSingleSystematic("DphiDoubleRControlBin"+"%s_%s_%s" %(parse[0], parse[1],parse[3]),'lnU','qcd',10000,'',i)
+			HighdPhiLowMHTControlRegion.addSingleSystematic("DphiDoubleRControlBin"+"%s_%s_%s" %(parse[0], parse[1],parse[3]),'lnU','qcd',10000,'',i)
 		#LowdPhiLowMHTControlRegion.addSingleSystematic;
                 #HighdPhiLowMHTControlRegion.writeCards(odir)		
 			#if(ContaminForLowdphiRegion[i]>0.000001):LowdphiControlRegion.addSingleSystematic("contamUnc"+str(i), 'lnN','contam',1+(ContaminUncForLowdphiRegion[i]/ContaminForLowdphiRegion[i]),'',i)
