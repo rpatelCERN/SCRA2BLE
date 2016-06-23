@@ -732,12 +732,12 @@ if __name__ == '__main__':
 	signalRegion_Obs = [];
 	controlRegion_Rates=[];
 	f = TFile(odir+'yields.root', 'recreate')
-	data = TH1F( 'data', 'data', 72, 0, 72 )
-	qcd = TH1F( 'QCD', 'QCD', 72, 0, 72 )
-	zvv = TH1F( 'Zvv', 'Zvv', 72, 0, 72 )
-	ll = TH1F( 'LL', 'LL', 72, 0, 72 )
-	tau = TH1F( 'tau', 'tau', 72, 0, 72 )
-	sig = TH1F( 'sig', 'sig', 72, 0, 72 )
+	data = TH1F( 'data', 'data', 160, 0, 160 )
+	qcd = TH1F( 'QCD', 'QCD', 160, 0, 160 )
+	zvv = TH1F( 'Zvv', 'Zvv', 160, 0, 160 )
+	ll = TH1F( 'LL', 'LL', 160, 0, 160 )
+	tau = TH1F( 'tau', 'tau', 160, 0, 160 )
+	sig = TH1F( 'sig', 'sig', 160, 0, 160 )
 	'''
 	DataHist_In=TFile("inputHistograms/histograms_%1.1ffb/RA2bin_signalUnblind.root" %lumi)
 	Data_Hist=DataHist_In.Get("RA2bin_data")
@@ -826,7 +826,6 @@ if __name__ == '__main__':
 	signalRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.03);
 	signalRegion.addSingleSystematic('JetIDUnc','lnN',['sig'],1.01);
 	signalRegion.addSingleSystematic('UnclEUnc', 'lnN', ['sig'], 1.01);
-	'''
 
 	for i in range(signalRegion.GetNbins()):
 		if( signalRegion_sigList[i]>0.000001): 
@@ -835,8 +834,8 @@ if __name__ == '__main__':
 				signalRegion.addAsymSystematic('MisTagSFunc', 'lnN', ['sig'], signalRegion_sigListMisSFUp[i]/signalRegion_sigList[i], signalRegion_sigListMisSFDown[i]/signalRegion_sigList[i], '', i)
 				signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], (signalRegion_sigListSFUp[i]/signalRegion_sigList[i]),signalRegion_sigListSFDown[i]/signalRegion_sigList[i],'', i)
 
-			signalRegion.addAsymSystematic('TrigSystunc','lnN', ['sig'], signalRegion_sigListTrigSystUp[i]/signalRegion_sigList[i], signalRegion_sigListTrigSystDown[i]/signalRegion_sigList[i], '', i)
-			signalRegion.addAsymSystematic('TrigStatUnc','lnN', ['sig'], (signalRegion_sigListTrigStatUp[i]/signalRegion_sigList[i]),signalRegion_sigListTrigStatDown[i]/signalRegion_sigList[i],'', i)
+			#signalRegion.addAsymSystematic('TrigSystunc','lnN', ['sig'], signalRegion_sigListTrigSystUp[i]/signalRegion_sigList[i], signalRegion_sigListTrigSystDown[i]/signalRegion_sigList[i], '', i)
+			#signalRegion.addAsymSystematic('TrigStatUnc','lnN', ['sig'], (signalRegion_sigListTrigStatUp[i]/signalRegion_sigList[i]),signalRegion_sigListTrigStatDown[i]/signalRegion_sigList[i],'', i)
                         if signalRegion_sigListJECUp[i]>0.0 and signalRegion_sigListJECDown[i]>0.0:
                                 if signalRegion_sigListJECUp[i]/signalRegion_sigList[i]>2.0:
                                         signalRegion.addAsymSystematic('JECUnc','lnN', ['sig'], 2.0,0.5,'', i)
@@ -870,7 +869,6 @@ if __name__ == '__main__':
 			signalRegion_sigListMCstatErr[i] = signalRegion_sigListMCstatErr[i]/signalRegion_sigList[i] + 1.;
 			signalRegion.addSingleSystematic('SignalMCStatErr','lnN', ['sig'], signalRegion_sigListMCstatErr, '', i)
 
-		''' 
 
 	# signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.0, 'MHT0_HT0');
 	# signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 0.95, 'MHT0_HT1');
@@ -1090,6 +1088,10 @@ if __name__ == '__main__':
 		ListOfQCDSysK10 = textToListStr(idir+"/qcd-bg-combine-input.txt",16)
 		ContaminUncForLowdphiRegion = textToList(idir+"/qcd-bg-combine-input.txt",4);
 		'''
+		signalRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnN','qcd', 1.3, "MHT0")
+		signalRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnN','qcd', 1.6, "MHT1")
+		signalRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnN','qcd', 2.2, "MHT2")
+		signalRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnN','qcd', 4.0, "MHT3")
 		QCDLowMHTDict={"HT0":"HT0", "HT1":"HT1", "HT2":"HT2", "HT3":"HT0", "HT4":"HT1", "HT5":"HT2","HT6":"HT1","HT7":"HT2", "HT8":"HT1", "HT9":"HT2" }
 		for i in range(len(tagsForSignalRegion)):
 			parse=tagsForSignalRegion[i].split("_")
