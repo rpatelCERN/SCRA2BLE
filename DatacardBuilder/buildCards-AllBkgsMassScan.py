@@ -639,7 +639,7 @@ if __name__ == '__main__':
 	PurValsExt = [];
 	ZgRdataMCExt = [];
 	
-	'''	
+
 	for i in range(4):
 			sphotonObservedExt.extend(sphotonObserved[0:10]); RzgValsExt.extend(RzgVals[0:10]); PurValsExt.extend(PurVals[0:10]); ZgRdataMCExt.extend(ZgRdataMC[0:10]);
 	for i in range(4):
@@ -649,21 +649,25 @@ if __name__ == '__main__':
 			sphotonObservedExt.extend(sphotonObserved[20:30]); RzgValsExt.extend(RzgVals[20:30]); PurValsExt.extend(PurVals[20:30]); ZgRdataMCExt.extend(ZgRdataMC[20:30]);
 	for i in range(4):
 			sphotonObservedExt.extend(sphotonObserved[30:40]); RzgValsExt.extend(RzgVals[30:40]); PurValsExt.extend(PurVals[30:40]); ZgRdataMCExt.extend(ZgRdataMC[30:40]);
-	'''
-	ZvvYieldsInSignalRegion=[]
-	for i in range(0,160):
-		if( signalRegion_zvvList[i]>0.0):ZvvYieldsInSignalRegion.append(signalRegion_zvvList[i])
-		else: ZvvYieldsInSignalRegion.append(0.01)		
+	ZvvRatesInSignalRegion = []
+	ZvvYieldsInSignalRegion = [sphotonObservedExt[i]*RzgValsExt[i]*PurValsExt[i]*signalRegion_zvvList[i]*ZgRdataMCExt[i] for i in range(len(sphotonObservedExt))]
+
+	for i in range(len(sphotonObservedExt)):
+		if sphotonObservedExt[i] > 0: ZvvRatesInSignalRegion.append( ZvvYieldsInSignalRegion[i] );
+		else: ZvvRatesInSignalRegion.append(signalRegion_zvvList[i]);
+		
+		#if( signalRegion_zvvList[i]>0.0 ):ZvvYieldsInSignalRegion.append(signalRegion_zvvList[i])
+		#else: ZvvYieldsInSignalRegion.append(0.01)		
 	#ZvvYieldsInSignalRegion = [sphotonObservedExt[i]*RzgValsExt[i]*PurValsExt[i]*signalRegion_zvvList[i]*ZgRdataMCExt[i] for i in range(len(sphotonObservedExt))]
 	#for i in range(len(sphotonObservedExt)):print sphotonObservedExt[i], RzgValsExt[i], ZgRdataMCExt[i], signalRegion_zvvList[i]
-	ZvvRatesInSignalRegion = [];
+	#ZvvRatesInSignalRegion = [];
 	#ZvvYieldsInSignalRegion=[];
 	#print len(ZvvYieldsInSignalRegion),len(signalRegion_zvvList)
-	for i in range(len(signalRegion_zvvList)):
+	#for i in range(len(signalRegion_zvvList)):
 			#print ZvvYieldsInSignalRegion[i]
 			#if sphotonObservedExt[i] > 0: ZvvRatesInSignalRegion.append( ZvvYieldsInSignalRegion[i] );
 			#else: ZvvRatesInSignalRegion.append(signalRegion_zvvList[i]);
-			ZvvRatesInSignalRegion.append( ZvvYieldsInSignalRegion[i] );
+			#ZvvRatesInSignalRegion.append( ZvvYieldsInSignalRegion[i] );
 	# --------------------------------------------
 	# lost lepton and had tau control regions
 
@@ -825,7 +829,6 @@ if __name__ == '__main__':
 	signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.046);
 	signalRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.03);
 	signalRegion.addSingleSystematic('JetIDUnc','lnN',['sig'],1.01);
-	signalRegion.addSingleSystematic('UnclEUnc', 'lnN', ['sig'], 1.01);
 
 	for i in range(signalRegion.GetNbins()):
 		if( signalRegion_sigList[i]>0.000001): 
@@ -881,7 +884,11 @@ if __name__ == '__main__':
 	if options.allBkgs or options.zvvOnly:
 
 		# connect the single photon CR to the signal region
+		singlePhotonBins=["NJets0_BTags._MHT0_HT0","NJets0_BTags._MHT0_HT1","NJets0_BTags._MHT0_HT2","NJets0_BTags._MHT1_HT3","NJets0_BTags._MHT1_HT4","NJets0_BTags._MHT1_HT5","NJets0_BTags._MHT2_HT6","NJets0_BTags._MHT2_HT7","NJets0_BTags._MHT3_HT8","NJets0_BTags._MHT3_HT9","NJets1_BTags._MHT0_HT0","NJets1_BTags._MHT0_HT1","NJets1_BTags._MHT0_HT2","NJets1_BTags._MHT1_HT3","NJets1_BTags._MHT1_HT4","NJets1_BTags._MHT1_HT5","NJets1_BTags._MHT2_HT6","NJets1_BTags._MHT2_HT7","NJets1_BTags._MHT3_HT8","NJets1_BTags._MHT3_HT9","NJets2_BTags._MHT0_HT0","NJets2_BTags._MHT0_HT1","NJets2_BTags._MHT0_HT2","NJets2_BTags._MHT1_HT3","NJets2_BTags._MHT1_HT4","NJets2_BTags._MHT1_HT5","NJets2_BTags._MHT2_HT6","NJets2_BTags._MHT2_HT7","NJets2_BTags._MHT3_HT8","NJets2_BTags._MHT3_HT9","NJets3_BTags._MHT0_HT0","NJets3_BTags._MHT0_HT1","NJets3_BTags._MHT0_HT2","NJets3_BTags._MHT1_HT3","NJets3_BTags._MHT1_HT4","NJets3_BTags._MHT1_HT5","NJets3_BTags._MHT2_HT6","NJets3_BTags._MHT2_HT7","NJets3_BTags._MHT3_HT8","NJets3_BTags._MHT3_HT9"]
+		#singlePhotonBins=["NJets0_BTags._MHT0_HT0","NJets0_BTags._MHT0_HT1","NJets0_BTags._MHT0_HT2","NJets0_BTags._MHT1_HT3","NJets0_BTags._MHT1_HT1","NJets0_BTags._MHT1_HT2","NJets0_BTags._MHT2_HT1","NJets0_BTags._MHT2_HT2","NJets0_BTags._MHT3_HT4","NJets0_BTags._MHT3_HT5","NJets1_BTags._MHT0_HT0","NJets1_BTags._MHT0_HT1","NJets1_BTags._MHT0_HT2","NJets1_BTags._MHT1_HT3","NJets1_BTags._MHT1_HT1","NJets1_BTags._MHT1_HT2","NJets1_BTags._MHT2_HT1","NJets1_BTags._MHT2_HT2","NJets1_BTags._MHT3_HT4","NJets1_BTags._MHT3_HT5","NJets2_BTags._MHT0_HT0","NJets2_BTags._MHT0_HT1","NJets2_BTags._MHT0_HT2","NJets2_BTags._MHT1_HT3","NJets2_BTags._MHT1_HT1","NJets2_BTags._MHT1_HT2","NJets2_BTags._MHT2_HT1","NJets2_BTags._MHT2_HT2","NJets2_BTags._MHT3_HT4","NJets2_BTags._MHT3_HT5","NJets3_BTags._MHT0_HT0","NJets3_BTags._MHT0_HT1","NJets3_BTags._MHT0_HT2","NJets3_BTags._MHT1_HT3","NJets3_BTags._MHT1_HT1","NJets3_BTags._MHT1_HT2","NJets3_BTags._MHT2_HT1","NJets3_BTags._MHT2_HT2","NJets3_BTags._MHT3_HT4","NJets3_BTags._MHT3_HT5"]
+		#dictPhotonBin={ "MHT1_HT1":"MHT1_HT4" }
 		#singlePhotonBins = ["NJets0_BTags._MHT0_HT0","NJets0_BTags._MHT0_HT1","NJets0_BTags._MHT0_HT2","NJets0_BTags._MHT1_HT3","NJets0_BTags._MHT1_HT4","NJets0_BTags._MHT2_HT5",
+
 		#					"NJets1_BTags._MHT0_HT0","NJets1_BTags._MHT0_HT1","NJets1_BTags._MHT0_HT2","NJets1_BTags._MHT1_HT3","NJets1_BTags._MHT1_HT4","NJets1_BTags._MHT2_HT5",
 		#					"NJets2_BTags._MHT0_HT0","NJets2_BTags._MHT0_HT1","NJets2_BTags._MHT0_HT2","NJets2_BTags._MHT1_HT3","NJets2_BTags._MHT1_HT4","NJets2_BTags._MHT2_HT5"];
 
@@ -919,11 +926,9 @@ if __name__ == '__main__':
 		signalRegion.addSingleSystematic("DYPur"+"_BTag1", 'lnN', ['zvv'], DYPurErr_List, "BTags1")
 		signalRegion.addSingleSystematic("DYPur"+"_BTag1Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags2")
 		signalRegion.addSingleSystematic("DYPur"+"_BTag1Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags3")
-		
-		for i in range(len(tagsForSinglePhoton)):
-			signalRegion.addSingleSystematic('SPhoCR'+tagsForSinglePhoton[i],'lnU',['zvv'],10000,tagsForSinglePhoton[i]);
-			sphotonRegion.addSingleSystematic('SPhoCR'+tagsForSinglePhoton[i],'lnU',['zvv'],10000,tagsForSinglePhoton[i]);
-			
+		for i in range(len(singlePhotonBins)):
+			signalRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],10000,singlePhotonBins[i]);
+			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],10000,singlePhotonBins[i]);	
 			# WTF,are these double counting
 			# sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
 			sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+tagsForSinglePhoton[i], 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],tagsForSinglePhoton[i])

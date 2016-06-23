@@ -72,10 +72,10 @@ if __name__ == '__main__':
     #variations = ['zvvOnly' ]
     #variations = ['allBkgs','tauOnly','llpOnly']
     #variations=['allNozvv']
-    # variations=['onlyLep']
-    #variations=['tauOnly']
+    #variations=['onlyLep']
+    variations=['zvvOnly']
     #variations=['allBkgs']
-    variations=['allNoqcd']
+    #variations=['allNoqcd']
     # identifier    = array( 'c', [ 'c' ] );
     mGo          = array( 'f', [ 0. ] ); 
     mLSP         = array( 'f', [ 0. ] ); 
