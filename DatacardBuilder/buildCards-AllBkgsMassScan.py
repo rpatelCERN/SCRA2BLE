@@ -87,8 +87,8 @@ if __name__ == '__main__':
 	signalSysScaleDown_file    =TFile(signaldirtag+"/RA2bin_signal_scaleuncDown.root");
 	signalSysPUUp_file         =TFile(signaldirtag+"/RA2bin_signal_puuncUp.root");
 	signalSysPUDown_file       =TFile(signaldirtag+"/RA2bin_signal_puuncDown.root");
-	signalSysPDFUp_file         =TFile(signaldirtag+"/RA2bin_signal_pdfuncUp.root");
-	signalSysPDFDown_file       =TFile(signaldirtag+"/RA2bin_signal_pdfuncDown.root");
+	#signalSysPDFUp_file         =TFile(signaldirtag+"/RA2bin_signal_pdfuncUp.root");
+	#signalSysPDFDown_file       =TFile(signaldirtag+"/RA2bin_signal_pdfuncDown.root");
 	signalSysISRUp_file         =TFile(signaldirtag+"/RA2bin_signal_isruncUp.root");
 	signalSysISRDown_file       =TFile(signaldirtag+"/RA2bin_signal_isruncDown.root");
 	signalRegion_sigHist          = signalSFB_file.Get(signaltag);
@@ -143,8 +143,8 @@ if __name__ == '__main__':
 	signalRegion_sigHistScaleDown = signalSysScaleDown_file.Get(signaltag);
 	signalRegion_sigHistPUUp      = signalSysPUUp_file.Get(signaltag);
 	signalRegion_sigHistPUDown    = signalSysPUDown_file.Get(signaltag);
-	signalRegion_sigHistPDFUp      = signalSysPDFUp_file.Get(signaltag);
-	signalRegion_sigHistPDFDown    = signalSysPDFDown_file.Get(signaltag);
+	#signalRegion_sigHistPDFUp      = signalSysPDFUp_file.Get(signaltag);
+	#signalRegion_sigHistPDFDown    = signalSysPDFDown_file.Get(signaltag);
 	signalRegion_sigHistJERUp.Scale(lumi*1000.);   
 	signalRegion_sigHistJERDown.Scale(lumi*1000.);   
 
@@ -154,8 +154,8 @@ if __name__ == '__main__':
 	signalRegion_sigHistScaleDown.Scale(lumi*1000.); 
 	signalRegion_sigHistPUUp.Scale(lumi*1000.);      
 	signalRegion_sigHistPUDown.Scale(lumi*1000.);    
-	signalRegion_sigHistPDFUp.Scale(lumi*1000.);      
-	signalRegion_sigHistPDFDown.Scale(lumi*1000.);    
+	#signalRegion_sigHistPDFUp.Scale(lumi*1000.);      
+	#signalRegion_sigHistPDFDown.Scale(lumi*1000.);    
 	signalRegion_sigListJERUp     =binsToList( signalRegion_sigHistJERUp );
 	signalRegion_sigListJERDown   =binsToList( signalRegion_sigHistJERDown );
 
@@ -165,8 +165,8 @@ if __name__ == '__main__':
 	signalRegion_sigListScaleDown =binsToList( signalRegion_sigHistScaleDown );
 	signalRegion_sigListPUUp      =binsToList( signalRegion_sigHistPUUp );
 	signalRegion_sigListPUDown    =binsToList( signalRegion_sigHistPUDown );
-	signalRegion_sigListPDFUp      =binsToList( signalRegion_sigHistPDFUp );
-	signalRegion_sigListPDFDown    =binsToList( signalRegion_sigHistPDFDown );
+	#signalRegion_sigListPDFUp      =binsToList( signalRegion_sigHistPDFUp );
+	#signalRegion_sigListPDFDown    =binsToList( signalRegion_sigHistPDFDown );
 	signalRegion_sigListISRUp      =binsToList( signalSysISRUpHist );
 	signalRegion_sigListISRDown    =binsToList( signalSysISRDnHist );
 
@@ -801,11 +801,9 @@ if __name__ == '__main__':
 	ll = TH1F( 'LL', 'LL', 160, 0, 160 )
 	tau = TH1F( 'tau', 'tau', 160, 0, 160 )
 	sig = TH1F( 'sig', 'sig', 160, 0, 160 )
-	'''
 	DataHist_In=TFile("inputHistograms/histograms_%1.1ffb/RA2bin_signalUnblind.root" %lumi)
 	Data_Hist=DataHist_In.Get("RA2bin_data")
 	Data_List=binsToList(Data_Hist)
-	'''
 	for i in range(signalRegion._nBins):
 		srobs = 0;
 		srobs += signalRegion_sigList[i]*signalmu;

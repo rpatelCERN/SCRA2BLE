@@ -52,8 +52,8 @@ def condorize(command,tag,odir,CMSSWVER):
     #f1.write("scram b ProjectRename \n");
     #f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
     f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
-    f1.write("#SBATCH -p hepx\n")
-    f1.write("#SBATCH --time=02:00:00\n")
+    f1.write("#SBATCH -p stackholder-4g\n")
+    f1.write("#SBATCH --time=03:30:00\n")
     f1.write("#SBATCH --mem-per-cpu=4000 \n")
     f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
     f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
@@ -91,7 +91,7 @@ def condorize(command,tag,odir,CMSSWVER):
     f2.close();
     '''
     #os.system("condor_submit %s" % (f2n));
-    os.system("qsub -q background %s " %f1n)
+    os.system("qsub -q hepx %s " %f1n)
  #   os.chdir("../.");
 
 
@@ -131,10 +131,12 @@ if __name__ == '__main__':
     #mLSPs = [775];
 
     if not options.fastsim:
-        models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq', 'T1qqqq'];
-        mGos = [1500,1000,1500,1200,1400,1000];
-        mLSPs = [100,800,100,800,100,800,900];
-
+        models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq','T1qqqq','T2tt','T2tt','T2tt'];
+        mGos = [1500,1000,1500,1200,1400,1000,425,500,850];
+        mLSPs = [100,800,100,800,100,900,325,325,100];
+	#models=['T2tt']
+	#mGos = [500]
+	#mLSPs=[325]
 
     # for signal in signals:
     for m in range(len(mGos)):
@@ -144,7 +146,7 @@ if __name__ == '__main__':
         command += "--mGo %i " % mGos[m];
         command += "--mLSP %i " % mLSPs[m];
         #if options.fastsim: command += " --fastsim";
-        #command += " --realData";
+        command += " --realData";
         command += " --tag allBkgs";
         #command += " --eos %s" % (eosDir);
 
