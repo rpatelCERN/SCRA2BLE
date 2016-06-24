@@ -40,7 +40,7 @@ def condorize(command,tag,odir,CMSSWVER):
     print "Launching phase space point:",tag
 
     #change to a tmp dir
-    os.chdir("tmp");
+#    os.chdir("tmp");
     #startdir = os.getcwd();
     f1n = "tmp_%s.sh" %(tag);
     f1=open(f1n, 'w')
@@ -48,27 +48,28 @@ def condorize(command,tag,odir,CMSSWVER):
 
     # setup environment
     #f1.write("cd ${_CONDOR_SCRATCH_DIR} \n");
-    f1.write("tar -xzf %s.tar.gz \n" % (CMSSWVER));
+    #f1.write("tar -xzf %s.tar.gz \n" % (CMSSWVER));
     #f1.write("scram b ProjectRename \n");
-    f1.write("cd %s \n" % (CMSSWVER));
-    f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
-#    f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
-#    f1.write("#SBATCH -p hepx\n")
-#    f1.write("#SBATCH --time=02:00:00\n")
-#    f1.write("#SBATCH --mem-per-cpu=8000 \n")
-#    f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
-#    f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
-#    f1.write("set SCRAM_ARCH=slc6_amd64_gcc481\n"
+    #f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
+    f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
+    f1.write("#SBATCH -p hepx\n")
+    f1.write("#SBATCH --time=02:00:00\n")
+    f1.write("#SBATCH --mem-per-cpu=4000 \n")
+    f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
+    f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
+    #f1.write("set SCRAM_ARCH=slc6_amd64_gcc481\n"
     #f1.write("cd ${_CONDOR_SCRATCH_DIR} \n")
+    f1.write("cd /fdata/hepx/store/user/rish/CombineCards/ICHEP/%s \n" % (CMSSWVER));
+    f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
     f1.write("eval `scramv1 runtime -sh`\n")
 
-    f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
     f1.write("ls \n");
     f1.write(command+" \n") 
-    for mu in range(0,1):
-    	f1.write("xrdcp -f results_%s_mu%1.1f.root root://cmseos.fnal.gov/%s/results_%s_mu%1.1f.root 2>&1 \n" % (tag,float(mu),odir,tag,float(mu)));
+    #for mu in range(0,6):
+    #	f1.write("xrdcp -f results_%s_mu%1.1f.root root://cmseos.fnal.gov/%s/results_%s_mu%1.1f.root 2>&1 \n" % (tag,float(mu),odir,tag,float(mu)));
     #f1.write("rm -r *.py input* *.root *.tar.gz \n")
     f1.close();
+    '''
     f2n = "tmp_%s.condor" % (tag);
     outtag = "out_%s_$(Cluster)" % (tag)
      
@@ -77,7 +78,7 @@ def condorize(command,tag,odir,CMSSWVER):
     f2.write("Executable = %s \n" % (f1n) );
     f2.write("Requirements = OpSys == \"LINUX\"&& (Arch != \"DUMMY\" ) \n");
     f2.write("request_disk = 10000000 \n");
-    f2.write("request_memory = 4000 \n");
+    f2.write("request_memory = 21000 \n");
     f2.write("Should_Transfer_Files = YES \n");
     f2.write("WhenToTransferOutput  = ON_EXIT \n");
     f2.write("Transfer_Input_Files = %s, %s.tar.gz \n" % (f1n,CMSSWVER));
@@ -88,10 +89,10 @@ def condorize(command,tag,odir,CMSSWVER):
     f2.write("x509userproxy = $ENV(X509_USER_PROXY) \n")
     f2.write("Queue 1 \n");
     f2.close();
-
-    os.system("condor_submit %s" % (f2n));
-    #os.system("qsub -q hepx %s " %f1n)
-    os.chdir("../.");
+    '''
+    #os.system("condor_submit %s" % (f2n));
+    os.system("qsub -q background %s " %f1n)
+ #   os.chdir("../.");
 
 
 
@@ -103,13 +104,14 @@ if __name__ == '__main__':
     CMSSWVER = os.getenv("CMSSW_VERSION")
     CMSSWBASE = os.getenv("CMSSW_BASE")
     # tar it up for usage
+    '''
+
     if not os.path.exists('tmp'):
         os.makedirs('tmp')
         cachedir('tmp')
 
     #if not options.keeptar:
     os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
-    '''
     f = TFile.Open("inputHistograms/histograms_2.3fb/fastsimSignalScanGluino/RA2bin_signal.root");
     names = [k.GetName() for k in f.GetListOfKeys()]
     models = []
@@ -144,7 +146,7 @@ if __name__ == '__main__':
         #if options.fastsim: command += " --fastsim";
         #command += " --realData";
         command += " --tag allBkgs";
-        command += " --eos %s" % (eosDir);
+        #command += " --eos %s" % (eosDir);
 
         tag = "%s_%i_%i" % (models[m],mGos[m],mLSPs[m]);
 	#os.system(command)

@@ -65,7 +65,7 @@ if __name__ == '__main__':
     mus=[0.0]
     lumis = [2.6];
 
-    variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
+    #variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
     #variations = ['allNotau','llpOnly', 'tauOnly']
     #variations = ['allNotau']
     #variations=['allNoqcd','allNozvv','allNollp','allNotau']
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     #variations = ['allBkgs','tauOnly','llpOnly']
     #variations=['allNozvv']
     #variations=['onlyLep']
-    #variations=['zvvOnly']
+    variations=['zvvOnly']
     #variations=['allBkgs']
     #variations=['allNoqcd']
     # identifier    = array( 'c', [ 'c' ] );
