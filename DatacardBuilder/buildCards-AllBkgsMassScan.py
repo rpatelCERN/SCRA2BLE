@@ -814,7 +814,7 @@ if __name__ == '__main__':
 		if options.realData: srobs = Data_List[i];
 		signalRegion_Obs.append( srobs );
 
-		#data.Fill(i+.5, Data_List[i])
+		data.Fill(i+.5, Data_List[i])
 		qcd.Fill(i+.5, NSRForSignalRegion_QCDList[i])
 		zvv.Fill(i+.5, ZvvYieldsInSignalRegion[i])
 		ll.Fill(i+.5, signalRegion_LLList[i])
