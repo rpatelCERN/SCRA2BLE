@@ -40,7 +40,7 @@ if __name__ == '__main__':
 	signalmu = float(options.mu);
 	odir = 'testCards-%s-%s-%1.1f-mu%0.1f/' % ( tag,sms, lumi, signalmu );
 	idir = 'inputHistograms/histograms_%1.1ffb/' % ( ((lumi)) );
-	if os.path.exists(odir): os.system( "rm -r %s" % (odir) );
+	if os.path.exists(odir): os.system( "rm -rf %s" % (odir) );
 	os.makedirs(odir);
 
 	print odir, signalmu
