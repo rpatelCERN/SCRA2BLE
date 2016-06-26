@@ -418,16 +418,16 @@ if __name__ == '__main__':
 
 	HadTauMTSysUpHist=HadTau_file.Get("searchBin_MTSysUp")
 	HadTauMTSysDownHist=HadTau_file.Get("searchBin_MTSysDn")
-	#HadTauMTEffHist=HadTau_file.Get("seaerchBin_MtEffStat")
-	HadTauIsoTkEffHistStatHist=HadTau_file.Get("seaerchBin_IsoTrkVetoEffUncertaintyStat")
-	HadTauIsoTkEffHistSysHist=HadTau_file.Get("seaerchBin_IsoTrkVetoEffUncertaintySys")
-	HadTauAccStatHist=HadTau_file.Get("seaerchBin_AccStat")
-	HadTauMuFromTauStatHist=HadTau_file.Get("seaerchBin_MuFromTauStat")
+	HadTauMTEffHist=HadTau_file.Get("searchBin_MtEffStat")
+	HadTauIsoTkEffHistStatHist=HadTau_file.Get("searchBin_IsoTrkVetoEffUncertaintyStat")
+	HadTauIsoTkEffHistSysHist=HadTau_file.Get("searchBin_IsoTrkVetoEffUncertaintySys")
+	HadTauAccStatHist=HadTau_file.Get("searchBin_AccStat")
+	HadTauMuFromTauStatHist=HadTau_file.Get("searchBin_MuFromTauStat")
 	HadTauMuDiLeptonHist=HadTau_file.Get("searchBin_DileptonUncertainty")
-	HadTauMuAccSysPDFUpHist=HadTau_file.Get("seaerchBin_AccSysPDFUp")
-	HadTauMuAccSysPDFDnHist=HadTau_file.Get("seaerchBin_AccSysPDFDn")
-	HadTauMuAccSysScaleUpHist=HadTau_file.Get("seaerchBin_AccSysScaleUp")
-	HadTauMuAccSysScaleDnHist=HadTau_file.Get("seaerchBin_AccSysScaleDn")
+	HadTauMuAccSysPDFUpHist=HadTau_file.Get("searchBin_AccSysPDFUp")
+	HadTauMuAccSysPDFDnHist=HadTau_file.Get("searchBin_AccSysPDFDn")
+	HadTauMuAccSysScaleUpHist=HadTau_file.Get("searchBin_AccSysScaleUp")
+	HadTauMuAccSysScaleDnHist=HadTau_file.Get("searchBin_AccSysScaleDn")
 	HadTauMuonCorrUncUp=binsToList(HadTauMuonCorrUncUpHist)
 	HadTauMuonCorrUncDn=binsToList(HadTauMuonCorrUncDnHist)
 	HadTauMuonIsoRecoStatUncUp=binsToList(HadTauMuonIsoRecoStatUncUpHist)
@@ -438,7 +438,7 @@ if __name__ == '__main__':
 	HadTauJECUncertDn=binsToList(HadTauJECUncertDownHist)	
 	HadTauMTSysDn=binsToList(HadTauMTSysDownHist)	
 	HadTauMTSysUp=binsToList(HadTauMTSysUpHist)	
-	#HadTauMTEff=binsToList(HadTauMTEffHist)
+	HadTauMTEff=binsToList(HadTauMTEffHist)
 	HadTauAccStat=binsToList(HadTauAccStatHist)
 
 	HadTauMuAccSysPDFUp=binsToList(HadTauMuAccSysPDFUpHist)
@@ -464,7 +464,7 @@ if __name__ == '__main__':
 		if(HadTauMuonIsoUncDn[i]<-99):HadTauMuonIsoUncDn[i]=1.0	
 		if(HadTauMTSysUp[i]<-99):HadTauMTSysUp[i]=1.0
 		if(HadTauMTSysDn[i]<-99):HadTauMTSysDn[i]=1.0
-		#if(HadTauMTEff[i]<-99):HadTauMTEff[i]=1.0
+		if(HadTauMTEff[i]<-99):HadTauMTEff[i]=1.0
 		if(HadTauAccStat[i]<-99):HadTauAccStat[i]=1.0
 		if(HadTauMuAccSysPDFUp[i]<-99):HadTauMuAccSysPDFUp[i]=1.0	
 		if(HadTauMuAccSysPDFDn[i]<-99):HadTauMuAccSysPDFDn[i]=1.0
@@ -473,7 +473,7 @@ if __name__ == '__main__':
 		if(HadTauMuDiLepton[i]<-99):HadTauMuDiLepton[i]=1.0
 		#if signalRegion_tauList[i]>0.0: tauSqrtSumW2.append(HadTauPrediction_Hist.GetBinError(i+1)/signalRegion_tauList[i])
 		#else: tauSqrtSumW2.append(1.)
-		#HadTauMTEffDn.append(1.0/HadTauMTEff[i])
+		HadTauMTEffDn.append(1.0/HadTauMTEff[i])
 		HadTauMuDiLeptonDn.append(1.0/HadTauMuDiLepton[i])
 		HadTauAccStatDn.append(1.0/HadTauAccStat[i])
 		HadTauIsoTkEffSysDn.append(1.0/HadTauIsoTkEffHistSys[i])
@@ -1071,12 +1071,10 @@ if __name__ == '__main__':
 			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet1",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets1')
 			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet2",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets2')
 			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet3",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets3')
-			'''
 			signalRegion.addCorrelSystematicAsym("LLStatMTW_NJet0",'lnN',['WTopSL','WTopHad'],LLStatMTUp, LLStatMTDown,HadTauMTEff,HadTauMTEffDn,'NJets0')
 			signalRegion.addCorrelSystematicAsym("LLStatMTW_NJet1",'lnN',['WTopSL','WTopHad'],LLStatMTUp, LLStatMTDown,HadTauMTEff,HadTauMTEffDn,'NJets1')
 			signalRegion.addCorrelSystematicAsym("LLStatMTW_NJet2",'lnN',['WTopSL','WTopHad'],LLStatMTUp, LLStatMTDown,HadTauMTEff,HadTauMTEffDn,'NJets2')
 			signalRegion.addCorrelSystematicAsym("LLStatMTW_NJet3",'lnN',['WTopSL','WTopHad'],LLStatMTUp, LLStatMTDown,HadTauMTEff,HadTauMTEffDn,'NJets3')
-			'''
 			signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet0",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets0')
 			signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet1",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets1')
 			signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet2",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets2')
@@ -1104,9 +1102,10 @@ if __name__ == '__main__':
 			signalRegion.addAsymSystematic("ElecAccSysNJets0_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysElecAccUp), (LLSysElecAccDown),'NJets0_BTags._'+str(MHTHTBinsLL[h]))
 				
 			if options.llpOnly:signalRegion.addAsymSystematic("LLStatIsoTrackNJets0_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatIsoTrackUp), (LLStatIsoTrackDown),'NJets0_BTags._'+str(MHTHTBinsLL[h]))
-			else: signalRegion.addCorrelSystematicAsym("LLStatIsoTrackNJets0_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL','WTopHad'],(LLStatIsoTrackUp), (LLStatIsoTrackDown),HadTauIsoTkEffHistSys, HadTauIsoTkEffSysDn,'NJets0_BTags._'+str(MHTHTBinsLL[h]))
+			else: 
+				signalRegion.addCorrelSystematicAsym("LLStatIsoTrackNJets0_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL','WTopHad'],(LLStatIsoTrackUp), (LLStatIsoTrackDown),HadTauIsoTkEffHistSys, HadTauIsoTkEffSysDn,'NJets0_BTags._'+str(MHTHTBinsLL[h]))
 
-                        signalRegion.addAsymSystematic("MuAccStatNJets0_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatMuAccUp), (LLStatMuAccDown),'NJets0_BTags._'+str(MHTHTBinsLL[h]))
+                       	signalRegion.addAsymSystematic("MuAccStatNJets0_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatMuAccUp), (LLStatMuAccDown),'NJets0_BTags._'+str(MHTHTBinsLL[h]))
                         signalRegion.addAsymSystematic("ElecAccStatNJets0_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatElecAccUp), (LLStatElecAccDown),'NJets0_BTags._'+str(MHTHTBinsLL[h]))	
 		for j in range(len(NJbinsLL)): #print NJbinsLL[j]
 			for h in range(len(MHTHTBinsLL)):	
@@ -1125,7 +1124,8 @@ if __name__ == '__main__':
 
                            signalRegion.addAsymSystematic("ElecAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysElecAccUp), (LLSysElecAccDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))
                            if options.llpOnly: signalRegion.addAsymSystematic("MuAccStat"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatMuAccUp), (LLStatMuAccDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))
-			   else: signalRegion.addCorrelSystematicAsym("MuAccStat"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN', ['WTopSL','WtopHad'], (LLStatMuAccUp), (LLStatMuAccDown), HadTauAccStat, HadTauAccStatDn, str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))
+			   else: 
+				signalRegion.addCorrelSystematicAsym("MuAccStat"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN', ['WTopSL','WtopHad'], (LLStatMuAccUp), (LLStatMuAccDown), HadTauAccStat, HadTauAccStatDn, str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))
                            signalRegion.addAsymSystematic("ElecAccStat"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatElecAccUp), (LLStatElecAccDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))		
 
                            if options.llpOnly:signalRegion.addAsymSystematic("MuQSquareAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysMuQSquareUp), (LLSysMuQSquareDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))
