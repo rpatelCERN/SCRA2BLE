@@ -500,18 +500,15 @@ if __name__ == '__main__':
 	QCDcontributionsPerBin = [];
 	for i in range(len(tagsForLowDPhiRegion)): 
 		QCDcontributionsPerBin.append( [ 'sig','qcd','contam' ] );
-		if(NCRForLowdphiRegion_QCDList[i]>0.0):
-			if NSRForSignalRegion_QCDList[i]>0.0: #more QCD than contamination in the control
-				ratesForLowdphiRegion_QCDList.append(NCRForLowdphiRegion_QCDList[i])
-				ratesForSignalRegion_QCDList.append(NSRForSignalRegion_QCDList[i])	
-			else:
-				ratesForLowdphiRegion_QCDList.append(1.0)
-				ratesForSignalRegion_QCDList.append(ratiosForLowdphiRegion[i]);
-				NSRForSignalRegion_QCDList[i]=0.0
+		ContaminSubtracted=NCRForLowdphiRegion_QCDList[i]-ContaminForLowdphiRegion[i]
+		if(ContaminSubtracted>0.0 and NSRForSignalRegion_QCDList[i]>0.0): 
+			ratesForLowdphiRegion_QCDList.append(ContaminSubtracted)
+			ratesForSignalRegion_QCDList.append(NSRForSignalRegion_QCDList[i])	
 		else:
-			if NSRForSignalRegion_QCDList[i]<0.0:NSRForSignalRegion_QCDList[i]=0.0
 			ratesForLowdphiRegion_QCDList.append(1.0)
 			ratesForSignalRegion_QCDList.append(ratiosForLowdphiRegion[i]);
+			NSRForSignalRegion_QCDList[i]=0.0
+		if NSRForSignalRegion_QCDList[i]<=0.0:NSRForSignalRegion_QCDList[i]=0.0 #protection against -0.00 issue
 		obsForLowdphiRegion_QCDList.append( NCRForLowdphiRegion_QCDList[i] );
 	LowdphiControlRegion = searchRegion('Lowdphi', QCDcontributionsPerBin, tagsForLowDPhiRegion);	
 	qcdcontrolRegion_Rates = [];
@@ -1017,7 +1014,7 @@ if __name__ == '__main__':
 			# WTF,are these double counting
 			# sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
 			sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+tagsForSinglePhoton[i], 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],tagsForSinglePhoton[i])
-			sphotonRegion.addSingleSystematic('ZgRatioErr'+tagsForSinglePhoton[i],'lnN',['zvv'],1.0+RzgErrs[i],tagsForSinglePhoton[i]);	# different per bin
+			sphotonRegion.addSingleSystematic('ZgRatioErr'+tagsForSinglePhoton[i],'lnN',['zvv'],RzgErrs[i],tagsForSinglePhoton[i]);	# different per bin
 			sphotonRegion.addSingleSystematic('PhoPurUnc','lnN',['zvv'],PurErrs[i],'',i);	 # this is getting split up now
 			# sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, '',i); #### this is now merged with ZGratio uncertainty
 		#print PurErrs
