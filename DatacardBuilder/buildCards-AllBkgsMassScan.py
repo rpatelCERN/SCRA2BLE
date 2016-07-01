@@ -55,9 +55,12 @@ if __name__ == '__main__':
 	# signal 
 	signaldirtag = idir;
 	if options.fastsim: 
-		signaldirtag += "/fastsimSignalScan";
-		if ("T1" in sms or "T5qqqqVV" in sms): signaldirtag +="Gluino"
-		if ("T2tt" in sms): signaldirtag +="Stop"
+		#signaldirtag += "/fastsimSignalScan";
+		if "T2bb" in sms:  signaldirtag ="inputHistograms/fastsimSignalT2bb"
+		if "T1tttt" in sms:  signaldirtag ="inputHistograms/fastsimSignalT1tttt"
+		if "T1bbbb" in sms:  signaldirtag ="inputHistograms/fastsimSignalT1bbbb"
+		#if ("T1" in sms or "T5qqqqVV" in sms): signaldirtag +="Gluino"
+		if ("T2tt" in sms): signaldirtag ="inputHistograms/fastsimSignalT2tt"
 		if "T1ttbb" in sms or "T1tbtb" in sms: signaldirtag="/fastsimSignalScanMixedFinalState"
 	else: signaldirtag ="inputHistograms/FullSim"
 	signaltag = "RA2bin_"+sms;
@@ -80,7 +83,6 @@ if __name__ == '__main__':
 	signalSysTrigStatDown_file=TFile(signaldirtag+"/RA2bin_signal_trigStatUncDown.root");
 	signalSysJERUp_file        =TFile(signaldirtag+"/RA2bin_signal_JERup.root");
 	signalSysJERDown_file      =TFile(signaldirtag+"/RA2bin_signal_JERdown.root");
-
 	signalSysJECUp_file        =TFile(signaldirtag+"/RA2bin_signal_JECup.root");
 	signalSysJECDown_file      =TFile(signaldirtag+"/RA2bin_signal_JECdown.root");
 	signalSysScaleUp_file      =TFile(signaldirtag+"/RA2bin_signal_scaleuncUp.root");
@@ -500,6 +502,7 @@ if __name__ == '__main__':
 	QCDcontributionsPerBin = [];
 	for i in range(len(tagsForLowDPhiRegion)): 
 		QCDcontributionsPerBin.append( [ 'sig','qcd','contam' ] );
+		#ContaminForLowdphiRegion[i]=0
 		ContaminSubtracted=NCRForLowdphiRegion_QCDList[i]-ContaminForLowdphiRegion[i]
 		if(ContaminSubtracted>0.0 and NSRForSignalRegion_QCDList[i]>0.0): 
 			ratesForLowdphiRegion_QCDList.append(ContaminSubtracted)
@@ -519,14 +522,27 @@ if __name__ == '__main__':
 		currateC = [];
 		currateC.append( 0. );
 		currateC.append( ratesForLowdphiRegion_QCDList[i] );
+		if(NCRForLowdphiRegion_QCDList[i]>1.5) :currateC.append(ContaminForLowdphiRegion[i]);	
+		else: currateC.append(0.0)
+		qcdcontrolRegion_Rates.append(currateC);
+		qcdcontrollRegion_Observed.append(curobsC);	
+	LowdphiControlRegion.fillRates(qcdcontrolRegion_Rates);
+	LowdphiControlRegion.setObservedManually(qcdcontrollRegion_Observed);
+	LowdphiControlRegion.writeRates();
+
+	'''
+	for i in range(LowdphiControlRegion._nBins):
+		curobsC = 0;
+		curobsC += obsForLowdphiRegion_QCDList[i]
+		currateC = [];
+		currateC.append( 0. );
+		currateC.append( ratesForLowdphiRegion_QCDList[i] );
 		currateC.append( ContaminForLowdphiRegion[i]);	
 		#currateC.append(0.0)
 		qcdcontrolRegion_Rates.append(currateC);
 		qcdcontrollRegion_Observed.append(curobsC);	
 
-	LowdphiControlRegion.fillRates(qcdcontrolRegion_Rates);
-	LowdphiControlRegion.setObservedManually(qcdcontrollRegion_Observed);
-	LowdphiControlRegion.writeRates();
+	'''
 	'''
 	ratesForSignalRegion_QCDList = [];
 	NSRForSignalRegion_QCDList = textToList(idir+"/qcd-bg-combine-input.txt",4);
@@ -822,6 +838,7 @@ if __name__ == '__main__':
 		print " ---", tagsForSignalRegion[i]
 
 		tmpList = [];
+		'''
 		if options.fastsim and ('T1t' in model or 'T5qqqqVV' in model or 'T2tt' in model) :
 			signalContamLL_file=TFile("inputHistograms/SignalContamin/LLContamination_%s.root" %model)
 			signalContamTau_file=TFile("inputHistograms/SignalContamin/Signal%sHtauContamin.root" %model)
@@ -843,7 +860,8 @@ if __name__ == '__main__':
 			else:
 				tmpList.append(0);
 		else:
-			tmpList.append(signalRegion_sigList[i])
+			'''
+		tmpList.append(signalRegion_sigList[i])
 		# LL rate
 		
 		if options.allBkgs or options.llpOnly or (options.tauOnly and  options.llpOnly):		
@@ -895,7 +913,6 @@ if __name__ == '__main__':
 
 			signalRegion.addAsymSystematic('TrigSystunc','lnN', ['sig'], signalRegion_sigListTrigSystUp[i]/signalRegion_sigList[i], signalRegion_sigListTrigSystDown[i]/signalRegion_sigList[i], '', i)
 			signalRegion.addAsymSystematic('TrigStatUnc','lnN', ['sig'], (signalRegion_sigListTrigStatUp[i]/signalRegion_sigList[i]),signalRegion_sigListTrigStatDown[i]/signalRegion_sigList[i],'', i)
-
                         if signalRegion_sigListJERUp[i]>0.0 and signalRegion_sigListJERDown[i]>0.0:
                                 if signalRegion_sigListJERUp[i]/signalRegion_sigList[i]>2.0:
                                         signalRegion.addAsymSystematic('JERUnc','lnN', ['sig'], 2.0,0.5,'', i)
@@ -912,7 +929,6 @@ if __name__ == '__main__':
                                         signalRegion.addAsymSystematic('JERUnc','lnN', ['sig'], 2.0,0.5,'', i)
 				else:
                                 	signalRegion.addAsymSystematic('JERUnc','lnN', ['sig'], (signalRegion_sigList[i]/signalRegion_sigListJERDown[i]),signalRegion_sigListJERDown[i]/signalRegion_sigList[i],'', i)
-
 
 
 
@@ -1200,7 +1216,8 @@ if __name__ == '__main__':
 			#mappedControlBin=QCDLowMHTDict[parse[3]]
         		#mappedControlBin=parse[0]+"_"+parse[1]+"_"+"MHT0"+"_"+mappedControlBin
 			#HighdPhiLowMHTControlRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnU','qcd',10000,mappedControlBin)
-			if(ContaminForLowdphiRegion[i]>0.000001):LowdphiControlRegion.addSingleSystematic("contamUnc"+str(i), 'lnN','contam',1+(ContaminUncForLowdphiRegion[i]/ContaminForLowdphiRegion[i]),'',i)
+			if(ContaminForLowdphiRegion[i]>0.0 and (NCRForLowdphiRegion_QCDList[i]>1.5)):LowdphiControlRegion.addSingleSystematic("contamUnc"+str(i), 'lnN','contam',1+(ContaminUncForLowdphiRegion[i]/ContaminForLowdphiRegion[i]),'',i)
+
 
 		'''	
 		for i in range(len(tagsForLowDPhiLowMHTRegion)):
