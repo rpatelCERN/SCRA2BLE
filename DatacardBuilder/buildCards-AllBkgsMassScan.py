@@ -404,7 +404,9 @@ if __name__ == '__main__':
 	HadTauBMistagUp_Hist=HadTau_file.Get("searchBin_BMistagUp")	
 	HadTauBMistagDown_Hist=HadTau_file.Get("searchBin_BMistagDn")
 	HadTauSysNC_Hist=HadTau_file.Get("searchBin_closureUncertainty")
+	HadTauSysNCCorr_Hist=HadTau_file.Get("searchBin_closureUncertainty_adhoc")
 	tauNonClosure=binsToList(HadTauSysNC_Hist)
+	tauNonClosureCorr=binsToList(HadTauSysNCCorr_Hist)
 	tauBMistagUp=binsToList(HadTauBMistagUp_Hist)
 	tauBMistagDown=binsToList(HadTauBMistagDown_Hist)	
 	HadTauMuonCorrUncUpHist=HadTau_file.Get("searchBin_MuRecoSysUp")
@@ -414,22 +416,23 @@ if __name__ == '__main__':
 	HadTauMuonCorrIsoUncUpHist=HadTau_file.Get("searchBin_MuIsoSysUp")
 	HadTauMuonCorrIsoUncDnHist=HadTau_file.Get("searchBin_MuIsoSysDn")
 	HadTauStatUncertainties=HadTau_file.Get("searchBin_StatUncertainties")
+
 	
 	HadTauJECUncertUpHist=HadTau_file.Get("searchBin_JECSysUp")
 	HadTauJECUncertDownHist=HadTau_file.Get("searchBin_JECSysDn")	
 
 	HadTauMTSysUpHist=HadTau_file.Get("searchBin_MTSysUp")
 	HadTauMTSysDownHist=HadTau_file.Get("searchBin_MTSysDn")
-	HadTauMTEffHist=HadTau_file.Get("searchBin_MtEffStat")
-	HadTauIsoTkEffHistStatHist=HadTau_file.Get("searchBin_IsoTrkVetoEffUncertaintyStat")
-	HadTauIsoTkEffHistSysHist=HadTau_file.Get("searchBin_IsoTrkVetoEffUncertaintySys")
-	HadTauAccStatHist=HadTau_file.Get("searchBin_AccStat")
-	HadTauMuFromTauStatHist=HadTau_file.Get("searchBin_MuFromTauStat")
+	HadTauMTEffHist=HadTau_file.Get("seaerchBin_MtEffStat")
+	HadTauIsoTkEffHistStatHist=HadTau_file.Get("seaerchBin_IsoTrkVetoEffUncertaintyStat")
+	HadTauIsoTkEffHistSysHist=HadTau_file.Get("seaerchBin_IsoTrkVetoEffUncertaintySys")
+	HadTauAccStatHist=HadTau_file.Get("seaerchBin_AccStat")
+	HadTauMuFromTauStatHist=HadTau_file.Get("seaerchBin_MuFromTauStat")
 	HadTauMuDiLeptonHist=HadTau_file.Get("searchBin_DileptonUncertainty")
-	HadTauMuAccSysPDFUpHist=HadTau_file.Get("searchBin_AccSysPDFUp")
-	HadTauMuAccSysPDFDnHist=HadTau_file.Get("searchBin_AccSysPDFDn")
-	HadTauMuAccSysScaleUpHist=HadTau_file.Get("searchBin_AccSysScaleUp")
-	HadTauMuAccSysScaleDnHist=HadTau_file.Get("searchBin_AccSysScaleDn")
+	HadTauMuAccSysPDFUpHist=HadTau_file.Get("seaerchBin_AccSysPDFUp")
+	HadTauMuAccSysPDFDnHist=HadTau_file.Get("seaerchBin_AccSysPDFDn")
+	HadTauMuAccSysScaleUpHist=HadTau_file.Get("seaerchBin_AccSysScaleUp")
+	HadTauMuAccSysScaleDnHist=HadTau_file.Get("seaerchBin_AccSysScaleDn")
 	HadTauMuonCorrUncUp=binsToList(HadTauMuonCorrUncUpHist)
 	HadTauMuonCorrUncDn=binsToList(HadTauMuonCorrUncDnHist)
 	HadTauMuonIsoRecoStatUncUp=binsToList(HadTauMuonIsoRecoStatUncUpHist)
@@ -1178,6 +1181,9 @@ if __name__ == '__main__':
 			#if(tauNonClosure[i]<-99):tauNonClosure[i]=1.0;
 			#else: tauNonClosure[i]=1.0+tauNonClosure[i]
 			signalRegion.addSingleSystematic('HadTauClosure'+tagsForSignalRegion[i],'lnN',['WTopHad'],tauNonClosure[i],'',i);
+			parse=tagsForSignalRegion[i].split('_')
+			NJNBBlock=parse[0]+"_._"+parse[1]
+			signalRegion.addSingleSystematic('HadTauClosureCorr'+NJNBBlock,'lnN',['WTopHad'],tauNonClosureCorr[i],'',i);
                         #signalRegion.addSingleSystematic('HadTauMuStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],HadTauMuFromTauStat[i],'',i);
 		signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown);
                 signalRegion.addAsymSystematic('HadTauEnergyScale','lnN',['WTopHad'],HadTauJECUncertUp,HadTauJECUncertDn);	
