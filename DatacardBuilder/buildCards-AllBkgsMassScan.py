@@ -682,8 +682,6 @@ if __name__ == '__main__':
 		if(GJetPurErr_List[i]>-1):PurErrsAbs.append(GJetPurErr_List[i])
 		#if(ZgRatioErr_List[i]>-1):RzgErrsAbs.append(ZgRatioErr_List[i])	
 		if(ZgRdataMC_List[i] > -1): ZgRdataMC.append( ZgRdataMC_List[i] )
-		#if (ZgRdataMCErrUp_List[i] > -1): ZgRdataMCErrUp.append( 1.+ZgRdataMCErrUp_List[i] )
-		#if (ZgRdataMCErrDn_List[i] > -1): ZgRdataMCErrDn.append( 1.-ZgRdataMCErrDn_List[i] )
 	#RzgErrs = [];
 	PurErrs = [];
 	#for i in range(len(RzgVals)): RzgErrs.append( 1+RzgErrsAbs[i] );
@@ -1032,7 +1030,7 @@ if __name__ == '__main__':
 			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);	
 			# WTF,are these double counting
 			# sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
-			sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+tagsForSinglePhoton[i], 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],tagsForSinglePhoton[i])
+			sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+tagsForSinglePhoton[i], 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0+PhoCSZgRatioDown[i],tagsForSinglePhoton[i])
 			#sphotonRegion.addSingleSystematic('ZgRatioErr'+tagsForSinglePhoton[i],'lnN',['zvv'],RzgErrs[i],tagsForSinglePhoton[i]);	# different per bin
 			sphotonRegion.addSingleSystematic('PhoPurUnc','lnN',['zvv'],PurErrs[i],'',i);	 # this is getting split up now
 			# sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, '',i); #### this is now merged with ZGratio uncertainty
