@@ -660,7 +660,7 @@ if __name__ == '__main__':
 	ZgRdataMC_List  = binsToList( DYinputfile.Get("hgJZgRdataMC") );
 
 
-	ZgRatioErr_List      = binsToList( DYinputfile.Get("hgJZgRerr") )
+	#ZgRatioErr_List      = binsToList( DYinputfile.Get("hgJZgRerr") )
 	GJetPurErr_List      = binsToList(DYinputfile.Get("hgJPurErr"))
 	ZgRdataMCErrUp_List  = binsToList( DYinputfile.Get("hgJZgRdataMCerrUp") );
 	ZgRdataMCErrDn_List  = binsToList( DYinputfile.Get("hgJZgRdataMCerrLow") );
@@ -680,13 +680,13 @@ if __name__ == '__main__':
 		if(ZgRatio_List[i]>-1):RzgVals.append(ZgRatio_List[i])
 		if(GJetPur_List[i]>-1):PurVals.append(GJetPur_List[i])
 		if(GJetPurErr_List[i]>-1):PurErrsAbs.append(GJetPurErr_List[i])
-		if(ZgRatioErr_List[i]>-1):RzgErrsAbs.append(ZgRatioErr_List[i])	
+		#if(ZgRatioErr_List[i]>-1):RzgErrsAbs.append(ZgRatioErr_List[i])	
 		if(ZgRdataMC_List[i] > -1): ZgRdataMC.append( ZgRdataMC_List[i] )
 		#if (ZgRdataMCErrUp_List[i] > -1): ZgRdataMCErrUp.append( 1.+ZgRdataMCErrUp_List[i] )
 		#if (ZgRdataMCErrDn_List[i] > -1): ZgRdataMCErrDn.append( 1.-ZgRdataMCErrDn_List[i] )
-	RzgErrs = [];
+	#RzgErrs = [];
 	PurErrs = [];
-	for i in range(len(RzgVals)): RzgErrs.append( 1+RzgErrsAbs[i] );
+	#for i in range(len(RzgVals)): RzgErrs.append( 1+RzgErrsAbs[i] );
 	for i in range(len(PurVals)): PurErrs.append( 1+PurErrsAbs[i]);
 	PhoRatios = [];
 	print RzgVals
@@ -1025,15 +1025,15 @@ if __name__ == '__main__':
 		signalRegion.addSingleSystematic("DYMCstat_Nj3_Btag3", 'lnN', ['zvv'], DYMCStatErr_List, 'NJets3_BTags3')
 
 		signalRegion.addSingleSystematic("DYPur"+"_BTag1", 'lnN', ['zvv'], DYPurErr_List, "BTags1")
-		signalRegion.addSingleSystematic("DYPur"+"_BTag1Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags2")
-		signalRegion.addSingleSystematic("DYPur"+"_BTag1Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags3")
+		signalRegion.addSingleSystematic("DYPur"+"_BTag2Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags2")
+		signalRegion.addSingleSystematic("DYPur"+"_BTag2Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags3")
 		for i in range(len(singlePhotonBins)):
 			signalRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
 			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);	
 			# WTF,are these double counting
 			# sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
 			sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+tagsForSinglePhoton[i], 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],tagsForSinglePhoton[i])
-			sphotonRegion.addSingleSystematic('ZgRatioErr'+tagsForSinglePhoton[i],'lnN',['zvv'],RzgErrs[i],tagsForSinglePhoton[i]);	# different per bin
+			#sphotonRegion.addSingleSystematic('ZgRatioErr'+tagsForSinglePhoton[i],'lnN',['zvv'],RzgErrs[i],tagsForSinglePhoton[i]);	# different per bin
 			sphotonRegion.addSingleSystematic('PhoPurUnc','lnN',['zvv'],PurErrs[i],'',i);	 # this is getting split up now
 			# sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, '',i); #### this is now merged with ZGratio uncertainty
 		#print PurErrs
@@ -1183,7 +1183,8 @@ if __name__ == '__main__':
 			signalRegion.addSingleSystematic('HadTauClosure'+tagsForSignalRegion[i],'lnN',['WTopHad'],tauNonClosure[i],'',i);
 			parse=tagsForSignalRegion[i].split('_')
 			NJNBBlock=parse[0]+"_._"+parse[1]
-			signalRegion.addSingleSystematic('HadTauClosureCorr'+NJNBBlock,'lnN',['WTopHad'],tauNonClosureCorr[i],'',i);
+			NJNBBlockName=parse[0]+"_"+parse[1]
+			signalRegion.addSingleSystematic('HadTauClosureCorr'+NJNBBlockName,'lnN',['WTopHad'],tauNonClosureCorr[i],NJNBBlock);
                         #signalRegion.addSingleSystematic('HadTauMuStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],HadTauMuFromTauStat[i],'',i);
 		signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown);
                 signalRegion.addAsymSystematic('HadTauEnergyScale','lnN',['WTopHad'],HadTauJECUncertUp,HadTauJECUncertDn);	
