@@ -59,7 +59,7 @@ def condorize(command,tag,odir,CMSSWVER):
     f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
     #f1.write("set SCRAM_ARCH=slc6_amd64_gcc481\n"
     #f1.write("cd ${_CONDOR_SCRATCH_DIR} \n")
-    f1.write("cd /fdata/hepx/store/user/rish/CombineCards/ICHEP/%s \n" % (CMSSWVER));
+    f1.write("cd /fdata/hepx/store/user/rish/CombineCards/gitPushFreezing/%s \n" % (CMSSWVER));
     f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
     f1.write("eval `scramv1 runtime -sh`\n")
 

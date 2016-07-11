@@ -522,7 +522,7 @@ if __name__ == '__main__':
 		currateC = [];
 		currateC.append( 0. );
 		currateC.append( ratesForLowdphiRegion_QCDList[i] );
-		if(NCRForLowdphiRegion_QCDList[i]>1.5) :currateC.append(ContaminForLowdphiRegion[i]);	
+		if(NCRForLowdphiRegion_QCDList[i]>0.5) :currateC.append(ContaminForLowdphiRegion[i]);	
 		else: currateC.append(0.0)
 		qcdcontrolRegion_Rates.append(currateC);
 		qcdcontrollRegion_Observed.append(curobsC);	
@@ -1025,8 +1025,8 @@ if __name__ == '__main__':
 		signalRegion.addSingleSystematic("DYPur"+"_BTag1Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags2")
 		signalRegion.addSingleSystematic("DYPur"+"_BTag1Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags3")
 		for i in range(len(singlePhotonBins)):
-			signalRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],10000,singlePhotonBins[i]);
-			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],10000,singlePhotonBins[i]);	
+			signalRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);
+			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);	
 			# WTF,are these double counting
 			# sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
 			sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+tagsForSinglePhoton[i], 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],tagsForSinglePhoton[i])
@@ -1150,9 +1150,9 @@ if __name__ == '__main__':
 			#if(signalRegion_CSList[i]<2):
 			if options.allBkgs or (options.tauOnly and  options.llpOnly): 
 					#signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],100,'',i);
-				signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW','WTopSLHighW'],10000,'',i);
-			if options.tauOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('TAUSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],10000,'',i);
-			if options.llpOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],10000,'',i);
+				signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW','WTopSLHighW'],100,'',i);
+			if options.tauOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('TAUSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
+			if options.llpOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],100,'',i);
 			if options.allBkgs:
 				if(signalRegion_CSList[i]>=2):signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], LLSumW2errors[i], 1+(tauSqrtSumW2[i]), '',i)			
 				if(signalRegion_CSList[i]==1):signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], 2.0, 2.0, '',i)
@@ -1163,11 +1163,11 @@ if __name__ == '__main__':
 		for i in range(SLcontrolRegion.GetNbins()):
 			if options.allBkgs or (options.tauOnly and  options.llpOnly): 
 				#if(signalRegion_CSList[i]<2): 
-				SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],10000,'',i);
+				SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
 			if options.tauOnly and not (options.tauOnly and  options.llpOnly):
-				SLcontrolRegion.addSingleSystematic('TAUSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],10000,'',i);
+				SLcontrolRegion.addSingleSystematic('TAUSCSR'+tagsForSLControlRegion[i],'lnU',['WTopHadHighW'],100,'',i);
 			if options.llpOnly and not (options.tauOnly and  options.llpOnly):
-				SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopSLHighW'],10000,'',i);		
+				SLcontrolRegion.addSingleSystematic('LLSCSR'+tagsForSLControlRegion[i],'lnU',['WTopSLHighW'],100,'',i);		
 
 	### hadtau uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.tauOnly or (options.tauOnly and  options.llpOnly):
@@ -1210,8 +1210,8 @@ if __name__ == '__main__':
 
 		for i in range(len(tagsForSignalRegion)):
 			parse=tagsForSignalRegion[i].split("_")
-			signalRegion.addSingleSystematic("QCDControlC"+tagsForSignalRegion[i],'lnU','qcd',10000,'',i);
-			LowdphiControlRegion.addSingleSystematic("QCDControlC"+tagsForSignalRegion[i],'lnU','qcd',10000,'',i);				
+			signalRegion.addSingleSystematic("QCDControlC"+tagsForSignalRegion[i],'lnU','qcd',100,'',i);
+			LowdphiControlRegion.addSingleSystematic("QCDControlC"+tagsForSignalRegion[i],'lnU','qcd',100,'',i);				
 			#signalRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnU','qcd',10000,'',i);	
 			#mappedControlBin=QCDLowMHTDict[parse[3]]
         		#mappedControlBin=parse[0]+"_"+parse[1]+"_"+"MHT0"+"_"+mappedControlBin
