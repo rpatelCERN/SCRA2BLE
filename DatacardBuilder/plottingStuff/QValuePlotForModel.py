@@ -30,8 +30,9 @@ if __name__ == '__main__':
 	histLL=YieldsFile.Get("LL")
 	#Gymnastics for Pre-fit
 	DataHist=YieldsFile.Get("data")
-	signalFile=TFile("../inputHistograms/fastsimSignalT2tt/RA2bin_signal.root", "READ")
-	signal=signalFile.Get("RA2bin_T2tt_%d_%d_fast" %(mGo, mLSP))
+	#signalFile=TFile("../inputHistograms/fastsimSignalT2tt/RA2bin_signal.root", "READ")
+	#signal=signalFile.Get("RA2bin_T2tt_%d_%d_fast" %(mGo, mLSP))
+	
 	signal.Scale(2600)
 	DataHist.SetBinErrorOption(ROOT.TH1F.kPoisson);
 	DataHist.SetMarkerColor(1);
@@ -90,8 +91,8 @@ if __name__ == '__main__':
 	fprefit=open("ParsedInputPrefit.txt", 'r')
 	for line in fprefit:
 		parse=line.split(" ")
-		PrefitErrorUp.append(float(parse[1]))
-                PrefitErrorDn.append(float(parse[2]))
+		PrefitErrorUp.append(float(parse[2]))
+                PrefitErrorDn.append(float(parse[3]))
 	print "bin & Q & Signal & Total Bkg. & Obs. & Sigma \\\\"
 	
 	for i in range(1,161):
@@ -108,7 +109,7 @@ if __name__ == '__main__':
 			 if PrefitErrorDn[i-1]>0.0 or DataHist.GetBinContent(i)>0.0:
 				Pull=Pull/sqrt(DataHist.GetBinContent(i)+(PrefitErrorDn[i-1]*PrefitErrorDn[i-1]))
 		DataDiff.SetBinContent(i, Pull)
-		if(q>0.5):
+		if(q>0.3):
 			Qsr=Qsr+(q*q)
 			print "%d  & %1.2f & %2.2f & %2.2f & %g & %g \\\\ "   %(i,q, s, b,  DataHist.GetBinContent(i), Pull)
 			#print " bin %d %s  & Qval %1.2f Signal %2.2f Total Background %2.2f Obs %g  Sigma %g" %(i,binlabel,q, s, b,  DataHist.GetBinContent(i), Pull) 			

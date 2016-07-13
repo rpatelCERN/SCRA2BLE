@@ -17,16 +17,18 @@ PrefitErrorDn=[]
 fprefit=open("ParsedInputPrefit.txt", 'r')
 for line in fprefit:
 	parse=line.split(" ")
-        PrefitErrorUp.append(float(parse[1]))
-        PrefitErrorDn.append(float(parse[2]))
+        PrefitErrorUp.append(float(parse[2]))
+        PrefitErrorDn.append(float(parse[3]))
+	print parse
 QScan=TGraph2D()
 QScan.SetName("QScan")
 WSigma=TGraph2D()
 WSigma.SetName("WSigma")
-
-theDir='../testCards-allBkgs-T2tt_%d_%d-2.6-mu0.0/' %(600, 300)
+theDir='testCards-allBkgs-SMStttt1200-2.6-mu0.0/'
+#theDir='./testCards-allBkgs-T2tt_%d_%d-2.6-mu0.0/' %(600, 300)
+#theDir='./testCards-allBkgs-T2tt_%d_%d-2.6-mu0.0/' %(600, 300)
 YieldsFile=TFile(theDir+"/yields.root", "READ")
-signalFile=TFile("../inputHistograms/fastsimSignalT2tt/RA2bin_signal.root", "READ")
+signalFile=TFile("../inputHistograms/fastsimSignalT1tttt/RA2bin_signal.root", "READ")
 histqcd=YieldsFile.Get("QCD")
 histZ=YieldsFile.Get("Zvv")
 histTau=YieldsFile.Get("tau")
@@ -40,7 +42,7 @@ hsprefit_tot = hsprefit.GetStack().Last();
 DataHist=YieldsFile.Get("data")
 for m in range(len(mGo)):
 	#print mGo[m], mLsp[m]
-	signal=signalFile.Get("RA2bin_T2tt_%d_%d_fast" %(int(mGo[m]), int(mLsp[m])))
+	signal=signalFile.Get("RA2bin_T1tttt_%d_%d_fast" %(int(mGo[m]), int(mLsp[m])))
 	signal.Scale(2600)
 	QHighSTotal=0
 	PullWeighted=0
@@ -48,19 +50,20 @@ for m in range(len(mGo)):
 		s=signal.GetBinContent(i)
 		b=hsprefit_tot.GetBinContent(i)
 		Q=2*(sqrt(s+b)-sqrt(b))
-		if(Q>0.6):
+		if(Q>0.0):
 			QHighSTotal=QHighSTotal+(Q*Q)
   			Pull=DataHist.GetBinContent(i)-hsprefit_tot.GetBinContent(i)
                 	if PrefitErrorUp[i-1]>0.0 or DataHist.GetBinContent(i)>0.0:
 				if Pull>0:
-                        		Pull=Pull/sqrt(DataHist.GetBinContent(i)+(PrefitErrorUp[i-1]*PrefitErrorUp[i-1]))
+                        		if PrefitErrorUp[i-1]>0.0:Pull=Pull/sqrt(DataHist.GetBinContent(i)+(PrefitErrorUp[i-1]*PrefitErrorUp[i-1]))
 				else:
-					Pull=Pull/sqrt(DataHist.GetBinContent(i)+(PrefitErrorDn[i-1]*PrefitErrorDn[i-1]))
+					if PrefitErrorDn[i-1]>0.0:Pull=Pull/sqrt(DataHist.GetBinContent(i)+(PrefitErrorDn[i-1]*PrefitErrorDn[i-1]))
 			PullWeighted=PullWeighted+(Pull*Q*Q)
-			if mGo[m]==600 and mLsp[m]==300:print Pull
+			#if mGo[m]==600 and mLsp[m]==300:print Pull
 
 	if QHighSTotal>0:
-		if mGo[m]==600 and mLsp[m]==300:print PullWeighted/QHighSTotal
+		#if mGo[m]==600 and mLsp[m]==300:
+		print PullWeighted/QHighSTotal
 		WSigma.SetPoint(WSigma.GetN(), mGo[m], mLsp[m],PullWeighted/QHighSTotal)
 	else:
 		WSigma.SetPoint(WSigma.GetN(), mGo[m], mLsp[m],0.0)

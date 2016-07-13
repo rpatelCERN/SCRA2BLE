@@ -54,7 +54,7 @@ def condorize(command,tag,odir,CMSSWVER):
     f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
     f1.write("#SBATCH -p stackholder-4g\n")
     f1.write("#SBATCH --time=03:30:00\n")
-    f1.write("#SBATCH --mem-per-cpu=4000 \n")
+    f1.write("#SBATCH --mem-per-cpu=6000 \n")
     f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
     f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
     #f1.write("set SCRAM_ARCH=slc6_amd64_gcc481\n"
@@ -112,7 +112,8 @@ if __name__ == '__main__':
 
     #if not options.keeptar:
     os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
-    f = TFile.Open("inputHistograms/histograms_2.3fb/fastsimSignalScanGluino/RA2bin_signal.root");
+    '''
+    f = TFile.Open("inputHistograms/fastsimSignalT1qqqq/RA2bin_signal.root");
     names = [k.GetName() for k in f.GetListOfKeys()]
     models = []
     mGos=[]
@@ -124,7 +125,6 @@ if __name__ == '__main__':
         models.append(parse[1])
         mGos.append(int(parse[2]))
         mLSPs.append(int(parse[3]))
-    '''
 	    	#print parse
     #models=["T5qqqqVV"]
     #mGos  = [975];
@@ -145,7 +145,7 @@ if __name__ == '__main__':
         command += "--signal %s " % models[m];
         command += "--mGo %i " % mGos[m];
         command += "--mLSP %i " % mLSPs[m];
-        #if options.fastsim: command += " --fastsim";
+        if options.fastsim: command += " --fastsim";
         command += " --realData";
         command += " --tag allBkgs";
         #command += " --eos %s" % (eosDir);

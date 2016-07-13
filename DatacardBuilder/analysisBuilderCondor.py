@@ -63,7 +63,7 @@ if __name__ == '__main__':
     signalmodel=options.signal+options.mGo
     signals = [signalmodel]
     mus=[0.0]
-    lumis = [2.6];
+    lumis = [7.6];
 
     #variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
     #variations = ['allNotau','llpOnly', 'tauOnly']
@@ -154,7 +154,7 @@ if __name__ == '__main__':
                     # run asymptotic
                     combine_cmmd = "combine -M Asymptotic %s/allcards.txt -n %s" % (the_odir,the_odir); 
                     os.system(combine_cmmd);
-		    
+		   
                     dicttag = "%s_%s_%.1f" % (vary,sig,lumi);
 
                     identifier = dicttag;

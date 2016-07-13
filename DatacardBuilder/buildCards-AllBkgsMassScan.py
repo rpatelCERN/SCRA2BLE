@@ -59,6 +59,8 @@ if __name__ == '__main__':
 		if "T2bb" in sms:  signaldirtag ="inputHistograms/fastsimSignalT2bb"
 		if "T1tttt" in sms:  signaldirtag ="inputHistograms/fastsimSignalT1tttt"
 		if "T1bbbb" in sms:  signaldirtag ="inputHistograms/fastsimSignalT1bbbb"
+		if "T1qqqq" in sms:  signaldirtag ="inputHistograms/fastsimSignalT1qqqq"
+		if "T5qqqqVV" in sms:  signaldirtag ="inputHistograms/fastsimSignalT5qqqqVV"
 		#if ("T1" in sms or "T5qqqqVV" in sms): signaldirtag +="Gluino"
 		if ("T2tt" in sms): signaldirtag ="inputHistograms/fastsimSignalT2tt"
 		if "T1ttbb" in sms or "T1tbtb" in sms: signaldirtag="/fastsimSignalScanMixedFinalState"
@@ -423,16 +425,16 @@ if __name__ == '__main__':
 
 	HadTauMTSysUpHist=HadTau_file.Get("searchBin_MTSysUp")
 	HadTauMTSysDownHist=HadTau_file.Get("searchBin_MTSysDn")
-	HadTauMTEffHist=HadTau_file.Get("seaerchBin_MtEffStat")
-	HadTauIsoTkEffHistStatHist=HadTau_file.Get("seaerchBin_IsoTrkVetoEffUncertaintyStat")
-	HadTauIsoTkEffHistSysHist=HadTau_file.Get("seaerchBin_IsoTrkVetoEffUncertaintySys")
-	HadTauAccStatHist=HadTau_file.Get("seaerchBin_AccStat")
-	HadTauMuFromTauStatHist=HadTau_file.Get("seaerchBin_MuFromTauStat")
+	HadTauMTEffHist=HadTau_file.Get("searchBin_MtEffStat")
+	HadTauIsoTkEffHistStatHist=HadTau_file.Get("searchBin_IsoTrkVetoEffUncertaintyStat")
+	HadTauIsoTkEffHistSysHist=HadTau_file.Get("searchBin_IsoTrkVetoEffUncertaintySys")
+	HadTauAccStatHist=HadTau_file.Get("searchBin_AccStat")
+	HadTauMuFromTauStatHist=HadTau_file.Get("searchBin_MuFromTauStat")
 	HadTauMuDiLeptonHist=HadTau_file.Get("searchBin_DileptonUncertainty")
-	HadTauMuAccSysPDFUpHist=HadTau_file.Get("seaerchBin_AccSysPDFUp")
-	HadTauMuAccSysPDFDnHist=HadTau_file.Get("seaerchBin_AccSysPDFDn")
-	HadTauMuAccSysScaleUpHist=HadTau_file.Get("seaerchBin_AccSysScaleUp")
-	HadTauMuAccSysScaleDnHist=HadTau_file.Get("seaerchBin_AccSysScaleDn")
+	HadTauMuAccSysPDFUpHist=HadTau_file.Get("searchBin_AccSysPDFUp")
+	HadTauMuAccSysPDFDnHist=HadTau_file.Get("searchBin_AccSysPDFDn")
+	HadTauMuAccSysScaleUpHist=HadTau_file.Get("searchBin_AccSysScaleUp")
+	HadTauMuAccSysScaleDnHist=HadTau_file.Get("searchBin_AccSysScaleDn")
 	HadTauMuonCorrUncUp=binsToList(HadTauMuonCorrUncUpHist)
 	HadTauMuonCorrUncDn=binsToList(HadTauMuonCorrUncDnHist)
 	HadTauMuonIsoRecoStatUncUp=binsToList(HadTauMuonIsoRecoStatUncUpHist)
@@ -504,6 +506,11 @@ if __name__ == '__main__':
 	tagsForLowDPhiRegion = tagsForSignalRegion[:]
 	QCDcontributionsPerBin = [];
 	for i in range(len(tagsForLowDPhiRegion)): 
+		#NOTE TEMPORARY!!!!!!!!
+		lumiscale=7.6/2.6
+		NCRForLowdphiRegion_QCDList[i]=NCRForLowdphiRegion_QCDList[i]*lumiscale
+		NSRForSignalRegion_QCDList[i]=NSRForSignalRegion_QCDList[i]*lumiscale
+		ContaminForLowdphiRegion[i]=ContaminForLowdphiRegion[i]*lumiscale
 		QCDcontributionsPerBin.append( [ 'sig','qcd','contam' ] );
 		#ContaminForLowdphiRegion[i]=0
 		ContaminSubtracted=NCRForLowdphiRegion_QCDList[i]-ContaminForLowdphiRegion[i]
@@ -682,6 +689,8 @@ if __name__ == '__main__':
 		if(GJetPurErr_List[i]>-1):PurErrsAbs.append(GJetPurErr_List[i])
 		#if(ZgRatioErr_List[i]>-1):RzgErrsAbs.append(ZgRatioErr_List[i])	
 		if(ZgRdataMC_List[i] > -1): ZgRdataMC.append( ZgRdataMC_List[i] )
+		if (ZgRdataMCErrUp_List[i] > -1): ZgRdataMCErrUp.append( 1.+ZgRdataMCErrUp_List[i] )
+		if (ZgRdataMCErrDn_List[i] > -1): ZgRdataMCErrDn.append( 1.-ZgRdataMCErrDn_List[i] )
 	#RzgErrs = [];
 	PurErrs = [];
 	#for i in range(len(RzgVals)): RzgErrs.append( 1+RzgErrsAbs[i] );
@@ -839,10 +848,9 @@ if __name__ == '__main__':
 		print " ---", tagsForSignalRegion[i]
 
 		tmpList = [];
-		'''
 		if options.fastsim and ('T1t' in model or 'T5qqqqVV' in model or 'T2tt' in model) :
-			signalContamLL_file=TFile("inputHistograms/SignalContamin/LLContamination_%s.root" %model)
-			signalContamTau_file=TFile("inputHistograms/SignalContamin/Signal%sHtauContamin.root" %model)
+			signalContamLL_file=TFile("inputHistograms/histograms_%1.1ffb/SignalContamin/LLContamination_%s.root" %(lumi,model))
+			signalContamTau_file=TFile("inputHistograms/histograms_%1.1ffb/Signal%sHtauContamin.root" %(lumi,model))
 			TauContamHist =signalContamTau_file.Get("SearchH_b/"+signaltag)
 			print signaltag
 			#print "inputHistograms/SignalContamin/Signal%sHtauContamin.root" %model
@@ -861,8 +869,7 @@ if __name__ == '__main__':
 			else:
 				tmpList.append(0);
 		else:
-			'''
-		tmpList.append(signalRegion_sigList[i])
+			tmpList.append(signalRegion_sigList[i])
 		# LL rate
 		
 		if options.allBkgs or options.llpOnly or (options.tauOnly and  options.llpOnly):		
@@ -906,11 +913,8 @@ if __name__ == '__main__':
 	for i in range(signalRegion.GetNbins()):
 		if( signalRegion_sigList[i]>0.000001): 
 			
-			if not options.fastsim:
+			#if not options.fastsim:
 				
-				signalRegion.addAsymSystematic('MisTagSFunc', 'lnN', ['sig'], signalRegion_sigListMisSFUp[i]/signalRegion_sigList[i], signalRegion_sigListMisSFDown[i]/signalRegion_sigList[i], '', i)
-				signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], (signalRegion_sigListSFUp[i]/signalRegion_sigList[i]),signalRegion_sigListSFDown[i]/signalRegion_sigList[i],'', i)
-				signalRegion.addAsymSystematic('CTagSFUnc','lnN', ['sig'], (signalRegion_sigListCSFUp[i]/signalRegion_sigList[i]),signalRegion_sigListCSFDown[i]/signalRegion_sigList[i],'', i)
 
 			signalRegion.addAsymSystematic('TrigSystunc','lnN', ['sig'], signalRegion_sigListTrigSystUp[i]/signalRegion_sigList[i], signalRegion_sigListTrigSystDown[i]/signalRegion_sigList[i], '', i)
 			signalRegion.addAsymSystematic('TrigStatUnc','lnN', ['sig'], (signalRegion_sigListTrigStatUp[i]/signalRegion_sigList[i]),signalRegion_sigListTrigStatDown[i]/signalRegion_sigList[i],'', i)
@@ -960,9 +964,13 @@ if __name__ == '__main__':
 			 	signalRegion.addAsymSystematic('ScaleUnc','lnN', ['sig'], (signalRegion_sigListScaleUp[i]/signalRegion_sigList[i]),signalRegion_sigListScaleDown[i]/signalRegion_sigList[i],'', i)
 			else: 
 			 	signalRegion.addAsymSystematic('ScaleUnc','lnN', ['sig'], (signalRegion_sigListScaleUp[i]/signalRegion_sigList[i]),signalRegion_sigList[i]/signalRegion_sigListScaleUp[i],'', i)	
+			signalRegion.addAsymSystematic('MisTagSFunc', 'lnN', ['sig'], signalRegion_sigListMisSFUp[i]/signalRegion_sigList[i], signalRegion_sigListMisSFDown[i]/signalRegion_sigList[i], '', i)
+			signalRegion.addAsymSystematic('BTagSFUnc','lnN', ['sig'], (signalRegion_sigListSFUp[i]/signalRegion_sigList[i]),signalRegion_sigListSFDown[i]/signalRegion_sigList[i],'', i)
+			#signalRegion.addAsymSystematic('CTagSFUnc','lnN', ['sig'], (signalRegion_sigListCSFUp[i]/signalRegion_sigList[i]),signalRegion_sigListCSFDown[i]/signalRegion_sigList[i],'', i)
+
 			if options.fastsim:
 				signalRegion.addAsymSystematic('btagCFunc', 'lnN', ['sig'], signalRegion_sigListbtagCFuncUp[i]/signalRegion_sigList[i], signalRegion_sigListbtagCFuncDown[i]/signalRegion_sigList[i], '', i)
-				signalRegion.addAsymSystematic('ctagCFUnc','lnN', ['sig'], (signalRegion_sigListctagCFuncUp[i]/signalRegion_sigList[i]),signalRegion_sigListctagCFuncDown[i]/signalRegion_sigList[i],'', i)
+				#signalRegion.addAsymSystematic('ctagCFUnc','lnN', ['sig'], (signalRegion_sigListctagCFuncUp[i]/signalRegion_sigList[i]),signalRegion_sigListctagCFuncDown[i]/signalRegion_sigList[i],'', i)
 				signalRegion.addAsymSystematic('mistagCFUnc','lnN', ['sig'], (signalRegion_sigListmistagCFuncUp[i]/signalRegion_sigList[i]),signalRegion_sigListmistagCFuncDown[i]/signalRegion_sigList[i],'', i)
 
 			signalRegion_sigListMCstatErr[i] = signalRegion_sigListMCstatErr[i]/signalRegion_sigList[i] + 1.;
@@ -1030,7 +1038,8 @@ if __name__ == '__main__':
 			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);	
 			# WTF,are these double counting
 			# sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
-			sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+tagsForSinglePhoton[i], 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0+PhoCSZgRatioDown[i],tagsForSinglePhoton[i])
+			sphotonRegion.addAsymSystematic('ZgammaRatioErr', 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0+PhoCSZgRatioDown[i],tagsForSinglePhoton[i])
+			sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp[i],ZgRdataMCErrDn[i], '',i)
 			#sphotonRegion.addSingleSystematic('ZgRatioErr'+tagsForSinglePhoton[i],'lnN',['zvv'],RzgErrs[i],tagsForSinglePhoton[i]);	# different per bin
 			sphotonRegion.addSingleSystematic('PhoPurUnc','lnN',['zvv'],PurErrs[i],'',i);	 # this is getting split up now
 			# sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, '',i); #### this is now merged with ZGratio uncertainty
@@ -1183,7 +1192,7 @@ if __name__ == '__main__':
 			NJNBBlock=parse[0]+"_._"+parse[1]
 			NJNBBlockName=parse[0]+"_"+parse[1]
 			signalRegion.addSingleSystematic('HadTauClosureCorr'+NJNBBlockName,'lnN',['WTopHad'],tauNonClosureCorr[i],NJNBBlock);
-                        #signalRegion.addSingleSystematic('HadTauMuStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],HadTauMuFromTauStat[i],'',i);
+                        signalRegion.addSingleSystematic('HadTauMuStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],HadTauMuFromTauStat[i],'',i);
 		signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown);
                 signalRegion.addAsymSystematic('HadTauEnergyScale','lnN',['WTopHad'],HadTauJECUncertUp,HadTauJECUncertDn);	
 	### QCD uncertainties ------------------------------------------------------------------------------
@@ -1221,6 +1230,7 @@ if __name__ == '__main__':
 			#mappedControlBin=QCDLowMHTDict[parse[3]]
         		#mappedControlBin=parse[0]+"_"+parse[1]+"_"+"MHT0"+"_"+mappedControlBin
 			#HighdPhiLowMHTControlRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnU','qcd',10000,mappedControlBin)
+			ContaminUncForLowdphiRegion[i]=ContaminUncForLowdphiRegion[i]*7.6/2.6
 			if(ContaminForLowdphiRegion[i]>0.0 and (NCRForLowdphiRegion_QCDList[i]>1.5)):LowdphiControlRegion.addSingleSystematic("contamUnc"+str(i), 'lnN','contam',1+(ContaminUncForLowdphiRegion[i]/ContaminForLowdphiRegion[i]),'',i)
 
 
