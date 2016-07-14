@@ -1,5 +1,4 @@
 from ROOT import *
-
 import os
 import math
 import sys
@@ -70,7 +69,7 @@ if __name__ == '__main__':
 	model=parse[0]
 	#print parse
 	if options.fastsim: signaltag+="_fast"
-	
+	print signaldirtag	
 	signalSFB_file =TFile(signaldirtag+"/RA2bin_signal.root");
 	signalSysCSFUp_file=TFile(signaldirtag+"/RA2bin_signal_ctagSFuncUp.root");
 	signalSysCSFDown_file=TFile(signaldirtag+"/RA2bin_signal_ctagSFuncDown.root");
@@ -507,10 +506,6 @@ if __name__ == '__main__':
 	QCDcontributionsPerBin = [];
 	for i in range(len(tagsForLowDPhiRegion)): 
 		#NOTE TEMPORARY!!!!!!!!
-		lumiscale=7.6/2.6
-		NCRForLowdphiRegion_QCDList[i]=NCRForLowdphiRegion_QCDList[i]*lumiscale
-		NSRForSignalRegion_QCDList[i]=NSRForSignalRegion_QCDList[i]*lumiscale
-		ContaminForLowdphiRegion[i]=ContaminForLowdphiRegion[i]*lumiscale
 		QCDcontributionsPerBin.append( [ 'sig','qcd','contam' ] );
 		#ContaminForLowdphiRegion[i]=0
 		ContaminSubtracted=NCRForLowdphiRegion_QCDList[i]-ContaminForLowdphiRegion[i]
@@ -849,21 +844,22 @@ if __name__ == '__main__':
 
 		tmpList = [];
 		if options.fastsim and ('T1t' in model or 'T5qqqqVV' in model or 'T2tt' in model) :
-			signalContamLL_file=TFile("inputHistograms/histograms_%1.1ffb/SignalContamin/LLContamination_%s.root" %(lumi,model))
+			signalContamLL_file=TFile("inputHistograms/histograms_%1.1ffb/LLContamination_%s.root" %(lumi,model))
 			signalContamTau_file=TFile("inputHistograms/histograms_%1.1ffb/Signal%sHtauContamin.root" %(lumi,model))
-			TauContamHist =signalContamTau_file.Get("SearchH_b/"+signaltag)
-			print signaltag
+			#TauContamHist=
+			#TauContamHist =signalContamTau_file.Get("SearchH_b/"+signaltag)
+			#print signaltag
 			#print "inputHistograms/SignalContamin/Signal%sHtauContamin.root" %model
-			TauContamHist.GetNbinsX()	
-			TauContamHist.Scale(lumi/3.0)
+			#TauContamHist.GetNbinsX()	
+			#TauContamHist.Scale(lumi/3.0)
 			LLContamHist=TH1D();
 			if 'T2t' in model:			
 				LLContamHist=signalContamLL_file.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
 			else:
 				LLContamHist=signalContamLL_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
 			LLContamList=binsToList(LLContamHist)
-			HadtauContamList=binsToList(TauContamHist)  
-			print len(LLContamList),len(HadtauContamList)	
+			HadtauContamList=binsToList(LLContamHist)  
+			#print len(LLContamList),len(HadtauContamList)	
 			if signalRegion_sigList[i]-LLContamList[i]-HadtauContamList[i]>0:
 				tmpList.append(signalRegion_sigList[i]-LLContamList[i]-HadtauContamList[i]);
 			else:
@@ -1211,7 +1207,10 @@ if __name__ == '__main__':
 		ListOfQCDSysK12 = textToListStr(idir+"/qcd-bg-combine-input.txt",18)
 		ListOfQCDSysK13 = textToListStr(idir+"/qcd-bg-combine-input.txt",19)	
 		ListOfQCDSysK14 = textToListStr(idir+"/qcd-bg-combine-input.txt",20)	
-		
+		ListOfQCDSysK15 = textToListStr(idir+"/qcd-bg-combine-input.txt",21)	
+		ListOfQCDSysK16 = textToListStr(idir+"/qcd-bg-combine-input.txt",22)	
+		ListOfMCCSys = textToListStr(idir+"/qcd-bg-combine-input.txt",23)	
+		#print ListOfMCCSys
 		ContaminUncForLowdphiRegion = textToList(idir+"/qcd-bg-combine-input.txt",4);
 		'''
 		signalRegion.addSingleSystematic("QCDSysMHT0",'lnN','qcd', 1.3, "MHT0")
@@ -1230,8 +1229,7 @@ if __name__ == '__main__':
 			#mappedControlBin=QCDLowMHTDict[parse[3]]
         		#mappedControlBin=parse[0]+"_"+parse[1]+"_"+"MHT0"+"_"+mappedControlBin
 			#HighdPhiLowMHTControlRegion.addSingleSystematic("dphiDRlowMHTCR"+tagsForSignalRegion[i],'lnU','qcd',10000,mappedControlBin)
-			ContaminUncForLowdphiRegion[i]=ContaminUncForLowdphiRegion[i]*7.6/2.6
-			if(ContaminForLowdphiRegion[i]>0.0 and (NCRForLowdphiRegion_QCDList[i]>1.5)):LowdphiControlRegion.addSingleSystematic("contamUnc"+str(i), 'lnN','contam',1+(ContaminUncForLowdphiRegion[i]/ContaminForLowdphiRegion[i]),'',i)
+			if(ContaminForLowdphiRegion[i]>0.0 and (NCRForLowdphiRegion_QCDList[i]>0.5)):LowdphiControlRegion.addSingleSystematic("contamUnc"+str(i), 'lnN','contam',1+(ContaminUncForLowdphiRegion[i]/ContaminForLowdphiRegion[i]),'',i)
 
 
 		'''	
@@ -1241,21 +1239,23 @@ if __name__ == '__main__':
 			HighdPhiLowMHTControlRegion.addSingleSystematic("DphiDoubleRControlBin"+"%s_%s_%s" %(parse[0], parse[1],parse[3]),'lnU','qcd',10000,'',i)
 		'''
 		for i in range(len(ListOfQCDSysK1)):
-
 			if(ListOfQCDSysK1[i]!='-'):signalRegion.addSingleSystematic("KQCDHT1",'lnN','qcd',float(ListOfQCDSysK1[i]),'',i);
 			if(ListOfQCDSysK2[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2",'lnN','qcd',float(ListOfQCDSysK2[i]),'',i);
 			if(ListOfQCDSysK3[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3",'lnN','qcd',float(ListOfQCDSysK3[i]),'',i);
 			if(ListOfQCDSysK4[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ2",'lnN','qcd',float(ListOfQCDSysK4[i]),'',i);
 			if(ListOfQCDSysK5[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ3",'lnN','qcd',float(ListOfQCDSysK5[i]),'',i);
 			if(ListOfQCDSysK6[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ4",'lnN','qcd',float(ListOfQCDSysK6[i]),'',i);
-			if(ListOfQCDSysK7[i]!='-'):signalRegion.addSingleSystematic("KQCDMHT1",'lnN','qcd',float(ListOfQCDSysK7[i]),'',i);
-			if(ListOfQCDSysK8[i]!='-'):signalRegion.addSingleSystematic("KQCDMHT2",'lnN','qcd',float(ListOfQCDSysK8[i]),'',i);
-			if(ListOfQCDSysK9[i]!='-'):signalRegion.addSingleSystematic("KQCDMHT3",'lnN','qcd',float(ListOfQCDSysK9[i]),'',i);
-			if(ListOfQCDSysK10[i]!='-'):signalRegion.addSingleSystematic("KQCDMHT4",'lnN','qcd',float(ListOfQCDSysK10[i]),'',i);
-			if(ListOfQCDSysK11[i]!='-'):signalRegion.addSingleSystematic("KQCDNB0",'lnN','qcd',float(ListOfQCDSysK11[i]),'',i);
-			if(ListOfQCDSysK12[i]!='-'):signalRegion.addSingleSystematic("KQCDNB1",'lnN','qcd',float(ListOfQCDSysK12[i]),'',i);
-			if(ListOfQCDSysK13[i]!='-'):signalRegion.addSingleSystematic("KQCDNB2",'lnN','qcd',float(ListOfQCDSysK13[i]),'',i);
-			if(ListOfQCDSysK14[i]!='-'):signalRegion.addSingleSystematic("KQCDNB3",'lnN','qcd',float(ListOfQCDSysK14[i]),'',i);
+			if(ListOfQCDSysK7[i]!='-'):signalRegion.addSingleSystematic("KQCDHT1MHT1",'lnN','qcd',float(ListOfQCDSysK7[i]),'',i);
+			if(ListOfQCDSysK8[i]!='-'):signalRegion.addSingleSystematic("KQCDHT1MHT2",'lnN','qcd',float(ListOfQCDSysK8[i]),'',i);
+			if(ListOfQCDSysK9[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2MHT1",'lnN','qcd',float(ListOfQCDSysK9[i]),'',i);
+			if(ListOfQCDSysK10[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2MHT2",'lnN','qcd',float(ListOfQCDSysK10[i]),'',i);
+			if(ListOfQCDSysK11[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2MHT3",'lnN','qcd',float(ListOfQCDSysK11[i]),'',i);
+			if(ListOfQCDSysK12[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2MHT4",'lnN','qcd',float(ListOfQCDSysK12[i]),'',i);
+			if(ListOfQCDSysK13[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3MHT1",'lnN','qcd',float(ListOfQCDSysK13[i]),'',i);
+			if(ListOfQCDSysK14[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3MHT2",'lnN','qcd',float(ListOfQCDSysK14[i]),'',i);
+			if(ListOfQCDSysK15[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3MHT3",'lnN','qcd',float(ListOfQCDSysK15[i]),'',i);
+			if(ListOfQCDSysK16[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3MHT4",'lnN','qcd',float(ListOfQCDSysK16[i]),'',i);
+			if(ListOfMCCSys[i]!='-'):signalRegion.addSingleSystematic("KQCDMCCorr",'lnN','qcd',float(ListOfMCCSys[i]),'',i);
 
 	######################################################################
 	######################################################################

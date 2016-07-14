@@ -21,7 +21,7 @@ if __name__ == '__main__':
 	mLSP=int(sys.argv[2])	
 	#theDir = 'testCards-allBkgs-SMSbbbb1500-2.1-mu0.0'
 	# theDir = 'testCards-allBkgswithPho-SMSbbbb1500-2.1-mu0.0'
-	theDir='../testCards-allBkgs-T2tt_%d_%d-2.6-mu0.0/' %(mGo, mLSP)
+	theDir='../testCards-allBkgs-T1tttt_%d_%d-7.6-mu0.0/' %(mGo, mLSP)
 
 	YieldsFile=TFile(theDir+"/yields.root", "READ")
 	histqcd=YieldsFile.Get("QCD")
@@ -32,6 +32,8 @@ if __name__ == '__main__':
 	DataHist=YieldsFile.Get("data")
 	#signalFile=TFile("../inputHistograms/fastsimSignalT2tt/RA2bin_signal.root", "READ")
 	#signal=signalFile.Get("RA2bin_T2tt_%d_%d_fast" %(mGo, mLSP))
+	signalFile=TFile("../inputHistograms/fastsimSignalT1tttt/RA2bin_signal.root", "READ")
+	signal=signalFile.Get("RA2bin_T1tttt_%d_%d_fast" %(mGo, mLSP))
 	
 	signal.Scale(2600)
 	DataHist.SetBinErrorOption(ROOT.TH1F.kPoisson);
@@ -129,12 +131,12 @@ if __name__ == '__main__':
 	
 	canPostAN.cd(2)
 	QValue.Draw("")
-	canPostAN.Print("QValueDataPull_T2tt_%d_%d.pdf" %(mGo, mLSP))
+	canPostAN.Print("QValueDataPull_T1tttt_%d_%d.pdf" %(mGo, mLSP))
 
 	#canPostAN.Print("TestQValue.C")
 	#canPostAN.Print("StackBkgT1tttt1200_900.pdf")
 	canPostAN2 = TCanvas("canPostAN2","canPostAN",1600,1200);
 	canPostAN2.cd()
 	QValue.Draw("")
-	canPostAN2.Print("QValueT2tt%d_%d.pdf" %(mGo, mLSP))
+	canPostAN2.Print("QValueT1tttt%d_%d.pdf" %(mGo, mLSP))
 

@@ -24,7 +24,7 @@ QScan=TGraph2D()
 QScan.SetName("QScan")
 WSigma=TGraph2D()
 WSigma.SetName("WSigma")
-theDir='testCards-allBkgs-SMStttt1200-2.6-mu0.0/'
+theDir='testCards-allBkgs-SMStttt1200-7.6-mu0.0/'
 #theDir='./testCards-allBkgs-T2tt_%d_%d-2.6-mu0.0/' %(600, 300)
 #theDir='./testCards-allBkgs-T2tt_%d_%d-2.6-mu0.0/' %(600, 300)
 YieldsFile=TFile(theDir+"/yields.root", "READ")
@@ -43,7 +43,7 @@ DataHist=YieldsFile.Get("data")
 for m in range(len(mGo)):
 	#print mGo[m], mLsp[m]
 	signal=signalFile.Get("RA2bin_T1tttt_%d_%d_fast" %(int(mGo[m]), int(mLsp[m])))
-	signal.Scale(2600)
+	signal.Scale(7600)
 	QHighSTotal=0
 	PullWeighted=0
 	for i in range(1,161):
