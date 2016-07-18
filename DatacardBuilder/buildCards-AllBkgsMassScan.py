@@ -71,6 +71,13 @@ if __name__ == '__main__':
 	if options.fastsim: signaltag+="_fast"
 	print signaldirtag	
 	signalSFB_file =TFile(signaldirtag+"/RA2bin_signal.root");
+	signalRegion_sigCorrList=[]
+	if ("T2tt" in sms): 
+		        signalGenCorr_file =TFile(signaldirtag+"/genMHT/RA2bin_signal.root");
+			signalRegion_sigCorr        =signalGenCorr_file.Get(signaltag);
+			signalRegion_sigCorr.Scale(lumi*1000);
+			signalRegion_sigCorrList=binsToList(signalRegion_sigCorr);
+
 	signalSysCSFUp_file=TFile(signaldirtag+"/RA2bin_signal_ctagSFuncUp.root");
 	signalSysCSFDown_file=TFile(signaldirtag+"/RA2bin_signal_ctagSFuncDown.root");
 
@@ -125,6 +132,16 @@ if __name__ == '__main__':
 	signalRegion_sigHistTrigStatDown.Scale(lumi*1000);
 
 	signalRegion_sigList = binsToList( signalRegion_sigHist );
+        sigGenCorr=[]
+        sigErr=[]
+
+	if "T2tt" in sms:
+        	for i in range(len(signalRegion_sigList)):
+        	        if signalRegion_sigList[i]<0: signalRegion_sigList[i]=0.0
+        	        if signalRegion_sigCorrList[i]<0:signalRegion_sigCorrList[i]=0.0
+        	        sigGenCorr.append((signalRegion_sigList[i]+signalRegion_sigCorrList[i])/2.)
+        	        sigErr.append(abs(signalRegion_sigList[i]-signalRegion_sigCorrList[i])/2.)
+			
 	signalRegion_sigListMCstatErr = binsErrorsToList( signalRegion_sigHist );	
 	signalRegion_sigListSFUp=binsToList( signalRegion_sigHistSFUp );
 	signalRegion_sigListSFDown=binsToList( signalRegion_sigHistSFDown );
@@ -831,13 +848,14 @@ if __name__ == '__main__':
 		if options.allBkgs or options.tauOnly: srobs += signalRegion_tauList[i];
 		if options.realData: srobs = Data_List[i];
 		signalRegion_Obs.append( srobs );
-
+		signal=signalRegion_sigList[i]
+		if "T2tt" in model: signal=sigGenCorr[i]
 		data.Fill(i+.5, Data_List[i])
 		qcd.Fill(i+.5, NSRForSignalRegion_QCDList[i])
 		zvv.Fill(i+.5, ZvvYieldsInSignalRegion[i])
 		ll.Fill(i+.5, signalRegion_LLList[i])
 		tau.Fill(i+.5, signalRegion_tauList[i])	
-		sig.Fill(i+.5,signalRegion_sigList[i]*signalmu)
+		sig.Fill(i+.5,signal*signalmu)
 
 		print "bin {0:2}: {1:6.2f} {2:6.2f} ||| {3:6.2f} {4:6.2f} {5:6.2f} {6:6.2f}".format(i,signalRegion_sigList[i]*signalmu,srobs-signalRegion_sigList[i]*signalmu,NSRForSignalRegion_QCDList[i],ZvvYieldsInSignalRegion[i],signalRegion_LLList[i],signalRegion_tauList[i]),
 		print " ---", tagsForSignalRegion[i]
@@ -852,6 +870,7 @@ if __name__ == '__main__':
 			#print "inputHistograms/SignalContamin/Signal%sHtauContamin.root" %model
 			#TauContamHist.GetNbinsX()	
 			#TauContamHist.Scale(lumi/3.0)
+			
 			LLContamHist=TH1D();
 			if 'T2t' in model:			
 				LLContamHist=signalContamLL_file.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
@@ -860,8 +879,10 @@ if __name__ == '__main__':
 			LLContamList=binsToList(LLContamHist)
 			HadtauContamList=binsToList(LLContamHist)  
 			#print len(LLContamList),len(HadtauContamList)	
-			if signalRegion_sigList[i]-LLContamList[i]-HadtauContamList[i]>0:
-				tmpList.append(signalRegion_sigList[i]-LLContamList[i]-HadtauContamList[i]);
+			if "T2tt" in model:
+				signal=sigGenCorr[i]
+			if signal-LLContamList[i]-HadtauContamList[i]>0:
+				tmpList.append(signal-LLContamList[i]-HadtauContamList[i]);
 			else:
 				tmpList.append(0);
 		else:
@@ -910,6 +931,7 @@ if __name__ == '__main__':
 		if( signalRegion_sigList[i]>0.000001): 
 			
 			#if not options.fastsim:
+			if "T2tt" in sms: signalRegion.addSingleSystematic('METResolutionSys', 'lnU', ['sig'], 1+sigErr[i], '', i)
 				
 
 			signalRegion.addAsymSystematic('TrigSystunc','lnN', ['sig'], signalRegion_sigListTrigSystUp[i]/signalRegion_sigList[i], signalRegion_sigListTrigSystDown[i]/signalRegion_sigList[i], '', i)
@@ -1187,7 +1209,7 @@ if __name__ == '__main__':
 			parse=tagsForSignalRegion[i].split('_')
 			NJNBBlock=parse[0]+"_._"+parse[1]
 			NJNBBlockName=parse[0]+"_"+parse[1]
-			signalRegion.addSingleSystematic('HadTauClosureCorr'+NJNBBlockName,'lnN',['WTopHad'],tauNonClosureCorr[i],NJNBBlock);
+			signalRegion.addSingleSystematic('HadTauClosureCorr'+NJNBBlockName,'lnN',['WTopHad'],tauNonClosureCorr[i],'',i);
                         signalRegion.addSingleSystematic('HadTauMuStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],HadTauMuFromTauStat[i],'',i);
 		signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown);
                 signalRegion.addAsymSystematic('HadTauEnergyScale','lnN',['WTopHad'],HadTauJECUncertUp,HadTauJECUncertDn);	

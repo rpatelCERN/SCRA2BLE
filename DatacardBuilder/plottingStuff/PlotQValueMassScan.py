@@ -3,15 +3,25 @@ import numpy as np
 import mmap
 import time
 import sys
-flist=open("listofFiles%s.txt" %sys.argv[1], 'r')
+import operator
+#flist=open("listofFiles%s.txt" %sys.argv[1], 'r')
 #with open('LatestXsecGluGlu.txt', 'r') as input:
+signalFile=TFile("../inputHistograms/fastsimSignal%s/RA2bin_signal.root" %sys.argv[1], "READ")
+
 mGo=[]
 mLsp=[]
-for line in flist:
-        fname=line.split('_')
-        mGo.append(float(fname[2]))
-        end=fname[3].split('.')
-        mLsp.append(float(end[0]))
+names = [k.GetName() for k in signalFile.GetListOfKeys()]
+for n in names:
+        parse=n.split('_')
+        #if parse[1]=="T1bbbb":
+        #models.append(parse[1])
+        mGo.append(int(parse[2]))
+	mLsp.append(int(parse[3]))
+#for line in flist:
+#        fname=line.split('_')
+#        mGo.append(float(fname[2]))
+#        end=fname[3].split('.')
+#        mLsp.append(float(end[0]))
 PrefitErrorUp=[]
 PrefitErrorDn=[]
 fprefit=open("ParsedInputPrefit.txt", 'r')
@@ -24,11 +34,10 @@ QScan=TGraph2D()
 QScan.SetName("QScan")
 WSigma=TGraph2D()
 WSigma.SetName("WSigma")
-theDir='testCards-allBkgs-SMStttt1200-7.6-mu0.0/'
-#theDir='./testCards-allBkgs-T2tt_%d_%d-2.6-mu0.0/' %(600, 300)
+#theDir='testCards-allBkgs-SMSt-7.6-mu0.0/'
+theDir='../testCards-allBkgs-T1bbbb_1200_800-7.6-mu0.0/' 
 #theDir='./testCards-allBkgs-T2tt_%d_%d-2.6-mu0.0/' %(600, 300)
 YieldsFile=TFile(theDir+"/yields.root", "READ")
-signalFile=TFile("../inputHistograms/fastsimSignalT1tttt/RA2bin_signal.root", "READ")
 histqcd=YieldsFile.Get("QCD")
 histZ=YieldsFile.Get("Zvv")
 histTau=YieldsFile.Get("tau")
@@ -42,22 +51,48 @@ hsprefit_tot = hsprefit.GetStack().Last();
 DataHist=YieldsFile.Get("data")
 for m in range(len(mGo)):
 	#print mGo[m], mLsp[m]
-	signal=signalFile.Get("RA2bin_T1tttt_%d_%d_fast" %(int(mGo[m]), int(mLsp[m])))
+	signal=signalFile.Get("RA2bin_%s_%d_%d_fast" %(sys.argv[1],int(mGo[m]), int(mLsp[m])))
 	signal.Scale(7600)
 	QHighSTotal=0
 	PullWeighted=0
-	for i in range(1,161):
+        dictQ={}
+	Totalq2=0
+        for i in range(1,161):
+                s=signal.GetBinContent(i)
+                b=hsprefit_tot.GetBinContent(i)
+                q=2*(sqrt(s+b)-sqrt(b))
+                Totalq2=Totalq2+(q*q)
+                dictQ[i]=q*q
+        sortedQbins=sorted(dictQ.items(), key=operator.itemgetter(1))
+        sortedQbins.reverse()
+        #print sortedQbins
+        for i in range(1,161):
+                s=signal.GetBinContent(i)
+                b=hsprefit_tot.GetBinContent(i)
+                q=2*(sqrt(s+b)-sqrt(b))
+                binlabel=signal.GetXaxis().GetBinLabel(i)
+        fractionalQ=0
+        cutoff=1.0
+        for ibin in sortedQbins:
+                fractionalQ=fractionalQ+(ibin[1]*ibin[1])
+                #if fractionalQ/Totalq2>cutoff:break	
+		i=ibin[0]
 		s=signal.GetBinContent(i)
 		b=hsprefit_tot.GetBinContent(i)
 		Q=2*(sqrt(s+b)-sqrt(b))
 		if(Q>0.0):
 			QHighSTotal=QHighSTotal+(Q*Q)
   			Pull=DataHist.GetBinContent(i)-hsprefit_tot.GetBinContent(i)
-                	if PrefitErrorUp[i-1]>0.0 or DataHist.GetBinContent(i)>0.0:
-				if Pull>0:
-                        		if PrefitErrorUp[i-1]>0.0:Pull=Pull/sqrt(DataHist.GetBinContent(i)+(PrefitErrorUp[i-1]*PrefitErrorUp[i-1]))
+                	#if DataHist.GetBinContent(i)>0.0:
+			if Pull>0:
+                        	if DataHist.GetBinContent(i)>0.0:
+					Pull=Pull/sqrt(DataHist.GetBinContent(i)+(PrefitErrorUp[i-1]*PrefitErrorUp[i-1]))
 				else:
-					if PrefitErrorDn[i-1]>0.0:Pull=Pull/sqrt(DataHist.GetBinContent(i)+(PrefitErrorDn[i-1]*PrefitErrorDn[i-1]))
+                                        Pull=Pull/sqrt(1.0+(PrefitErrorUp[i-1]*PrefitErrorUp[i-1]))
+			else:
+				if DataHist.GetBinContent(i)>0.0:Pull=Pull/sqrt(DataHist.GetBinContent(i)+(PrefitErrorDn[i-1]*PrefitErrorDn[i-1]))
+				else: Pull=Pull/sqrt(1.0+(PrefitErrorDn[i-1]*PrefitErrorDn[i-1]))
+					
 			PullWeighted=PullWeighted+(Pull*Q*Q)
 			#if mGo[m]==600 and mLsp[m]==300:print Pull
 

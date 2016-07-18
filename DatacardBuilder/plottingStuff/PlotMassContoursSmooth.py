@@ -58,7 +58,7 @@ MuScanObsSdn=TGraph2D(len(mLsp))
 MuScanObsSdn.SetName("MuScanObsSdn")
 '''
 for m in range(len(mGo)):
-    	if sys.argv[1]=="T1qqqq" and mGo[m]<400: continue
+    	#if sys.argv[1]=="T1qqqq" and mGo[m]<400: continue
 	filein=TFile("results_%s_%d_%d.root" %(sys.argv[1],int(mGo[m]), int(mLsp[m])))
 	t = filein.Get("results")
 	if not t:

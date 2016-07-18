@@ -52,7 +52,7 @@ def condorize(command,tag,odir,CMSSWVER):
     #f1.write("scram b ProjectRename \n");
     #f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
     f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
-    f1.write("#SBATCH -p stackholder-4g\n")
+    f1.write("#SBATCH -p stakeholder-4g\n")
     f1.write("#SBATCH --time=03:30:00\n")
     f1.write("#SBATCH --mem-per-cpu=6000 \n")
     f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
@@ -91,7 +91,7 @@ def condorize(command,tag,odir,CMSSWVER):
     f2.close();
     '''
     #os.system("condor_submit %s" % (f2n));
-    os.system("qsub -q hepx %s " %f1n)
+    os.system("sbatch %s " %f1n)
  #   os.chdir("../.");
 
 
@@ -113,7 +113,7 @@ if __name__ == '__main__':
     #if not options.keeptar:
     os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
     '''
-    f = TFile.Open("inputHistograms/fastsimSignalT1qqqq/RA2bin_signal.root");
+    f = TFile.Open("inputHistograms/fastsimSignalT2bb/RA2bin_signal.root");
     names = [k.GetName() for k in f.GetListOfKeys()]
     models = []
     mGos=[]
