@@ -61,7 +61,7 @@ if __name__ == '__main__':
 		if "T1qqqq" in sms:  signaldirtag ="inputHistograms/fastsimSignalT1qqqq"
 		if "T5qqqqVV" in sms:  signaldirtag ="inputHistograms/fastsimSignalT5qqqqVV"
 		#if ("T1" in sms or "T5qqqqVV" in sms): signaldirtag +="Gluino"
-		if ("T2tt" in sms): signaldirtag ="inputHistograms/fastsimSignalT2tt"
+		#if ("T2tt" in sms): signaldirtag ="inputHistograms/fastsimSignalT2tt"
 		if "T1ttbb" in sms or "T1tbtb" in sms: signaldirtag="/fastsimSignalScanMixedFinalState"
 	else: signaldirtag ="inputHistograms/FullSim"
 	signaltag = "RA2bin_"+sms;
@@ -72,11 +72,11 @@ if __name__ == '__main__':
 	print signaldirtag	
 	signalSFB_file =TFile(signaldirtag+"/RA2bin_signal.root");
 	signalRegion_sigCorrList=[]
-	if ("T2tt" in sms): 
-		        signalGenCorr_file =TFile(signaldirtag+"/genMHT/RA2bin_signal.root");
-			signalRegion_sigCorr        =signalGenCorr_file.Get(signaltag);
-			signalRegion_sigCorr.Scale(lumi*1000);
-			signalRegion_sigCorrList=binsToList(signalRegion_sigCorr);
+	if options.fastsim:
+		signalGenCorr_file =TFile(signaldirtag+"/RA2bin_signal_genMHT.root");
+		signalRegion_sigCorr        =signalGenCorr_file.Get(signaltag);
+		signalRegion_sigCorr.Scale(lumi*1000);
+		signalRegion_sigCorrList=binsToList(signalRegion_sigCorr);
 
 	signalSysCSFUp_file=TFile(signaldirtag+"/RA2bin_signal_ctagSFuncUp.root");
 	signalSysCSFDown_file=TFile(signaldirtag+"/RA2bin_signal_ctagSFuncDown.root");
@@ -134,13 +134,12 @@ if __name__ == '__main__':
 	signalRegion_sigList = binsToList( signalRegion_sigHist );
         sigGenCorr=[]
         sigErr=[]
-
-	if "T2tt" in sms:
+	if options.fastsim:
         	for i in range(len(signalRegion_sigList)):
-        	        if signalRegion_sigList[i]<0: signalRegion_sigList[i]=0.0
-        	        if signalRegion_sigCorrList[i]<0:signalRegion_sigCorrList[i]=0.0
-        	        sigGenCorr.append((signalRegion_sigList[i]+signalRegion_sigCorrList[i])/2.)
-        	        sigErr.append(abs(signalRegion_sigList[i]-signalRegion_sigCorrList[i])/2.)
+      			if signalRegion_sigList[i]<0: signalRegion_sigList[i]=0.0
+        		if signalRegion_sigCorrList[i]<0:signalRegion_sigCorrList[i]=0.0
+        		sigGenCorr.append((signalRegion_sigList[i]+signalRegion_sigCorrList[i])/2.)
+        		sigErr.append(abs(signalRegion_sigList[i]-signalRegion_sigCorrList[i])/2.)
 			
 	signalRegion_sigListMCstatErr = binsErrorsToList( signalRegion_sigHist );	
 	signalRegion_sigListSFUp=binsToList( signalRegion_sigHistSFUp );
@@ -357,52 +356,52 @@ if __name__ == '__main__':
 	LLSysNCDown=binsToList(LLSysNCDown_Hist)
 
 	for i in range(len(LLSysNCUp)):
-		if(LLSysMTUp[i]<-99 or signalRegion_CSList[i]<2): LLSysMTUp[i]=1.0;
-		if(LLSysMTDown[i]<-99 or signalRegion_CSList[i]<2 ): LLSysMTDown[i]=1.0;
-		if(LLSysIsoTrackUp[i]<-99 or signalRegion_CSList[i]<2):LLSysIsoTrackUp[i]=1.0
-		if(LLSysIsoTrackDown[i]<-99 or signalRegion_CSList[i]<2):LLSysIsoTrackDown[i]=1.0
-		if(LLSysPurUp[i]<-99 or signalRegion_CSList[i]<2 ):LLSysPurUp[i]=1.0;
-		if(LLSysPurDown[i]<-99 or signalRegion_CSList[i]<2 ):LLSysPurDown[i]=1.0;
-		if(LLSysSinglePurUp[i]<-99 or signalRegion_CSList[i]<2 ):LLSysSinglePurUp[i]=1.0;
-		if(LLSysSinglePurDown[i]<-99 or signalRegion_CSList[i]<2 ):LLSysSinglePurDown[i]=1.0;
-		if(LLSysDiLepPurUp[i]<-99 or signalRegion_CSList[i]<2 ):LLSysDiLepPurUp[i]=1.0;
-		if(LLSysDiLepPurDown[i]<-99 or signalRegion_CSList[i]<2 ):LLSysDiLepPurDown[i]=1.0;
-		if(LLSysMuIsoUp[i]<-99 or signalRegion_CSList[i]<2 ):LLSysMuIsoUp[i]=1.0;
-		if(LLSysMuIsoDown[i]<-99 or signalRegion_CSList[i]<2 ):LLSysMuIsoDown[i]=1.0;
-		if(LLSysMuRecoUp[i]<-99 or signalRegion_CSList[i]<2 ):LLSysMuRecoUp[i]=1.0;
-		if(LLSysMuRecoDown[i]<-99 or signalRegion_CSList[i]<2 ):LLSysMuRecoDown[i]=1.0;
-		if(LLSysMuAccUp[i]<-99 or signalRegion_CSList[i]<2 ):LLSysMuAccUp[i]=1.0;
-		if(LLSysMuAccDown[i]<-99 or signalRegion_CSList[i]<2 ):LLSysMuAccDown[i]=1.0;
-		if(LLSysElecIsoUp[i]<-99 or signalRegion_CSList[i]<2 ):LLSysElecIsoUp[i]=1.0;
-		if(LLSysElecIsoDown[i]<-99 or signalRegion_CSList[i]<2 ):LLSysElecIsoDown[i]=1.0;
-		if(LLSysElecRecoUp[i]<-99 or signalRegion_CSList[i]<2 ):LLSysElecRecoUp[i]=1.0;
-		if(LLSysElecRecoDown[i]<-99 or signalRegion_CSList[i]<2 ):LLSysElecRecoDown[i]=1.0;
-		if(LLSysElecAccUp[i]<-99 or signalRegion_CSList[i]<2 ):LLSysElecAccUp[i]=1.0;
-		if(LLSysElecAccDown[i]<-99 or signalRegion_CSList[i]<2 ):LLSysElecAccDown[i]=1.0;
+		if(LLSysMTUp[i]<-99 ): LLSysMTUp[i]=1.0;
+		if(LLSysMTDown[i]<-99  ): LLSysMTDown[i]=1.0;
+		if(LLSysIsoTrackUp[i]<-99 ):LLSysIsoTrackUp[i]=1.0
+		if(LLSysIsoTrackDown[i]<-99 ):LLSysIsoTrackDown[i]=1.0
+		if(LLSysPurUp[i]<-99  ):LLSysPurUp[i]=1.0;
+		if(LLSysPurDown[i]<-99  ):LLSysPurDown[i]=1.0;
+		if(LLSysSinglePurUp[i]<-99  ):LLSysSinglePurUp[i]=1.0;
+		if(LLSysSinglePurDown[i]<-99  ):LLSysSinglePurDown[i]=1.0;
+		if(LLSysDiLepPurUp[i]<-99  ):LLSysDiLepPurUp[i]=1.0;
+		if(LLSysDiLepPurDown[i]<-99  ):LLSysDiLepPurDown[i]=1.0;
+		if(LLSysMuIsoUp[i]<-99  ):LLSysMuIsoUp[i]=1.0;
+		if(LLSysMuIsoDown[i]<-99  ):LLSysMuIsoDown[i]=1.0;
+		if(LLSysMuRecoUp[i]<-99  ):LLSysMuRecoUp[i]=1.0;
+		if(LLSysMuRecoDown[i]<-99  ):LLSysMuRecoDown[i]=1.0;
+		if(LLSysMuAccUp[i]<-99  ):LLSysMuAccUp[i]=1.0;
+		if(LLSysMuAccDown[i]<-99  ):LLSysMuAccDown[i]=1.0;
+		if(LLSysElecIsoUp[i]<-99  ):LLSysElecIsoUp[i]=1.0;
+		if(LLSysElecIsoDown[i]<-99  ):LLSysElecIsoDown[i]=1.0;
+		if(LLSysElecRecoUp[i]<-99  ):LLSysElecRecoUp[i]=1.0;
+		if(LLSysElecRecoDown[i]<-99  ):LLSysElecRecoDown[i]=1.0;
+		if(LLSysElecAccUp[i]<-99  ):LLSysElecAccUp[i]=1.0;
+		if(LLSysElecAccDown[i]<-99  ):LLSysElecAccDown[i]=1.0;
 	
 	
-		if(LLStatMTUp[i]<-99 or signalRegion_CSList[i]<2): LLStatMTUp[i]=1.0;
-		if(LLStatMTDown[i]<-99 or signalRegion_CSList[i]<2 ): LLStatMTDown[i]=1.0;
-		if(LLStatIsoTrackUp[i]<-99 or signalRegion_CSList[i]<2):LLStatIsoTrackUp[i]=1.0
-		if(LLStatIsoTrackDown[i]<-99 or signalRegion_CSList[i]<2):LLStatIsoTrackDown[i]=1.0
-		if(LLStatPurUp[i]<-99 or signalRegion_CSList[i]<2 ):LLStatPurUp[i]=1.0;
-		if(LLStatPurDown[i]<-99 or signalRegion_CSList[i]<2 ):LLStatPurDown[i]=1.0;
-		if(LLStatSinglePurUp[i]<-99 or signalRegion_CSList[i]<2 ):LLStatSinglePurUp[i]=1.0;
-		if(LLStatSinglePurDown[i]<-99 or signalRegion_CSList[i]<2 ):LLStatSinglePurDown[i]=1.0;
-		if(LLStatDiLepPurUp[i]<-99 or signalRegion_CSList[i]<2 ):LLStatDiLepPurUp[i]=1.0;
-		if(LLStatDiLepPurDown[i]<-99 or signalRegion_CSList[i]<2 ):LLStatDiLepPurDown[i]=1.0;
-		if(LLStatMuIsoUp[i]<-99 or signalRegion_CSList[i]<2 ):LLStatMuIsoUp[i]=1.0;
-		if(LLStatMuIsoDown[i]<-99 or signalRegion_CSList[i]<2 ):LLStatMuIsoDown[i]=1.0;
-		if(LLStatMuRecoUp[i]<-99 or signalRegion_CSList[i]<2 ):LLStatMuRecoUp[i]=1.0;
-		if(LLStatMuRecoDown[i]<-99 or signalRegion_CSList[i]<2 ):LLStatMuRecoDown[i]=1.0;
-		if(LLStatMuAccUp[i]<-99 or signalRegion_CSList[i]<2 ):LLStatMuAccUp[i]=1.0;
-		if(LLStatMuAccDown[i]<-99 or signalRegion_CSList[i]<2 ):LLStatMuAccDown[i]=1.0;
-		if(LLStatElecIsoUp[i]<-99 or signalRegion_CSList[i]<2 ):LLStatElecIsoUp[i]=1.0;
-		if(LLStatElecIsoDown[i]<-99 or signalRegion_CSList[i]<2 ):LLStatElecIsoDown[i]=1.0;
-		if(LLStatElecRecoUp[i]<-99 or signalRegion_CSList[i]<2 ):LLStatElecRecoUp[i]=1.0;
-		if(LLStatElecRecoDown[i]<-99 or signalRegion_CSList[i]<2 ):LLStatElecRecoDown[i]=1.0;
-		if(LLStatElecAccUp[i]<-99 or signalRegion_CSList[i]<2 ):LLStatElecAccUp[i]=1.0;
-		if(LLStatElecAccDown[i]<-99 or signalRegion_CSList[i]<2 ):LLStatElecAccDown[i]=1.0;
+		if(LLStatMTUp[i]<-99 ): LLStatMTUp[i]=1.0;
+		if(LLStatMTDown[i]<-99  ): LLStatMTDown[i]=1.0;
+		if(LLStatIsoTrackUp[i]<-99 ):LLStatIsoTrackUp[i]=1.0
+		if(LLStatIsoTrackDown[i]<-99 ):LLStatIsoTrackDown[i]=1.0
+		if(LLStatPurUp[i]<-99  ):LLStatPurUp[i]=1.0;
+		if(LLStatPurDown[i]<-99  ):LLStatPurDown[i]=1.0;
+		if(LLStatSinglePurUp[i]<-99  ):LLStatSinglePurUp[i]=1.0;
+		if(LLStatSinglePurDown[i]<-99  ):LLStatSinglePurDown[i]=1.0;
+		if(LLStatDiLepPurUp[i]<-99  ):LLStatDiLepPurUp[i]=1.0;
+		if(LLStatDiLepPurDown[i]<-99  ):LLStatDiLepPurDown[i]=1.0;
+		if(LLStatMuIsoUp[i]<-99  ):LLStatMuIsoUp[i]=1.0;
+		if(LLStatMuIsoDown[i]<-99  ):LLStatMuIsoDown[i]=1.0;
+		if(LLStatMuRecoUp[i]<-99  ):LLStatMuRecoUp[i]=1.0;
+		if(LLStatMuRecoDown[i]<-99  ):LLStatMuRecoDown[i]=1.0;
+		if(LLStatMuAccUp[i]<-99  ):LLStatMuAccUp[i]=1.0;
+		if(LLStatMuAccDown[i]<-99  ):LLStatMuAccDown[i]=1.0;
+		if(LLStatElecIsoUp[i]<-99  ):LLStatElecIsoUp[i]=1.0;
+		if(LLStatElecIsoDown[i]<-99  ):LLStatElecIsoDown[i]=1.0;
+		if(LLStatElecRecoUp[i]<-99  ):LLStatElecRecoUp[i]=1.0;
+		if(LLStatElecRecoDown[i]<-99  ):LLStatElecRecoDown[i]=1.0;
+		if(LLStatElecAccUp[i]<-99  ):LLStatElecAccUp[i]=1.0;
+		if(LLStatElecAccDown[i]<-99  ):LLStatElecAccDown[i]=1.0;
 	
 	#Also Get Sumw2 errors
 	LLSumW2errors=[]
@@ -500,7 +499,7 @@ if __name__ == '__main__':
 		HadTauMuDiLeptonDn.append(1.0/HadTauMuDiLepton[i])
 		HadTauAccStatDn.append(1.0/HadTauAccStat[i])
 		HadTauIsoTkEffSysDn.append(1.0/HadTauIsoTkEffHistSys[i])
-
+		#print HadTauIsoTkEffSysDn
 	tauSqrtSumW2=binsToList(HadTauStatUncertainties)
 	for i in range(len(tauSqrtSumW2)):
 		if signalRegion_tauList[i]>0.0: tauSqrtSumW2[i]=tauSqrtSumW2[i]/signalRegion_tauList[i]
@@ -849,7 +848,8 @@ if __name__ == '__main__':
 		if options.realData: srobs = Data_List[i];
 		signalRegion_Obs.append( srobs );
 		signal=signalRegion_sigList[i]
-		if "T2tt" in model: signal=sigGenCorr[i]
+		#if "T2tt" in model: 
+		if options.fastsim:signal=sigGenCorr[i]
 		data.Fill(i+.5, Data_List[i])
 		qcd.Fill(i+.5, NSRForSignalRegion_QCDList[i])
 		zvv.Fill(i+.5, ZvvYieldsInSignalRegion[i])
@@ -879,8 +879,8 @@ if __name__ == '__main__':
 			LLContamList=binsToList(LLContamHist)
 			HadtauContamList=binsToList(LLContamHist)  
 			#print len(LLContamList),len(HadtauContamList)	
-			if "T2tt" in model:
-				signal=sigGenCorr[i]
+			#if "T2tt" in model:
+			signal=sigGenCorr[i]
 			if signal-LLContamList[i]-HadtauContamList[i]>0:
 				tmpList.append(signal-LLContamList[i]-HadtauContamList[i]);
 			else:
@@ -930,8 +930,7 @@ if __name__ == '__main__':
 	for i in range(signalRegion.GetNbins()):
 		if( signalRegion_sigList[i]>0.000001): 
 			
-			#if not options.fastsim:
-			if "T2tt" in sms: signalRegion.addSingleSystematic('METResolutionSys', 'lnU', ['sig'], 1+sigErr[i], '', i)
+			if options.fastsim:signalRegion.addSingleSystematic('METResolutionSys', 'lnU', ['sig'], 1+sigErr[i], '', i)
 				
 
 			signalRegion.addAsymSystematic('TrigSystunc','lnN', ['sig'], signalRegion_sigListTrigSystUp[i]/signalRegion_sigList[i], signalRegion_sigListTrigSystDown[i]/signalRegion_sigList[i], '', i)
@@ -1148,6 +1147,19 @@ if __name__ == '__main__':
 
                        	signalRegion.addAsymSystematic("MuAccStatNJets0_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatMuAccUp), (LLStatMuAccDown),'NJets0_BTags._'+str(MHTHTBinsLL[h]))
                         signalRegion.addAsymSystematic("ElecAccStatNJets0_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatElecAccUp), (LLStatElecAccDown),'NJets0_BTags._'+str(MHTHTBinsLL[h]))	
+			signalRegion.addAsymSystematic("LLSysIsoTrackNJets1_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysIsoTrackUp), (LLSysIsoTrackDown),'NJets1_BTags._'+str(MHTHTBinsLL[h]))
+			
+			signalRegion.addAsymSystematic("MuAccSysNJets1_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysMuAccUp), (LLSysMuAccDown),'NJets1_BTags._'+str(MHTHTBinsLL[h]))
+			signalRegion.addAsymSystematic("ElecAccSysNJets1_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysElecAccUp), (LLSysElecAccDown),'NJets1_BTags._'+str(MHTHTBinsLL[h]))
+				
+			if options.llpOnly:signalRegion.addAsymSystematic("LLStatIsoTrackNJets1_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatIsoTrackUp), (LLStatIsoTrackDown),'NJets1_BTags._'+str(MHTHTBinsLL[h]))
+			else: 
+				signalRegion.addCorrelSystematicAsym("LLStatIsoTrackNJets1_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL','WTopHad'],(LLStatIsoTrackUp), (LLStatIsoTrackDown),HadTauIsoTkEffHistSys, HadTauIsoTkEffSysDn,'NJets1_BTags._'+str(MHTHTBinsLL[h]))
+
+                       	signalRegion.addAsymSystematic("MuAccStatNJets1_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatMuAccUp), (LLStatMuAccDown),'NJets1_BTags._'+str(MHTHTBinsLL[h]))
+                        signalRegion.addAsymSystematic("ElecAccStatNJets1_"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatElecAccUp), (LLStatElecAccDown),'NJets1_BTags._'+str(MHTHTBinsLL[h]))	
+
+
 		for j in range(len(NJbinsLL)): #print NJbinsLL[j]
 			for h in range(len(MHTHTBinsLL)):	
 				if options.llpOnly: signalRegion.addAsymSystematic("LLSysIsoTrack7Jets"+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysIsoTrackUp), (LLSysIsoTrackDown),str(NJbinsLL[j])+"_BTags._"+str(MHTHTBinsLL[h]))
@@ -1160,19 +1172,20 @@ if __name__ == '__main__':
 			   signalRegion.addAsymSystematic("LLPuritySys_"+str(MHTBins[m])+"_"+str(NJbinsLLPur[j]),'lnN',['WTopSL'],LLSysPurUp,LLSysPurDown,str(NJbinsLLPur[j])+"_BTags._"+str(MHTBins[m])+"_HT.")
                            signalRegion.addAsymSystematic("LLPurityStat_"+str(MHTBins[m])+"_"+str(NJbinsLLPur[j]),'lnN',['WTopSL'],LLStatPurUp,LLStatPurDown,str(NJbinsLLPur[j])+"_BTags._"+str(MHTBins[m])+"_HT.")
 			for mh in range(len(MHTHTBinsLL)):
-			   if options.llpOnly:signalRegion.addAsymSystematic("MuAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysMuAccUp), (LLSysMuAccDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))
-			   else: signalRegion.addCorrelSystematicAsym("MuAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN', ['WTopSL','WtopHad'], (LLSysMuAccUp), (LLSysMuAccDown),HadTauMuAccSysPDFUp, HadTauMuAccSysPDFDn, str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))
-
-                           signalRegion.addAsymSystematic("ElecAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysElecAccUp), (LLSysElecAccDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))
-                           if options.llpOnly: signalRegion.addAsymSystematic("MuAccStat"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatMuAccUp), (LLStatMuAccDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))
+			   if options.llpOnly:signalRegion.addAsymSystematic("MuAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN',['WTopSL'],(LLSysMuAccUp), (LLSysMuAccDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))
 			   else: 
-				signalRegion.addCorrelSystematicAsym("MuAccStat"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN', ['WTopSL','WtopHad'], (LLStatMuAccUp), (LLStatMuAccDown), HadTauAccStat, HadTauAccStatDn, str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))
-                           signalRegion.addAsymSystematic("ElecAccStat"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLStatElecAccUp), (LLStatElecAccDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))		
+				signalRegion.addCorrelSystematicAsym("MuAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN', ['WTopSL','WTopHad'], (LLSysMuAccUp), (LLSysMuAccDown),(HadTauMuAccSysPDFUp), (HadTauMuAccSysPDFDn), str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))
+                           signalRegion.addAsymSystematic("ElecAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN',['WTopSL'],(LLSysElecAccUp), (LLSysElecAccDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))
+                           if options.llpOnly: signalRegion.addAsymSystematic("MuAccStat"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN',['WTopSL'],(LLStatMuAccUp), (LLStatMuAccDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))
+			   else: 
+				signalRegion.addCorrelSystematicAsym("MuAccStat"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN', ['WTopSL','WTopHad'], (LLStatMuAccUp), (LLStatMuAccDown), HadTauAccStat, HadTauAccStatDn, str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))
+                           signalRegion.addAsymSystematic("ElecAccStat"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN',['WTopSL'],(LLStatElecAccUp), (LLStatElecAccDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))		
 
-                           if options.llpOnly:signalRegion.addAsymSystematic("MuQSquareAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysMuQSquareUp), (LLSysMuQSquareDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))
-			   else:  signalRegion.addCorrelSystematicAsym("MuQSquareAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN', ['WTopSL','WtopHad'], (LLSysMuQSquareUp), (LLSysMuQSquareDown), HadTauMuAccSysScaleUp, HadTauMuAccSysScaleDn,str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))
-                           signalRegion.addAsymSystematic("ElecQSquareAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[h]),'lnN',['WTopSL'],(LLSysElecQSquareUp), (LLSysElecQSquareDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[h]))
-	
+                           if options.llpOnly:signalRegion.addAsymSystematic("MuQSquareAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN',['WTopSL'],(LLSysMuQSquareUp), (LLSysMuQSquareDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))
+			   else:  signalRegion.addCorrelSystematicAsym("MuQSquareAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN', ['WTopSL','WTopHad'], (LLSysMuQSquareUp), (LLSysMuQSquareDown), HadTauMuAccSysScaleUp, HadTauMuAccSysScaleDn,str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))
+                           signalRegion.addAsymSystematic("ElecQSquareAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN',['WTopSL'],(LLSysElecQSquareUp), (LLSysElecQSquareDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))
+			   print str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh])
+	#print LLSysMuQSquareUp[150],HadTauMuAccSysScaleUp[150]
 	if options.allBkgs or options.tauOnly or options.llpOnly or (options.tauOnly and  options.llpOnly):
 		for i in range(signalRegion.GetNbins()):
 			#if(signalRegion_CSList[i]<2):
