@@ -834,7 +834,6 @@ if __name__ == '__main__':
 	Data_List=binsToList(Data_Hist)
         sigGenCorr=[]
         sigErr=[]
-	tmpList = [];
 	#fill signal
 	if options.fastsim:
 		GenContamin=[]
@@ -851,11 +850,11 @@ if __name__ == '__main__':
         	                if 'T2t' in model:
         	                        LLContamHist=signalContamLL_file.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
         	                        LLContamGENHist=signalContamLL_GENfile.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
-               		         else:
+               		        else:
                         	        LLContamHist=signalContamLL_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))	
                         	        LLContamGENHist=signalContamLL_GENfile.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))	
 				for i in range(len(signalRegion_sigList)):
-					GenContamin.append(LLContamHist.GetBinContent(i)
+					GenContamin.append(LLContamHist.GetBinContent(i))
         	for i in range(len(signalRegion_sigList)):
       			if signalRegion_sigList[i]<0: signalRegion_sigList[i]=0.0
         		if signalRegion_sigCorrList[i]<0:signalRegion_sigCorrList[i]=0.0
@@ -864,14 +863,12 @@ if __name__ == '__main__':
 			if ('T1t' in model or 'T5qqqqVV' in model or 'T2tt' in model) :
 				signalContSubtracted=signalContSubtracted-LLContamHist.GetBinContent(i+1)-TauContamHist.GetBinContent(i+1)
 				signalGenContSubtracted=signalGenContSubtracted-LLContamGENHist.GetBinContent(i+1)-TauGenContamHist.GetBinContent(i+1)
-        		sigGenCorr.append((signalContSubtracted+signalGenContSubtracted)/2.)
-        		sigErr.append(abs(signalContSubtracted-signalGenContSubtracted)/2.)
-		
-		tmpList=sigGenCorr	
-	else:
-		tmpList=signalRegion_sigList
-		print "bin {0:2}: {1:6.2f} {2:6.2f} ||| {3:6.2f} {4:6.2f} {5:6.2f} {6:6.2f}".format(i,signalRegion_sigList[i]*signalmu,srobs-signalRegion_sigList[i]*signalmu,NSRForSignalRegion_QCDList[i],ZvvYieldsInSignalRegion[i],signalRegion_LLList[i],signalRegion_tauList[i]),
-		print " ---", tagsForSignalRegion[i]
+			if (signalContSubtracted+signalGenContSubtracted)/2.>=0:
+        			sigGenCorr.append((signalContSubtracted+signalGenContSubtracted)/2.)
+        			sigErr.append(abs(signalContSubtracted-signalGenContSubtracted)/2.)
+			else:	
+				sigGenCorr.append(0.0)
+				sigErr.append(1.0)
 	'''
 		if options.fastsim and ('T1t' in model or 'T5qqqqVV' in model or 'T2tt' in model) :
 			signalContamLL_file=TFile("inputHistograms/histograms_%1.1ffb/LLContamination_%s.root" %(lumi,model))
@@ -901,7 +898,9 @@ if __name__ == '__main__':
 			tmpList.append(signalRegion_sigList[i])
 	'''
 		# LL rate
+
 	for i in range(signalRegion._nBins):
+		tmpList = [];
 		srobs = 0;
 		srobs += signalRegion_sigList[i]*signalmu;
 		if options.allBkgs or options.qcdOnly: srobs += NSRForSignalRegion_QCDList[i];
@@ -911,14 +910,16 @@ if __name__ == '__main__':
 		if options.realData: srobs = Data_List[i];
 		signalRegion_Obs.append( srobs );
 		signal=signalRegion_sigList[i]
-		#if "T2tt" in model: 
 		if options.fastsim:signal=sigGenCorr[i]
+		tmpList.append(signal)
 		data.Fill(i+.5, Data_List[i])
 		qcd.Fill(i+.5, NSRForSignalRegion_QCDList[i])
 		zvv.Fill(i+.5, ZvvYieldsInSignalRegion[i])
 		ll.Fill(i+.5, signalRegion_LLList[i])
 		tau.Fill(i+.5, signalRegion_tauList[i])	
 		sig.Fill(i+.5,signal*signalmu)
+		print "bin {0:2}: {1:6.2f} {2:6.2f} ||| {3:6.2f} {4:6.2f} {5:6.2f} {6:6.2f}".format(i,signal*signalmu,srobs-signalRegion_sigList[i]*signalmu,NSRForSignalRegion_QCDList[i],ZvvYieldsInSignalRegion[i],signalRegion_LLList[i],signalRegion_tauList[i]),
+		print " ---", tagsForSignalRegion[i]
 		
 		if options.allBkgs or options.llpOnly or (options.tauOnly and  options.llpOnly):		
 			tmpList.append(signalRegion_LLList[i]);
@@ -931,7 +932,7 @@ if __name__ == '__main__':
 		if options.allBkgs or options.qcdOnly: tmpList.append( ratesForSignalRegion_QCDList[i] );
 		signalRegion_Rates.append( tmpList );
 	
-	signalRegion.fillRates( signalRegion_Rates );
+	signalRegion.fillRates(signalRegion_Rates );
 	signalRegion.setObservedManually(signalRegion_Obs)
 
 	SLcontrolRegion.writeRates();
@@ -1086,8 +1087,10 @@ if __name__ == '__main__':
 			sphotonRegion.addSingleSystematic('SPhoCR'+str(i),'lnU',['zvv'],100,singlePhotonBins[i]);	
 			# WTF,are these double counting
 			# sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
-			sphotonRegion.addAsymSystematic('ZgammaRatioErr', 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0+PhoCSZgRatioDown[i],tagsForSinglePhoton[i])
+			sphotonRegion.addAsymSystematic('ZgammaRatioErr', 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],tagsForSinglePhoton[i])
+			#print "Zgamme Err ",1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i]
 			sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp[i],ZgRdataMCErrDn[i], '',i)
+			#print ZgRdataMCErrUp[i],ZgRdataMCErrDn[i]
 			#sphotonRegion.addSingleSystematic('ZgRatioErr'+tagsForSinglePhoton[i],'lnN',['zvv'],RzgErrs[i],tagsForSinglePhoton[i]);	# different per bin
 			sphotonRegion.addSingleSystematic('PhoPurUnc','lnN',['zvv'],PurErrs[i],'',i);	 # this is getting split up now
 			# sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, '',i); #### this is now merged with ZGratio uncertainty
