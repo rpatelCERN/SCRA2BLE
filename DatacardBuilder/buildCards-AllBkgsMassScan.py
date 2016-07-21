@@ -840,19 +840,32 @@ if __name__ == '__main__':
 		LepContamin=[]
 		if ('T1t' in model or 'T5qqqqVV' in model or 'T2tt' in model) :
 				signalContamLL_file=TFile("inputHistograms/histograms_%1.1ffb/LLContamination_%s.root" %(lumi,model))
-				signalContamTau_file=TFile("inputHistograms/histograms_%1.1ffb/Signal%sHtauContamin.root" %(lumi,model))
+				signalContamTau_file=TFile("inputHistograms/histograms_%1.1ffb/LLContamination_%s.root" %(lumi,model))
+				#signalContamTau_file=TFile("inputHistograms/histograms_%1.1ffb/Signal%sHtauContamin.root" %(lumi,model))
 				signalContamLL_GENfile=TFile("inputHistograms/histograms_%1.1ffb/LLContamination_%s_genMHT.root" %(lumi,model))
-				signalContamTau_GENfile=TFile("inputHistograms/histograms_%1.1ffb/1.1ffb/LLContamination_%s_genMHT.root" %(lumi,model))
-			        TauContamHist =signalContamTau_file.Get("SearchH_b/%s_%s_fast" %(options.mGo, options.mLSP))
-				TauGenContamHist=signalContamTau_GENfile.Get("SignalContamination/mStop_%s_mLSP_%s")
-                        	TauContamHist.Scale(lumi/3.0)
+				signalContamTau_GENfile=TFile("inputHistograms/histograms_%1.1ffb/LLContamination_%s_genMHT.root" %(lumi,model))
+			        #TauContamHist =signalContamTau_file.Get("SearchH_b/%s_%s_fast" %(options.mGo, options.mLSP))
+				#TauGenContamHist=signalContamTau_GENfile.Get("SignalContamination/mStop_%s_mLSP_%s")
+                        	#TauContamHist.Scale(lumi/3.0)
         	                LLContamHist=TH1D();
+				TauContamHist=TH1D();
+        	                LLContamGENHist=TH1D();
+				TauContamGENHist=TH1D();
+				
         	                if 'T2t' in model:
         	                        LLContamHist=signalContamLL_file.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
         	                        LLContamGENHist=signalContamLL_GENfile.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
+					TauContamHist=signalContamTau_file.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
+					TauContamGENHist=signalContamTau_GENfile.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
                		        else:
                         	        LLContamHist=signalContamLL_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))	
-                        	        LLContamGENHist=signalContamLL_GENfile.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))	
+                        	        LLContamGENHist=signalContamLL_GENfile.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
+					TauContamHist=signalContamTau_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
+					TauContamGENHist=signalContamTau_GENfile.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
+				LLContamHist.Scale(lumi*1000)
+				LLContamGENHist.Scale(lumi*1000)
+				TauContamHist.Scale(lumi*1000)
+				TauContamGENHist.Scale(lumi*1000)	
 				for i in range(len(signalRegion_sigList)):
 					GenContamin.append(LLContamHist.GetBinContent(i))
         	for i in range(len(signalRegion_sigList)):
@@ -862,7 +875,7 @@ if __name__ == '__main__':
 			signalGenContSubtracted=signalRegion_sigCorrList[i]
 			if ('T1t' in model or 'T5qqqqVV' in model or 'T2tt' in model) :
 				signalContSubtracted=signalContSubtracted-LLContamHist.GetBinContent(i+1)-TauContamHist.GetBinContent(i+1)
-				signalGenContSubtracted=signalGenContSubtracted-LLContamGENHist.GetBinContent(i+1)-TauGenContamHist.GetBinContent(i+1)
+				signalGenContSubtracted=signalGenContSubtracted-LLContamGENHist.GetBinContent(i+1)-TauContamGENHist.GetBinContent(i+1)
 			if (signalContSubtracted+signalGenContSubtracted)/2.>=0:
         			sigGenCorr.append((signalContSubtracted+signalGenContSubtracted)/2.)
         			sigErr.append(abs(signalContSubtracted-signalGenContSubtracted)/2.)

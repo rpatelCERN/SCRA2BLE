@@ -53,7 +53,7 @@ def condorize(command,tag,odir,CMSSWVER):
     #f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
     f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
     f1.write("#SBATCH -p stakeholder-4g\n")
-    f1.write("#SBATCH --time=03:30:00\n")
+    f1.write("#SBATCH --time=05:30:00\n")
     f1.write("#SBATCH --mem-per-cpu=6000 \n")
     f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
     f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
