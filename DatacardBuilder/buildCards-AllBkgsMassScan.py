@@ -1119,21 +1119,21 @@ if __name__ == '__main__':
 		for i in range(signalRegion.GetNbins()):
 			if(signalRegion_CSList[i]>0):
 				signalRegion.addAsymSystematic("LLSysNonClosSys"+tagsForSignalRegion[i],'lnN',['WTopSL'],(LLSysNCUp[i]), (LLSysNCDown[i]),'', i)				
-			signalRegion.addAsymSystematic("LLStatEleIso",'lnN',['WTopSL'],(LLStatElecIsoUp[i]), (2-LLStatElecIsoDown[i]),'', i)
-			signalRegion.addAsymSystematic("LLStatEleReco",'lnN',['WTopSL'],(LLStatElecRecoUp[i]), (2-LLStatElecRecoDown[i]),'', i)
-			signalRegion.addAsymSystematic("LLStatMuReco",'lnN',['WTopSL'],(LLStatMuRecoUp[i]), (2-LLStatMuRecoDown[i]),'', i)
+			signalRegion.addAsymSystematic("LLStatEleIso",'lnN',['WTopSL'],(LLStatElecIsoUp[i]), (LLStatElecIsoDown[i]),'', i)
+			signalRegion.addAsymSystematic("LLStatEleReco",'lnN',['WTopSL'],(LLStatElecRecoUp[i]), (LLStatElecRecoDown[i]),'', i)
+			signalRegion.addAsymSystematic("LLStatMuReco",'lnN',['WTopSL'],(LLStatMuRecoUp[i]), (LLStatMuRecoDown[i]),'', i)
 
 			if options.llpOnly: 
-				signalRegion.addAsymSystematic("LLSysMuIso",'lnN',['WTopSL'],(LLSysMuIsoUp[i]), (2-LLSysMuIsoDown[i]),'', i)
+				signalRegion.addAsymSystematic("LLSysMuIso",'lnN',['WTopSL'],(LLSysMuIsoUp[i]), (LLSysMuIsoDown[i]),'', i)
 
-			else: signalRegion.addCorrelSystematicAsym("LLSysMuIso",'lnN',['WTopSL','WTopHad'],LLSysMuIsoUp[i], 2-LLSysMuIsoDown[i],HadTauMuonIsoUncDn[i], HadTauMuonIsoUncUp[i],'', i)
-		 	if options.llpOnly: signalRegion.addAsymSystematic("LLSysMuReco",'lnN',['WTopSL'],(LLSysMuRecoUp[i]), 2-(LLSysMuRecoDown[i]),'', i)
+			else: signalRegion.addCorrelSystematicAsym("LLSysMuIso",'lnN',['WTopSL','WTopHad'],LLSysMuIsoUp[i], LLSysMuIsoDown[i],HadTauMuonIsoUncDn[i], HadTauMuonIsoUncUp[i],'', i)
+		 	if options.llpOnly: signalRegion.addAsymSystematic("LLSysMuReco",'lnN',['WTopSL'],(LLSysMuRecoUp[i]), (LLSysMuRecoDown[i]),'', i)
 			else: 
-				signalRegion.addCorrelSystematicAsym("LLSysMuReco",'lnN',['WTopSL','WTopHad'],LLSysMuRecoUp[i], 2-LLSysMuRecoDown[i],HadTauMuonCorrUncDn[i], HadTauMuonCorrUncUp[i],'', i)
-				signalRegion.addCorrelSystematicAsym("LLStatMuIso",'lnN',['WTopSL','WTopHad'],(LLStatMuIsoUp[i]), (2-LLStatMuIsoDown[i]),HadTauMuonIsoRecoStatUncDn[i], HadTauMuonIsoRecoStatUncUp[i],'', i)
+				signalRegion.addCorrelSystematicAsym("LLSysMuReco",'lnN',['WTopSL','WTopHad'],LLSysMuRecoUp[i], LLSysMuRecoDown[i],HadTauMuonCorrUncDn[i], HadTauMuonCorrUncUp[i],'', i)
+				signalRegion.addCorrelSystematicAsym("LLStatMuIso",'lnN',['WTopSL','WTopHad'],(LLStatMuIsoUp[i]), (LLStatMuIsoDown[i]),HadTauMuonIsoRecoStatUncDn[i], HadTauMuonIsoRecoStatUncUp[i],'', i)
 
-			signalRegion.addAsymSystematic("LLSysEleIso",'lnN',['WTopSL'],(LLSysElecIsoUp[i]), (2-LLSysElecIsoDown[i]),'', i)
-			signalRegion.addAsymSystematic("LLSysEleReco",'lnN',['WTopSL'],(LLSysElecRecoUp[i]), (2-LLSysElecRecoDown[i]),'', i)	
+			signalRegion.addAsymSystematic("LLSysEleIso",'lnN',['WTopSL'],(LLSysElecIsoUp[i]), (LLSysElecIsoDown[i]),'', i)
+			signalRegion.addAsymSystematic("LLSysEleReco",'lnN',['WTopSL'],(LLSysElecRecoUp[i]), (LLSysElecRecoDown[i]),'', i)	
 
 		if options.llpOnly:
 			signalRegion.addAsymSystematic("LLSysMTW_NJet0",'lnN',['WTopSL'],LLSysMTUp, LLSysMTDown,'NJets0')
