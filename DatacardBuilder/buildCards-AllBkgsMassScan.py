@@ -840,32 +840,28 @@ if __name__ == '__main__':
 		LepContamin=[]
 		if ('T1t' in model or 'T5qqqqVV' in model or 'T2tt' in model) :
 				signalContamLL_file=TFile("inputHistograms/histograms_%1.1ffb/LLContamination_%s.root" %(lumi,model))
-				signalContamTau_file=TFile("inputHistograms/histograms_%1.1ffb/LLContamination_%s.root" %(lumi,model))
-				#signalContamTau_file=TFile("inputHistograms/histograms_%1.1ffb/Signal%sHtauContamin.root" %(lumi,model))
+				signalContamTau_file=TFile("inputHistograms/histograms_%1.1ffb/Signal%sHtauContamin.root" %(lumi,model))
 				signalContamLL_GENfile=TFile("inputHistograms/histograms_%1.1ffb/LLContamination_%s_genMHT.root" %(lumi,model))
-				signalContamTau_GENfile=TFile("inputHistograms/histograms_%1.1ffb/LLContamination_%s_genMHT.root" %(lumi,model))
-			        #TauContamHist =signalContamTau_file.Get("SearchH_b/%s_%s_fast" %(options.mGo, options.mLSP))
-				#TauGenContamHist=signalContamTau_GENfile.Get("SignalContamination/mStop_%s_mLSP_%s")
-                        	#TauContamHist.Scale(lumi/3.0)
+				signalContamTau_GENfile=TFile("inputHistograms/histograms_%1.1ffb/Signal%sHtauContamin_genMHT.root" %(lumi,model))
+			        TauContamHist =signalContamTau_file.Get("SearchH_b/%s_%s_fast" %(options.mGo, options.mLSP))
+				TauGenContamHist=signalContamTau_GENfile.Get("SearchH_b/RA2bin_%s_%s" %(options.mGo, options.mLSP))
+				TauGenContamHist.Scale(lumi/3.0)
+                        	TauContamHist.Scale(lumi/3.0)
         	                LLContamHist=TH1D();
-				TauContamHist=TH1D();
         	                LLContamGENHist=TH1D();
-				TauContamGENHist=TH1D();
 				
         	                if 'T2t' in model:
         	                        LLContamHist=signalContamLL_file.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
         	                        LLContamGENHist=signalContamLL_GENfile.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
-					TauContamHist=signalContamTau_file.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
-					TauContamGENHist=signalContamTau_GENfile.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
+					#TauContamHist=signalContamTau_file.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
+					#TauContamGENHist=signalContamTau_GENfile.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
                		        else:
                         	        LLContamHist=signalContamLL_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))	
                         	        LLContamGENHist=signalContamLL_GENfile.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
-					TauContamHist=signalContamTau_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
-					TauContamGENHist=signalContamTau_GENfile.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
+					#TauContamHist=signalContamTau_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
+					#TauContamGENHist=signalContamTau_GENfile.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
 				LLContamHist.Scale(lumi*1000)
 				LLContamGENHist.Scale(lumi*1000)
-				TauContamHist.Scale(lumi*1000)
-				TauContamGENHist.Scale(lumi*1000)	
 				for i in range(len(signalRegion_sigList)):
 					GenContamin.append(LLContamHist.GetBinContent(i))
         	for i in range(len(signalRegion_sigList)):
@@ -875,7 +871,7 @@ if __name__ == '__main__':
 			signalGenContSubtracted=signalRegion_sigCorrList[i]
 			if ('T1t' in model or 'T5qqqqVV' in model or 'T2tt' in model) :
 				signalContSubtracted=signalContSubtracted-LLContamHist.GetBinContent(i+1)-TauContamHist.GetBinContent(i+1)
-				signalGenContSubtracted=signalGenContSubtracted-LLContamGENHist.GetBinContent(i+1)-TauContamGENHist.GetBinContent(i+1)
+				signalGenContSubtracted=signalGenContSubtracted-LLContamGENHist.GetBinContent(i+1)-TauGenContamHist.GetBinContent(i+1)
 			if (signalContSubtracted+signalGenContSubtracted)/2.>=0:
         			sigGenCorr.append((signalContSubtracted+signalGenContSubtracted)/2.)
         			sigErr.append(abs(signalContSubtracted-signalGenContSubtracted)/2.)
@@ -1036,7 +1032,7 @@ if __name__ == '__main__':
 				signalRegion.addAsymSystematic('mistagCFUnc','lnN', ['sig'], (signalRegion_sigListmistagCFuncUp[i]/signalRegion_sigList[i]),signalRegion_sigListmistagCFuncDown[i]/signalRegion_sigList[i],'', i)
 
 			signalRegion_sigListMCstatErr[i] = signalRegion_sigListMCstatErr[i]/signalRegion_sigList[i] + 1.;
-			signalRegion.addSingleSystematic('SignalMCStatErr','lnN', ['sig'], signalRegion_sigListMCstatErr, '', i)
+			signalRegion.addSingleSystematic('SignalMCStatErr'+str(i),'lnN', ['sig'], signalRegion_sigListMCstatErr, '', i)
 
 
 	# signalRegion.addSingleSystematic('JESUnc', 'lnN', ['sig'], 1.0, 'MHT0_HT0');
@@ -1123,19 +1119,21 @@ if __name__ == '__main__':
 		for i in range(signalRegion.GetNbins()):
 			if(signalRegion_CSList[i]>0):
 				signalRegion.addAsymSystematic("LLSysNonClosSys"+tagsForSignalRegion[i],'lnN',['WTopSL'],(LLSysNCUp[i]), (LLSysNCDown[i]),'', i)				
-			signalRegion.addAsymSystematic("LLStatMuReco",'lnN',['WTopSL'],(LLStatMuRecoUp[i]), (LLStatMuRecoDown[i]),'', i)
-			signalRegion.addAsymSystematic("LLStatEleIso",'lnN',['WTopSL'],(LLStatElecIsoUp[i]), (LLStatElecIsoDown[i]),'', i)
-			signalRegion.addAsymSystematic("LLStatEleReco",'lnN',['WTopSL'],(LLStatElecRecoUp[i]), (LLStatElecRecoDown[i]),'', i)
+			signalRegion.addAsymSystematic("LLStatEleIso",'lnN',['WTopSL'],(LLStatElecIsoUp[i]), (2-LLStatElecIsoDown[i]),'', i)
+			signalRegion.addAsymSystematic("LLStatEleReco",'lnN',['WTopSL'],(LLStatElecRecoUp[i]), (2-LLStatElecRecoDown[i]),'', i)
+			signalRegion.addAsymSystematic("LLStatMuReco",'lnN',['WTopSL'],(LLStatMuRecoUp[i]), (2-LLStatMuRecoDown[i]),'', i)
 
-			if options.llpOnly: signalRegion.addAsymSystematic("LLSysMuIso",'lnN',['WTopSL'],(LLSysMuIsoUp[i]), (LLSysMuIsoDown[i]),'', i)
-			else: signalRegion.addCorrelSystematicAsym("LLSysMuIso",'lnN',['WTopSL','WTopHad'],LLSysMuIsoUp[i], LLSysMuIsoDown[i],HadTauMuonIsoUncUp[i], HadTauMuonIsoUncDn[i],'', i)
-		 	if options.llpOnly: signalRegion.addAsymSystematic("LLSysMuReco",'lnN',['WTopSL'],(LLSysMuRecoUp[i]), (LLSysMuRecoDown[i]),'', i)
+			if options.llpOnly: 
+				signalRegion.addAsymSystematic("LLSysMuIso",'lnN',['WTopSL'],(LLSysMuIsoUp[i]), (2-LLSysMuIsoDown[i]),'', i)
+
+			else: signalRegion.addCorrelSystematicAsym("LLSysMuIso",'lnN',['WTopSL','WTopHad'],LLSysMuIsoUp[i], 2-LLSysMuIsoDown[i],HadTauMuonIsoUncDn[i], HadTauMuonIsoUncUp[i],'', i)
+		 	if options.llpOnly: signalRegion.addAsymSystematic("LLSysMuReco",'lnN',['WTopSL'],(LLSysMuRecoUp[i]), 2-(LLSysMuRecoDown[i]),'', i)
 			else: 
-				signalRegion.addCorrelSystematicAsym("LLSysMuReco",'lnN',['WTopSL','WTopHad'],LLSysMuRecoUp[i], LLSysMuRecoDown[i],HadTauMuonCorrUncUp[i], HadTauMuonCorrUncDn[i],'', i)
-				signalRegion.addCorrelSystematicAsym("LLStatMuIso",'lnN',['WTopSL','WTopHad'],(LLStatMuIsoUp[i]), (LLStatMuIsoDown[i]),HadTauMuonIsoRecoStatUncUp[i], HadTauMuonIsoRecoStatUncDn[i],'', i)
+				signalRegion.addCorrelSystematicAsym("LLSysMuReco",'lnN',['WTopSL','WTopHad'],LLSysMuRecoUp[i], 2-LLSysMuRecoDown[i],HadTauMuonCorrUncDn[i], HadTauMuonCorrUncUp[i],'', i)
+				signalRegion.addCorrelSystematicAsym("LLStatMuIso",'lnN',['WTopSL','WTopHad'],(LLStatMuIsoUp[i]), (2-LLStatMuIsoDown[i]),HadTauMuonIsoRecoStatUncDn[i], HadTauMuonIsoRecoStatUncUp[i],'', i)
 
-			signalRegion.addAsymSystematic("LLSysEleIso",'lnN',['WTopSL'],(LLSysElecIsoUp[i]), (LLSysElecIsoDown[i]),'', i)
-			signalRegion.addAsymSystematic("LLSysEleReco",'lnN',['WTopSL'],(LLSysElecRecoUp[i]), (LLSysElecRecoDown[i]),'', i)	
+			signalRegion.addAsymSystematic("LLSysEleIso",'lnN',['WTopSL'],(LLSysElecIsoUp[i]), (2-LLSysElecIsoDown[i]),'', i)
+			signalRegion.addAsymSystematic("LLSysEleReco",'lnN',['WTopSL'],(LLSysElecRecoUp[i]), (2-LLSysElecRecoDown[i]),'', i)	
 
 		if options.llpOnly:
 			signalRegion.addAsymSystematic("LLSysMTW_NJet0",'lnN',['WTopSL'],LLSysMTUp, LLSysMTDown,'NJets0')
@@ -1154,7 +1152,7 @@ if __name__ == '__main__':
 				#signalRegion.addSingleSystematic('LLSysavgWUnc'+tagsForSignalRegion[i],'lnN',['WTopSLHighW'], 2.0,'',i); 
 			
 		else:
-			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet0",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets0')
+			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet0",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysDn,HadTauMTSysDn,'NJets0')
 			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet1",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets1')
 			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet2",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets2')
 			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet3",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets3')
@@ -1209,7 +1207,7 @@ if __name__ == '__main__':
 				signalRegion.addAsymSystematic("MuAccSys"+CorrelTag,'lnN',['WTopSL'],(LLSysMuAccUp[i]), (LLSysMuAccDown[i]),'',i)	
 				signalRegion.addAsymSystematic("MuAccStat_"+CorrelTag,'lnN',['WTopSL'],(LLStatMuAccUp[i]), (LLStatMuAccDown[i]),'',i)	
 			else:
-                                signalRegion.addCorrelSystematicAsym("MuAccSys"+CorrelTag,'lnN', ['WTopSL','WTopHad'], (LLSysMuAccUp[i]), (LLSysMuAccDown[i]),(HadTauMuAccSysPDFUp[i]), (HadTauMuAccSysPDFDn[i]),'',i)
+                                signalRegion.addCorrelSystematicAsym("MuAccSys"+CorrelTag,'lnN', ['WTopSL','WTopHad'], (LLSysMuAccUp[i]), (LLSysMuAccDown[i]),(HadTauMuAccSysPDFDn[i]), (HadTauMuAccSysPDFUp[i]),'',i)
 				signalRegion.addCorrelSystematicAsym("MuAccStat"+CorrelTag,'lnN', ['WTopSL','WTopHad'], (LLStatMuAccUp[i]), (LLStatMuAccDown[i]), HadTauAccStat[i], HadTauAccStatDn[i], '',i)
 
 		for j in range(len(NJbinsLL)): #print NJbinsLL[j]
@@ -1233,7 +1231,7 @@ if __name__ == '__main__':
 				#signalRegion.addCorrelSystematicAsym("MuAccStat"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN', ['WTopSL','WTopHad'], (LLStatMuAccUp), (LLStatMuAccDown), HadTauAccStat, HadTauAccStatDn, str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))
                            #signalRegion.addAsymSystematic("ElecAccStat"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN',['WTopSL'],(LLStatElecAccUp), (LLStatElecAccDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))		
                            if options.llpOnly:signalRegion.addAsymSystematic("MuQSquareAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN',['WTopSL'],(LLSysMuQSquareUp), (LLSysMuQSquareDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))
-			   else:  signalRegion.addCorrelSystematicAsym("MuQSquareAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN', ['WTopSL','WTopHad'], (LLSysMuQSquareUp), (LLSysMuQSquareDown), HadTauMuAccSysScaleUp, HadTauMuAccSysScaleDn,str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))
+			   else:  signalRegion.addCorrelSystematicAsym("MuQSquareAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN', ['WTopSL','WTopHad'], (LLSysMuQSquareUp), (LLSysMuQSquareDown), HadTauMuAccSysScaleDn, HadTauMuAccSysScaleUp,str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))
                            signalRegion.addAsymSystematic("ElecQSquareAccSys"+str(NJbinsLLPur[j])+str(MHTHTBinsLL[mh]),'lnN',['WTopSL'],(LLSysElecQSquareUp), (LLSysElecQSquareDown),str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh]))
 			   #print str(NJbinsLLPur[j])+'_BTags._'+str(MHTHTBinsLL[mh])
 	#print LLSysMuQSquareUp[150],HadTauMuAccSysScaleUp[150]
@@ -1276,7 +1274,7 @@ if __name__ == '__main__':
 			signalRegion.addSingleSystematic('HadTauClosureCorr'+NJNBBlockName,'lnN',['WTopHad'],tauNonClosureCorr[i],'',i);
                         signalRegion.addSingleSystematic('HadTauMuStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],HadTauMuFromTauStat[i],'',i);
 		signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown);
-                signalRegion.addAsymSystematic('HadTauEnergyScale','lnN',['WTopHad'],HadTauJECUncertUp,HadTauJECUncertDn);	
+                signalRegion.addAsymSystematic('HadTauEnergyScale','lnN',['WTopHad'],HadTauJECUncertDn,HadTauJECUncertUp);	
 	### QCD uncertainties ------------------------------------------------------------------------------
 	if options.allBkgs or options.qcdOnly:	
 		ListOfQCDSysK1 = textToListStr(idir+"/qcd-bg-combine-input.txt",7)
