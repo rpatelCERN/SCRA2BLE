@@ -840,26 +840,28 @@ if __name__ == '__main__':
 		LepContamin=[]
 		if ('T1t' in model or 'T5qqqqVV' in model or 'T2tt' in model) :
 				signalContamLL_file=TFile("inputHistograms/histograms_%1.1ffb/LLContamination_%s.root" %(lumi,model))
-				signalContamTau_file=TFile("inputHistograms/histograms_%1.1ffb/Signal%sHtauContamin.root" %(lumi,model))
+				#signalContamTau_file=TFile("inputHistograms/histograms_%1.1ffb/Signal%sHtauContamin.root" %(lumi,model))
 				signalContamLL_GENfile=TFile("inputHistograms/histograms_%1.1ffb/LLContamination_%s_genMHT.root" %(lumi,model))
-				signalContamTau_GENfile=TFile("inputHistograms/histograms_%1.1ffb/Signal%sHtauContamin_genMHT.root" %(lumi,model))
-			        TauContamHist =signalContamTau_file.Get("SearchH_b/%s_%s_fast" %(options.mGo, options.mLSP))
-				TauGenContamHist=signalContamTau_GENfile.Get("SearchH_b/RA2bin_%s_%s" %(options.mGo, options.mLSP))
-				TauGenContamHist.Scale(lumi/3.0)
-                        	TauContamHist.Scale(lumi/3.0)
+				#signalContamTau_GENfile=TFile("inputHistograms/histograms_%1.1ffb/Signal%sHtauContamin_genMHT.root" %(lumi,model))
+			        #TauContamHist =signalContamTau_file.Get("SearchH_b/%s_%s_fast" %(options.mGo, options.mLSP))
+				#TauGenContamHist=signalContamTau_GENfile.Get("SearchH_b/RA2bin_%s_%s" %(options.mGo, options.mLSP))
+				#TauGenContamHist.Scale(lumi/3.0)
+                        	#TauContamHist.Scale(lumi/3.0)
         	                LLContamHist=TH1D();
         	                LLContamGENHist=TH1D();
+				TauGenContamHist= TH1D()#Scale(lumi/3.0)
+                        	TauContamHist=TH1D()#Scale(lumi/3.0)
 				
         	                if 'T2t' in model:
         	                        LLContamHist=signalContamLL_file.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
         	                        LLContamGENHist=signalContamLL_GENfile.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
-					#TauContamHist=signalContamTau_file.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
-					#TauContamGENHist=signalContamTau_GENfile.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
+					TauContamHist=signalContamLL_file.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
+					TauContamGENHist=signalContamLL_GENfile.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
                		        else:
                         	        LLContamHist=signalContamLL_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))	
                         	        LLContamGENHist=signalContamLL_GENfile.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
-					#TauContamHist=signalContamTau_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
-					#TauContamGENHist=signalContamTau_GENfile.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
+					TauContamHist=signalContamLL_file.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
+					TauContamGENHist=signalContamLL_GENfile.Get("SignalContamination/mGluino_%s_mLSP_%s" %(options.mGo, options.mLSP))
 				LLContamHist.Scale(lumi*1000)
 				LLContamGENHist.Scale(lumi*1000)
 				for i in range(len(signalRegion_sigList)):
@@ -1118,6 +1120,7 @@ if __name__ == '__main__':
 	if options.allBkgs or options.llpOnly or (options.tauOnly and  options.llpOnly):
 		for i in range(signalRegion.GetNbins()):
 			if(signalRegion_CSList[i]>0):
+				if (LLSysNCDown[i])<0.00001: (LLSysNCDown[i])=1.0
 				signalRegion.addAsymSystematic("LLSysNonClosSys"+tagsForSignalRegion[i],'lnN',['WTopSL'],(LLSysNCUp[i]), (LLSysNCDown[i]),'', i)				
 			signalRegion.addAsymSystematic("LLStatEleIso",'lnN',['WTopSL'],(LLStatElecIsoUp[i]), (LLStatElecIsoDown[i]),'', i)
 			signalRegion.addAsymSystematic("LLStatEleReco",'lnN',['WTopSL'],(LLStatElecRecoUp[i]), (LLStatElecRecoDown[i]),'', i)
@@ -1244,8 +1247,8 @@ if __name__ == '__main__':
 			if options.tauOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('TAUSCSR'+tagsForSignalRegion[i],'lnU',['WTopHadHighW'],100,'',i);
 			if options.llpOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],100,'',i);
 			if options.allBkgs:
-				if(signalRegion_CSList[i]>=2):signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], LLSumW2errors[i], 1+(tauSqrtSumW2[i]), '',i)			
-				if(signalRegion_CSList[i]==1):signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], 2.0, 2.0, '',i)
+				if(signalRegion_CSList[i]>=1):signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], LLSumW2errors[i], 1+(tauSqrtSumW2[i]), '',i)			
+				#if(signalRegion_CSList[i]==1):signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], 2.0, 2.0, '',i)
 			
 			if options.llpOnly and not (options.tauOnly and  options.llpOnly):
 				signalRegion.addSingleSystematic('LLSumWError'+tagsForSignalRegion[i], 'lnN', ['WTopSL'], LLSumW2errors[i], '',i)		
@@ -1322,6 +1325,7 @@ if __name__ == '__main__':
 			LowdPhiLowMHTControlRegion.addSingleSystematic("DphiDoubleRControlBin"+"%s_%s_%s" %(parse[0], parse[1],parse[3]),'lnU','qcd',10000,'',i)
 			HighdPhiLowMHTControlRegion.addSingleSystematic("DphiDoubleRControlBin"+"%s_%s_%s" %(parse[0], parse[1],parse[3]),'lnU','qcd',10000,'',i)
 		'''
+		'''
 		for i in range(len(ListOfQCDSysK1)):
 			if(ListOfQCDSysK1[i]!='-'):signalRegion.addSingleSystematic("KQCDHT1",'lnN','qcd',float(ListOfQCDSysK1[i]),'',i);
 			if(ListOfQCDSysK2[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2",'lnN','qcd',float(ListOfQCDSysK2[i]),'',i);
@@ -1340,7 +1344,7 @@ if __name__ == '__main__':
 			if(ListOfQCDSysK15[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3MHT3",'lnN','qcd',float(ListOfQCDSysK15[i]),'',i);
 			if(ListOfQCDSysK16[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3MHT4",'lnN','qcd',float(ListOfQCDSysK16[i]),'',i);
 			if(ListOfMCCSys[i]!='-'):signalRegion.addSingleSystematic("KQCDMCCorr",'lnN','qcd',float(ListOfMCCSys[i]),'',i);
-
+		'''
 	######################################################################
 	######################################################################
 	# 4. Write Cards
