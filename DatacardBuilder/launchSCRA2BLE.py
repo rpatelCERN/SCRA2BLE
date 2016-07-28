@@ -113,7 +113,7 @@ if __name__ == '__main__':
     #if not options.keeptar:
     os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
     '''
-    f = TFile.Open("inputHistograms/fastsimSignalT2bb/RA2bin_signal.root");
+    f = TFile.Open("inputHistograms/fastsimSignalT2qq/RA2bin_signal.root");
     names = [k.GetName() for k in f.GetListOfKeys()]
     models = []
     mGos=[]

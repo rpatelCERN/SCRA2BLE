@@ -848,6 +848,7 @@ if __name__ == '__main__':
         	                LLContamHist=TH1D();
         	                LLContamGENHist=TH1D();
                         	TauContamHist=TH1D()#Scale(lumi/3.0)
+                        	TauContamGENHist=TH1D()#Scale(lumi/3.0)
 				
         	                if 'T2t' in model:
         	                        LLContamHist=signalContamLL_file.Get("SignalContamination/mStop_%s_mLSP_%s" %(options.mGo, options.mLSP))
