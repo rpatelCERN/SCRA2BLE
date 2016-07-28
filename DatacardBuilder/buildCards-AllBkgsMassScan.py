@@ -61,6 +61,7 @@ if __name__ == '__main__':
 		if "T1qqqq" in sms:  signaldirtag ="inputHistograms/fastsimSignalT1qqqq"
 		if "T5qqqqVV" in sms:  signaldirtag ="inputHistograms/fastsimSignalT5qqqqVV"
 		#if ("T1" in sms or "T5qqqqVV" in sms): signaldirtag +="Gluino"
+		if ("T2qq" in sms): signaldirtag ="inputHistograms/fastsimSignalT2qq"
 		if ("T2tt" in sms): signaldirtag ="inputHistograms/fastsimSignalT2tt"
 		if "T1ttbb" in sms or "T1tbtb" in sms: signaldirtag="/fastsimSignalScanMixedFinalState"
 	else: signaldirtag ="inputHistograms/FullSim"
