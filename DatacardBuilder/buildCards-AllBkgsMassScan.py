@@ -1272,7 +1272,7 @@ if __name__ == '__main__':
 		for i in range(signalRegion.GetNbins()):
 			#tauBMistagUp[i]=1.0+tauBMistagUp[i];
 			#tauBMistagDown[i]=1.0+tauBMistagDown[i];
-			tauNonClosure[i]=max(tauNonClosure[i],1+tauSqrtSumW2[i])
+			#tauNonClosure[i]=max(tauNonClosure[i],1+tauSqrtSumW2[i])
 			#if(tauNonClosure[i]<-99):tauNonClosure[i]=1.0;
 			#else: tauNonClosure[i]=1.0+tauNonClosure[i]
 			signalRegion.addSingleSystematic('HadTauClosure'+tagsForSignalRegion[i],'lnN',['WTopHad'],tauNonClosure[i],'',i);
