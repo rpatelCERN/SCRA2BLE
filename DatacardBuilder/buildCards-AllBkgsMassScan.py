@@ -61,7 +61,7 @@ if __name__ == '__main__':
 		if "T1qqqq" in sms:  signaldirtag ="inputHistograms/fastsimSignalT1qqqq"
 		if "T5qqqqVV" in sms:  signaldirtag ="inputHistograms/fastsimSignalT5qqqqVV"
 		#if ("T1" in sms or "T5qqqqVV" in sms): signaldirtag +="Gluino"
-		#if ("T2tt" in sms): signaldirtag ="inputHistograms/fastsimSignalT2tt"
+		if ("T2tt" in sms): signaldirtag ="inputHistograms/fastsimSignalT2tt"
 		if "T1ttbb" in sms or "T1tbtb" in sms: signaldirtag="/fastsimSignalScanMixedFinalState"
 	else: signaldirtag ="inputHistograms/FullSim"
 	signaltag = "RA2bin_"+sms;
@@ -425,8 +425,8 @@ if __name__ == '__main__':
 	HadTauMuonCorrIsoUncUpHist=HadTau_file.Get("searchBin_MuIsoSysUp")
 	HadTauMuonCorrIsoUncDnHist=HadTau_file.Get("searchBin_MuIsoSysDn")
 	HadTauStatUncertainties=HadTau_file.Get("searchBin_StatUncertainties")
-
-	
+	HadTauTrigUncertaintitesHist=HadTau_file.Get("searchBin_TrigEffUncertainty")	
+	HadTauTrigUncertaintites=binsToList(HadTauTrigUncertaintitesHist)
 	HadTauJECUncertUpHist=HadTau_file.Get("searchBin_JECSysUp")
 	HadTauJECUncertDownHist=HadTau_file.Get("searchBin_JECSysDn")	
 
@@ -670,7 +670,7 @@ if __name__ == '__main__':
 	ZgRatio_List    = binsToList( DYinputfile.Get("hgJZgR") )
 	GJetPur_List    = binsToList(DYinputfile.Get("hgJPur"))
 	ZgRdataMC_List  = binsToList( DYinputfile.Get("hgJZgRdataMC") );
-
+	DYScaleErr_List= binsToList(DYinputfile.Get("hZinvScaleErr"))
 
 	#ZgRatioErr_List      = binsToList( DYinputfile.Get("hgJZgRerr") )
 	GJetPurErr_List      = binsToList(DYinputfile.Get("hgJPurErr"))
@@ -686,8 +686,9 @@ if __name__ == '__main__':
 	ZgRdataMC = [];
 	ZgRdataMCErrUp = [];
 	ZgRdataMCErrDn = [];
-
+	for i in range(len(DYScaleErr_List)):DYScaleErr_List[i]=1.0+DYScaleErr_List[i]
 	for i in range(len(GJet_Obs)):
+		
 		if(GJet_Obs[i]>-1):sphotonObserved.append(GJet_Obs[i])
 		if(ZgRatio_List[i]>-1):RzgVals.append(ZgRatio_List[i])
 		if(GJetPur_List[i]>-1):PurVals.append(GJetPur_List[i])
@@ -845,7 +846,6 @@ if __name__ == '__main__':
 				signalContamTau_GENfile=TFile("inputHistograms/histograms_%1.1ffb/Signal%sHtauContamin_genMHT.root" %(lumi,model))
         	                LLContamHist=TH1D();
         	                LLContamGENHist=TH1D();
-				TauGenContamHist= TH1D()#Scale(lumi/3.0)
                         	TauContamHist=TH1D()#Scale(lumi/3.0)
 				
         	                if 'T2t' in model:
@@ -871,7 +871,7 @@ if __name__ == '__main__':
 			signalGenContSubtracted=signalRegion_sigCorrList[i]
 			if ('T1t' in model or 'T5qqqqVV' in model or 'T2tt' in model) :
 				signalContSubtracted=signalContSubtracted-LLContamHist.GetBinContent(i+1)-TauContamHist.GetBinContent(i+1)
-				signalGenContSubtracted=signalGenContSubtracted-LLContamGENHist.GetBinContent(i+1)-TauGenContamHist.GetBinContent(i+1)
+				signalGenContSubtracted=signalGenContSubtracted-LLContamGENHist.GetBinContent(i+1)-TauContamGENHist.GetBinContent(i+1)
 			if (signalContSubtracted+signalGenContSubtracted)/2.>=0:
         			sigGenCorr.append((signalContSubtracted+signalGenContSubtracted)/2.)
         			sigErr.append(abs(signalContSubtracted-signalGenContSubtracted)/2.)
@@ -1097,11 +1097,13 @@ if __name__ == '__main__':
 			# WTF,are these double counting
 			# sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
 			sphotonRegion.addAsymSystematic('ZgammaRatioErr', 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],tagsForSinglePhoton[i])
+			sphotonRegion.addSingleSystematic("ZScaleErr", 'lnN', ['zvv'],DYScaleErr_List, tagsForSinglePhoton[i]) 
 			#print "Zgamme Err ",1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i]
 			sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp[i],ZgRdataMCErrDn[i], '',i)
 			#print ZgRdataMCErrUp[i],ZgRdataMCErrDn[i]
 			#sphotonRegion.addSingleSystematic('ZgRatioErr'+tagsForSinglePhoton[i],'lnN',['zvv'],RzgErrs[i],tagsForSinglePhoton[i]);	# different per bin
 			sphotonRegion.addSingleSystematic('PhoPurUnc','lnN',['zvv'],PurErrs[i],'',i);	 # this is getting split up now
+		
 			# sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp,ZgRdataMCErrDn, '',i); #### this is now merged with ZGratio uncertainty
 		#print PurErrs
 			'''
@@ -1153,7 +1155,7 @@ if __name__ == '__main__':
 				#signalRegion.addSingleSystematic('LLSysavgWUnc'+tagsForSignalRegion[i],'lnN',['WTopSLHighW'], 2.0,'',i); 
 			
 		else:
-			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet0",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysDn,HadTauMTSysDn,'NJets0')
+			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet0",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets0')
 			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet1",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets1')
 			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet2",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets2')
 			signalRegion.addCorrelSystematicAsym("LLSysMTW_NJet3",'lnN',['WTopSL','WTopHad'],LLSysMTUp, LLSysMTDown,HadTauMTSysUp,HadTauMTSysDn,'NJets3')
@@ -1161,10 +1163,14 @@ if __name__ == '__main__':
 			signalRegion.addCorrelSystematicAsym("LLStatMTW_NJet1",'lnN',['WTopSL','WTopHad'],LLStatMTUp, LLStatMTDown,HadTauMTEff,HadTauMTEffDn,'NJets1')
 			signalRegion.addCorrelSystematicAsym("LLStatMTW_NJet2",'lnN',['WTopSL','WTopHad'],LLStatMTUp, LLStatMTDown,HadTauMTEff,HadTauMTEffDn,'NJets2')
 			signalRegion.addCorrelSystematicAsym("LLStatMTW_NJet3",'lnN',['WTopSL','WTopHad'],LLStatMTUp, LLStatMTDown,HadTauMTEff,HadTauMTEffDn,'NJets3')
-			signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet0",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets0')
-			signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet1",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets1')
-			signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet2",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets2')
-			signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet3",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets3')
+			#signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet0",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets0')
+			#signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet1",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets1')
+			#signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet2",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets2')
+			#signalRegion.addCorrelSystematicAsym("LLSysDiLepPurity_NJet3",'lnN',['WTopSL','WTopHad'],LLSysDiLepPurUp, LLSysDiLepPurDown,HadTauMuDiLepton,HadTauMuDiLeptonDn,'NJets3')
+		signalRegion.addAsymSystematic("LLSysDiLepPurity_NJet0",'lnN',['WTopSL'],LLSysDiLepPurUp, LLSysDiLepPurDown,'NJets0')
+		signalRegion.addAsymSystematic("LLSysDiLepPurity_NJet1",'lnN',['WTopSL'],LLSysDiLepPurUp, LLSysDiLepPurDown,'NJets1')
+		signalRegion.addAsymSystematic("LLSysDiLepPurity_NJet2",'lnN',['WTopSL'],LLSysDiLepPurUp, LLSysDiLepPurDown,'NJets2')
+		signalRegion.addAsymSystematic("LLSysDiLepPurity_NJet3",'lnN',['WTopSL'],LLSysDiLepPurUp, LLSysDiLepPurDown,'NJets3')
 		signalRegion.addAsymSystematic("LLStatDiLepPurity_NJet0",'lnN',['WTopSL'],LLStatDiLepPurUp, LLStatDiLepPurDown,'NJets0')
 		signalRegion.addAsymSystematic("LLStatDiLepPurity_NJet1",'lnN',['WTopSL'],LLStatDiLepPurUp, LLStatDiLepPurDown,'NJets1')
 		signalRegion.addAsymSystematic("LLStatDiLepPurity_NJet2",'lnN',['WTopSL'],LLStatDiLepPurUp, LLStatDiLepPurDown,'NJets2')	
@@ -1274,6 +1280,8 @@ if __name__ == '__main__':
 			NJNBBlockName=parse[0]+"_"+parse[1]
 			signalRegion.addSingleSystematic('HadTauClosureCorr'+NJNBBlockName,'lnN',['WTopHad'],tauNonClosureCorr[i],'',i);
                         signalRegion.addSingleSystematic('HadTauMuStat'+tagsForSignalRegion[i],'lnN',['WTopHad'],HadTauMuFromTauStat[i],'',i);
+			signalRegion.addSingleSystematic('HadTauTrigSys', 'lnN', ['WTopHad'], HadTauTrigUncertaintites[i], '',i)
+			signalRegion.addSingleSystematic('HadTauMuDiLepton', 'lnN', ['WTopHad'],HadTauMuDiLepton[i],'',i)
 		signalRegion.addAsymSystematic('HadTauBTagShape','lnN',['WTopHad'],tauBMistagUp,tauBMistagDown);
                 signalRegion.addAsymSystematic('HadTauEnergyScale','lnN',['WTopHad'],HadTauJECUncertDn,HadTauJECUncertUp);	
 	### QCD uncertainties ------------------------------------------------------------------------------

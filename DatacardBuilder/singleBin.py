@@ -83,7 +83,7 @@ class singleBin:
 			#print len(self._binLabels)
 			if self._binLabels[i] in bins:
 				#print self._binLabels[i]
-				if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1000) + " ";
+				if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1) + " ";
 				else: 
 					if(val>-99.):
 						line += str(val) + " ";
@@ -103,7 +103,7 @@ class singleBin:
                         #print len(self._binLabels)
                         if self._binLabels[i] in bins:
                                 #print self._binLabels[i]
-                                if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1000) + " ";
+                                if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1) + " ";
                                 else:
 					if val1>-99. and val2>-99.:
                                         	if(bin==0):
@@ -144,7 +144,7 @@ class singleBin:
 		for i in range(len(self._binLabels)): 
 			if self._binLabels[i] in bins:
 				#print self._binLabels[i]
-				if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1000) + " ";
+				if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1) + " ";
 				else: 
 					if(valdown>-99. and valup>-99.):
 						line += str(valdown) + "/" +str(valup)+" ";
