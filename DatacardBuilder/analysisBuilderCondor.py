@@ -63,7 +63,7 @@ if __name__ == '__main__':
     signalmodel=options.signal+options.mGo
     signals = [signalmodel]
     mus=[0.0]
-    lumis = [7.6];
+    lumis = [12.9];
 
     #variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
     #variations = ['allNotau','llpOnly', 'tauOnly']
@@ -145,15 +145,15 @@ if __name__ == '__main__':
                     #os.system(combine_cmmd);
 		    #os.system("xrdcp -f %s/allcards.txt %s/card_%s_%s_%s.txt" %(the_odir,options.eos,options.signal,options.mGo, options.mLSP) )
                     # run significance
-                    # combine_cmmd = "combine -M ProfileLikelihood --signif %s/allcards.root -n %s" % (the_odir,the_odir); 
-                    # os.system(combine_cmmd);
+                    #combine_cmmd = "combine  -M ProfileLikelihood  --uncapped 1 --significance --rMin -10 %s/allcards.txt -n %s" % (the_odir,the_odir); 
+                    #os.system(combine_cmmd);
                     # # run m/ax likelihood fit
                     #combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.txt -n %s --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); 
                     #print combine_cmmd;
                     #os.system(combine_cmmd);
                     # run asymptotic
-                    #combine_cmmd = "combine -M Asymptotic %s/allcards.txt -n %s" % (the_odir,the_odir); 
-                    #os.system(combine_cmmd);
+                    combine_cmmd = "combine -M Asymptotic %s/allcards.txt -n %s" % (the_odir,the_odir); 
+                    os.system(combine_cmmd);
 		   
                     dicttag = "%s_%s_%.1f" % (vary,sig,lumi);
 
@@ -161,7 +161,7 @@ if __name__ == '__main__':
                     mGo[0] = float(options.mGo);
                     mLSP[0] = float(options.mLSP);
                     #fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,signaltag,lumi,mu) )[0];
-                    #significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
+                    significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
 		    '''
                     olims = getLimit( "higgsCombine%s.Asymptotic.mH120.root" % (the_odir));
                     limit_m2s[0] = olims[0];
