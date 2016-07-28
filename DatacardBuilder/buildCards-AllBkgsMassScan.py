@@ -1253,6 +1253,7 @@ if __name__ == '__main__':
 			if options.llpOnly and not (options.tauOnly and  options.llpOnly): signalRegion.addSingleSystematic('LLSCSR'+tagsForSignalRegion[i],'lnU',['WTopSLHighW'],100,'',i);
 			if options.allBkgs:
 				if(signalRegion_CSList[i]>=1):signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], LLSumW2errors[i], 1+(tauSqrtSumW2[i]), '',i)			
+				else:signalRegion.addSingleSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i],'lnN', ['WTopHad'], 1+(tauSqrtSumW2[i]),'',i)
 				#if(signalRegion_CSList[i]==1):signalRegion.addCorrelSystematic('LLHadTauCorrelError'+tagsForSignalRegion[i], 'lnN', ['WTopSL','WTopHad'], 2.0, 2.0, '',i)
 			
 			if options.llpOnly and not (options.tauOnly and  options.llpOnly):
