@@ -683,14 +683,15 @@ if __name__ == '__main__':
 	PurVals=[]
 	RzgErrsAbs=[]
 	PurErrsAbs=[]
-
+	ZScaleErr=[]
 	ZgRdataMC = [];
 	ZgRdataMCErrUp = [];
 	ZgRdataMCErrDn = [];
 	for i in range(len(DYScaleErr_List)):DYScaleErr_List[i]=1.0+DYScaleErr_List[i]
 	for i in range(len(GJet_Obs)):
-		
-		if(GJet_Obs[i]>-1):sphotonObserved.append(GJet_Obs[i])
+		if(GJet_Obs[i]>-1):
+			sphotonObserved.append(GJet_Obs[i])
+			ZScaleErr.append(DYScaleErr_List[i])
 		if(ZgRatio_List[i]>-1):RzgVals.append(ZgRatio_List[i])
 		if(GJetPur_List[i]>-1):PurVals.append(GJetPur_List[i])
 		if(GJetPurErr_List[i]>-1):PurErrsAbs.append(GJetPurErr_List[i])
@@ -1099,7 +1100,7 @@ if __name__ == '__main__':
 			# WTF,are these double counting
 			# sphotonRegion.addAsymSystematic('PhoRzgAndDblRatioAsymUnc'+str(i), 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],'',i)
 			sphotonRegion.addAsymSystematic('ZgammaRatioErr', 'lnN', ['zvv'], 1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i],tagsForSinglePhoton[i])
-			sphotonRegion.addSingleSystematic("ZScaleErr", 'lnN', ['zvv'],DYScaleErr_List, tagsForSinglePhoton[i]) 
+			sphotonRegion.addSingleSystematic("ZScaleErr", 'lnN', ['zvv'],ZScaleErr[i], tagsForSinglePhoton[i]) 
 			#print "Zgamme Err ",1.0+PhoCSZgRatioUp[i],1.0-PhoCSZgRatioDown[i]
 			sphotonRegion.addAsymSystematic('PhoRZgDblRatio'+str(i),'lnN',['zvv'],ZgRdataMCErrUp[i],ZgRdataMCErrDn[i], '',i)
 			#print ZgRdataMCErrUp[i],ZgRdataMCErrDn[i]
