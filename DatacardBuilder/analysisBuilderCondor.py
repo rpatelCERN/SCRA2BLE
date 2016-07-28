@@ -161,8 +161,7 @@ if __name__ == '__main__':
                     mGo[0] = float(options.mGo);
                     mLSP[0] = float(options.mLSP);
                     #fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,signaltag,lumi,mu) )[0];
-                    significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
-		    '''
+                    #significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
                     olims = getLimit( "higgsCombine%s.Asymptotic.mH120.root" % (the_odir));
                     limit_m2s[0] = olims[0];
                     limit_m1s[0] = olims[1];
@@ -171,7 +170,6 @@ if __name__ == '__main__':
                     limit_p2s[0] = olims[4];
                     limit_obs[0] = olims[5];
                     limit_obsErr[0]= olims[6]    
-		    '''
                     # fittedMu[0] = -99.;
                     #significance[0] = -99.;
                     # limit[0] = -99.;
@@ -180,10 +178,3 @@ if __name__ == '__main__':
     		fout.cd();
     		tout.Write();
     		fout.Close();
-
-
-
-
-
-
-
