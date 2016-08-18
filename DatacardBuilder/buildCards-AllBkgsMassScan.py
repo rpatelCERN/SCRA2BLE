@@ -105,8 +105,8 @@ if __name__ == '__main__':
 		WJ.Fill(i+.5,SRW[i])
 		sig.Fill(i+.5, signal[i])
 		signalRegion_Obs.append( srobs );
-	signalRegion.setObservedManually(signalRegion_Obs);
 	signalRegion.fillRates(signalRegion_Rates );
+	signalRegion.setObservedManually(signalRegion_Obs);
 	signalRegion.writeRates();
         f.Write()
         f.Close()
@@ -144,8 +144,8 @@ if __name__ == '__main__':
 		AntiTagRegion_Rates.append(tmpList);
 		AntiTagRegion_Obs.append(antitagobs)
 	AntiTagRegion.fillRates(AntiTagRegion_Rates);
-	AntiTagRegion.writeRates()
         AntiTagRegion.setObservedManually(AntiTagRegion_Obs);
+	AntiTagRegion.writeRates()
 
 	#SideBand Region
 	SidebandSignalCont=Datacards_file.Get("AnalysisBins_SB_singleHiggsTag_%s" %sms)
@@ -181,8 +181,8 @@ if __name__ == '__main__':
 		SideBandRegion_Rates.append(tmpList);
 		SideBandRegion_Obs.append(sidebandobs)
 	SideBandRegion.fillRates(SideBandRegion_Rates);
-	SideBandRegion.writeRates()
         SideBandRegion.setObservedManually(SideBandRegion_Obs);
+	SideBandRegion.writeRates()
 	#Sideband+Antitag region
 
 	SidebandAntitagSignalCont=Datacards_file.Get("AnalysisBins_SB_antiTag_%s" %sms)
@@ -260,4 +260,4 @@ if __name__ == '__main__':
 	SideBandRegion.writeCards(odir);
 	SideBandAntitagRegion.writeCards(odir);
 			
-	#print odir
+	print odir
