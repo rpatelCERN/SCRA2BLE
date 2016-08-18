@@ -143,7 +143,7 @@ if __name__ == '__main__':
 		antitagobs=AntitagW[i]+AntitagTT[i]+AntitagZ[i]+AntitagQcd[i]
 		AntiTagRegion_Rates.append(tmpList);
 		AntiTagRegion_Obs.append(antitagobs)
-	AntiTagRegion.fillRates(signalRegion_Rates);
+	AntiTagRegion.fillRates(AntiTagRegion_Rates);
 	AntiTagRegion.writeRates()
         AntiTagRegion.setObservedManually(AntiTagRegion_Obs);
 
@@ -180,7 +180,7 @@ if __name__ == '__main__':
 		sidebandobs=SidebandW[i]+SidebandTT[i]+SidebandZ[i]+SidebandQcd[i]
 		SideBandRegion_Rates.append(tmpList);
 		SideBandRegion_Obs.append(sidebandobs)
-	SideBandRegion.fillRates(signalRegion_Rates);
+	SideBandRegion.fillRates(SideBandRegion_Rates);
 	SideBandRegion.writeRates()
         SideBandRegion.setObservedManually(SideBandRegion_Obs);
 	#Sideband+Antitag region
@@ -217,7 +217,7 @@ if __name__ == '__main__':
 		sidebandobs=SidebandAntitagW[i]+SidebandAntitagTT[i]+SidebandAntitagZ[i]+SidebandAntitagQcd[i]
 		SideBandAntitagRegion_Rates.append(tmpList);
 		SideBandAntitagRegion_Obs.append(sidebandobs)
-	SideBandAntitagRegion.fillRates(signalRegion_Rates);
+	SideBandAntitagRegion.fillRates(SideBandAntitagRegion_Rates);
 	SideBandAntitagRegion.writeRates()
         SideBandAntitagRegion.setObservedManually(SideBandAntitagRegion_Obs);
 
