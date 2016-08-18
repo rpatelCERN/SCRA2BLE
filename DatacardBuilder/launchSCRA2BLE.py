@@ -91,7 +91,7 @@ def condorize(command,tag,odir,CMSSWVER):
     f2.close();
     '''
     #os.system("condor_submit %s" % (f2n));
-    os.system("sbatch %s " %f1n)
+    #os.system("sbatch %s " %f1n)
  #   os.chdir("../.");
 
 
@@ -112,7 +112,6 @@ if __name__ == '__main__':
 
     #if not options.keeptar:
     os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
-    '''
     f = TFile.Open("inputHistograms/fastsimSignalT2qq/RA2bin_signal.root");
     names = [k.GetName() for k in f.GetListOfKeys()]
     models = []
@@ -125,6 +124,8 @@ if __name__ == '__main__':
         models.append(parse[1])
         mGos.append(int(parse[2]))
         mLSPs.append(int(parse[3]))
+    '''
+
 	    	#print parse
     #models=["T5qqqqVV"]
     #mGos  = [975];

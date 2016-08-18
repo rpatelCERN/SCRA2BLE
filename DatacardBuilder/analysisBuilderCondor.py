@@ -130,7 +130,7 @@ if __name__ == '__main__':
                     #if len(options.eos)>0: command += " --eos %s" % (options.eos)
                     os.system(command);
                     
-                    signaltag = "SMS%s%s" % (options.signal[2:],options.mGo);
+                    signaltag = "%smGluino%s" % (options.signal,options.mGo);
                     if options.fastsim: signaltag = "%s_%s_%s" % (options.signal, options.mGo, options.mLSP);
 
                     the_odir = 'testCards-%s-%s-%1.1f-mu%0.1f' % (vary,signaltag,lumi,mu);
@@ -176,5 +176,5 @@ if __name__ == '__main__':
 		    tout.Fill();
 		   
     		fout.cd();
-    		tout.Write();
+    		fout.Write();
     		fout.Close();
