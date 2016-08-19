@@ -135,10 +135,9 @@ if __name__ == '__main__':
         #models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq','T1qqqq','T2tt','T2tt','T2tt'];
         #mGos = [1500,1000,1500,1200,1400,1000,425,500,850];
         #mLSPs = [100,800,100,800,100,900,325,325,100];
-	models=['T1bbbb']
-	mGos = [1000]
-	mLSPs=[800]
-
+	models=['T5HH','T5HH','T5HH','T5HH','T5HH']
+	mGos = [1300,1400,1500,1600, 1700]
+	mLSPs=[1250,1350,1450,1550,1650]
     # for signal in signals:
     for m in range(len(mGos)):
         #    for mLSP in mLSPs:
@@ -152,10 +151,10 @@ if __name__ == '__main__':
         #command += " --eos %s" % (eosDir);
 
         tag = "%s_%i_%i" % (models[m],mGos[m],mLSPs[m]);
-	#os.system(command)
-	print command
-        condorize( command, tag, outDir, CMSSWVER );
-        time.sleep(0.05);
+	os.system(command)
+	#print command
+        #condorize( command, tag, outDir, CMSSWVER );
+        #time.sleep(0.05);
 
 
     # else:

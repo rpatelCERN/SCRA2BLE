@@ -45,6 +45,7 @@ class singleBin:
 		self._allLines.append(line);
 		
 		line = "observation "+str(self._observed)+"\n";
+		print self._observed
 		self._allLines.append(line);
 
 		line = "bin ";
