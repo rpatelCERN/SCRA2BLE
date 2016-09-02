@@ -52,14 +52,14 @@ def condorize(command,tag,odir,CMSSWVER):
     #f1.write("scram b ProjectRename \n");
     #f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
     f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
-    f1.write("#SBATCH -p stakeholder-4g\n")
-    f1.write("#SBATCH --time=05:30:00\n")
-    f1.write("#SBATCH --mem-per-cpu=6000 \n")
+    f1.write("#SBATCH -p stakeholder\n")
+    f1.write("#SBATCH --time=00:30:00\n")
+    f1.write("#SBATCH --mem-per-cpu=500 \n")
     f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
     f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
     #f1.write("set SCRAM_ARCH=slc6_amd64_gcc481\n"
     #f1.write("cd ${_CONDOR_SCRATCH_DIR} \n")
-    f1.write("cd /fdata/hepx/store/user/rish/CombineCards/gitPushFix/%s \n" % (CMSSWVER));
+    f1.write("cd /fdata/hepx/store/user/rish/CombineCards/SuperBins/%s \n" % (CMSSWVER));
     f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
     f1.write("eval `scramv1 runtime -sh`\n")
 
@@ -113,7 +113,7 @@ if __name__ == '__main__':
     #if not options.keeptar:
     os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
     '''
-    f = TFile.Open("inputHistograms/fastsimSignalT2bb/RA2bin_signal.root");
+    f = TFile.Open("inputHistograms/fastsimSignalT1tttt/RA2bin_signal.root");
     names = [k.GetName() for k in f.GetListOfKeys()]
     models = []
     mGos=[]
@@ -131,12 +131,12 @@ if __name__ == '__main__':
     #mLSPs = [775];
 
     if not options.fastsim:
-        models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq','T1qqqq','T2tt','T2tt','T2tt'];
-        mGos = [1500,1000,1500,1200,1400,1000,425,500,850];
-        mLSPs = [100,800,100,800,100,900,325,325,100];
-	#models=['T2tt']
-	#mGos = [500]
-	#mLSPs=[325]
+        #models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq','T1qqqq','T2tt','T2tt','T2tt'];
+        #mGos = [1500,1000,1500,1200,1400,1000,425,500,850];
+       # mLSPs = [100,800,100,800,100,900,325,325,100];
+	models=['T2tt']
+	mGos = [500]
+	mLSPs=[325]
 
     # for signal in signals:
     for m in range(len(mGos)):

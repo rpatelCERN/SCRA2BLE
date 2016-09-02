@@ -46,6 +46,20 @@ class searchRegion:
 					else: 
 						self._singleBins[i].addSystematic( sysname, systype, channel, val );
 
+        def addSingleGammaSystematic(self,sysname,systype,channel,valCS,val,identifier='',index=None):
+
+                #print "Looking for ",identifier;
+
+                for i in range(self._nBins):
+                        #if identifier in self._singleBins[i]._tag:
+                        if re.search(identifier, self._singleBins[i]._tag) or identifier == '':
+                                #print "Found! ",self._singleBins[i]._tag;
+                                if index == None or index == self._singleBins[i]._index:
+                                        #print identifier, " in ", self._singleBins[i]._tag;
+                                        if isinstance(val,collections.Iterable):
+                                                	self._singleBins[i].addGammaSystematic( sysname, systype, channel, valCS[i],val[i] );
+                                        else:
+                                                	self._singleBins[i].addGammaSystematic( sysname, systype, channel, valCS,val );
 	def addAsymSystematic(self,sysname,systype,channel,valup,valdown,identifier='',index=None):
 			#print "Looking for ",identifier;
 			for i in range(self._nBins):
@@ -65,6 +79,21 @@ class searchRegion:
 							#print "Found! ",self._singleBins[i]._tag;
 							if index == None or index == self._singleBins[i]._index:
 											self._singleBins[i].addCorrelSystematic( sysname, systype, channel, val1,val2 );
+        def addCorrelGammaSystematic(self,sysname,systype,channel,valCS,val1,val2,identifier='',index=None):
+
+                #print "Looking for ",identifier;
+
+                for i in range(self._nBins):
+                        #if identifier in self._singleBins[i]._tag:
+                        if re.search(identifier, self._singleBins[i]._tag) or identifier == '':
+                                #print "Found! ",self._singleBins[i]._tag;
+                                if index == None or index == self._singleBins[i]._index:
+                                        #print identifier, " in ", self._singleBins[i]._tag;
+                                        if isinstance(val1,collections.Iterable):
+                                                	self._singleBins[i].addGammaCorrelSystematic( sysname, systype, channel, valCS[i],val1[i],val2[i] );
+                                        else:
+                                                	self._singleBins[i].addGammaCorrelSystematic( sysname, systype, channel, valCS,val1,val2 );
+
 	def addCorrelSystematicAsym(self,sysname,systype,channel,val1up, val1down, val2up, val2down, identifier='',index=None):
 			for i in range(self._nBins):
                                         #if identifier in self._singleBins[i]._tag:

@@ -66,7 +66,7 @@ class singleBin:
 		zeroProxy = 0.0001;
 		for rate in self._rates: 
 			if rate < 0.000001: line += str(zeroProxy) + " ";
-			else: line += "%.5f " % (rate);
+			else: line += "%.4f " % round(rate,4);
 		line += "\n";
 		self._allLines.append(line);
 
@@ -83,7 +83,7 @@ class singleBin:
 			#print len(self._binLabels)
 			if self._binLabels[i] in bins:
 				#print self._binLabels[i]
-				if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1000) + " ";
+				if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1) + " ";
 				else: 
 					if(val>-99.):
 						line += str(val) + " ";
@@ -92,7 +92,27 @@ class singleBin:
 			else: line += "- ";
 		line += "\n";
 		self._allLines.append(line);
-
+        def addGammaSystematic(self,sysname,systype,bins,valCS,val):
+                #print sysname
+                # print "length rates = ",len(self._rates)
+                #print bins,val
+                line = "";
+                line += sysname + " " + systype + " "+ "%d " %int(valCS);
+                bin=0;
+                for i in range(len(self._binLabels)):
+                        #print len(self._binLabels)
+                        if self._binLabels[i] in bins:
+                                #print self._binLabels[i]
+                                if(val>-99.):
+                                        if(bin==0 or bin==1):
+						if valCS>0:line += " %g " %val ;
+						else: line+= " %0.4f " %(round(val,4));
+                                else:
+                                        line += " - ";
+				bin+=1
+			else: line += "- ";
+                line += "\n";
+                self._allLines.append(line);
 	def addCorrelSystematic(self,sysname,systype,bins,val1, val2):
                 #print sysname
                 # print "length rates = ",len(self._rates)
@@ -103,7 +123,7 @@ class singleBin:
                         #print len(self._binLabels)
                         if self._binLabels[i] in bins:
                                 #print self._binLabels[i]
-                                if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1000) + " ";
+                                if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1) + " ";
                                 else:
 					if val1>-99. and val2>-99.:
                                         	if(bin==0):
@@ -114,6 +134,27 @@ class singleBin:
                                                 line += " - ";
 					bin+=1
                         else: line += "- ";
+                line += "\n";
+		#if systype is 'gmN':print line
+                self._allLines.append(line);
+        def addGammaCorrelSystematic(self,sysname,systype,bins,valCS,val1,val2):
+                #print sysname
+                # print "length rates = ",len(self._rates)
+                #print bins,val
+                line = "";
+                line += sysname + " " + systype + " "+ "%d " %int(valCS);
+                bin=0;
+                for i in range(len(self._binLabels)):
+                        #print len(self._binLabels)
+                        if self._binLabels[i] in bins:
+                                #print self._binLabels[i]
+                                if(val1>-99. and val2>-99):
+                                        if(bin==0 ):line += " %0.4f " %round(val1,4);
+                                        if(bin==1 ):line += " %0.4f " %round(val2,4);
+                                else:
+                                        line += " - ";
+				bin+=1
+			else: line += "- ";
                 line += "\n";
                 self._allLines.append(line);
 
@@ -128,8 +169,8 @@ class singleBin:
                         if self._binLabels[i] in bins:
                                 #print self._binLabels[i]
 				if val1up>-99. and val2up>-99.:
-                                	if(bin==0):line += str(val1dn) + "/" + str(val1up);
-					if(bin==1):line += str(val2dn) + "/" +str(val2up);
+                                	if(bin==0):line += str(val1dn) + "/" + str(val1up) + " ";
+					if(bin==1):line += str(val2dn) + "/" +str(val2up) + " ";
                                 else:
                                      line += " - ";
 				bin+=1
@@ -144,7 +185,7 @@ class singleBin:
 		for i in range(len(self._binLabels)): 
 			if self._binLabels[i] in bins:
 				#print self._binLabels[i]
-				if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1000) + " ";
+				if self._rates[i] < 0.000001 and systype == 'lnU': line += str(val*1) + " ";
 				else: 
 					if(valdown>-99. and valup>-99.):
 						line += str(valdown) + "/" +str(valup)+" ";
