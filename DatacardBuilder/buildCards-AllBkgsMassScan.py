@@ -79,8 +79,8 @@ if __name__ == '__main__':
 		signalRegion_sigCorr.Scale(lumi*1000);
 		signalRegion_sigCorrList=binsToList(signalRegion_sigCorr);
 
-	signalSysCSFUp_file=TFile(signaldirtag+"/RA2bin_signal_ctagSFuncUp.root");
-	signalSysCSFDown_file=TFile(signaldirtag+"/RA2bin_signal_ctagSFuncDown.root");
+	#signalSysCSFUp_file=TFile(signaldirtag+"/RA2bin_signal_ctagSFuncUp.root");
+	#signalSysCSFDown_file=TFile(signaldirtag+"/RA2bin_signal_ctagSFuncDown.root");
 
 	signalSysSFUp_file=TFile(signaldirtag+"/RA2bin_signal_btagSFuncUp.root");
 	signalSysSFDown_file=TFile(signaldirtag+"/RA2bin_signal_btagSFuncDown.root");
@@ -104,8 +104,8 @@ if __name__ == '__main__':
 	signalSysISRDown_file       =TFile(signaldirtag+"/RA2bin_signal_isruncDown.root");
 	signalRegion_sigHist          = signalSFB_file.Get(signaltag);
 	tagsForSignalRegion = binLabelsToList(signalRegion_sigHist);
-	signalRegion_sigHistCSFUp      = signalSysCSFUp_file.Get(signaltag);
-	signalRegion_sigHistCSFDown    = signalSysCSFDown_file.Get(signaltag);
+	#signalRegion_sigHistCSFUp      = signalSysCSFUp_file.Get(signaltag);
+	#signalRegion_sigHistCSFDown    = signalSysCSFDown_file.Get(signaltag);
 
 	signalRegion_sigHistSFUp      = signalSysSFUp_file.Get(signaltag);
 	signalRegion_sigHistSFDown    = signalSysSFDown_file.Get(signaltag);
@@ -121,8 +121,8 @@ if __name__ == '__main__':
 	signalSysISRUpHist.Scale(lumi*1000)
 	signalSysISRDnHist.Scale(lumi*1000)
 	signalRegion_sigHist.Scale(lumi*1000);
-	signalRegion_sigHistCSFUp.Scale(lumi*1000);
-	signalRegion_sigHistCSFDown.Scale(lumi*1000);
+	#signalRegion_sigHistCSFUp.Scale(lumi*1000);
+	#signalRegion_sigHistCSFDown.Scale(lumi*1000);
 	signalRegion_sigHistSFUp.Scale(lumi*1000);
 	signalRegion_sigHistSFDown.Scale(lumi*1000);
 	signalRegion_sigHistMisSFUp.Scale(lumi*1000);
@@ -137,8 +137,8 @@ if __name__ == '__main__':
 	signalRegion_sigListMCstatErr = binsErrorsToList( signalRegion_sigHist );	
 	signalRegion_sigListSFUp=binsToList( signalRegion_sigHistSFUp );
 	signalRegion_sigListSFDown=binsToList( signalRegion_sigHistSFDown );
-	signalRegion_sigListCSFUp=binsToList( signalRegion_sigHistCSFUp );
-	signalRegion_sigListCSFDown=binsToList( signalRegion_sigHistCSFDown );
+	#signalRegion_sigListCSFUp=binsToList( signalRegion_sigHistCSFUp );
+	#signalRegion_sigListCSFDown=binsToList( signalRegion_sigHistCSFDown );
 
 	signalRegion_sigListMisSFUp=binsToList( signalRegion_sigHistMisSFUp );
 	signalRegion_sigListMisSFDown=binsToList( signalRegion_sigHistMisSFDown );
@@ -1077,10 +1077,21 @@ if __name__ == '__main__':
 			DYsysKin_List[i]=1+DYsysKin_List[i]
 			signalRegion.addSingleSystematic('DYsysKin'+str(i),'lnN',['zvv'], DYsysKin_List,'', i);
 			#DYPurErr_List[i]=1+DYPurErr_List[i]
-		signalRegion.addSingleSystematic("DYstat"+"_BTag1", 'lnN', ['zvv'], DYStatErr_List, 'BTags1')
-		signalRegion.addSingleSystematic("DYstat"+"_BTag2", 'lnN', ['zvv'], DYStatErr_List, 'BTags2')			
-		signalRegion.addSingleSystematic("DYstat"+"_BTag3", 'lnN', ['zvv'], DYStatErr_List, 'BTags3')
-
+		#signalRegion.addSingleSystematic("DYstat"+"_BTag1", 'lnN', ['zvv'], DYStatErr_List, 'BTags1')
+		#signalRegion.addSingleSystematic("DYstat"+"_BTag2", 'lnN', ['zvv'], DYStatErr_List, 'BTags2')			
+		#signalRegion.addSingleSystematic("DYstat"+"_BTag3", 'lnN', ['zvv'], DYStatErr_List, 'BTags3')
+		signalRegion.addSingleSystematic("DYstat"+"_Njet0"+"_BTag1", 'lnN', ['zvv'], DYStatErr_List, 'NJets0_BTags1')
+		signalRegion.addSingleSystematic("DYstat"+"_Njet0"+"_BTag2", 'lnN', ['zvv'], DYStatErr_List, 'NJets0_BTags2')
+		signalRegion.addSingleSystematic("DYstat"+"_Njet0"+"_BTag3", 'lnN', ['zvv'], DYStatErr_List, 'NJets0_BTags3')
+		signalRegion.addSingleSystematic("DYstat"+"_Njet1"+"_BTag1", 'lnN', ['zvv'], DYStatErr_List, 'NJets1_BTags1')
+		signalRegion.addSingleSystematic("DYstat"+"_Njet1"+"_BTag2", 'lnN', ['zvv'], DYStatErr_List, 'NJets1_BTags2')	
+		signalRegion.addSingleSystematic("DYstat"+"_Njet1"+"_BTag3", 'lnN', ['zvv'], DYStatErr_List, 'NJets1_BTags3')
+		signalRegion.addSingleSystematic("DYstat"+"_Njet1"+"_BTag1", 'lnN', ['zvv'], DYStatErr_List, 'NJets2_BTags1')
+		signalRegion.addSingleSystematic("DYstat"+"_Njet1"+"_BTag2", 'lnN', ['zvv'], DYStatErr_List, 'NJets2_BTags2')	
+		signalRegion.addSingleSystematic("DYstat"+"_Njet1"+"_BTag3", 'lnN', ['zvv'], DYStatErr_List, 'NJets2_BTags3')
+		signalRegion.addSingleSystematic("DYstat"+"_Njet1"+"_BTag1", 'lnN', ['zvv'], DYStatErr_List, 'NJets3_BTags1')
+		signalRegion.addSingleSystematic("DYstat"+"_Njet1"+"_BTag2", 'lnN', ['zvv'], DYStatErr_List, 'NJets3_BTags2')	
+		signalRegion.addSingleSystematic("DYstat"+"_Njet1"+"_BTag3", 'lnN', ['zvv'], DYStatErr_List, 'NJets3_BTags3')
 		signalRegion.addSingleSystematic("DYMCstat_Nj1_Btag1", 'lnN', ['zvv'], DYMCStatErr_List, 'NJets1_BTags1')
 		signalRegion.addSingleSystematic("DYMCstat_Nj1_Btag2", 'lnN', ['zvv'], DYMCStatErr_List, 'NJets1_BTags2')
 		signalRegion.addSingleSystematic("DYMCstat_Nj1_Btag3", 'lnN', ['zvv'], DYMCStatErr_List, 'NJets1_BTags3')
@@ -1090,6 +1101,7 @@ if __name__ == '__main__':
 		signalRegion.addSingleSystematic("DYMCstat_Nj3_Btag1", 'lnN', ['zvv'], DYMCStatErr_List, 'NJets3_BTags1')
 		signalRegion.addSingleSystematic("DYMCstat_Nj3_Btag2", 'lnN', ['zvv'], DYMCStatErr_List, 'NJets3_BTags2')
 		signalRegion.addSingleSystematic("DYMCstat_Nj3_Btag3", 'lnN', ['zvv'], DYMCStatErr_List, 'NJets3_BTags3')
+
 
 		signalRegion.addSingleSystematic("DYPur"+"_BTag1", 'lnN', ['zvv'], DYPurErr_List, "BTags1")
 		signalRegion.addSingleSystematic("DYPur"+"_BTag2Plus", 'lnN', ['zvv'], DYPurErr_List, "BTags2")
