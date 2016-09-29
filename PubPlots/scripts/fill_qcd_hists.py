@@ -35,7 +35,7 @@ def main(argv):
    outfile.cd()
 
    # store the central values, +/1 stata and syst uncertainties in these histograms
-   hFullCV = TH1D("FullCV", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+   hFullCV = TH1D("hFullCV", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
    hFullStatUp = TH1D("hFullStatUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
    hFullStatDown = TH1D("hFullStatDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
    hFullSystUp = TH1D("hFullSystUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
