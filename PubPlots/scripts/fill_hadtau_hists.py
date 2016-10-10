@@ -1,4 +1,7 @@
+#!/usr/bin/python
 ## take data-driven hadronic tau estimation from Aditee's file, fill histograms and store them in a root file
+
+from __future__ import print_function
 
 import os
 import sys, getopt
@@ -7,25 +10,8 @@ from ROOT import TFile, TH1D, Math, TKey
 
 alpha = 1 - 0.6827
 
-def main(argv):
-   inputfile = 'inputs/bg_hists/ARElog60_12.9ifb_HadTauEstimation_data_formatted_New.root'
-   outputfile = 'inputs/bg_hists/hadtau_hists.root'
-   nbins = 160
-   try:
-      opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
-   except getopt.GetoptError:
-      print ('fill_hadtau_hists.py -i <inputfile> -o <outputfile> -n <nbins>')
-      sys.exit(2)
-   for opt, arg in opts:
-      if opt == '-h':
-         print ('fill_hadtau_hists.py -i <inputfile> -o <outputfile> -n <nbins>')
-         sys.exit()
-      elif opt in ("-i", "--ifile"):
-         inputfile = arg
-      elif opt in ("-o", "--ofile"):
-         outputfile = arg
-      elif opt in ("-n", "--nbins"):
-         nbins = arg
+def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog60_12.9ifb_HadTauEstimation_data_formatted_New.root', outputfile = 'inputs/bg_hists/hadtau_hists.root', nbins = 160):
+   
    print ('Input file is %s' % inputfile)
    print ('Output file is %s' % outputfile)
    print ('Total number of bins is %d' % nbins)
@@ -71,7 +57,7 @@ def main(argv):
    
    # open text file, extract values
    if nbins != hin.GetNbinsX():
-       print 'Warning: input file has %d bins, but I need to fill %d bins!' % (hin.GetNbinsX(), nbins)
+       print ('Warning: input file has %d bins, but I need to fill %d bins!' % (hin.GetNbinsX(), nbins))
    for ibin in range(nbins):
        CV = hin.GetBinContent(ibin+1)
        hFullCV.SetBinContent(ibin+1, CV)
@@ -104,7 +90,7 @@ def main(argv):
        hFullSystUp.SetBinContent(ibin+1, syst_up)
        hFullSystDown.SetBinContent(ibin+1, syst_down)
        
-       print 'Bin %d: %f + %f + %f - %f - %f' % (ibin+1, CV, hFullStatUp.GetBinContent(ibin+1), hFullSystUp.GetBinContent(ibin+1), hFullStatDown.GetBinContent(ibin+1), hFullSystDown.GetBinContent(ibin+1))
+       print ('Bin %d: %f + %f + %f - %f - %f' % (ibin+1, CV, hFullStatUp.GetBinContent(ibin+1), hFullSystUp.GetBinContent(ibin+1), hFullStatDown.GetBinContent(ibin+1), hFullSystDown.GetBinContent(ibin+1)))
            
              
    outfile.cd()
@@ -116,5 +102,6 @@ def main(argv):
    outfile.Close()
         
 if __name__ == "__main__":
-   main(sys.argv[1:])
+    import sys
+    fill_hadtau_hists(sys.argv[1], sys.argv[2], int(sys.argv[3]))
    

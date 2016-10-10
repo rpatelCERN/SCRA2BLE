@@ -1,4 +1,7 @@
+#!/usr/bin/python
 ## take data-driven QCD estimation from text file, fill histograms and store them in a root file
+
+from __future__ import print_function
 
 import os
 import sys, getopt
@@ -7,25 +10,9 @@ from ROOT import TFile, TH1D, Math
 
 alpha = 1 - 0.6827
 
-def main(argv):
-   inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-july28-nodashes.txt'
-   outputfile = 'inputs/bg_hists/qcd_hists.root'
-   nbins = 160
-   try:
-      opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
-   except getopt.GetoptError:
-      print ('fill_qcd_hists.py -i <inputfile> -o <outputfile> -n <nbins>')
-      sys.exit(2)
-   for opt, arg in opts:
-      if opt == '-h':
-         print ('fill_qcd_hists.py -i <inputfile> -o <outputfile> -n <nbins>')
-         sys.exit()
-      elif opt in ("-i", "--ifile"):
-         inputfile = arg
-      elif opt in ("-o", "--ofile"):
-         outputfile = arg
-      elif opt in ("-n", "--nbins"):
-         nbins = arg
+def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-july28-nodashes.txt', outputfile = 'qcd_hists.root', nbins = 160):
+      
+
    print ('Input file is %s' % inputfile)
    print ('Output file is %s' % outputfile)
    print ('Total number of bins is %d' % nbins)
@@ -46,7 +33,7 @@ def main(argv):
        num_lines = sum(1 for line in fin)
        ibin = -1
        if nbins+1 != num_lines:
-           print 'Warning: text file has %d lines, but I need to fill %d bins!' % (num_lines, nbins)
+           print ('Warning: text file has %d lines, but I need to fill %d bins!' % (num_lines, nbins))
        fin.seek(0)
        for line in fin:
            ibin = ibin+1
@@ -54,7 +41,7 @@ def main(argv):
                continue
            values = line.split()
            if len(values) != 32:
-               print 'Warning: this line looks funny'
+               print ('Warning: this line looks funny')
            CV = abs(max(float(values[len(values)-3]), 0.))
            hFullCV.SetBinContent(ibin, CV)
            hFullCV.SetBinError(ibin, 0.)
@@ -80,7 +67,7 @@ def main(argv):
            if syst > CV - hFullStatDown.GetBinContent(ibin): # truncate if necessary
                syst = CV - hFullStatDown.GetBinContent(ibin)
            hFullSystDown.SetBinContent(ibin, syst)
-           print 'Bin %d: %f + %f + %f - %f - %f' % (ibin, CV, hFullStatUp.GetBinContent(ibin), hFullSystUp.GetBinContent(ibin), hFullStatDown.GetBinContent(ibin), hFullSystDown.GetBinContent(ibin))
+           print ('Bin %d: %f + %f + %f - %f - %f' % (ibin, CV, hFullStatUp.GetBinContent(ibin), hFullSystUp.GetBinContent(ibin), hFullStatDown.GetBinContent(ibin), hFullSystDown.GetBinContent(ibin)))
            
   
            
@@ -95,5 +82,6 @@ def main(argv):
    outfile.Close()
         
 if __name__ == "__main__":
-   main(sys.argv[1:])
+    import sys
+    fill_qcd_hists(sys.argv[1], sys.argv[2], int(sys.argv[3]))
    
