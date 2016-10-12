@@ -1,0 +1,3 @@
+## can save important versions of plots if need be, otherwise don't save any
+*.pdf
+*.png
