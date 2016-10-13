@@ -16,8 +16,9 @@ parser = OptionParser()
 parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='use fastsim signal (default = %default)')
 parser.add_option('--keeptar', action='store_true', dest='keeptar', default=False, help='keep old tarball for condor jobs (default = %default)')
 parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Cards2016/FullSim",help="EOS output directory  (default = %default)", metavar="outDir")
-(options, args) = parser.parse_args()
 parser.add_option('--lpc', action='store_true', dest='lpc', default=True, help='running on lpc condor  (default = %default)')
+
+(options, args) = parser.parse_args()
 
 # -----------------------------------------------------------------
 #Create CACHEDIR.TAG files on the fly to exclude output directories from condor tarball
@@ -46,12 +47,22 @@ def condorize(command,tag,odir,CMSSWVER):
     f1n = "tmp_%s.sh" %(tag);
     f1=open(f1n, 'w')
     f1.write("#!/bin/sh \n");
-
+  
     # setup environment
     if options.lpc:
     	f2n = "tmp_%s.condor" % (tag);
     	outtag = "out_%s_$(Cluster)" % (tag)
-     
+	f1.write("tar -xzf %s.tar.gz \n" % (CMSSWVER));
+        f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");  
+   	f1.write("set SCRAM_ARCH=slc6_amd64_gcc481\n")
+    	f1.write("cd %s \n" %(CMSSWVER));
+    	f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
+    	f1.write("eval `scramv1 runtime -sh`\n")
+	f1.write(command+" \n")
+	mu=0.0
+	f1.write("xrdcp -f results_%s_mu%1.1f.root root://cmseos.fnal.gov/%s/results_%s_mu%1.1f.root 2>&1 \n" % (tag,float(mu),odir,tag,float(mu)));
+	f1.write("rm -r *.py input* *.root *.tar.gz \n")
+        f1.close();
     	f2=open(f2n, 'w')
     	f2.write("universe = vanilla \n");
     	f2.write("Executable = %s \n" % (f1n) );
