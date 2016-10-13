@@ -11,7 +11,7 @@ import CMS_lumi
 plot_dir = "output/"
 #plot_title = "results-plot-prefit-12_9-log"
 
-def make_160_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs):
+def make_160_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=False):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -69,6 +69,10 @@ def make_160_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs):
     ratio = DataMCRatio(DataObs(hdata_obs), sumBG) # note that this also sets the style
     ratio_markers = ratio.markers
     ratio_bands = ratio.bands
+    pull = ratio.pull
+    pull.GetXaxis().SetTitle("Search region bin number")
+    pull.SetMaximum(3.2)
+    pull.SetMinimum(-3.2)
     hratdummy = ratio.dummy_hist
     hratdummy.GetXaxis().SetTitle("Search region bin number")
     hratdummy.SetMaximum(2.3)
@@ -210,29 +214,47 @@ def make_160_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs):
     ttext_nb.DrawLatex(36.-0.5 , ymax_top/40. , "#geq 3")
 
     pad2.cd()
-    hratdummy.Draw("axis")
-    ratiomid = TLine(hbg_pred.GetBinLowEdge(1),0,hbg_pred.GetBinLowEdge(hbg_pred.GetNbinsX()+1),0)
+    if doPull:
+        pull.Draw("hist")
+        p1 = TLine(pull.GetBinLowEdge(1), 1., pull.GetBinLowEdge(pull.GetNbinsX()+1), 1.)
+        p2 = TLine(pull.GetBinLowEdge(1), 2., pull.GetBinLowEdge(pull.GetNbinsX()+1), 2.)
+        m1 = TLine(pull.GetBinLowEdge(1), -1., pull.GetBinLowEdge(pull.GetNbinsX()+1), -1.)
+        m2 = TLine(pull.GetBinLowEdge(1), -2., pull.GetBinLowEdge(pull.GetNbinsX()+1), -2.)
+        ## p1.SetLineStyle(2)
+        ## p2.SetLineStyle(2)
+        ## m1.SetLineStyle(2)
+        ## m2.SetLineStyle(2)
+        p1.Draw()
+        p2.Draw()
+        m1.Draw()
+        m2.Draw()
+    else:
+        hratdummy.Draw("axis")
+        ratio_bands.Draw("e2, same")
+        ratio_markers.Draw("p, same")
+    ratiomid = TLine(hbg_pred.GetBinLowEdge(1), 0., hbg_pred.GetBinLowEdge(hbg_pred.GetNbinsX()+1), 0.)
     ratiomid.SetLineStyle(2)
     ratiomid.Draw()
-    ratio_bands.Draw("e2, same")
-    ratio_markers.Draw("p, same")
-
+        
     ## lines again
-    tl_njet.DrawLine(41.-0.5,-2.3, 41.-0.5,2.3) 
-    tl_njet.DrawLine(81.-0.5,-2.3, 81.-0.5,2.3)
-    tl_njet.DrawLine(121.-0.5,-2.3,121.-0.5,2.3)
-    tl_nb.DrawLine(11.-0.5,-2.3,11.-0.5,2.3) 
-    tl_nb.DrawLine(21.-0.5,-2.3,21.-0.5,2.3) 
-    tl_nb.DrawLine(31.-0.5,-2.3,31.-0.5,2.3)
-    tl_nb.DrawLine(51.-0.5,-2.3,51.-0.5,2.3) 
-    tl_nb.DrawLine(61.-0.5,-2.3,61.-0.5,2.3) 
-    tl_nb.DrawLine(71.-0.5,-2.3,71.-0.5,2.3) 
-    tl_nb.DrawLine(91.-0.5,-2.3,91.-0.5,2.3) 
-    tl_nb.DrawLine(101.-0.5,-2.3,101.-0.5,2.3) 
-    tl_nb.DrawLine(111.-0.5,-2.3,111.-0.5,2.3)
-    tl_nb.DrawLine(131.-0.5,-2.3,131.-0.5,2.3)
-    tl_nb.DrawLine(141.-0.5,-2.3,141.-0.5,2.3)
-    tl_nb.DrawLine(151.-0.5,-2.3,151.-0.5,2.3)
+    ratio_max = 2.3
+    if doPull:
+        ratio_max = 3.2
+    tl_njet.DrawLine(41.-0.5, 0.-ratio_max, 41.-0.5,ratio_max) 
+    tl_njet.DrawLine(81.-0.5, 0.-ratio_max, 81.-0.5,ratio_max)
+    tl_njet.DrawLine(121.-0.5, 0.-ratio_max,121.-0.5,ratio_max)
+    tl_nb.DrawLine(11.-0.5, 0.-ratio_max,11.-0.5,ratio_max) 
+    tl_nb.DrawLine(21.-0.5, 0.-ratio_max,21.-0.5,ratio_max) 
+    tl_nb.DrawLine(31.-0.5, 0.-ratio_max,31.-0.5,ratio_max)
+    tl_nb.DrawLine(51.-0.5, 0.-ratio_max,51.-0.5,ratio_max) 
+    tl_nb.DrawLine(61.-0.5, 0.-ratio_max,61.-0.5,ratio_max) 
+    tl_nb.DrawLine(71.-0.5, 0.-ratio_max,71.-0.5,ratio_max) 
+    tl_nb.DrawLine(91.-0.5, 0.-ratio_max,91.-0.5,ratio_max) 
+    tl_nb.DrawLine(101.-0.5, 0.-ratio_max,101.-0.5,ratio_max) 
+    tl_nb.DrawLine(111.-0.5, 0.-ratio_max,111.-0.5,ratio_max)
+    tl_nb.DrawLine(131.-0.5, 0.-ratio_max,131.-0.5,ratio_max)
+    tl_nb.DrawLine(141.-0.5, 0.-ratio_max,141.-0.5,ratio_max)
+    tl_nb.DrawLine(151.-0.5, 0.-ratio_max,151.-0.5,ratio_max)
 
     ratioleg = TLegend(0.72, 0.88, 0.94, 0.96)
     ratioleg.SetTextSize(0.07)

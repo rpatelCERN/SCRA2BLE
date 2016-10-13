@@ -22,6 +22,7 @@ def make_all_summary_plots(lostlep_file = 'lostlep_hists.root', hadtau_file = 'h
 
     
     make_160_bin_plot.make_160_bin_plot('results-plot-prefit-12_9-log', lostlep, hadtau, znn, qcd, data_obs)
+    make_160_bin_plot.make_160_bin_plot('results-plot-prefit-12_9-log-pull', lostlep, hadtau, znn, qcd, data_obs, True)
     make_160_bin_tables.make_160_bin_tables('results-prefit-12_9', lostlep, hadtau, znn, qcd, data_obs)
 
 if __name__ == "__main__": # to run from command line, just give the name of the BG estimation files
