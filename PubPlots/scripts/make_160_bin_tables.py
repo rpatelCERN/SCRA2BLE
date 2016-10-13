@@ -14,9 +14,9 @@ def make_160_bin_tables(output_file, lostlep, hadtau, znn, qcd, data_obs): #,
     rep_ht_cuts = ['500-1000', '1000+']
     ht_cuts = ['300-500'] + rep_ht_cuts + ['350-500'] + rep_ht_cuts*2 + ['750-1500', '1500+']
             
-    with open("/".join(["output", output_file]), 'w') as fout:
+    with open("/".join(["output", output_file+".tex"]), 'w') as fout:
         ## copy preamble already saved in output directory
-        with open('output/preamble.tex', 'r') as fpre:
+        with open('output/reference/preamble.tex', 'r') as fpre:
             preamble = fpre.read()
 
         fout.write(preamble)
