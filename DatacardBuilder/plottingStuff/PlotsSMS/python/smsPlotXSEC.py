@@ -19,6 +19,7 @@ class smsPlotXSEC(smsPlotABS):
     # define the plot canvas
     def setStyleCOLZ(self):        
         # set z axis
+        self.histo.GetZaxis().SetRangeUser(0.001, 20);
         self.histo.GetZaxis().SetLabelFont(42)
         self.histo.GetZaxis().SetTitleFont(42)
         self.histo.GetZaxis().SetLabelSize(0.035)
@@ -47,7 +48,7 @@ class smsPlotXSEC(smsPlotABS):
         palette.SetLabelSize(0.035)
 
     def DrawPaletteLabel(self):
-        textCOLZ = rt.TLatex(0.98,0.15,"95% C.L. upper limit on cross section [pb]")
+        textCOLZ = rt.TLatex(0.98,0.15,"95% CL upper limit on cross section [pb]")
         textCOLZ.SetNDC()
         #textCOLZ.SetTextAlign(13)
         textCOLZ.SetTextFont(42)
@@ -61,7 +62,7 @@ class smsPlotXSEC(smsPlotABS):
         self.emptyHisto.GetYaxis().SetRangeUser(self.model.Ymin, self.model.Ymax)
         self.emptyHisto.Draw()
         self.histo.Draw("COLZSAME")
-        self.DrawDiagonal()
+        #self.DrawDiagonal()
         self.DrawLines()
         self.DrawText()
         self.DrawLegend()

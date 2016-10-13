@@ -85,7 +85,7 @@ class smsPlotABS(object):
         self.c.graphWhite = graphWhite
        	CMS_lumi.writeExtraText = 0
 	CMS_lumi.extraText = "Preliminary"
-	CMS_lumi.lumi_13TeV="2.1 fb^{-1}"
+	CMS_lumi.lumi_13TeV="12.9 fb^{-1}"
 
 	CMS_lumi.lumi_sqrtS = "13 TeV"  
 	iPos=0
@@ -111,9 +111,17 @@ class smsPlotABS(object):
         textNLONLL.SetNDC()
         textNLONLL.SetTextAlign(13)
         textNLONLL.SetTextFont(42)
-        textNLONLL.SetTextSize(0.04)
+        textNLONLL.SetTextSize(0.035)
         textNLONLL.Draw()
-        #self.c.textNLONLL = textNLONLL
+	#textChi= rt.TLatex(0.16,0.2,"m_{{#tilde{#chi}^{\pm}_1}/{#tilde{#chi}^{0}_2}}")
+	textChi= rt.TLatex(0.16,0.70, "m_{#tilde{#chi}_{1}^{#pm}/#tilde{#chi}_{2}^{0}}=0.5 (m_{#tilde{#chi}_{1}^{0}}+ m_{#tilde{g}} )")
+        textChi.SetNDC()
+        textChi.SetTextAlign(13)
+        textChi.SetTextFont(42)
+        textChi.SetTextSize(0.035)
+	#print "m_{{#tilde{#chi}^{\pm}_1}/{#tilde{#chi}^{0}_2}}"
+	#textChi.Draw()
+        #self.c.NLONLL = textChi
 
     def Save(self,label):
         # save the output
@@ -207,15 +215,33 @@ class smsPlotABS(object):
         self.c.LExpP = LExpP
 
     def DrawDiagonal(self):
-        diagonal = rt.TGraph(3, self.model.diagX, self.model.diagY)
+	diagonal=rt.TGraph(128)
         diagonal.SetName("diagonal")
-        diagonal.SetFillColor(rt.kWhite)
+
+	diagonal2=rt.TGraph(128)
+        diagonal2.SetName("diagonal2")
+
+	for i in range(0,128):
+		x=float((i*12.5)+400)
+		y=float((i*12.5)+400)
+		y2=float((i*12.5)+400-170)
+		diagonal.SetPoint(diagonal.GetN(), x,y)
+		diagonal2.SetPoint(diagonal2.GetN(),x,y2)
+        diagonal.SetFillColorAlpha(rt.kWhite,0)
         diagonal.SetLineColor(rt.kGray)
         diagonal.SetLineStyle(2)
+	
         diagonal.Draw("FSAME")
         diagonal.Draw("LSAME")
+        diagonal2.SetLineColor(rt.kGray)
+        diagonal2.SetLineStyle(2)
+        diagonal2.SetFillColorAlpha(rt.kWhite,0)
+
+        #diagonal2.Draw("LSame")
         self.c.diagonal = diagonal
-        
+        #self.c.diagonal2=diagonal2
+	self.c.Update
+
     def DrawLines(self):
         # observed
         self.OBS['nominal'].SetLineColor(color(self.OBS['colorLine']))
