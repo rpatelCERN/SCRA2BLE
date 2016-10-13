@@ -48,57 +48,57 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog60_12.9ifb_HadTauEstima
    outfile = TFile(outputfile, "recreate")
    outfile.cd()
 
-   # store the central values, +/1 stata and syst uncertainties in these histograms
-   hFullCV = TH1D("FullCV", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
-   hFullStatUp = TH1D("hFullStatUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
-   hFullStatDown = TH1D("hFullStatDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
-   hFullSystUp = TH1D("hFullSystUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
-   hFullSystDown = TH1D("hFullSystDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+   # store the central values, +/1 stat and syst uncertainties in these histograms
+   hCV = TH1D("hCV", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+   hStatUp = TH1D("hStatUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+   hStatDown = TH1D("hStatDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+   hSystUp = TH1D("hSystUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+   hSystDown = TH1D("hSystDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
    
    # open text file, extract values
    if nbins != hin.GetNbinsX():
        print ('Warning: input file has %d bins, but I need to fill %d bins!' % (hin.GetNbinsX(), nbins))
    for ibin in range(nbins):
        CV = hin.GetBinContent(ibin+1)
-       hFullCV.SetBinContent(ibin+1, CV)
-       hFullCV.SetBinError(ibin+1, 0.)
+       hCV.SetBinContent(ibin+1, CV)
+       hCV.SetBinError(ibin+1, 0.)
        # get stat uncertainties
        stat_up = hin.GetBinError(ibin+1)
        stat_down = hin_stats.GetBinContent(ibin+1)
-       hFullStatUp.SetBinContent(ibin+1, stat_up)
-       hFullStatDown.SetBinContent(ibin+1, stat_down)
+       hStatUp.SetBinContent(ibin+1, stat_up)
+       hStatDown.SetBinContent(ibin+1, stat_down)
        # get syst uncertainties
        syst_up = 0.
        syst_down = 0.
        for hsyst in symsysts:
-           syst_up = syst_up + pow((hsyst.GetBinContent(ibin+1)-1.)*hin.GetBinContent(ibin+1), 2.)
-           syst_down = syst_down + pow((hsyst.GetBinContent(ibin+1)-1.)*hin.GetBinContent(ibin+1), 2.)
+           syst_up = syst_up + pow((hsyst.GetBinContent(ibin+1)-1.)*CV, 2.)
+           syst_down = syst_down + pow((hsyst.GetBinContent(ibin+1)-1.)*CV, 2.)
        for hsyst in upsysts:
-           syst_up = syst_up + pow((hsyst.GetBinContent(ibin+1)-1.)*hin.GetBinContent(ibin+1), 2.)
+           syst_up = syst_up + pow((hsyst.GetBinContent(ibin+1)-1.)*CV, 2.)
        for hsyst in downsysts:
-           syst_down = syst_down + pow((1.-hsyst.GetBinContent(ibin+1))*hin.GetBinContent(ibin+1), 2.)
+           syst_down = syst_down + pow((1.-hsyst.GetBinContent(ibin+1))*CV, 2.)
        for hsyst in specialsysts:
            if hsyst.GetBinContent(ibin+1)>1.:
-               syst_up = syst_up + pow((hsyst.GetBinContent(ibin+1)-1.)*hin.GetBinContent(ibin+1), 2.)
+               syst_up = syst_up + pow((hsyst.GetBinContent(ibin+1)-1.)*CV, 2.)
            else:
-               syst_down = syst_down + pow((1.-hsyst.GetBinContent(ibin+1))*hin.GetBinContent(ibin+1), 2.)
+               syst_down = syst_down + pow((1.-hsyst.GetBinContent(ibin+1))*CV, 2.)
 
        syst_up=math.sqrt(syst_up)
        syst_down=math.sqrt(syst_down)            
-       if syst_down > CV - hFullStatDown.GetBinContent(ibin+1): # truncate if necessary
-           syst_down = CV - hFullStatDown.GetBinContent(ibin+1)
-       hFullSystUp.SetBinContent(ibin+1, syst_up)
-       hFullSystDown.SetBinContent(ibin+1, syst_down)
+       if syst_down > CV - hStatDown.GetBinContent(ibin+1): # truncate if necessary
+           syst_down = CV - hStatDown.GetBinContent(ibin+1)
+       hSystUp.SetBinContent(ibin+1, syst_up)
+       hSystDown.SetBinContent(ibin+1, syst_down)
        
-       print ('Bin %d: %f + %f + %f - %f - %f' % (ibin+1, CV, hFullStatUp.GetBinContent(ibin+1), hFullSystUp.GetBinContent(ibin+1), hFullStatDown.GetBinContent(ibin+1), hFullSystDown.GetBinContent(ibin+1)))
+       print ('Bin %d: %f + %f + %f - %f - %f' % (ibin+1, CV, hStatUp.GetBinContent(ibin+1), hSystUp.GetBinContent(ibin+1), hStatDown.GetBinContent(ibin+1), hSystDown.GetBinContent(ibin+1)))
            
              
    outfile.cd()
-   hFullCV.Write()
-   hFullStatUp.Write()
-   hFullStatDown.Write()
-   hFullSystUp.Write()
-   hFullSystDown.Write()
+   hCV.Write()
+   hStatUp.Write()
+   hStatDown.Write()
+   hSystUp.Write()
+   hSystDown.Write()
    outfile.Close()
         
 if __name__ == "__main__":

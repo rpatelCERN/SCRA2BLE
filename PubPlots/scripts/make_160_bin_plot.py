@@ -9,18 +9,23 @@ import CMS_lumi
 
 
 plot_dir = "plots/"
-plot_title = "results-plot-prefit-12_9-log.pdf"
+plot_title = "results-plot-prefit-12_9-log"
 
 def make_160_bin_plot(lostlep_file = 'lostlep_hists.root', hadtau_file = 'hadtau_hists.root', znn_file = 'znn_hists.root', qcd_file = 'qcd_hists.root', data_file = 'inputs/data_hists/Data_160Bins_SR_Approval_12.9.root'):
 
+    TH1D.SetDefaultSumw2(True)
+    import tdrstyle
+    tdrstyle.setTDRStyle()
+    
     f_lostlep = TFile.Open(lostlep_file)
     f_hadtau = TFile.Open(hadtau_file)
     f_qcd = TFile.Open(qcd_file)
     f_znn = TFile.Open(znn_file)
     f_data_obs = TFile.Open(data_file)
 
-    hdata_obs = f_data_obs.Get("data")
-    gdata_obs = DataObs(hdata_obs).graph # note that this also sets the style
+    data_obs = DataObs(f_data_obs.Get("data"))
+    hdata_obs = data_obs.hist
+    gdata_obs = data_obs.graph # note that this also sets the style
 
     ## load BG predictions -- also sets histogram styles   
     qcd = BGEst(f_qcd.Get("hCV"), f_qcd.Get("hStatUp"), f_qcd.Get("hStatDown"), f_qcd.Get("hSystUp"), f_qcd.Get("hSystDown"), 2001)
@@ -280,12 +285,6 @@ def make_160_bin_plot(lostlep_file = 'lostlep_hists.root', hadtau_file = 'hadtau
     gPad.Print(plot_dir+plot_title+".pdf")
     gPad.Print(plot_dir+plot_title+".png")
     
-
-def plot_results():
-    TH1D.SetDefaultSumw2(True)
-    import tdrstyle
-    tdrstyle.setTDRStyle()
-    gStyle.SetHatchesLineWidth(1)
 
         
 if __name__ == "__main__":
