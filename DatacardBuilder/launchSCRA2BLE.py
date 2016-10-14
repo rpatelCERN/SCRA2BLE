@@ -107,7 +107,6 @@ if __name__ == '__main__':
     CMSSWVER = os.getenv("CMSSW_VERSION")
     CMSSWBASE = os.getenv("CMSSW_BASE")
     # tar it up for usage
-    '''
 
     if not os.path.exists('tmp'):
         os.makedirs('tmp')
@@ -115,7 +114,6 @@ if __name__ == '__main__':
 
     #if not options.keeptar:
     os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
-    '''
     f = TFile.Open("inputHistograms/fastsimSignalT2qq/RA2bin_signal.root");
     names = [k.GetName() for k in f.GetListOfKeys()]
     models = []
