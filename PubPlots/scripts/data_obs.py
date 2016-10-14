@@ -13,11 +13,11 @@ class DataObs:
     def __init__(self, hdata_obs):
         self.set_vars(hdata_obs)
         
-    def set_vars(cls, hdata_obs):
-        cls.hist = hdata_obs
-        cls.graph = cls.GetTGraph(hdata_obs)
+    def set_vars(self, hdata_obs):
+        self.hist = hdata_obs
+        self.graph = self.GetTGraph(hdata_obs)
         
-    def GetTGraph(cls, hdata_obs):
+    def GetTGraph(self, hdata_obs):
         x = []
         y = []
         ex_l = []
@@ -38,10 +38,19 @@ class DataObs:
             ey_l.append(nObs-L)
             ey_h.append(U-nObs)
         gData = TGraphAsymmErrors(nbins, array('d', x), array('d', y), array('d', ex_l), array('d', ex_h), array('d', ey_l), array('d', ey_h))
-        gData.SetName("gData")
+        gData.SetName("g_"+self.hist.GetName())
         gData.SetMarkerSize(1)
         gData.SetLineWidth(1)
         gData.SetMarkerStyle(20)
         gData.SetLineColor(1)
         return gData
 
+    def AggregateBins(self, name, title, agg_bins):
+        hagg = TH1D(name, title, len(agg_bins), 0.5, float(len(agg_bins))+0.5)
+        for iasr in range(len(agg_bins)):
+            asr_yield = 0.
+            for isub in range(len(agg_bins[iasr])):
+                asr_yield += self.hist.GetBinContent(agg_bins[iasr][isub]) # note: agg_bins[iasr][isub] index runs from 1 to nbins -- no need to add 1
+            hagg.SetBinContent(iasr+1, asr_yield)
+        return DataObs(hagg)
+        

@@ -8,73 +8,73 @@ class SearchBin:
     def __init__(self, binnum):
         self.set_vars(binnum)
         
-    def set_vars(cls, binnum):
-        cls.num = binnum
-        cls.inj = cls.GetINJ()
-        cls.inb = cls.GetINB()
-        cls.ihtmht = cls.GetIHTMHT()
-        cls.imht = cls.GetIMHT()
-        cls.iht = cls.GetIHT()
+    def set_vars(self, binnum):
+        self.num = binnum
+        self.inj = self.GetINJ()
+        self.inb = self.GetINB()
+        self.ihtmht = self.GetIHTMHT()
+        self.imht = self.GetIMHT()
+        self.iht = self.GetIHT()
         ## these you can call as needed
-        ## cls.same_njets = cls.GetBinsWithSameNJets()
-        ## cls.same_nbjets = cls.GetBinsWithSameNBJets()
-        ## cls.same_htmht = cls.GetBinsWithSameHTMHT()
-        ## cls.same_mht = cls.GetBinsWithSameMHT()
-        ## cls.same_ht = cls.GetBinsWithSameHT()
+        ## self.same_njets = self.GetBinsWithSameNJets()
+        ## self.same_nbjets = self.GetBinsWithSameNBJets()
+        ## self.same_htmht = self.GetBinsWithSameHTMHT()
+        ## self.same_mht = self.GetBinsWithSameMHT()
+        ## self.same_ht = self.GetBinsWithSameHT()
         
-    def GetINJ(cls):
-        INJ = (cls.num-1) // 40
+    def GetINJ(self):
+        INJ = (self.num-1) // 40
         return INJ
 
-    def GetINB(cls):
-        INB = ((cls.num-1) % 40) // 10
+    def GetINB(self):
+        INB = ((self.num-1) % 40) // 10
         return INB
 
-    def GetIHTMHT(cls):
-        IHTMHT = ((cls.num-1) % 40) % 10
+    def GetIHTMHT(self):
+        IHTMHT = ((self.num-1) % 40) % 10
         return IHTMHT
     
-    def GetIMHT(cls):
-        if cls.ihtmht < 0:
+    def GetIMHT(self):
+        if self.ihtmht < 0:
             return -1
-        elif cls.ihtmht < 3:
+        elif self.ihtmht < 3:
             return 0
-        elif cls.ihtmht < 6:
+        elif self.ihtmht < 6:
             return 1
-        elif cls.ihtmht < 8:
+        elif self.ihtmht < 8:
             return 2
         else:
             return 3
     
-    def GetIHT(cls):
-        if cls.ihtmht < 0:
+    def GetIHT(self):
+        if self.ihtmht < 0:
             return -1
-        elif cls.ihtmht == 0 or cls.ihtmht == 3: # 300 < HT < 500
+        elif self.ihtmht == 0 or self.ihtmht == 3: # 300 < HT < 500
             return 0
-        elif cls.ihtmht == 1 or cls.ihtmht == 4 or cls.ihtmht == 6: # 500 < HT < 1000
+        elif self.ihtmht == 1 or self.ihtmht == 4 or self.ihtmht == 6: # 500 < HT < 1000
             return 1
         else: 
             return 2 # note: we're putting HTMHT Box 9 (MHT>750, 750<HT<1500) in the same HT range as the bins with HT > 1000
                      # we're also pytting HTMHT Box 10 (MHT>750, HT>1500) in the same HT range as the bins with HT > 1000
     
-    def GetBinsWithSameNJets(cls):
-        same_njets = [bin for bin in range(1,161) if (bin-1) // 40 == cls.inj]
+    def GetBinsWithSameNJets(self):
+        same_njets = [bin for bin in range(1,161) if (bin-1) // 40 == self.inj]
         return same_njets
 
-    def GetBinsWithSameNBJets(cls):
-        same_nbjets = [bin for bin in range(1,161) if ((bin-1) % 40) // 10 == cls.inb]
+    def GetBinsWithSameNBJets(self):
+        same_nbjets = [bin for bin in range(1,161) if ((bin-1) % 40) // 10 == self.inb]
         return same_nbjets
 
-    def GetBinsWithSameHTMHT(cls):
-        same_htmht = [bin for bin in range(1,161) if ((bin-1) % 40) % 10 == cls.ihtmht]
+    def GetBinsWithSameHTMHT(self):
+        same_htmht = [bin for bin in range(1,161) if ((bin-1) % 40) % 10 == self.ihtmht]
         return same_htmht
 
-    def GetBinsWithSameMHT(cls):
-        same_mht = [bin for bin in range(1,161) if SearchBin(bin).imht == cls.imht]
+    def GetBinsWithSameMHT(self):
+        same_mht = [bin for bin in range(1,161) if SearchBin(bin).imht == self.imht]
         return same_mht
 
-    def GetBinsWithSameHT(cls):
-        same_ht = [bin for bin in range(1,161) if SearchBin(bin).iht == cls.iht]
+    def GetBinsWithSameHT(self):
+        same_ht = [bin for bin in range(1,161) if SearchBin(bin).iht == self.iht]
         return same_ht
 
     @classmethod

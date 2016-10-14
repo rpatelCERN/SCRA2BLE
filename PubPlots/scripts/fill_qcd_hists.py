@@ -6,8 +6,10 @@ from __future__ import print_function
 import os
 import sys, getopt
 import math
-from ROOT import TFile, TH1D, Math
+from ROOT import TFile, TH1D, Math, TDirectory
 from bg_est import BGEst
+from uncertainty import Uncertainty
+from agg_bins import *
 
 alpha = 1 - 0.6827
 
@@ -28,6 +30,17 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-jul
    hStatDown = TH1D("hStatDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
    hSystUp = TH1D("hSystUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
    hSystDown = TH1D("hSystDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+
+   hNonQCDErr = TH1D("hNonQCDErr", ";Search Bin;Fractional syst.", nbins, 0.5, nbins + 0.5);
+   ## for ibin in range(nbins): # sert default to 1 -- no uncertainty
+   ##     hNonQCDErr.SetBinContent(ibin+1,1.)
+   SYSTS = [hNonQCDErr, hNonQCDErr.Clone("hKHT1"), hNonQCDErr.Clone("hKHT2"), hNonQCDErr.Clone("hKHT3"), \
+            hNonQCDErr.Clone("hSNJ2"), hNonQCDErr.Clone("hSNJ3"), hNonQCDErr.Clone("hSNJ4"), \
+            hNonQCDErr.Clone("hSH1M1"), hNonQCDErr.Clone("hSH1M2"), \
+            hNonQCDErr.Clone("hSH2M1"), hNonQCDErr.Clone("hSH2M2"), hNonQCDErr.Clone("hSH2M3"), hNonQCDErr.Clone("hSH2M4"), \
+            hNonQCDErr.Clone("hSH3M1"), hNonQCDErr.Clone("hSH3M2"), hNonQCDErr.Clone("hSH3M3"), hNonQCDErr.Clone("hSH3M4"), \
+            hNonQCDErr.Clone("hMCC")]
+   
    
    # open text file, extract values
    with open(inputfile) as fin:
@@ -61,8 +74,11 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-jul
            syst = 0.
            if CV > 0.:
                syst = syst + pow(err_nonQCD, 2.)
+               hNonQCDErr.SetBinContent(ibin, err_nonQCD) 
                for isyst in range(8, len(values)-7):
+                   # print ("isyst: ", isyst)
                    syst = syst + pow((float(values[isyst])-1.)*CV, 2.)
+                   SYSTS[isyst-7].SetBinContent(ibin, (float(values[isyst])-1.)*CV)
                syst = math.sqrt(syst)
            hSystUp.SetBinContent(ibin, syst)
            if syst > CV - hStatDown.GetBinContent(ibin): # truncate if necessary
@@ -84,6 +100,53 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-jul
    bg_est.gStat.Write()
    bg_est.gSyst.Write()
    bg_est.gFull.Write()
+
+   dSysts = outfile.mkdir("systematics")
+   dSysts.cd()
+   for hsyst in SYSTS:
+       hsyst.Write()
+
+   # and now for aggregate bin predicitons
+   for name, asrs in asr_sets.items():
+       #print(name, asrs)
+       if name is not 'ASR':
+           continue
+       dASR = outfile.mkdir(name)
+       dASR.cd()
+       hCV_ASR = Uncertainty(hCV, "all").AggregateBins(asrs).hist # pretending the CV is a fully-correlated uncertainty b/c we need to add it linearly
+       # stats -- fully uncorrelated
+       hStatUp_ASR = Uncertainty(hStatUp).AggregateBins(asrs).hist
+       hStatDown_ASR = Uncertainty(hStatDown).AggregateBins(asrs).hist
+       hCV_ASR.Write()
+       
+       SYSTSUp_ASR = []
+       SYSTSDown_ASR = []
+       for hsyst in SYSTS:
+           is_correlated = 'all' # the ways these are set up, safe to treat all systs as fully correlated or uncorrelated
+           if hsyst.GetName().find('MCC') > 0 or hsyst.GetName().find('NonQCDErr') > 0:
+               is_correlated = ''
+       #    Uncertainty(hsyst, is_correlated).AggregateBins(asrs).hist.Write()
+           SYSTSUp_ASR.append(Uncertainty(hsyst, is_correlated).AggregateBins(asrs).hist)
+           SYSTSDown_ASR.append(Uncertainty(hsyst, is_correlated).AggregateBins(asrs).hist)
+       hSystUp_ASR = AddHistsInQuadrature('hSystUp', SYSTSUp_ASR)       
+       hSystDown_ASR = AddHistsInQuadrature('hSystDown', SYSTSUp_ASR)
+       # sanity: make sure Stat and Syst Down not larger than CV
+       for iasr in range(hCV_ASR.GetNbinsX()):
+           CV_asr = hCV_ASR.GetBinContent(iasr+1)
+           stat_down_asr = hStatDown_ASR.GetBinContent(iasr+1)
+           syst_down_asr = hSystDown_ASR.GetBinContent(iasr+1)
+           # print ("ASR %d: %f - %f - %f" % (iasr+1, CV_asr, stat_down_asr, syst_down_asr))
+           if stat_down_asr > CV_asr:
+               stat_down_asr = CV_asr
+               hStatDown_ASR.SetBinContent(iasr+1, stat_down_asr)
+           if syst_down_asr > CV_asr - stat_down_asr:
+               hSystDown_ASR.SetBinContent(iasr+1, CV_asr - stat_down_asr)
+       hStatUp_ASR.Write()
+       hSystUp_ASR.Write()
+       hStatDown_ASR.Write()
+       hSystDown_ASR.Write()
+       
+           
    outfile.Close()
         
 if __name__ == "__main__":
