@@ -44,11 +44,15 @@ class Uncertainty:
                     jbin = SearchBin(agg_bins[iasr][jsub])
                     # now we'll linearly add an uncertainty from jbin if it should be correlated with the uncertainty from ibin
                     if 'all' in self.corrs \
-                      or 'njets' in self.corrs and 'nbjets' not in self.corrs and jbin.inj == ibin.inj \
-                      or 'nbjets' in self.corrs  and 'njets' not in self.corrs and jbin.inb == ibin.inb \
-                      or 'njets' in self.corrs and 'nbjets' in self.corrs and jbin.inj == ibin.inj and jbin.inb == ibin.inb \
-                      or 'htmht' in self.corrs and jbin.ihtmht == ibin.ihtmht:
-                      #print("\t and adding jbin %d: %f" % (jbin.num, self.hist.GetBinContent(jbin.num)))
+                      or ('njets' in self.corrs and 'nbjets' not in self.corrs and jbin.inb == ibin.inb and jbin.ihtmht == ibin.ihtmht) \
+                      or ('nbjets' in self.corrs  and 'njets' not in self.corrs and jbin.inj == ibin.inj and jbin.ihtmht == ibin.ihtmht) \
+                      or ('njets' in self.corrs and 'nbjets' in self.corrs and jbin.ihtmht == ibin.ihtmht) \
+                      or ('htmht' in self.corrs and 'nbjets' not in self.corrs and jbin.inb == ibin.inb and jbin.inj == ibin.inj) \
+                      or ('htmht' in self.corrs and 'nbjets' in self.corrs and jbin.inj == ibin.inj) \
+                      or ('DYsysPur' in self.corrs and ((ibin.inb == 1 and jbin.inb == 1) or (ibin.inb > 1 and jbin.inb > 1))) \
+                      or ('LLAcc' in self.corrs and ibin.ihtmht == jbin.ihtmht and ibin.inj == jbin.inj and \
+                          (ibin.inb + ibin.inj >=2) and (ibin.inb >= 2 or ibin.inj >= 2)):
+                      #print("\t and adding correlated jbin %d: %f" % (jbin.num, self.hist.GetBinContent(jbin.num)))
                       corr_part += self.hist.GetBinContent(jbin.num)
                       done[jsub] = True
                       # end jsub loop

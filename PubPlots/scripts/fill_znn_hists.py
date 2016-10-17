@@ -7,6 +7,8 @@ import os
 import sys, getopt
 import math
 from ROOT import TFile, TH1D, Math
+from uncertainty import Uncertainty
+from agg_bins import *
 
 alpha = 1 - 0.6827
 
@@ -24,6 +26,28 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
    hin_0evt_statup = infile.Get("ZinvBG0EVsysUp");
    hin_systdown = infile.Get("ZinvBGsysLow");
 
+   # and load input systematics
+   SYSTS = []
+   for h in infile.GetListOfKeys():
+       h = h.ReadObj()
+       # skip the histograms that don't actually contain systematics -- make sure you check the names haven't changed
+       if (h.GetName().find('hgJ') == 0 and not (h.GetName().find('hgJPurErr') == 0 or h.GetName().find('hgJZgRdataMCerr') == 0)) \
+         or (h.GetName().find('hDYvalue') == 0) \
+         or (h.GetName().find('Zinv') >= 0 and not h.GetName().find('hZinvScaleErr') == 0):
+           continue
+       # print( h.GetName())
+       # convert to absolute
+       hout = h.Clone()
+       hout.Reset() 
+       for ibin in range(nbins):
+           if (h.GetName().find('hgJ') == 0 or h.GetName() == 'hZinvScaleErr') and SearchBin(ibin+1).inb > 0: # assign gJets syst from NB = 0 to corresponding bins with NB > 0
+               # print(h.GetName(), ibin+1, SearchBin(ibin+1).inj*40+SearchBin(ibin+1).ihtmht+1)
+               hout.SetBinContent(ibin+1, h.GetBinContent(SearchBin(ibin+1).inj*40+SearchBin(ibin+1).ihtmht+1)*hin.GetBinContent(ibin+1)) 
+           else:
+               hout.SetBinContent(ibin+1, h.GetBinContent(ibin+1)*hin.GetBinContent(ibin+1))
+       SYSTS.append(hout)
+
+   
    outfile = TFile(outputfile, "recreate")
    outfile.cd()
 
@@ -57,7 +81,7 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
            syst_down = CV - hStatDown.GetBinContent(ibin+1)
        hSystUp.SetBinContent(ibin+1, syst_up)
        hSystDown.SetBinContent(ibin+1, syst_down)
-       print ('Bin %d: %f + %f + %f - %f - %f' % (ibin+1, CV, hStatUp.GetBinContent(ibin+1), hSystUp.GetBinContent(ibin+1), hStatDown.GetBinContent(ibin+1), hSystDown.GetBinContent(ibin+1)))
+       ## print ('Bin %d: %f + %f + %f - %f - %f' % (ibin+1, CV, hStatUp.GetBinContent(ibin+1), hSystUp.GetBinContent(ibin+1), hStatDown.GetBinContent(ibin+1), hSystDown.GetBinContent(ibin+1)))
            
              
    outfile.cd()
@@ -66,6 +90,59 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
    hStatDown.Write()
    hSystUp.Write()
    hSystDown.Write()
+
+   # and now for aggregate bin predicitons
+   for name, asrs in asr_sets.items():
+       #print(name, asrs)
+       if name is not 'ASR':
+            continue
+       dASR = outfile.mkdir(name)
+       dASR.cd()
+       hCV_ASR = Uncertainty(hCV, "all").AggregateBins(asrs).hist # pretending the CV is a fully-correlated uncertainty b/c we need to add it linearly
+       ## CR not binned in nbjets, so stat err on bins with same htmht & njets are correlated
+       hStatUp_ASR = Uncertainty(hStatUp, 'nbjets').AggregateBins(asrs).hist 
+       hStatDown_ASR = Uncertainty(hStatDown, 'nbjets').AggregateBins(asrs).hist
+       hCV_ASR.Write()
+       
+       SYSTSUp_ASR = []
+       SYSTSDown_ASR = []
+       for hsyst in SYSTS:
+           correlation = 'all' # note:default is fully-correlated, corresponds to ZinvScaleErr, gJPurErr, and DYsysNj
+           if hsyst.GetName() == 'hDYsysKin':
+               correlation = ''
+           elif hsyst.GetName().find('gJZgRdataMCerr') >= 0: # hgJZgRdataMCerrUp, hgJZgRdataMCerrLow
+               correlation = 'nbjets'
+           elif hsyst.GetName().find('stat') >= 0: # DYstat, DYMCstat
+               correlation = 'htmht'
+           elif hsyst.GetName().find('DYsysPur') >= 0: # funny
+               correlation = 'DYsysPur'
+           ## Up, Low, Sym
+           if hsyst.GetName().find('Low') >= 0:
+               SYSTSDown_ASR.append(Uncertainty(hsyst, correlation).AggregateBins(asrs).hist)            
+           elif hsyst.GetName().find('Up') >= 0:
+               SYSTSUp_ASR.append(Uncertainty(hsyst, correlation).AggregateBins(asrs).hist)
+           else:
+               SYSTSUp_ASR.append(Uncertainty(hsyst, correlation).AggregateBins(asrs).hist)
+               SYSTSDown_ASR.append(Uncertainty(hsyst, correlation).AggregateBins(asrs).hist)
+               
+       hSystUp_ASR = AddHistsInQuadrature('hSystUp', SYSTSUp_ASR)       
+       hSystDown_ASR = AddHistsInQuadrature('hSystDown', SYSTSDown_ASR)
+       # sanity: make sure Stat and Syst Down not larger than CV
+       for iasr in range(hCV_ASR.GetNbinsX()):
+           CV_asr = hCV_ASR.GetBinContent(iasr+1)
+           stat_down_asr = hStatDown_ASR.GetBinContent(iasr+1)
+           syst_down_asr = hSystDown_ASR.GetBinContent(iasr+1)
+           # print ("ASR %d: %f - %f - %f" % (iasr+1, CV_asr, stat_down_asr, syst_down_asr))
+           if stat_down_asr > CV_asr:
+               stat_down_asr = CV_asr
+               hStatDown_ASR.SetBinContent(iasr+1, stat_down_asr)
+           if syst_down_asr > CV_asr - stat_down_asr:
+               hSystDown_ASR.SetBinContent(iasr+1, CV_asr - stat_down_asr)
+       hStatUp_ASR.Write()
+       hSystUp_ASR.Write()
+       hStatDown_ASR.Write()
+       hSystDown_ASR.Write()
+   
    outfile.Close()
         
 if __name__ == "__main__":
