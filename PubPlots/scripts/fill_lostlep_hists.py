@@ -6,7 +6,7 @@ from __future__ import print_function
 import os
 import sys, getopt
 import math
-from ROOT import TFile, TH1D, Math, TProfile
+from ROOT import TFile, TH1D, Math, TProfile, gDirectory
 from uncertainty import Uncertainty
 from agg_bins import *
 
@@ -30,6 +30,11 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_Jul26_newSF.roo
 
    # load individual systematics
    SYSTS = []
+   # shenanigans for ll-tau combination :O
+   ## dilep_systs_up = []
+   ## dilep_systs_down = []
+   ## mu_reco_iso_stats_up = []
+   ## mu_reco_iso_stats_down = []
    for h in infile.Get('Prediction_data').GetListOfKeys():
        h = h.ReadObj()
        # skip the histograms that don't actually contain systematics -- make sure you check the names haven't changed
@@ -39,14 +44,21 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_Jul26_newSF.roo
        ## hout = h.Clone()
        ## hout.Reset() 
        for ibin in range(nbins):
-           if h.GetBinContent(ibin+1) == 0:
-               continue
-           if h.GetName().find('Up') >= 0:
+           if float(hin.GetBinContent(ibin+1)) == 0.:
+               h.SetBinContent(ibin+1, 0.)
+           elif h.GetName().find('Up') >= 0:
                h.SetBinContent(ibin+1, (h.GetBinContent(ibin+1)-1.)*hin.GetBinContent(ibin+1))
            else:
-               h.SetBinContent(ibin+1, (1.-h.GetBinContent(ibin+1))*hin.GetBinContent(ibin+1))
+               h.SetBinContent(ibin+1, (1.-h.GetBinContent(ibin+1))*hin.GetBinContent(ibin+1))           
        SYSTS.append(h)
+       ## if h.GetName().find('DiLep') >= 0:
+       ##     if h.GetName.find('Up') >= 0:
+       ##         dilep_systs_up.append(h)
+       ##     else:
+       ##         dilep_systs_down.append(h)        
+       ## if h.GetName().find('DiLep') >= 0:
 
+           
    outfile = TFile(outputfile, "recreate")
    outfile.cd()
 
@@ -56,6 +68,9 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_Jul26_newSF.roo
    hStatDown = TH1D("hStatDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
    hSystUp = TH1D("hSystUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
    hSystDown = TH1D("hSystDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+   ## these are the systematics not correlated between lost lepton and tau
+   hSystUp_NoTau = TH1D("hSystUp_NoTau", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+   hSystDown_NoTau = TH1D("hSystDown_NoTau", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
    
    # open text file, extract values
    if nbins != hin.GetNbinsX():
@@ -84,8 +99,7 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_Jul26_newSF.roo
            syst_down = CV - hStatDown.GetBinContent(ibin+1)
        hSystUp.SetBinContent(ibin+1, syst_up)
        hSystDown.SetBinContent(ibin+1, syst_down)
-       ## print ('Bin %d: %f + %f + %f - %f - %f' % (ibin+1, CV, hStatUp.GetBinContent(ibin+1), hSystUp.GetBinContent(ibin+1), hStatDown.GetBinContent(ibin+1), hSystDown.GetBinContent(ibin+1)))
-           
+
              
    outfile.cd()
    hCV.Write()
@@ -94,42 +108,56 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_Jul26_newSF.roo
    hSystUp.Write()
    hSystDown.Write()
 
+   dTau = outfile.mkdir('corr_tau')
+   dTau.cd()
+   ## now save the systematics correlated with tau in a subdirectory
+   for hsyst in SYSTS:
+       hname = hsyst.GetName()
+       if hname.find('MuIso') >= 0 or hname.find('MuReco') >= 0 or hname.find('MuAcc') >= 0 or hname.find('DiLep') >= 0:
+          hsyst.Write()
+
+   outfile.cd()
    # and now for aggregate bin predicitons
    for name, asrs in asr_sets.items():
        #print(name, asrs)
        if name is not 'ASR':
             continue
-       dASR = outfile.mkdir(name)
+       dASR = outfile.mkdir("/".join([name, 'corr_tau']))
        dASR.cd()
        hCV_ASR = Uncertainty(hCV, "all").AggregateBins(asrs).hist # pretending the CV is a fully-correlated uncertainty b/c we need to add it linearly
-       ## CR not binned in nbjets, so stat err on bins with same htmht & njets are correlated
-       hStatUp_ASR = Uncertainty(hStatUp, 'nbjets').AggregateBins(asrs).hist 
-       hStatDown_ASR = Uncertainty(hStatDown, 'nbjets').AggregateBins(asrs).hist
+       # stat uncertainty fully-uncorrelated (160 CRs)
+       hStatUp_ASR = Uncertainty(hStatUp, '').AggregateBins(asrs).hist 
+       hStatDown_ASR = Uncertainty(hStatDown, '').AggregateBins(asrs).hist
        hCV_ASR.Write()
        
        SYSTSUp_ASR = []
        SYSTSDown_ASR = []
        for hsyst in SYSTS:
-           print (hsyst.GetName())
+           hname = hsyst.GetName()
            correlation = 'htmht:nbjets' # note:default is correlated across these dimensions, corresponds to mTEff, SLpurity, DL
-           if hsyst.GetName().find('NonClosure') >= 0: # one for each bin
+           if hname.find('NonClosure') >= 0: # one for each bin
                correlation = ''
-           elif hsyst.GetName().find('IsoTrack') >= 0: # only binned in HT and MHT
+           elif hname.find('IsoTrack') >= 0: # only binned in HT and MHT
                correlation = 'njets:nbjets'
-           elif hsyst.GetName().find('Iso') >= 0 or hsyst.GetName().find('Reco') >= 0: # binned in properties of lepton, fully-correlated across search bins
+           elif hname.find('Iso') >= 0 or hname.find('Reco') >= 0: # binned in properties of lepton, fully-correlated across search bins
                correlation = 'all'
-           elif hsyst.GetName().find('Acc') >= 0: # funny
+           elif hname.find('Acc') >= 0: # funny
                correlation = 'LLAcc'
-           ## Up, Low, Sym
+           ## store the systeamtics correlated between lost lepton and tau in a subdirectory
            hist_asr = Uncertainty(hsyst, correlation).AggregateBins(asrs).hist
-           hist_asr.Write()
-           if hsyst.GetName().find('Down') >= 0:
-               SYSTSDown_ASR.append(Uncertainty(hsyst, correlation).AggregateBins(asrs).hist)            
-           elif hsyst.GetName().find('Up') >= 0:
-               SYSTSUp_ASR.append(Uncertainty(hsyst, correlation).AggregateBins(asrs).hist)
+           # note: the code below successfully write the histograms to each corr_tau subdirectory, but also give the error
+           # Error in <TDirectoryFile::cd>: Unknown directory corr_tau -- WHY?
+           if hname.find('MuIso') >= 0 or hname.find('MuReco') >= 0 or hname.find('MuAcc') >= 0 or hname.find('DiLep') >= 0:
+               dASR.cd("corr_tau")
+               hist_asr.Write()                
+           ## now group by Up, Down, symmetric
+           if hname.find('Down') >= 0:
+               SYSTSDown_ASR.append(hist_asr)            
+           elif hname.find('Up') >= 0:
+               SYSTSUp_ASR.append(hist_asr)
            else:
-               SYSTSUp_ASR.append(Uncertainty(hsyst, correlation).AggregateBins(asrs).hist)
-               SYSTSDown_ASR.append(Uncertainty(hsyst, correlation).AggregateBins(asrs).hist)
+               SYSTSUp_ASR.append(hist_asr)
+               SYSTSDown_ASR.append(hist_asr)
                
        hSystUp_ASR = AddHistsInQuadrature('hSystUp', SYSTSUp_ASR)       
        hSystDown_ASR = AddHistsInQuadrature('hSystDown', SYSTSDown_ASR)
@@ -144,6 +172,7 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_Jul26_newSF.roo
                hStatDown_ASR.SetBinContent(iasr+1, stat_down_asr)
            if syst_down_asr > CV_asr - stat_down_asr:
                hSystDown_ASR.SetBinContent(iasr+1, CV_asr - stat_down_asr)
+       dASR.cd()
        hStatUp_ASR.Write()
        hSystUp_ASR.Write()
        hStatDown_ASR.Write()
