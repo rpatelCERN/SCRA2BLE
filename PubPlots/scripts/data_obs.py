@@ -14,7 +14,7 @@ class DataObs:
         self.set_vars(hdata_obs)
         
     def set_vars(self, hdata_obs):
-        self.hist = hdata_obs
+        self.hist = hdata_obs.Clone("hCV")
         self.graph = self.GetTGraph(hdata_obs)
         
     def GetTGraph(self, hdata_obs):
@@ -45,8 +45,8 @@ class DataObs:
         gData.SetLineColor(1)
         return gData
 
-    def AggregateBins(self, name, title, agg_bins):
-        hagg = TH1D(name, title, len(agg_bins), 0.5, float(len(agg_bins))+0.5)
+    def AggregateBins(self, agg_bins):
+        hagg = TH1D("hCV", "", len(agg_bins), 0.5, float(len(agg_bins))+0.5)
         for iasr in range(len(agg_bins)):
             asr_yield = 0.
             for isub in range(len(agg_bins[iasr])):
