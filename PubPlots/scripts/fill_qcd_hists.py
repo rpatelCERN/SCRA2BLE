@@ -84,7 +84,7 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-jul
            if syst > CV - hStatDown.GetBinContent(ibin): # truncate if necessary
                syst = CV - hStatDown.GetBinContent(ibin)
            hSystDown.SetBinContent(ibin, syst)
-           print ('Bin %d: %f + %f + %f - %f - %f' % (ibin, CV, hStatUp.GetBinContent(ibin), hSystUp.GetBinContent(ibin), hStatDown.GetBinContent(ibin), hSystDown.GetBinContent(ibin)))
+##           print ('Bin %d: %f + %f + %f - %f - %f' % (ibin, CV, hStatUp.GetBinContent(ibin), hSystUp.GetBinContent(ibin), hStatDown.GetBinContent(ibin), hSystDown.GetBinContent(ibin)))
 
    
    bg_est = BGEst(hCV, hStatUp, hStatDown, hSystUp, hSystDown)             
@@ -101,11 +101,6 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-jul
    bg_est.gSyst.Write()
    bg_est.gFull.Write()
 
-   dSysts = outfile.mkdir("systematics")
-   dSysts.cd()
-   for hsyst in SYSTS:
-       hsyst.Write()
-
    # and now for aggregate bin predicitons
    for name, asrs in asr_sets.items():
        dASR = outfile.mkdir(name)
@@ -120,11 +115,12 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-jul
        SYSTSDown_ASR = []
        for hsyst in SYSTS:
            is_correlated = 'all' # the ways these are set up, safe to treat all systs as fully correlated or uncorrelated
-           if hsyst.GetName().find('MCC') >= 0 or hsyst.GetName().find('NonQCDErr') >= 0:
+           hname = hsyst.GetName()
+           if hname.find('MCC') >= 0 or hname.find('NonQCDErr') >= 0:
                is_correlated = ''
-       #    Uncertainty(hsyst, is_correlated).AggregateBins(asrs).hist.Write()
-           SYSTSUp_ASR.append(Uncertainty(hsyst, is_correlated).AggregateBins(asrs).hist)
-           SYSTSDown_ASR.append(Uncertainty(hsyst, is_correlated).AggregateBins(asrs).hist)
+           hist_asr = Uncertainty(hsyst, is_correlated).AggregateBins(asrs).hist
+           SYSTSUp_ASR.append(hist_asr)
+           SYSTSDown_ASR.append(hist_asr)
        hSystUp_ASR = AddHistsInQuadrature('hSystUp', SYSTSUp_ASR)       
        hSystDown_ASR = AddHistsInQuadrature('hSystDown', SYSTSDown_ASR)
        # sanity: make sure Stat and Syst Down not larger than CV
@@ -132,7 +128,6 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-jul
            CV_asr = hCV_ASR.GetBinContent(iasr+1)
            stat_down_asr = hStatDown_ASR.GetBinContent(iasr+1)
            syst_down_asr = hSystDown_ASR.GetBinContent(iasr+1)
-           # print ("ASR %d: %f - %f - %f" % (iasr+1, CV_asr, stat_down_asr, syst_down_asr))
            if stat_down_asr > CV_asr:
                stat_down_asr = CV_asr
                hStatDown_ASR.SetBinContent(iasr+1, stat_down_asr)

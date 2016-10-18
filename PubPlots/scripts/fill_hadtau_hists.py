@@ -12,7 +12,7 @@ from agg_bins import *
 
 alpha = 1 - 0.6827
 
-def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog60_12.9ifb_HadTauEstimation_data_formatted_New.root', outputfile = 'inputs/bg_hists/hadtau_hists.root', nbins = 160):
+def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog60_12.9ifb_HadTauEstimation_data_formatted_New.root', outputfile = 'hadtau_hists.root', nbins = 160):
    
    print ('Input file is %s' % inputfile)
    print ('Output file is %s' % outputfile)
@@ -189,7 +189,7 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog60_12.9ifb_HadTauEstima
        hStatDown_ASR.Write()
        hSystDown_ASR.Write()
 
-       outfile.Close()
+   outfile.Close()
         
 if __name__ == "__main__":
     import sys

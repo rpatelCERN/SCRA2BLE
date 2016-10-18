@@ -114,13 +114,14 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
            elif hsyst.GetName().find('DYsysPur') >= 0: # funny
                correlation = 'DYsysPur'
            ## Up, Low, Sym
+           hist_asr = Uncertainty(hsyst, correlation).AggregateBins(asrs).hist
            if hsyst.GetName().find('Low') >= 0:
-               SYSTSDown_ASR.append(Uncertainty(hsyst, correlation).AggregateBins(asrs).hist)            
+               SYSTSDown_ASR.append(hist_asr)            
            elif hsyst.GetName().find('Up') >= 0:
-               SYSTSUp_ASR.append(Uncertainty(hsyst, correlation).AggregateBins(asrs).hist)
+               SYSTSUp_ASR.append(hist_asr)
            else:
-               SYSTSUp_ASR.append(Uncertainty(hsyst, correlation).AggregateBins(asrs).hist)
-               SYSTSDown_ASR.append(Uncertainty(hsyst, correlation).AggregateBins(asrs).hist)
+               SYSTSUp_ASR.append(hist_asr)
+               SYSTSDown_ASR.append(hist_asr)
                
        hSystUp_ASR = AddHistsInQuadrature('hSystUp', SYSTSUp_ASR)       
        hSystDown_ASR = AddHistsInQuadrature('hSystDown', SYSTSDown_ASR)

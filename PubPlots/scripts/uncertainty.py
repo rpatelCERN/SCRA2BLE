@@ -1,5 +1,6 @@
 #!/usr/bin/python
 ## stores properties of bin, including links to possibly-correlated bins
+## input is histogram of the uncertainty in all search bins (e.g. 160), string describing correlation structure
 from __future__ import division
 from search_bin import SearchBin
 from ROOT import TH1D
