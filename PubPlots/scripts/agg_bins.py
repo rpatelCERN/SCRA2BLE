@@ -3,6 +3,7 @@ from search_bin import SearchBin
 from ROOT import TH1D
 from math import sqrt
 
+## here define aggregate regions as lists of the bin indices  
 asr1 = [i for i in range(1,161) if SearchBin(i).inb == 0 and SearchBin(i).imht > 1]
 asr2 = [i for i in range(1,161) if SearchBin(i).inb == 0 and SearchBin(i).ihtmht == 9]
 asr3 = [i for i in range(1,161) if SearchBin(i).inb == 0 and SearchBin(i).imht > 1 and SearchBin(i).inj > 0]
@@ -16,6 +17,8 @@ asr10 = [159, 160]
 asr11 = [i for i in range(1,161) if SearchBin(i).inb >= 1 and SearchBin(i).inj >= 2]
 asr12 = [i for i in range(1,161) if SearchBin(i).inb >= 1 and SearchBin(i).imht > 2 and SearchBin(i).inj >= 1]
 
+
+## Each histogram of aggregrate bins shouls be added to this dictionary with a name (e.g. 'ASR' for the 12 standard aggregate regions) and a tuple of the aggregate regions defined above. This will be turned into a histogram with one bin per aggregate region, in the order specified in the tuple.
 asr_sets = {'ASR': (asr1, asr2, asr3, asr4, asr5, asr6, asr7, asr8, asr9, asr10, asr11, asr12), \
             'NJ': ([i for i in range(1,41)], [i for i in range(41,81)], [i for i in range(81,121)], [i for i in range(121,161)]), \
             'NB': ([i for i in range(1,161) if SearchBin(i).inb==0], [i for i in range(1,161) if SearchBin(i).inb==1], [i for i in range(1,161) if SearchBin(i).inb==2], [i for i in range(1,161) if SearchBin(i).inb==3]), \

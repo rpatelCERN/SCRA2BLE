@@ -43,6 +43,10 @@ class Uncertainty:
                         continue
                     jbin = SearchBin(agg_bins[iasr][jsub])
                     # now we'll linearly add an uncertainty from jbin if it should be correlated with the uncertainty from ibin
+                    # here's where you define a correlation model -- give it a name and an condition to satisfy between bins i and j
+                    # ex 1: 'all' -- this means all bins are correlated, so all systematics should be added linearly
+                    # ex 2: 'DYsysPur' -- the purity of the dilepton sample has one value for nbjets = 1 and another for nbjets > 1 -- so
+                    # uncertainties between two bins with the same nbjets (or both with >= 2) will be correlated, added linearly 
                     if 'all' in self.corrs \
                       or ('njets' in self.corrs and 'nbjets' not in self.corrs and jbin.inb == ibin.inb and jbin.ihtmht == ibin.ihtmht) \
                       or ('nbjets' in self.corrs  and 'njets' not in self.corrs and jbin.inj == ibin.inj and jbin.ihtmht == ibin.ihtmht) \
