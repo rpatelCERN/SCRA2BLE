@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 ## this is really only here to do the bin combinations
-## and to give the data files a structure similar to that of the BG stimation files
+## and to give the data files a structure similar to that of the BG estimation files
 ## copies the 160 bin data yields from the original data file and makes aggregate predictions
 
 from __future__ import print_function
