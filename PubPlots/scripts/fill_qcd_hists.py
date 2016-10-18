@@ -108,9 +108,6 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-jul
 
    # and now for aggregate bin predicitons
    for name, asrs in asr_sets.items():
-       #print(name, asrs)
-       ## if name is not 'ASR':
-       ##     continue
        dASR = outfile.mkdir(name)
        dASR.cd()
        hCV_ASR = Uncertainty(hCV, "all").AggregateBins(asrs).hist # pretending the CV is a fully-correlated uncertainty b/c we need to add it linearly

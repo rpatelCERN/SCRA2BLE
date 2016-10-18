@@ -119,9 +119,6 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_Jul26_newSF.roo
    outfile.cd()
    # and now for aggregate bin predicitons
    for name, asrs in asr_sets.items():
-       #print(name, asrs)
-       if name is not 'ASR':
-            continue
        dASR = outfile.mkdir("/".join([name, 'corr_tau']))
        dASR.cd()
        hCV_ASR = Uncertainty(hCV, "all").AggregateBins(asrs).hist # pretending the CV is a fully-correlated uncertainty b/c we need to add it linearly
