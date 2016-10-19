@@ -45,8 +45,12 @@ class DataObs:
         gData.SetLineColor(1)
         return gData
 
-    def AggregateBins(self, agg_bins):
-        hagg = TH1D("hCV", "", len(agg_bins), 0.5, float(len(agg_bins))+0.5)
+    def AggregateBins(self, agg_bins, xaxis_title=None, xaxis_binning=None):
+        ## can define the x-axis here if you want
+        if xaxis_title != None and xaxis_binning!=None:
+            hagg = TH1D(self.hist.GetName(), ";"+xaxis_title, len(xaxis_binning)-1, array('d', xaxis_binning))
+        else:
+            hagg = TH1D("hCV", "", len(agg_bins), 0.5, float(len(agg_bins))+0.5)
         for iasr in range(len(agg_bins)):
             asr_yield = 0.
             for isub in range(len(agg_bins[iasr])):

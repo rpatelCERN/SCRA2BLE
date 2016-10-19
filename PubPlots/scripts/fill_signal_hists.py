@@ -40,7 +40,7 @@ def fill_signal_hists(outputfile = 'signal_hists.root', nbins = 160):
         dASR.cd()
         for model in signal_models:
             inhist = model.inhist
-            asr_hist = model.AggregateBins(asrs)
+            asr_hist = model.AggregateBins(asrs, asr_xtitle[name], asr_xbins[name])
             # do some standard formatting -- does not set line style
             asr_hist.SetLineWidth(3)
             asr_hist.SetLineColor(4)

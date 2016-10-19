@@ -105,10 +105,10 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-jul
    for name, asrs in asr_sets.items():
        dASR = outfile.mkdir(name)
        dASR.cd()
-       hCV_ASR = Uncertainty(hCV, "all").AggregateBins(asrs).hist # pretending the CV is a fully-correlated uncertainty b/c we need to add it linearly
+       hCV_ASR = Uncertainty(hCV, "all").AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist # pretending the CV is a fully-correlated uncertainty b/c we need to add it linearly
        # stats -- fully uncorrelated
-       hStatUp_ASR = Uncertainty(hStatUp).AggregateBins(asrs).hist
-       hStatDown_ASR = Uncertainty(hStatDown).AggregateBins(asrs).hist
+       hStatUp_ASR = Uncertainty(hStatUp).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
+       hStatDown_ASR = Uncertainty(hStatDown).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
        hCV_ASR.Write()
        
        SYSTSUp_ASR = []
@@ -118,7 +118,7 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-jul
            hname = hsyst.GetName()
            if hname.find('MCC') >= 0 or hname.find('NonQCDErr') >= 0:
                is_correlated = ''
-           hist_asr = Uncertainty(hsyst, is_correlated).AggregateBins(asrs).hist
+           hist_asr = Uncertainty(hsyst, is_correlated).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
            SYSTSUp_ASR.append(hist_asr)
            SYSTSDown_ASR.append(hist_asr)
        hSystUp_ASR = AddHistsInQuadrature('hSystUp', SYSTSUp_ASR)       

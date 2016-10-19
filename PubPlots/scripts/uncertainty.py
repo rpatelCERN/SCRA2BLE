@@ -5,6 +5,7 @@ from __future__ import division
 from search_bin import SearchBin
 from ROOT import TH1D
 from math import sqrt
+from array import array
 
 class Uncertainty:
 
@@ -21,8 +22,12 @@ class Uncertainty:
         for corr in corr_list:
             self.corrs.append(corr)
 
-    def AggregateBins(self, agg_bins): # creates the new histogram with aggregated bins
-        hagg = TH1D(self.hist.GetName(), self.hist.GetTitle(), len(agg_bins), 0.5, float(len(agg_bins))+0.5)
+    def AggregateBins(self, agg_bins, xaxis_title=None, xaxis_binning=None): # creates the new histogram with aggregated bins
+        ## can define the x-axis here if you want
+        if xaxis_title != None and xaxis_binning!=None:
+            hagg = TH1D(self.hist.GetName(), ";"+xaxis_title, len(xaxis_binning)-1, array('d', xaxis_binning))
+        else:
+            hagg = TH1D(self.hist.GetName(), self.hist.GetTitle(), len(agg_bins), 0.5, float(len(agg_bins))+0.5)
         for iasr in range(len(agg_bins)):
             done = [False] * len(agg_bins[iasr]) # this will check to see if we've already added an uncertainty
             err = 0.

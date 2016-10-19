@@ -121,10 +121,10 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_Jul26_newSF.roo
    for name, asrs in asr_sets.items():
        dASR = outfile.mkdir("/".join([name, 'corr_tau']))
        dASR.cd()
-       hCV_ASR = Uncertainty(hCV, "all").AggregateBins(asrs).hist # pretending the CV is a fully-correlated uncertainty b/c we need to add it linearly
+       hCV_ASR = Uncertainty(hCV, "all").AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist # pretending the CV is a fully-correlated uncertainty b/c we need to add it linearly
        # stat uncertainty fully-uncorrelated (160 CRs)
-       hStatUp_ASR = Uncertainty(hStatUp, '').AggregateBins(asrs).hist 
-       hStatDown_ASR = Uncertainty(hStatDown, '').AggregateBins(asrs).hist
+       hStatUp_ASR = Uncertainty(hStatUp, '').AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist 
+       hStatDown_ASR = Uncertainty(hStatDown, '').AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
        hCV_ASR.Write()
        
        SYSTSUp_ASR = []
@@ -141,7 +141,7 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_Jul26_newSF.roo
            elif hname.find('Acc') >= 0: # funny
                correlation = 'LLAcc'
            ## store the systeamtics correlated between lost lepton and tau in a subdirectory
-           hist_asr = Uncertainty(hsyst, correlation).AggregateBins(asrs).hist
+           hist_asr = Uncertainty(hsyst, correlation).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
            # note: the code below successfully write the histograms to each corr_tau subdirectory, but also give the error
            # Error in <TDirectoryFile::cd>: Unknown directory corr_tau -- WHY?
            if hname.find('MuIso') >= 0 or hname.find('MuReco') >= 0 or hname.find('MuAcc') >= 0 or hname.find('DiLep') >= 0:

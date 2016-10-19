@@ -18,16 +18,34 @@ asr11 = [i for i in range(1,161) if SearchBin(i).inb >= 1 and SearchBin(i).inj >
 asr12 = [i for i in range(1,161) if SearchBin(i).inb >= 1 and SearchBin(i).imht > 2 and SearchBin(i).inj >= 1]
 
 
-## Each histogram of aggregrate bins shouls be added to this dictionary with a name (e.g. 'ASR' for the 12 standard aggregate regions) and a tuple of the aggregate regions defined above. This will be turned into a histogram with one bin per aggregate region, in the order specified in the tuple.
+## Each histogram of aggregrate bins shouls be added to this dictionary with a name (e.g. 'ASR' for the 12 standard aggregate regions) and a tuple of the aggregate regions defined above. This will be turned into a histogram with one bin per aggregate region, in the order specified in the tuple. You should also specify the x-axis title and visual binning
 asr_sets = {'ASR': (asr1, asr2, asr3, asr4, asr5, asr6, asr7, asr8, asr9, asr10, asr11, asr12), \
             'NJ': ([i for i in range(1,41)], [i for i in range(41,81)], [i for i in range(81,121)], [i for i in range(121,161)]), \
             'NB': ([i for i in range(1,161) if SearchBin(i).inb==0], [i for i in range(1,161) if SearchBin(i).inb==1], [i for i in range(1,161) if SearchBin(i).inb==2], [i for i in range(1,161) if SearchBin(i).inb==3]), \
             'MHT': ([i for i in range(1,161) if SearchBin(i).imht==0], [i for i in range(1,161) if SearchBin(i).imht==1], [i for i in range(1,161) if SearchBin(i).imht==2], [i for i in range(1,161) if SearchBin(i).imht==3]), \
-            'NJ_NB2to3_HTMHT5to10': ([i for i in range(26,31)]+[i for i in range(36,41)], [i for i in range(66,71)]+[i for i in range(76,81)], [i for i in range(106,111)]+[i for i in range(116,121)], [i for i in range(146,151)]+[i for i in range(156,161)])
-            }     
+            'NJ_NB2toInf_MHT500_HT500': ([i for i in range(26,31)]+[i for i in range(36,41)], [i for i in range(66,71)]+[i for i in range(76,81)], [i for i in range(106,111)]+[i for i in range(116,121)], [i for i in range(146,151)]+[i for i in range(156,161)]), \
+            'NB_NJ5toInf_MHT500_HT1000': ([48, 50, 88, 90, 128, 130], [58, 60, 98, 100, 138, 140], [68, 70, 108, 110, 148, 150], [78, 80, 118, 120, 158, 160]), \
+            'MHT_NJ5toInf_NB0_HT1000' : ([43, 83, 123], [46, 86, 126], [48, 88, 128], [50, 90, 130])
+            }
+
+asr_xtitle = {'ASR': 'Aggregate search region binning', \
+            'NJ': 'N_{jet} (p_{T} > 30 GeV)', \
+            'NB': 'N_{b-jet} (p_{T} > 30 GeV)', \
+            'MHT': 'H_{T}^{miss} [GeV]', \
+            'NJ_NB2toInf_MHT500_HT500': 'N_{jet} (p_{T} > 30 GeV)', \
+            'NB_NJ5toInf_MHT500_HT1000': 'N_{b-jet} (p_{T} > 30 GeV)', \
+            'MHT_NJ5toInf_NB0_HT1000' : 'H_{T}^{miss} [GeV]'}
+
+asr_xbins = {'ASR': [i+0.5 for i in range(13)], \
+            'NJ': [2.5, 4.5, 6.5, 8.5, 12.5], \
+            'NB': [-0.5, 0.5, 1.5, 2.5, 3.5], \
+            'MHT': [300., 350., 500., 750., 1050.], \
+            'NJ_NB2toInf_MHT500_HT500': [2.5, 4.5, 6.5, 8.5, 12.5], \
+            'NB_NJ5toInf_MHT500_HT1000': [-0.5, 0.5, 1.5, 2.5, 3.5], \
+            'MHT_NJ5toInf_NB0_HT1000' : [300., 350., 500., 750., 1050.]}
 
 def AddHistsInQuadrature(name, hists):
-    hout = TH1D(name, "", hists[0].GetNbinsX(), 0.5, hists[0].GetNbinsX() + 0.5)
+    hout = TH1D(name, "", hists[0].GetNbinsX(), hists[0].GetXaxis().GetXbins().GetArray())
     for ibin in range(hout.GetNbinsX()):
         total = 0.
         for ihist in hists:

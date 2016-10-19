@@ -95,10 +95,10 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
    for name, asrs in asr_sets.items():
        dASR = outfile.mkdir(name)
        dASR.cd()
-       hCV_ASR = Uncertainty(hCV, "all").AggregateBins(asrs).hist # pretending the CV is a fully-correlated uncertainty b/c we need to add it linearly
+       hCV_ASR = Uncertainty(hCV, "all").AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist # pretending the CV is a fully-correlated uncertainty b/c we need to add it linearly
        ## CR not binned in nbjets, so stat err on bins with same htmht & njets are correlated
-       hStatUp_ASR = Uncertainty(hStatUp, 'nbjets').AggregateBins(asrs).hist 
-       hStatDown_ASR = Uncertainty(hStatDown, 'nbjets').AggregateBins(asrs).hist
+       hStatUp_ASR = Uncertainty(hStatUp, 'nbjets').AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist 
+       hStatDown_ASR = Uncertainty(hStatDown, 'nbjets').AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
        hCV_ASR.Write()
        
        SYSTSUp_ASR = []
@@ -114,7 +114,7 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
            elif hsyst.GetName().find('DYsysPur') >= 0: # funny
                correlation = 'DYsysPur'
            ## Up, Low, Sym
-           hist_asr = Uncertainty(hsyst, correlation).AggregateBins(asrs).hist
+           hist_asr = Uncertainty(hsyst, correlation).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
            if hsyst.GetName().find('Low') >= 0:
                SYSTSDown_ASR.append(hist_asr)            
            elif hsyst.GetName().find('Up') >= 0:

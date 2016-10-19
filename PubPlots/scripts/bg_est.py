@@ -59,7 +59,7 @@ class BGEst:
       
     @classmethod
     def sumBG(cls, lostlep, hadtau, znn, qcd): # in this case, sum the four BGs up accordingly
-        hSumBGCV = TH1D("hSumBGCV", ";Search Bin;Events / Bin", int(lostlep.nbins), 0.5, lostlep.nbins + 0.5)
+        hSumBGCV = TH1D("hSumBGCV", ";Search Bin;Events / Bin", int(lostlep.nbins), lostlep.hCV.GetXaxis().GetXbins().GetArray())
         hSumBGCV.GetXaxis().SetTitle(lostlep.hCV.GetXaxis().GetTitle())
         hSumBGStatUp = TH1D("hSumBGStatUp", ";Search Bin;Events / Bin", int(lostlep.nbins), 0.5, lostlep.nbins + 0.5)
         hSumBGStatDown = TH1D("hSumBGStatDown", ";Search Bin;Events / Bin", int(lostlep.nbins), 0.5, lostlep.nbins + 0.5)

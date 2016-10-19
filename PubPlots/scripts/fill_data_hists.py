@@ -32,7 +32,7 @@ def fill_data_hists(inputfile = 'inputs/data_hists/Data_160Bins_SR_Approval_12.9
     for name, asrs in asr_sets.items():
         dASR = outfile.mkdir(name)
         dASR.cd()
-        data_obs_asr = data_obs.AggregateBins(asrs)
+        data_obs_asr = data_obs.AggregateBins(asrs, asr_xtitle[name], asr_xbins[name])
         data_obs_asr.hist.Write()
         data_obs_asr.graph.Write()
 
