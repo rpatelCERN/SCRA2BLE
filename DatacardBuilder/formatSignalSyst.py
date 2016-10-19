@@ -44,7 +44,7 @@ def MCStatErr(dname):
 			if(hsig.GetBinContent(i)>0.0):hmcstat.SetBinContent(i, 1.0+hsig.GetBinError(i)/hsig.GetBinContent(i))
 			else:hmcstat.SetBinContent(i, 1.0+hsig.GetBinError(i))
 			fout.cd()
-			hmcstat.Write(n)
+		hmcstat.Write(n)
 	fout.Close()
 if __name__ == '__main__':
 	DirectoryLists=["fastsimSignalT1tttt", "fastsimSignalT1bbbb","fastsimSignalT1qqqq", "fastsimSignalT5qqqqVV", "fastsimSignalT2tt","fastsimSignalT2bb", "fastsimSignalT2qq"]
@@ -53,5 +53,5 @@ if __name__ == '__main__':
 		signaldirtag="inputHistograms/%s" %dname
 		for fname in listofFiles:
 			formatFile(signaldirtag,fname)
-			break;
+			#break;
 		MCStatErr(signaldirtag)
