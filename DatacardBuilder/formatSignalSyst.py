@@ -3,14 +3,14 @@ from ROOT import *
 def formatFile(dname,fname):
 	print "%s/%s" %(dname,fname)	
 	f = TFile.Open("%s/%s" %(dname,fname));
-	fsbins=TFile.Open("inputHistograms/fastsimSignalT1tttt/RA2bin_signal.root")
+	fsbins=TFile.Open("%s/RA2bin_signal.root" %dname)
 	fnameout=fname.rstrip(".root")+"Format.root"
 	fout=TFile.Open("%s/%s" %(dname,fnameout), "RECREATE")
-	searchbins=fsbins.Get("RA2bin_T1tttt_1500_100_fast")
 	names = [k.GetName() for k in f.GetListOfKeys()]
 	for n in names:
 		h=f.Get(n)
 		h2=h.Clone(n)
+		searchbins=fsbins.Get(n)
 		fout.cd()
 		hformat=formatHistogram(fname,h2,searchbins)
 		#for i in range(1,hformat.GetNbinsX()+1):print hformat.GetXaxis().GetBinLabel(i)
@@ -39,3 +39,4 @@ if __name__ == '__main__':
 		signaldirtag="inputHistograms/%s" %dname
 		for fname in listofFiles:
 			formatFile(signaldirtag,fname)
+			break;
