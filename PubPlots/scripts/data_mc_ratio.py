@@ -8,7 +8,7 @@ from ROOT import TH1D, TGraphAsymmErrors, TStyle, Math, TColor
 from array import array
 from math import sqrt
 from bg_est import BGEst
-from data_tgraph import DataGraph
+from data_obs import DataObs
 
 
 class DataMCRatio:

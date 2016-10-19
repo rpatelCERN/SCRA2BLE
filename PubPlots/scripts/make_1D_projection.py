@@ -101,14 +101,14 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     hbg_pred.Add(hhadtau)
     hbg_pred.Add(hqcd)
     hbg_pred.Add(hznn)
-    ymax = hbg_pred.GetMaximum()
+    ymax = hbg_pred.GetMaximum() + sumBG.hStatUp.GetMaximum()
     if hdata_obs.GetMaximum()>ymax:
          ymax=hdata_obs.GetMaximum()
     if logy:
         hbg_pred.SetMaximum(100*ymax)
         hbg_pred.SetMinimum(0.09)
     else:
-        hbg_pred.SetMaximum(1.9*ymax)
+        hbg_pred.SetMaximum(1.7*ymax)
         hbg_pred.SetMinimum(0.0)
             
     
@@ -231,9 +231,9 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     leg3.AddEntry(hhadtau, "#splitline{Hadronic}{#tau lepton}", "f")
     leg4.AddEntry(hqcd, "QCD", "f")
     sig1_arr = signal1.split("_")
-    legsig.AddEntry(hsig1, "%s (%s = %d GeV, m_{#tilde{#chi}_{1}^{0}} = %d GeV" % (signal_to_latex[sig1_arr[0]], signal_to_mass[sig1_arr[0]], int(sig1_arr[1]), int(sig1_arr[2])), "l")
+    legsig.AddEntry(hsig1, "%s (%s = %d GeV, m_{#tilde{#chi}_{1}^{0}} = %d GeV)" % (signal_to_latex[sig1_arr[0]], signal_to_mass[sig1_arr[0]], int(sig1_arr[1]), int(sig1_arr[2])), "l")
     sig2_arr = signal2.split("_")
-    legsig.AddEntry(hsig2, "%s (%s = %d GeV, m_{#tilde{#chi}_{1}^{0}} = %d GeV" % (signal_to_latex[sig2_arr[0]], signal_to_mass[sig2_arr[0]], int(sig2_arr[1]), int(sig2_arr[2])), "l")
+    legsig.AddEntry(hsig2, "%s (%s = %d GeV, m_{#tilde{#chi}_{1}^{0}} = %d GeV)" % (signal_to_latex[sig2_arr[0]], signal_to_mass[sig2_arr[0]], int(sig2_arr[1]), int(sig2_arr[2])), "l")
 
     legdata.Draw()
     leg1.Draw()
