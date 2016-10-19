@@ -70,8 +70,8 @@ if __name__ == '__main__':
 	model=parse[0]
 	#print parse
 	if options.fastsim: signaltag+="_fast"
-	print signaldirtag	
-	signalSFB_file =TFile(signaldirtag+"/RA2bin_signal.root");
+	signal_file =TFile(signaldirtag+"/RA2bin_signal.root");
+
 	signalRegion_sigCorrList=[]
 	if options.fastsim:
 		signalGenCorr_file =TFile(signaldirtag+"/RA2bin_signal_genMHT.root");
