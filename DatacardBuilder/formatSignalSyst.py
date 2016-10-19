@@ -39,4 +39,3 @@ if __name__ == '__main__':
 		signaldirtag="inputHistograms/%s" %dname
 		for fname in listofFiles:
 			formatFile(signaldirtag,fname)
-			break;
