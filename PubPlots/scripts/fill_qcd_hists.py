@@ -87,7 +87,7 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-jul
 ##           print ('Bin %d: %f + %f + %f - %f - %f' % (ibin, CV, hStatUp.GetBinContent(ibin), hSystUp.GetBinContent(ibin), hStatDown.GetBinContent(ibin), hSystDown.GetBinContent(ibin)))
 
    
-   bg_est = BGEst(hCV, hStatUp, hStatDown, hSystUp, hSystDown)             
+   bg_est = BGEst(hCV, hStatUp, hStatDown, hSystUp, hSystDown, 2001)             
            
    fin.close()
 

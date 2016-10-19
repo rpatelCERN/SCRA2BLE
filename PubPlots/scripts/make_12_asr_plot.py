@@ -1,3 +1,4 @@
+## makes supplementary figures 2-a/b in SUS-16-014, the prefit background predictions and observed data in each of the 12 aggregate search regions
 from __future__ import print_function
 import os
 import errno
@@ -9,9 +10,8 @@ import CMS_lumi
 
 
 plot_dir = "output/"
-#plot_title = "results-plot-prefit-12_9-log"
 
-def make_160_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=False):
+def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=False):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -21,22 +21,22 @@ def make_160_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     gStyle.SetPadTopMargin(0.08)
     gStyle.SetPalette(1)
 
+    ## load observed data
     hdata_obs = data_obs.hist
     gdata_obs = data_obs.graph # note that this also sets the style
 
     ## load BG predictions -- also sets histogram styles   
-    sumBG = BGEst.sumBG(lostlep, hadtau, znn, qcd) # this will set the style of the hatched error bands
-
-    ## build the stacked BG histogram    
     hqcd = qcd.hCV
     hznn = znn.hCV
     hlostlep = lostlep.hCV
-    hhadtau = hadtau.hCV  
+    hhadtau = hadtau.hCV
+    ## build the stacked BG histogram    
     hs = THStack("hs", "")
     hs.Add(hqcd)
     hs.Add(hhadtau)
     hs.Add(hlostlep)
     hs.Add(hznn)
+    sumBG = BGEst.sumBG(lostlep, hadtau, znn, qcd) # this will set the style of the hatched error bands
 
     ## setup dummy BG histogram for ratio, axes
     hbg_pred = hqcd.Clone("hbg_pred")
@@ -60,18 +60,18 @@ def make_160_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     ymax = hbg_pred.GetMaximum()
     if hdata_obs.GetMaximum()>ymax:
          ymax=hdata_obs.GetMaximum()
-    hbg_pred.SetMaximum(500*ymax)
+    hbg_pred.SetMaximum(100*ymax)
     hbg_pred.SetMinimum(0.09)
     
     ratio = DataMCRatio(DataObs(hdata_obs), sumBG) # note that this also sets the style
     ratio_markers = ratio.markers
     ratio_bands = ratio.bands
     pull = ratio.pull
-    pull.GetXaxis().SetTitle("Search region bin number")
+    pull.GetXaxis().SetTitle("Aggregate search region bin number")
     pull.SetMaximum(3.2)
     pull.SetMinimum(-3.2)
     hratdummy = ratio.dummy_hist
-    hratdummy.GetXaxis().SetTitle("Search region bin number")
+    hratdummy.GetXaxis().SetTitle("Aggregate search region bin number")
     hratdummy.SetMaximum(2.3)
     hratdummy.SetMinimum(-2.3)
 
@@ -131,84 +131,33 @@ def make_160_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     gdata_obs.Draw("p, same")
 
     ## legends
-    leg1 = TLegend(0.6, 0.45, 0.845, 0.77)
+    legdata = TLegend(0.25-0.1, 0.73, 0.45-0.14, 0.85);
+    legdata.SetTextSize(0.035)
+    legdata.SetFillStyle(0)
+    leg1 = TLegend(0.27, 0.726, 0.56, 0.86);
     leg1.SetTextSize(0.035)
     leg1.SetFillStyle(0)
-    leg1.AddEntry(gdata_obs.GetName(), "Data", "pes")
-    leg1.AddEntry(hznn, "Z#rightarrow#nu#bar{#nu}", "f")
-    leg1.AddEntry(hlostlep, "#splitline{Lost}{lepton}", "f")
-    leg2 = TLegend(0.775, 0.45, 1.02, 0.77)
+    leg2 = TLegend(0.44, 0.726, 0.73, 0.86);
     leg2.SetTextSize(0.035)
     leg2.SetFillStyle(0)
-    leg2.AddEntry(hbg_pred, "", "f")
-    leg2.AddEntry(hhadtau, "#splitline{Hadronic}{#tau lepton}", "f")
-    leg2.AddEntry(hqcd, "QCD", "f")
+    leg3 = TLegend(0.6, 0.726, 0.89, 0.86);
+    leg3.SetTextSize(0.035)
+    leg3.SetFillStyle(0)
+    leg4 = TLegend(0.82, 0.726, 1.1, 0.86);
+    leg4.SetTextSize(0.035)
+    leg4.SetFillStyle(0)
+    
+    legdata.AddEntry(gdata_obs.GetName(), "Data", "pes")
+    leg1.AddEntry(hznn, "Z#rightarrow#nu#bar{#nu}", "f")
+    leg2.AddEntry(hlostlep, "#splitline{Lost}{lepton}", "f")
+    leg3.AddEntry(hhadtau, "#splitline{Hadronic}{#tau lepton}", "f")
+    leg4.AddEntry(hqcd, "QCD", "f")
 
+    legdata.Draw()
     leg1.Draw()
     leg2.Draw()
-
-    ymax_top = hbg_pred.GetMaximum()
-    ymin_top = 0.09
-
-    ymax2_top = 1000.
-    ymax3_top = 200.
-    ymax4_top = 30.
-    ymax5_top = 5.
-
-    ymax_bottom = 1.99
-    ymin_bottom = 0.01
-
-    ymax2_bottom = 2.15
-    ymax3_bottom = 2.15
-    ymax4_bottom = 2.15
-
-    ## labels and lines
-    tl_njet = TLine()
-    tl_njet.SetLineStyle(2)
-    tl_njet.DrawLine(41.-0.5,ymin_top,41.-0.5,ymax_top) 
-    tl_njet.DrawLine(81.-0.5,ymin_top,81.-0.5,ymax_top) 
-    tl_njet.DrawLine(121.-0.5,ymin_top,121.-0.5,ymax_top) 
-
-    ## Njet labels
-    ttext_njet = TLatex()
-    ttext_njet.SetTextFont(42)
-    ttext_njet.SetTextSize(0.04)
-    ttext_njet.SetTextAlign(22)
-    ttext_njet.DrawLatex(20.-0.5 , ymax_top/4. , "3 #leq N_{#scale[0.2]{ }jet} #leq 4")
-    ttext_njet.DrawLatex(60.-0.5 , ymax_top/4. , "5 #leq N_{#scale[0.2]{ }jet} #leq 6")
-    ttext_njet.DrawLatex(100.-0.5 , ymax_top/4. , "7 #leq N_{#scale[0.2]{ }jet} #leq 8")
-    ttext_njet.DrawLatex(140.-0.5 , ymax_top/4. , "N_{#scale[0.2]{ }jet} #geq 9")
-
-    ## Nb separation lines
-    tl_nb = TLine()
-    tl_nb.SetLineStyle(3)
-    tl_nb.DrawLine(11.-0.5,ymin_top,11.-0.5,ymax2_top) 
-    tl_nb.DrawLine(21.-0.5,ymin_top,21.-0.5,ymax2_top) 
-    tl_nb.DrawLine(31.-0.5,ymin_top,31.-0.5,ymax2_top)
-    tl_nb.DrawLine(41.-0.5,ymin_top,41.-0.5,ymax2_top)
-    tl_nb.DrawLine(51.-0.5,ymin_top,51.-0.5,ymax3_top) 
-    tl_nb.DrawLine(61.-0.5,ymin_top,61.-0.5,ymax3_top) 
-    tl_nb.DrawLine(71.-0.5,ymin_top,71.-0.5,ymax3_top) 
-    tl_nb.DrawLine(81.-0.5,ymin_top,81.-0.5,ymax3_top) 
-    tl_nb.DrawLine(91.-0.5,ymin_top,91.-0.5,ymax4_top) 
-    tl_nb.DrawLine(101.-0.5,ymin_top,101.-0.5,ymax4_top) 
-    tl_nb.DrawLine(111.-0.5,ymin_top,111.-0.5,ymax4_top)
-    tl_nb.DrawLine(121.-0.5,ymin_top,121.-0.5,ymax4_top)
-    tl_nb.DrawLine(131.-0.5,ymin_top,131.-0.5,ymax5_top)
-    tl_nb.DrawLine(141.-0.5,ymin_top,141.-0.5,ymax5_top)
-    tl_nb.DrawLine(151.-0.5,ymin_top,151.-0.5,ymax5_top)
-    
-    ## Nb labels
-    ttext_nb = TLatex()
-    ttext_nb.SetTextFont(42)
-    ttext_nb.SetTextSize(0.04)
-    ttext_nb.SetTextAlign(22)
-    
-    ttext_nb.DrawLatex(9.-0.5 , ymax_top/12. , "N_{#scale[0.2]{ }b-jet}")
-    ttext_nb.DrawLatex(6.-0.5 , ymax_top/40. , "0")
-    ttext_nb.DrawLatex(16.-0.5 , ymax_top/40. , "1")
-    ttext_nb.DrawLatex(26.-0.5 , ymax_top/40. , "2")
-    ttext_nb.DrawLatex(36.-0.5 , ymax_top/40. , "#geq 3")
+    leg3.Draw()
+    leg4.Draw()
 
     pad2.cd()
     if doPull:
@@ -225,6 +174,7 @@ def make_160_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
         p2.Draw()
         m1.Draw()
         m2.Draw()
+        pull.Draw("hist,same")
     else:
         hratdummy.Draw("axis")
         ratio_bands.Draw("e2, same")
@@ -237,25 +187,7 @@ def make_160_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     ratio_max = 2.3
     if doPull:
         ratio_max = 3.2
-    tl_njet.DrawLine(41.-0.5, 0.-ratio_max, 41.-0.5,ratio_max) 
-    tl_njet.DrawLine(81.-0.5, 0.-ratio_max, 81.-0.5,ratio_max)
-    tl_njet.DrawLine(121.-0.5, 0.-ratio_max,121.-0.5,ratio_max)
-    tl_nb.DrawLine(11.-0.5, 0.-ratio_max,11.-0.5,ratio_max) 
-    tl_nb.DrawLine(21.-0.5, 0.-ratio_max,21.-0.5,ratio_max) 
-    tl_nb.DrawLine(31.-0.5, 0.-ratio_max,31.-0.5,ratio_max)
-    tl_nb.DrawLine(51.-0.5, 0.-ratio_max,51.-0.5,ratio_max) 
-    tl_nb.DrawLine(61.-0.5, 0.-ratio_max,61.-0.5,ratio_max) 
-    tl_nb.DrawLine(71.-0.5, 0.-ratio_max,71.-0.5,ratio_max) 
-    tl_nb.DrawLine(91.-0.5, 0.-ratio_max,91.-0.5,ratio_max) 
-    tl_nb.DrawLine(101.-0.5, 0.-ratio_max,101.-0.5,ratio_max) 
-    tl_nb.DrawLine(111.-0.5, 0.-ratio_max,111.-0.5,ratio_max)
-    tl_nb.DrawLine(131.-0.5, 0.-ratio_max,131.-0.5,ratio_max)
-    tl_nb.DrawLine(141.-0.5, 0.-ratio_max,141.-0.5,ratio_max)
-    tl_nb.DrawLine(151.-0.5, 0.-ratio_max,151.-0.5,ratio_max)
 
-    ratioleg = TLegend(0.72, 0.88, 0.94, 0.96)
-    ratioleg.SetTextSize(0.07)
-    ratioleg.AddEntry(ratio_bands.GetName(), "Pred. uncert. (stat#oplussyst)", "f")
 
     ## refresh everything, to be safe
     pad1.cd()
@@ -298,13 +230,13 @@ if __name__ == "__main__":
     import sys
     output_file = sys.argv[1]
     f_lostlep = TFile.Open(sys.argv[2])
-    lostlep = BGEst(f_lostlep.Get("hCV"), f_lostlep.Get("hStatUp"), f_lostlep.Get("hStatDown"), f_lostlep.Get("hSystUp"), f_lostlep.Get("hSystDown"), 2006)
+    lostlep = BGEst(f_lostlep.Get("ASR/hCV"), f_lostlep.Get("ASR/hStatUp"), f_lostlep.Get("ASR/hStatDown"), f_lostlep.Get("ASR/hSystUp"), f_lostlep.Get("ASR/hSystDown"), 2006)
     f_hadtau = TFile.Open(sys.argv[3])
-    hadtau = BGEst(f_hadtau.Get("hCV"), f_hadtau.Get("hStatUp"), f_hadtau.Get("hStatDown"), f_hadtau.Get("hSystUp"), f_hadtau.Get("hSystDown"), 2007)
+    hadtau = BGEst(f_hadtau.Get("ASR/hCV"), f_hadtau.Get("ASR/hStatUp"), f_hadtau.Get("ASR/hStatDown"), f_hadtau.Get("ASR/hSystUp"), f_hadtau.Get("ASR/hSystDown"), 2007)
     f_znn = TFile.Open(sys.argv[4])
-    znn = BGEst(f_znn.Get("hCV"), f_znn.Get("hStatUp"), f_znn.Get("hStatDown"), f_znn.Get("hSystUp"), f_znn.Get("hSystDown"), 2002)
+    znn = BGEst(f_znn.Get("ASR/hCV"), f_znn.Get("ASR/hStatUp"), f_znn.Get("ASR/hStatDown"), f_znn.Get("ASR/hSystUp"), f_znn.Get("ASR/hSystDown"), 2002)
     f_qcd = TFile.Open(sys.argv[5])
-    qcd = BGEst(f_qcd.Get("hCV"), f_qcd.Get("hStatUp"), f_qcd.Get("hStatDown"), f_qcd.Get("hSystUp"), f_qcd.Get("hSystDown"), 2001)
+    qcd = BGEst(f_qcd.Get("ASR/hCV"), f_qcd.Get("ASR/hStatUp"), f_qcd.Get("ASR/hStatDown"), f_qcd.Get("ASR/hSystUp"), f_qcd.Get("ASR/hSystDown"), 2001)
     f_data_obs = TFile.Open(sys.argv[6])
-    data_obs = DataObs(f_data_obs.Get("hCV"))
-    make_160_bin_plot(output_file, lostlep, hadtau, znn, qcd, data_obs)  
+    data_obs = DataObs(f_data_obs.Get("ASR/hCV"))
+    make_12_asr_plot(output_file, lostlep, hadtau, znn, qcd, data_obs)  

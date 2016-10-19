@@ -1,6 +1,7 @@
 from ROOT import TH1D, TGraphAsymmErrors
 import math
 from array import array
+import tdrstyle
 
 ## two ways to build prediction:
         ## 1) Default: from a bunch of histograms (i.e. for a single background)
@@ -59,6 +60,7 @@ class BGEst:
     @classmethod
     def sumBG(cls, lostlep, hadtau, znn, qcd): # in this case, sum the four BGs up accordingly
         hSumBGCV = TH1D("hSumBGCV", ";Search Bin;Events / Bin", int(lostlep.nbins), 0.5, lostlep.nbins + 0.5)
+        hSumBGCV.GetXaxis().SetTitle(lostlep.hCV.GetXaxis().GetTitle())
         hSumBGStatUp = TH1D("hSumBGStatUp", ";Search Bin;Events / Bin", int(lostlep.nbins), 0.5, lostlep.nbins + 0.5)
         hSumBGStatDown = TH1D("hSumBGStatDown", ";Search Bin;Events / Bin", int(lostlep.nbins), 0.5, lostlep.nbins + 0.5)
         hSumBGSystUp = TH1D("hSumBGSystUp", ";Search Bin;Events / Bin", int(lostlep.nbins), 0.5, lostlep.nbins + 0.5)

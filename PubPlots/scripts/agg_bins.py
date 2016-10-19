@@ -22,7 +22,8 @@ asr12 = [i for i in range(1,161) if SearchBin(i).inb >= 1 and SearchBin(i).imht 
 asr_sets = {'ASR': (asr1, asr2, asr3, asr4, asr5, asr6, asr7, asr8, asr9, asr10, asr11, asr12), \
             'NJ': ([i for i in range(1,41)], [i for i in range(41,81)], [i for i in range(81,121)], [i for i in range(121,161)]), \
             'NB': ([i for i in range(1,161) if SearchBin(i).inb==0], [i for i in range(1,161) if SearchBin(i).inb==1], [i for i in range(1,161) if SearchBin(i).inb==2], [i for i in range(1,161) if SearchBin(i).inb==3]), \
-            'MHT': ([i for i in range(1,161) if SearchBin(i).imht==0], [i for i in range(1,161) if SearchBin(i).imht==1], [i for i in range(1,161) if SearchBin(i).imht==2], [i for i in range(1,161) if SearchBin(i).imht==3]) \
+            'MHT': ([i for i in range(1,161) if SearchBin(i).imht==0], [i for i in range(1,161) if SearchBin(i).imht==1], [i for i in range(1,161) if SearchBin(i).imht==2], [i for i in range(1,161) if SearchBin(i).imht==3]), \
+            'NJ_NB2to3_HTMHT5to10': ([i for i in range(26,31)]+[i for i in range(36,41)], [i for i in range(66,71)]+[i for i in range(76,81)], [i for i in range(106,111)]+[i for i in range(116,121)], [i for i in range(146,151)]+[i for i in range(156,161)])
             }     
 
 def AddHistsInQuadrature(name, hists):

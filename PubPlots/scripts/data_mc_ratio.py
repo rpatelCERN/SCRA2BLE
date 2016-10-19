@@ -101,6 +101,7 @@ class DataMCRatio:
         hratdummy.GetYaxis().SetNdivisions(505)
         hratdummy.GetYaxis().SetTickLength(0.015)
         hratdummy.GetXaxis().SetTickLength(0.08)
+        hratdummy.GetXaxis().SetTitle(self.bg_pred.hCV.GetXaxis().GetTitle())
         return hratdummy
 
     def GetPullDist(cls): # this will just be a TH1 of markers with no error bars
@@ -123,6 +124,7 @@ class DataMCRatio:
         hpull.SetMarkerStyle(20)
         hpull.SetLineColor(1)
         hpull.SetFillColor(880-4)
+        hpull.GetXaxis().SetTitle(self.bg_pred.hCV.GetXaxis().GetTitle())
         for ibin in range(hpull.GetNbinsX()):
             pull = 0.
             if cls.bg_pred.hCV.GetBinContent(ibin+1) < cls.data_obs.hist.GetBinContent(ibin+1): # obs high

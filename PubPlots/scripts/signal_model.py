@@ -39,12 +39,13 @@ class SignalModel:
             hagg.SetBinContent(iasr+1, asr_yield)
         return hagg
     
-    def GetASRHist(self, asr_name, asr_file='signal_hists.root'): # returns ASR histogram that we made by running fill_signal_hists.py, specified by asr_file
+    @classmethod
+    def GetASRHist(cls, asr_name, model, mMom, mLSP, asr_file='signal_hists.root'): # returns ASR histogram that we made by running fill_signal_hists.py, specified by asr_file
         if gROOT.GetListOfFiles().FindObject(asr_file):
             f_asr = TFile.Open(asr_file)
         else:
             f_asr = gROOT.GetListOfFiles().FindObject(asr_file)
-        hname = "%s/RA2bin_%s_%d_%d_fast" % (self.asr_name, self.model, int(self.mMom), int(self.mLSP))
-        return f_asr.Get(hname)
+        hname = "%s/RA2bin_%s_%d_%d_fast" % (asr_name, model, int(mMom), int(mLSP))
+        return cls(f_asr.Get(hname))
 
     
