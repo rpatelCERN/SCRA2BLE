@@ -66,7 +66,7 @@ class singleBin:
 		zeroProxy = 0.0001;
 		for rate in self._rates: 
 			if rate < 0.000001: line += str(zeroProxy) + " ";
-			else: line += "%.5f " %round(rate,5);
+			else: line += "%.4f " %round(rate,4);
 		line += "\n";
 		self._allLines.append(line);
 
@@ -148,8 +148,8 @@ class singleBin:
                         if self._binLabels[i] in bins:
                                 #print self._binLabels[i]
                                 if(val1>-99. and val2>-99):
-                                        if(bin==0 ):line += " %0.5f " %round(val1,5);
-                                        if(bin==1 ):line += " %0.5f " %round(val2,5);
+                                        if(bin==0 ):line += " %0.4f " %round(val1,4);
+                                        if(bin==1 ):line += " %0.4f " %round(val2,4);
                                 else:
                                         line += " - ";
                                 bin+=1

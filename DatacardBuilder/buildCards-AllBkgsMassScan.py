@@ -74,9 +74,9 @@ if __name__ == '__main__':
 	#print parse
 	if options.fastsim: signaltag+="_fast"
 	CorrSigHist=genMHTCorr(signaldirtag,signaltag,lumi)
-	
+	MHTSyst=genMHTSyst(signaldirtag,signaltag,lumi)	
 	tagsForSignalRegion = binLabelsToList(CorrSigHist);	
-	
+	#LL_file=TFile(idir+"LLPrediction_combined.root");
 	LL_file = TFile(idir+"/LLPrediction.root");
 	LLPrediction_Hist=LL_file.Get("Prediction_data/totalPred_LL")		
 	#totalCS_LL=LL_file.Get("totalCS_LL")
@@ -112,6 +112,9 @@ if __name__ == '__main__':
 		tmpList.append(HadTauPrediction.GetBinContent(i+1))
 		tmpList.append(0.25)
 		srobs=(LLPrediction_Hist.GetBinContent(i+1)+HadTauPrediction.GetBinContent(i+1))
+		#srobs=random.randint(srobs)
+		randPois=TRandom3(random.randint(1,10000000))
+		srobs=randPois.Poisson(srobs)
 		signalRegion_Rates.append(tmpList)
 		signalRegion_Obs.append(srobs)
 	signalRegion.fillRates(signalRegion_Rates );
@@ -174,11 +177,13 @@ if __name__ == '__main__':
 	signalSysctagCFuncDown=signalSysctagCFuncDownFormat_file.Get(signaltag)
 	signalSysmistagCFuncUp=signalSysmistagCFuncUpFormat_file.Get(signaltag)
 	signalSysmistagCFuncDown=signalSysmistagCFuncDownFormat_file.Get(signaltag)
+	
 	for  i in range(1,signalSysSFUp.GetNbinsX()+1):print signalSysSFUp.GetBinContent(i)
         signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.027);
         signalRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.03);
         signalRegion.addSingleSystematic('JetIDUnc','lnN',['sig'],1.01);
 	signalRegion.addSystematicsLine('lnN',['sig'],signalMCStatError);	
+	signalRegion.addSystematicsLine('lnU',['sig'],MHTSyst);
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysSFUp,signalSysSFDown)	
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysMisSFUp,signalSysMisSFDown)	
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysTrigSystUp,signalSysTrigSystDown)	
@@ -189,6 +194,7 @@ if __name__ == '__main__':
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysbtagCFuncUp,signalSysbtagCFuncDown)		
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysctagCFuncUp,signalSysctagCFuncDown)		
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysmistagCFuncUp,signalSysmistagCFuncDown)		
+	
 	##############
 
 	#Correlate HAD TAU AND LOST LEPTON SYSTEMATICS
