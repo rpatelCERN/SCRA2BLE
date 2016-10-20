@@ -223,7 +223,8 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
             raise
     gPad.Print(plot_dir+plot_title+".pdf")
     gPad.Print(plot_dir+plot_title+".png")
-    
+
+    gPad.Close()
 
         
 if __name__ == "__main__":

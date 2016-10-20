@@ -24,7 +24,7 @@ def make_160_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     hdata_obs = data_obs.hist
     gdata_obs = data_obs.graph # note that this also sets the style
 
-    ## load BG predictions -- also sets histogram styles   
+    ## load BG predictions -- also sets histogram styles
     sumBG = BGEst.sumBG(lostlep, hadtau, znn, qcd) # this will set the style of the hatched error bands
 
     ## build the stacked BG histogram    
@@ -292,7 +292,7 @@ def make_160_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     gPad.Print(plot_dir+plot_title+".pdf")
     gPad.Print(plot_dir+plot_title+".png")
     
-
+    gPad.Close()
         
 if __name__ == "__main__":
     import sys

@@ -35,3 +35,10 @@ You can also run on an individual background by doing (e.g.)
 ```
 python scripts/fill_qcd_hists.py  inputs/bg_hists/qcd-bg-combine-input-12.9ifb-july28-nodashes.txt  qcd_hists.root 160
 ```
+
+### Make plots and tables
+You can make all of the prefit results plots and tables from SUS-16-014, as well as a few others, by doing
+```
+python scripts/make_all_pas_plots_and_tables.py  lostlep_hists.root hadtau_hists.root znn_hists.root qcd_hists.root data_hists.root signal_hists.root
+```
+assuming that those are the names of the histogram files that you created by running [fill_all_inputs](./scripts/fill_all_inputs.py) and that they are all located in this directory. The file [make_all_pas_plots_and_tables](./scripts/make_all_pas_plots_and_tables.py) contains examples of how to call the scripts to make each individual plot.
