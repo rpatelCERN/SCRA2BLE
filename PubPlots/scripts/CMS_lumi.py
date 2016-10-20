@@ -1,5 +1,4 @@
 import ROOT as rt
-
 # CMS_lumi
 #   Initiated by: Gautier Hamel de Monchenault (Saclay)
 #   Translated in Python by: Joshua Hardenbrook (Princeton)
@@ -88,7 +87,7 @@ def CMS_lumi(pad,  iPeriod,  iPosX ):
     elif ( iPeriod==0 ):
         lumiText += lumi_sqrtS
             
-    print lumiText
+    #print lumiText
 
     latex = rt.TLatex()
     latex.SetNDC()
