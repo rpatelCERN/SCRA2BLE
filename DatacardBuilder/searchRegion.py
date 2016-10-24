@@ -43,6 +43,11 @@ class searchRegion:
         def addCorrelAsymSystematicLine(self,systype,channel,hist1up,hist1dn,hist2up,hist2dn):
                 for i in range(self._nBins):
 				self._singleBins[i].addCorrelSystematicAsym( hist1up.GetXaxis().GetBinLabel(i+1), systype, channel, hist1up.GetBinContent(i+1),hist1dn.GetBinContent(i+1),hist2up.GetBinContent(i+1),hist2dn.GetBinContent(i+1) );
+        def addGammaSystematic(self,channel,valCS,val1):
+                for i in range(self._nBins):
+					#for j in range(len(channel)):
+					sysname=val1.GetXaxis().GetBinLabel(i+1)
+                                        self._singleBins[i].addGammaSystematic( valCS.GetXaxis().GetBinLabel(i+1),'gmN', channel, valCS.GetBinContent(i+1),val1.GetBinContent(i+1));
 
         def addCorrelGammaSystematic(self,channel,valCS,val1,val2):
                 for i in range(self._nBins):
