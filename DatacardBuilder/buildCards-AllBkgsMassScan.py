@@ -192,57 +192,57 @@ if __name__ == '__main__':
 	
 	#######################
 
-	signalSysSFUpFormat_file=TFile(signaldirtag+"/RA2bin_signal_btagSFuncUpFormat.root");
-	signalSysSFDownFormat_file=TFile(signaldirtag+"/RA2bin_signal_btagSFuncDownFormat.root");
-	signalSysMisSFUpFormat_file=TFile(signaldirtag+"/RA2bin_signal_mistagSFuncUpFormat.root");
-	signalSysMisSFDownFormat_file=TFile(signaldirtag+"/RA2bin_signal_mistagSFuncDownFormat.root");
-	signalSysTrigSystUpFormat_file=TFile(signaldirtag+"/RA2bin_signal_trigSystUncUpFormat.root");
-	signalSysTrigSystDownFormat_file=TFile(signaldirtag+"/RA2bin_signal_trigSystUncDownFormat.root");
-	signalSysTrigStatUpFormat_file=TFile(signaldirtag+"/RA2bin_signal_trigStatUncUpFormat.root");
-	signalSysTrigStatDownFormat_file=TFile(signaldirtag+"/RA2bin_signal_trigStatUncDownFormat.root");
-	signalSysJERUpFormat_file        =TFile(signaldirtag+"/RA2bin_signal_JERupFormat.root");
-	signalSysJERDownFormat_file      =TFile(signaldirtag+"/RA2bin_signal_JERdownFormat.root");
-	signalSysJECUpFormat_file        =TFile(signaldirtag+"/RA2bin_signal_JECupFormat.root");
-	signalSysJECDownFormat_file      =TFile(signaldirtag+"/RA2bin_signal_JECdownFormat.root");
-	signalSysScaleUpFormat_file      =TFile(signaldirtag+"/RA2bin_signal_scaleuncUpFormat.root");
-	signalSysScaleDownFormat_file    =TFile(signaldirtag+"/RA2bin_signal_scaleuncDownFormat.root");
+	signalSysSFUp_file=TFile(signaldirtag+"/RA2bin_signal_btagSFuncUpFormat.root");
+	signalSysSFDown_file=TFile(signaldirtag+"/RA2bin_signal_btagSFuncDownFormat.root");
+	signalSysMisSFUp_file=TFile(signaldirtag+"/RA2bin_signal_mistagSFuncUpFormat.root");
+	signalSysMisSFDown_file=TFile(signaldirtag+"/RA2bin_signal_mistagSFuncDownFormat.root");
+	signalSysTrigSystUp_file=TFile(signaldirtag+"/RA2bin_signal_trigSystUncUpFormat.root");
+	signalSysTrigSystDown_file=TFile(signaldirtag+"/RA2bin_signal_trigSystUncDownFormat.root");
+	signalSysTrigStatUp_file=TFile(signaldirtag+"/RA2bin_signal_trigStatUncUpFormat.root");
+	signalSysTrigStatDown_file=TFile(signaldirtag+"/RA2bin_signal_trigStatUncDownFormat.root");
+	signalSysJERUp_file        =TFile(signaldirtag+"/RA2bin_signal_JERupFormat.root");
+	signalSysJERDown_file      =TFile(signaldirtag+"/RA2bin_signal_JERdownFormat.root");
+	signalSysJECUp_file        =TFile(signaldirtag+"/RA2bin_signal_JECupFormat.root");
+	signalSysJECDown_file      =TFile(signaldirtag+"/RA2bin_signal_JECdownFormat.root");
+	signalSysScaleUp_file      =TFile(signaldirtag+"/RA2bin_signal_scaleuncUpFormat.root");
+	signalSysScaleDown_file    =TFile(signaldirtag+"/RA2bin_signal_scaleuncDownFormat.root");
 	#signalSysPUUpFormat_file         =TFile(signaldirtag+"/RA2bin_signal_puuncUpFormat.root");
 	#signalSysPUDownFormat_file       =TFile(signaldirtag+"/RA2bin_signal_puuncDownFormat.root");
 	#signalSysPDFUpFormat_file         =TFile(signaldirtag+"/RA2bin_signal_pdfuncUpFormat.root");
 	#signalSysPDFDownFormat_file       =TFile(signaldirtag+"/RA2bin_signal_pdfuncDownFormat.root");
-	signalSysISRUpFormat_file         =TFile(signaldirtag+"/RA2bin_signal_isruncUpFormat.root");
-	signalSysISRDownFormat_file       =TFile(signaldirtag+"/RA2bin_signal_isruncDownFormat.root");
-	signalMCStatErrorFormat_file      =TFile(signaldirtag+"/RA2bin_signal_MCStatErr.root");
+	signalSysISRUp_file         =TFile(signaldirtag+"/RA2bin_signal_isruncUpFormat.root");
+	signalSysISRDown_file       =TFile(signaldirtag+"/RA2bin_signal_isruncDownFormat.root");
+	signalMCStatError_file      =TFile(signaldirtag+"/RA2bin_signal_MCStatErr.root");
 	if options.fastsim:
-		signalSysbtagCFuncUpFormat_file=TFile(signaldirtag+"/RA2bin_signal_btagCFuncUpFormat.root");
-		signalSysbtagCFuncDownFormat_file=TFile(signaldirtag+"/RA2bin_signal_btagCFuncDownFormat.root");
-		signalSysctagCFuncUpFormat_file=TFile(signaldirtag+"/RA2bin_signal_ctagCFuncUpFormat.root");
-		signalSysctagCFuncDownFormat_file=TFile(signaldirtag+"/RA2bin_signal_ctagCFuncDownFormat.root");
-		signalSysmistagCFuncUpFormat_file=TFile(signaldirtag+"/RA2bin_signal_mistagCFuncUpFormat.root");
-		signalSysmistagCFuncDownFormat_file=TFile(signaldirtag+"/RA2bin_signal_mistagCFuncDownFormat.root");
+		signalSysbtagCFuncUp_file=TFile(signaldirtag+"/RA2bin_signal_btagCFuncUpFormat.root");
+		signalSysbtagCFuncDown_file=TFile(signaldirtag+"/RA2bin_signal_btagCFuncDownFormat.root");
+		signalSysctagCFuncUp_file=TFile(signaldirtag+"/RA2bin_signal_ctagCFuncUpFormat.root");
+		signalSysctagCFuncDown_file=TFile(signaldirtag+"/RA2bin_signal_ctagCFuncDownFormat.root");
+		signalSysmistagCFuncUp_file=TFile(signaldirtag+"/RA2bin_signal_mistagCFuncUpFormat.root");
+		signalSysmistagCFuncDown_file=TFile(signaldirtag+"/RA2bin_signal_mistagCFuncDownFormat.root");
 	#Get Histograms:
-	signalSysSFUp=signalSysSFUpFormat_file.Get(signaltag)	
-	signalSysSFDown=signalSysSFDownFormat_file.Get(signaltag)		
-	signalSysMisSFUp=signalSysMisSFUpFormat_file.Get(signaltag)
-	signalSysMisSFDown=signalSysMisSFDownFormat_file.Get(signaltag)
-	signalSysTrigSystUp=signalSysTrigSystUpFormat_file.Get(signaltag)
-	signalSysTrigSystDown=signalSysTrigSystDownFormat_file.Get(signaltag)
-	signalSysTrigStatUp=signalSysTrigStatUpFormat_file.Get(signaltag)
-	signalSysTrigStatDown=signalSysTrigStatDownFormat_file.Get(signaltag)
-	signalSysJERUp=signalSysJERUpFormat_file.Get(signaltag)
-	signalSysJERDown=signalSysJERDownFormat_file.Get(signaltag)
-	signalSysJECUp=signalSysJECUpFormat_file.Get(signaltag)
-	signalSysJECDown=signalSysJECDownFormat_file.Get(signaltag)
+	signalSysSFUp=signalSysSFUp_file.Get(signaltag)	
+	signalSysSFDown=signalSysSFDown_file.Get(signaltag)		
+	signalSysMisSFUp=signalSysMisSFUp_file.Get(signaltag)
+	signalSysMisSFDown=signalSysMisSFDown_file.Get(signaltag)
+	signalSysTrigSystUp=signalSysTrigSystUp_file.Get(signaltag)
+	signalSysTrigSystDown=signalSysTrigSystDown_file.Get(signaltag)
+	signalSysTrigStatUp=signalSysTrigStatUp_file.Get(signaltag)
+	signalSysTrigStatDown=signalSysTrigStatDown_file.Get(signaltag)
+	signalSysJERUp=signalSysJERUp_file.Get(signaltag)
+	signalSysJERDown=signalSysJERDown_file.Get(signaltag)
+	signalSysJECUp=signalSysJECUp_file.Get(signaltag)
+	signalSysJECDown=signalSysJECDown_file.Get(signaltag)
 
-	signalSysScaleUp=signalSysScaleUpFormat_file.Get(signaltag)
-	signalSysScaleDown=signalSysScaleDownFormat_file.Get(signaltag)
-	signalMCStatError=signalMCStatErrorFormat_file.Get(signaltag)
-	signalSysbtagCFuncUp=signalSysbtagCFuncUpFormat_file.Get(signaltag)
-	signalSysbtagCFuncDown=signalSysbtagCFuncDownFormat_file.Get(signaltag)
-	signalSysctagCFuncUp=signalSysctagCFuncUpFormat_file.Get(signaltag)
-	signalSysctagCFuncDown=signalSysctagCFuncDownFormat_file.Get(signaltag)
-	signalSysmistagCFuncUp=signalSysmistagCFuncUpFormat_file.Get(signaltag)
-	signalSysmistagCFuncDown=signalSysmistagCFuncDownFormat_file.Get(signaltag)
+	signalSysScaleUp=signalSysScaleUp_file.Get(signaltag)
+	signalSysScaleDown=signalSysScaleDown_file.Get(signaltag)
+	signalMCStatError=signalMCStatError_file.Get(signaltag)
+	signalSysbtagCFuncUp=signalSysbtagCFuncUp_file.Get(signaltag)
+	signalSysbtagCFuncDown=signalSysbtagCFuncDown_file.Get(signaltag)
+	signalSysctagCFuncUp=signalSysctagCFuncUp_file.Get(signaltag)
+	signalSysctagCFuncDown=signalSysctagCFuncDown_file.Get(signaltag)
+	signalSysmistagCFuncUp=signalSysmistagCFuncUp_file.Get(signaltag)
+	signalSysmistagCFuncDown=signalSysmistagCFuncDown_file.Get(signaltag)
 	
 	for  i in range(1,signalSysSFUp.GetNbinsX()+1):print signalSysSFUp.GetBinContent(i)
         signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.027);
@@ -272,10 +272,11 @@ if __name__ == '__main__':
 
 	CSZero=LLAvgHeight_Hist.Clone()	
 	HadTauHighW=LLAvgHeight_Hist.Clone()
-	for i in range(1,CSZero.GetNbinsX()):
+	for i in range(1,CSZero.GetNbinsX()+1):
 		CSZero.SetBinContent(i,0.0)
 		HadTauHighW.SetBinContent(i,0.25)
 		LLAvgHeight_Hist.GetXaxis().SetBinLabel(i,"HighWeightStatUnc_"+LLAvgHeight_Hist.GetXaxis().GetBinLabel(i))
+	signalRegion.addCorrelGammaSystematic(['WTopSLHighW','WTopHadHighW'],CSZero,LLAvgHeight_Hist,HadTauHighW)
 	signalRegion.addGammaSystematic(['zvv'],GammaObs,ZRatios )
 	signalRegion.addSystematicsLineAsymShape('lnN',['zvv'],ZgammaErrUp,ZgammaErrDn)
 	signalRegion.addSystematicsLineAsymShape('lnN',['zvv'],DoubleRatioErrUp,DoubleRatioErrDn)
@@ -314,7 +315,7 @@ if __name__ == '__main__':
 	LLStatMTStatDn=LL_file.Get("Prediction_data/totalPredMTWStatDown_LL")	
 	HadTauMTEffStatDn=HadTauMTEffStat.Clone("HadTauMTEffStatDn")
 	for i in range(1,175):HadTauMTEffStatDn.SetBinContent(i,1.0/HadTauMTEffStat.GetBinContent(i))
-	signalRegion.addCorrelAsymSystematicLine('lnN', ['WTopSL','WTopHad'],LLStatMTUp,LLStatMTDn,HadTauMTEffStat,HadTauMTEffStatDn)	
+	signalRegion.addCorrelAsymSystematicLine('lnN', ['WTopSL','WTopHad'],LLStatMTStatUp,LLStatMTStatDn,HadTauMTEffStat,HadTauMTEffStatDn)	
 
 	HadTauAccStat=HadTau_file.Get("searchBin_AccStat")
 	LLAccStatUp=LL_file.Get("Prediction_data/totalPredLepAccStatUp_LL")
@@ -353,7 +354,6 @@ if __name__ == '__main__':
 	HadTauMuIsoUp=HadTau_file.Get("searchBin_MuIsoSysUp")
 	HadTauMuIsoDn=HadTau_file.Get("searchBin_MuIsoSysDn")
 	signalRegion.addCorrelAsymSystematicLine('lnN',['WTopSL','WTopHad'],LLSysIsoUp,LLSysIsoDn,HadTauMuIsoUp,HadTauMuIsoDn)
-
 	LLSysRecoUp=LL_file.Get("Prediction_data/totalPredMuRecoSysUp_LL")	
 	LLSysRecoDn=LL_file.Get("Prediction_data/totalPredMuRecoSysDown_LL")	
 	HadTauMuRecoUp=HadTau_file.Get("searchBin_MuRecoSysUp")

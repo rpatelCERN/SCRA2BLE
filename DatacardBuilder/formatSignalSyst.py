@@ -48,6 +48,7 @@ def MCStatErr(dname):
 	fout.Close()
 if __name__ == '__main__':
 	DirectoryLists=["fastsimSignalT1tttt", "fastsimSignalT1bbbb","fastsimSignalT1qqqq", "fastsimSignalT5qqqqVV", "fastsimSignalT2tt","fastsimSignalT2bb", "fastsimSignalT2qq"]
+	DirectoryLists=["fastsimSignalT1tttt"]
 	listofFiles=["RA2bin_signal_btagCFuncUp.root", "RA2bin_signal_btagCFuncDown.root","RA2bin_signal_ctagCFuncUp.root","RA2bin_signal_ctagCFuncDown.root","RA2bin_signal_mistagCFuncUp.root","RA2bin_signal_mistagCFuncDown.root","RA2bin_signal_btagSFuncUp.root", "RA2bin_signal_btagSFuncDown.root", "RA2bin_signal_mistagSFuncUp.root", "RA2bin_signal_mistagSFuncDown.root", "RA2bin_signal_trigSystUncUp.root", "RA2bin_signal_trigSystUncDown.root","RA2bin_signal_trigStatUncUp.root","RA2bin_signal_trigStatUncDown.root","RA2bin_signal_JERup.root", "RA2bin_signal_JERdown.root", "RA2bin_signal_JECup.root", "RA2bin_signal_JECdown.root","RA2bin_signal_scaleuncUp.root","RA2bin_signal_scaleuncDown.root", "RA2bin_signal_isruncUp.root", "RA2bin_signal_isruncDown.root"]
 	for dname in DirectoryLists:
 		signaldirtag="inputHistograms/%s" %dname

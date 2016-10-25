@@ -74,7 +74,7 @@ def condorize(command,tag,odir,CMSSWVER):
     else:    
 	f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
     	f1.write("#SBATCH -p background-4g\n")
-    	f1.write("#SBATCH --time=05:30:00\n")
+    	f1.write("#SBATCH --time=07:30:00\n")
     	f1.write("#SBATCH --mem-per-cpu=8000 \n")
     	f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
     	f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
