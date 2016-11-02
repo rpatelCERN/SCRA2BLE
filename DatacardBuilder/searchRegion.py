@@ -29,8 +29,31 @@ class searchRegion:
 			if len(rateinputs[i]) != len(self._binLabels[i]):
 				print  len(rateinputs[i]),len(self._binLabels[i])
 				raise Exception("There is a mismatch in this bin of this signal region between rates and n contributions");
+	def addSystematicsLine(self,systype,channel,hist):
+		for i in range(self._nBins):
+			 self._singleBins[i].addSystematic( hist.GetXaxis().GetBinLabel(i+1), systype, channel, hist.GetBinContent(i+1) );
 
-		
+	def addSystematicsLineAsymShape(self,systype,channel,histup,histdown):
+		for i in range(self._nBins):
+			 self._singleBins[i].addAsymSystematic( histup.GetXaxis().GetBinLabel(i+1), systype, channel, histup.GetBinContent(i+1),histdown.GetBinContent(i+1) );
+
+        def addCorrelSystematicLine(self,systype,channel,hist1,hist2):
+                for i in range(self._nBins):
+                                self._singleBins[i].addCorrelSystematic( hist1.GetXaxis().GetBinLabel(i+1), systype, channel, hist1.GetBinContent(i+1),hist2.GetBinContent(i+1) );		
+        def addCorrelAsymSystematicLine(self,systype,channel,hist1up,hist1dn,hist2up,hist2dn):
+                for i in range(self._nBins):
+				self._singleBins[i].addCorrelSystematicAsym( hist1up.GetXaxis().GetBinLabel(i+1), systype, channel, hist1up.GetBinContent(i+1),hist1dn.GetBinContent(i+1),hist2up.GetBinContent(i+1),hist2dn.GetBinContent(i+1) );
+        def addGammaSystematic(self,channel,valCS,val1):
+                for i in range(self._nBins):
+					#for j in range(len(channel)):
+					sysname=val1.GetXaxis().GetBinLabel(i+1)
+                                        self._singleBins[i].addGammaSystematic( valCS.GetXaxis().GetBinLabel(i+1),'gmN', channel, valCS.GetBinContent(i+1),val1.GetBinContent(i+1));
+
+        def addCorrelGammaSystematic(self,channel,valCS,val1,val2):
+                for i in range(self._nBins):
+					#for j in range(len(channel)):
+					sysname=val1.GetXaxis().GetBinLabel(i+1)+"_StatUnc"
+                                        self._singleBins[i].addGammaCorrelSystematic( val1.GetXaxis().GetBinLabel(i+1),'gmN', channel, valCS.GetBinContent(i+1),val1.GetBinContent(i+1),val2.GetBinContent(i+1) );
 	def addSingleSystematic(self,sysname,systype,channel,val,identifier='',index=None):
 		
 		#print "Looking for ",identifier;

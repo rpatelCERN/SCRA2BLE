@@ -16,8 +16,9 @@ parser = OptionParser()
 parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='use fastsim signal (default = %default)')
 parser.add_option('--keeptar', action='store_true', dest='keeptar', default=False, help='keep old tarball for condor jobs (default = %default)')
 parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Cards2016/FullSim",help="EOS output directory  (default = %default)", metavar="outDir")
+parser.add_option('--lpc', action='store_true', dest='lpc', default=False, help='running on lpc condor  (default = %default)')
+
 (options, args) = parser.parse_args()
-parser.add_option('--lpc', action='store_true', dest='lpc', default=True, help='running on lpc condor  (default = %default)')
 
 # -----------------------------------------------------------------
 #Create CACHEDIR.TAG files on the fly to exclude output directories from condor tarball
@@ -73,11 +74,11 @@ def condorize(command,tag,odir,CMSSWVER):
     else:    
 	f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
     	f1.write("#SBATCH -p background-4g\n")
-    	f1.write("#SBATCH --time=03:30:00\n")
+    	f1.write("#SBATCH --time=07:30:00\n")
     	f1.write("#SBATCH --mem-per-cpu=8000 \n")
     	f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
     	f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
-    	f1.write("cd /fdata/hepx/store/user/rish/CombineCards/gitPushApproval/%s \n" % (CMSSWVER));
+    	f1.write("cd /fdata/hepx/store/user/rish/CombineCards/Moriond/%s \n" % (CMSSWVER));
     	f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
     	f1.write("eval `scramv1 runtime -sh`\n")
     	f1.write("ls \n");
@@ -106,6 +107,7 @@ if __name__ == '__main__':
     os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
     '''
     f = TFile.Open("inputHistograms/fastsimSignalT2qq/RA2bin_signal.root");
+    '''
     names = [k.GetName() for k in f.GetListOfKeys()]
     models = []
     mGos=[]
@@ -117,18 +119,16 @@ if __name__ == '__main__':
         models.append(parse[1])
         mGos.append(int(parse[2]))
         mLSPs.append(int(parse[3]))
+    '''
 	    	#print parse
     #models=["T5qqqqVV"]
     #mGos  = [975];
     #mLSPs = [775];
 
-    if not options.fastsim:
-        #models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq','T1qqqq','T2tt','T2tt','T2tt'];
-        #mGos = [1500,1000,1500,1200,1400,1000,425,500,850];
-        #mLSPs = [100,800,100,800,100,900,325,325,100];
-	models=['T1bbbb']
-	mGos = [1000]
-	mLSPs=[800]
+    #if not options.fastsim:
+    models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq','T1qqqq','T2tt','T2tt','T2tt'];
+    mGos = [1500,1000,1500,1200,1400,1000,425,500,850];
+    mLSPs = [100,800,100,800,100,900,325,325,100]
 
     # for signal in signals:
     for m in range(len(mGos)):
