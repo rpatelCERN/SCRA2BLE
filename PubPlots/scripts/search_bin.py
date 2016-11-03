@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ## stores properties of bin, including links to possibly-correlated bins
-#from __future__ import division
+from __future__ import division
 
 class SearchBin:
 
@@ -30,11 +30,11 @@ class SearchBin:
     def GetINB(self):
         INJ = self.GetINJ()
         if INJ==0:
-            return self.num / 10
+            return self.num // 10
         elif INJ < 3:
-            return (self.num - 30 - 40*(INJ-1)) / 10
+            return (self.num - 30 - 40*(INJ-1)) // 10
         else:
-            return (self.num - 110-32*(INJ-3)) / 8
+            return (self.num - 110-32*(INJ-3)) // 8
     ## note: at high njets, where we drop HTMHT bins 0 and 3, the other HTMHT bins will keep the same HTMHT indices
     def GetIHTMHT(self):
         INJ = self.GetINJ()
