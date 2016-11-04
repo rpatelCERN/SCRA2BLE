@@ -53,9 +53,9 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/mc-combine-input-all.txt', outpu
            if ibin < 1:
                continue
            values = line.split()
-           if len(values) != 35:
+           if len(values) != 36:
                print ('Warning: this line looks funny')
-           CV = abs(max(float(values[len(values)-5]), 0.))
+           CV = abs(max(float(values[len(values)-6]), 0.))
            hCV.SetBinContent(ibin, CV)
            hCV.SetBinError(ibin, 0.)
            # get stat uncertainties from CR observation - EWK contamination
@@ -68,14 +68,17 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/mc-combine-input-all.txt', outpu
                L = Math.gamma_quantile(alpha/2,NCR,1.)
            U = Math.gamma_quantile_c(alpha/2,NCR+1,1.)
            hStatUp.SetBinContent(ibin,RQCD*(U-NCR))
-           hStatDown.SetBinContent(ibin,RQCD*(NCR-L))
+           stat_down = RQCD*(NCR-L)
+           if stat_down > CV: #  due to rounding issues, this one is sometimes greater than the central value, so truncate
+               stat_down = CV
+           hStatDown.SetBinContent(ibin, stat_down)
            err_nonQCD = max(RQCD*float(values[5]), 0.)
            syst = 0.
            if CV > 0.:
                syst = syst + pow(err_nonQCD, 2.)
                hNonQCDErr.SetBinContent(ibin, err_nonQCD)
                isyst = 0
-               for systval in values[8:-9]:
+               for systval in values[8:-10]:
                    isyst += 1
                    syst = syst + pow((float(systval)-1.)*CV, 2.)
                    SYSTS[isyst].SetBinContent(ibin, (float(systval)-1.)*CV)
@@ -84,9 +87,7 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/mc-combine-input-all.txt', outpu
            if syst > CV - hStatDown.GetBinContent(ibin): # truncate if necessary
                syst = CV - hStatDown.GetBinContent(ibin)
            hSystDown.SetBinContent(ibin, syst)
-           ## print ('Bin %d: %f + %f + %f - %f - %f' % (ibin, CV, hStatUp.GetBinContent(ibin), hSystUp.GetBinContent(ibin), hStatDown.GetBinContent(ibin), hSystDown.GetBinContent(ibin)))
-
-   
+           
            
 
    outfile.cd()

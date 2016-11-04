@@ -85,6 +85,8 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/HadTauEstimation_data_formatt
        # get stat uncertainties
        stat_up = hin.GetBinError(ibin+1)
        stat_down = hin_stats_no_poiscl0.GetBinError(ibin+1)
+       if stat_down > CV: # just to be safe
+               stat_down = CV
        hStatUp.SetBinContent(ibin+1, stat_up)
        hStatDown.SetBinContent(ibin+1, stat_down)
        # get syst uncertainties
