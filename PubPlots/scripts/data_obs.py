@@ -43,6 +43,7 @@ class DataObs:
         gData.SetLineWidth(1)
         gData.SetMarkerStyle(20)
         gData.SetLineColor(1)
+        gData.SetMarkerColor(1)
         return gData
 
     def AggregateBins(self, agg_bins, xaxis_title=None, xaxis_binning=None):
