@@ -6,11 +6,13 @@ from __future__ import print_function
 import os
 import sys, getopt
 import math
-from ROOT import TFile, TH1D, Math
+from ROOT import TFile, TH1D, Math, TDirectory
+from uncertainty import Uncertainty
+from agg_bins import *
 
 alpha = 1 - 0.6827
 
-def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-july28-nodashes.txt', outputfile = 'qcd_hists.root', nbins = 160):
+def fill_qcd_hists(inputfile = 'inputs/bg_hists/mc-combine-input-all.txt', outputfile = 'qcd_hists.root', nbins = 174):
       
 
    print ('Input file is %s' % inputfile)
@@ -22,11 +24,22 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-jul
    outfile.cd()
 
    # store the central values, +/1 stata and syst uncertainties in these histograms
-   hFullCV = TH1D("hFullCV", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
-   hFullStatUp = TH1D("hFullStatUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
-   hFullStatDown = TH1D("hFullStatDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
-   hFullSystUp = TH1D("hFullSystUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
-   hFullSystDown = TH1D("hFullSystDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+   hCV = TH1D("hCV", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+   hStatUp = TH1D("hStatUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+   hStatDown = TH1D("hStatDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+   hSystUp = TH1D("hSystUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+   hSystDown = TH1D("hSystDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+
+   hNonQCDErr = TH1D("hNonQCDErr", ";Search Bin;Fractional syst.", nbins, 0.5, nbins + 0.5);
+   ## for ibin in range(nbins): # sert default to 1 -- no uncertainty
+   ##     hNonQCDErr.SetBinContent(ibin+1,1.)
+   SYSTS = [hNonQCDErr, hNonQCDErr.Clone("hKHT1"), hNonQCDErr.Clone("hKHT2"), hNonQCDErr.Clone("hKHT3"), \
+            hNonQCDErr.Clone("hSNJ1"), hNonQCDErr.Clone("hSNJ3"), hNonQCDErr.Clone("hSNJ4"), hNonQCDErr.Clone("hSNJ5"), \
+            hNonQCDErr.Clone("hSH1M1"), hNonQCDErr.Clone("hSH1M2"), \
+            hNonQCDErr.Clone("hSH2M1"), hNonQCDErr.Clone("hSH2M2"), hNonQCDErr.Clone("hSH2M3"), hNonQCDErr.Clone("hSH2M4"), \
+            hNonQCDErr.Clone("hSH3M1"), hNonQCDErr.Clone("hSH3M2"), hNonQCDErr.Clone("hSH3M3"), hNonQCDErr.Clone("hSH3M4"), \
+            hNonQCDErr.Clone("hMCC")]
+   
    
    # open text file, extract values
    with open(inputfile) as fin:
@@ -40,11 +53,11 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-jul
            if ibin < 1:
                continue
            values = line.split()
-           if len(values) != 32:
+           if len(values) != 35:
                print ('Warning: this line looks funny')
-           CV = abs(max(float(values[len(values)-3]), 0.))
-           hFullCV.SetBinContent(ibin, CV)
-           hFullCV.SetBinError(ibin, 0.)
+           CV = abs(max(float(values[len(values)-5]), 0.))
+           hCV.SetBinContent(ibin, CV)
+           hCV.SetBinError(ibin, 0.)
            # get stat uncertainties from CR observation - EWK contamination
            NLDP = float(values[2])
            RQCD = float(values[6])
@@ -54,31 +67,73 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-12.9ifb-jul
            if NCR > 0.:
                L = Math.gamma_quantile(alpha/2,NCR,1.)
            U = Math.gamma_quantile_c(alpha/2,NCR+1,1.)
-           hFullStatUp.SetBinContent(ibin,RQCD*(U-NCR))
-           hFullStatDown.SetBinContent(ibin,RQCD*(NCR-L))
+           hStatUp.SetBinContent(ibin,RQCD*(U-NCR))
+           hStatDown.SetBinContent(ibin,RQCD*(NCR-L))
            err_nonQCD = max(RQCD*float(values[5]), 0.)
            syst = 0.
            if CV > 0.:
                syst = syst + pow(err_nonQCD, 2.)
-               for isyst in range(8, len(values)-7):
-                   syst = syst + pow((float(values[isyst])-1.)*CV, 2.)
+               hNonQCDErr.SetBinContent(ibin, err_nonQCD)
+               isyst = 0
+               for systval in values[8:-9]:
+                   isyst += 1
+                   syst = syst + pow((float(systval)-1.)*CV, 2.)
+                   SYSTS[isyst].SetBinContent(ibin, (float(systval)-1.)*CV)
                syst = math.sqrt(syst)
-           hFullSystUp.SetBinContent(ibin, syst)
-           if syst > CV - hFullStatDown.GetBinContent(ibin): # truncate if necessary
-               syst = CV - hFullStatDown.GetBinContent(ibin)
-           hFullSystDown.SetBinContent(ibin, syst)
-           print ('Bin %d: %f + %f + %f - %f - %f' % (ibin, CV, hFullStatUp.GetBinContent(ibin), hFullSystUp.GetBinContent(ibin), hFullStatDown.GetBinContent(ibin), hFullSystDown.GetBinContent(ibin)))
+           hSystUp.SetBinContent(ibin, syst)
+           if syst > CV - hStatDown.GetBinContent(ibin): # truncate if necessary
+               syst = CV - hStatDown.GetBinContent(ibin)
+           hSystDown.SetBinContent(ibin, syst)
+           ## print ('Bin %d: %f + %f + %f - %f - %f' % (ibin, CV, hStatUp.GetBinContent(ibin), hSystUp.GetBinContent(ibin), hStatDown.GetBinContent(ibin), hSystDown.GetBinContent(ibin)))
+
+   
            
-  
-           
-   fin.close()
 
    outfile.cd()
-   hFullCV.Write()
-   hFullStatUp.Write()
-   hFullStatDown.Write()
-   hFullSystUp.Write()
-   hFullSystDown.Write()
+   hCV.Write()
+   hStatUp.Write()
+   hStatDown.Write()
+   hSystUp.Write()
+   hSystDown.Write()
+
+   ## and now for aggregate bin predicitons
+   for name, asrs in asr_sets.items():
+       dASR = outfile.mkdir(name)
+       dASR.cd()
+       hCV_ASR = Uncertainty(hCV, "all").AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist # pretending the CV is a fully-correlated uncertainty b/c we need to add it linearly
+       # stats -- fully uncorrelated
+       hStatUp_ASR = Uncertainty(hStatUp).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
+       hStatDown_ASR = Uncertainty(hStatDown).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
+       hCV_ASR.Write()
+       
+       SYSTSUp_ASR = []
+       SYSTSDown_ASR = []
+       for hsyst in SYSTS:
+           is_correlated = 'all' # the ways these are set up, safe to treat all systs as fully correlated or uncorrelated
+           hname = hsyst.GetName()
+           if hname.find('MCC') >= 0 or hname.find('NonQCDErr') >= 0:
+               is_correlated = ''
+           hist_asr = Uncertainty(hsyst, is_correlated).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
+           SYSTSUp_ASR.append(hist_asr)
+           SYSTSDown_ASR.append(hist_asr)
+       hSystUp_ASR = AddHistsInQuadrature('hSystUp', SYSTSUp_ASR)       
+       hSystDown_ASR = AddHistsInQuadrature('hSystDown', SYSTSDown_ASR)
+       # sanity: make sure Stat and Syst Down not larger than CV
+       for iasr in range(hCV_ASR.GetNbinsX()):
+           CV_asr = hCV_ASR.GetBinContent(iasr+1)
+           stat_down_asr = hStatDown_ASR.GetBinContent(iasr+1)
+           syst_down_asr = hSystDown_ASR.GetBinContent(iasr+1)
+           if stat_down_asr > CV_asr:
+               stat_down_asr = CV_asr
+               hStatDown_ASR.SetBinContent(iasr+1, stat_down_asr)
+           if syst_down_asr > CV_asr - stat_down_asr:
+               hSystDown_ASR.SetBinContent(iasr+1, CV_asr - stat_down_asr)
+       hStatUp_ASR.Write()
+       hSystUp_ASR.Write()
+       hStatDown_ASR.Write()
+       hSystDown_ASR.Write()
+       
+           
    outfile.Close()
         
 if __name__ == "__main__":
