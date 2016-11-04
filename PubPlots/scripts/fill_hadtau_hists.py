@@ -32,8 +32,6 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/HadTauEstimation_data_formatt
         kname = key.GetName()
         if "QCDBin_" in kname or "nominal" in kname or "ControlStat" in kname or "BMistag" in kname:
             continue
-        if key.GetCycle() > 1: ## temp hack--why are there two copies of certain histograms?
-            continue
         hist = infile.Get(kname)
         if ("Down" in kname or 'MTSysUp' in kname) and 'MTSysDown' not in kname:
             for ibin in range(hist.GetNbinsX()):
