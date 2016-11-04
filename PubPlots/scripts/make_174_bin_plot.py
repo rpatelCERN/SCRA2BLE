@@ -131,13 +131,13 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     gdata_obs.Draw("p, same")
 
     ## legends
-    leg1 = TLegend(0.6, 0.45, 0.845, 0.77)
+    leg1 = TLegend(0.675, 0.45, 0.92, 0.77)
     leg1.SetTextSize(0.035)
     leg1.SetFillStyle(0)
     leg1.AddEntry(gdata_obs.GetName(), "Data", "pes")
     leg1.AddEntry(hznn, "Z#rightarrow#nu#bar{#nu}", "f")
     leg1.AddEntry(hlostlep, "#splitline{Lost}{lepton}", "f")
-    leg2 = TLegend(0.775, 0.45, 1.02, 0.77)
+    leg2 = TLegend(0.83, 0.45, 1.075, 0.77)
     leg2.SetTextSize(0.035)
     leg2.SetFillStyle(0)
     leg2.AddEntry(hbg_pred, "", "f")
@@ -257,10 +257,6 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     tl_nb.DrawLine(159.-0.5,0.-ratio_max,159.-0.5,ratio_max)
     tl_nb.DrawLine(167.-0.5,0.-ratio_max,167.-0.5,ratio_max)
     
-    ratioleg = TLegend(0.72, 0.88, 0.94, 0.96)
-    ratioleg.SetTextSize(0.07)
-    ratioleg.AddEntry(ratio_bands.GetName(), "Pred. uncert. (stat#oplussyst)", "f")
-
     ## refresh everything, to be safe
     pad1.cd()
     gPad.RedrawAxis()
