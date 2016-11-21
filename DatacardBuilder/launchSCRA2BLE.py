@@ -42,14 +42,25 @@ def condorize(command,tag,odir,CMSSWVER):
     print "Launching phase space point:",tag
 
     #change to a tmp dir
-#    os.chdir("tmp");
-    #startdir = os.getcwd();
+    os.chdir("tmp");
+    startdir = os.getcwd();
     f1n = "tmp_%s.sh" %(tag);
     f1=open(f1n, 'w')
     f1.write("#!/bin/sh \n");
 
     # setup environment
     if options.lpc:
+	f1.write("tar -xzf %s.tar.gz \n" % (CMSSWVER));
+    	f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
+    	f1.write("set SCRAM_ARCH=slc6_amd64_gcc481\n")
+    	f1.write("cd %s \n" %(CMSSWVER));
+    	f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
+    	f1.write("eval `scramv1 runtime -sh`\n")
+    	f1.write(command+" \n")
+    	mu=0.0
+    	f1.write("xrdcp -f results_%s_mu%1.1f.root root://cmseos.fnal.gov/%s/results_%s_mu%1.1f.root 2>&1 \n" % (tag,float(mu),odir,tag,float(mu)));
+    	f1.write("rm -r *.py input* *.root *.tar.gz \n")
+    	f1.close();
     	f2n = "tmp_%s.condor" % (tag);
     	outtag = "out_%s_$(Cluster)" % (tag)
      
@@ -69,7 +80,9 @@ def condorize(command,tag,odir,CMSSWVER):
     	f2.write("x509userproxy = $ENV(X509_USER_PROXY) \n")
     	f2.write("Queue 1 \n");
     	f2.close();
+	
     	os.system("condor_submit %s" % (f2n));
+	
  	os.chdir("../.");
     else:    
 	f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
