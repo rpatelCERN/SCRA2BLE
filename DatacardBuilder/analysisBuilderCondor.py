@@ -63,7 +63,7 @@ if __name__ == '__main__':
     signalmodel=options.signal+options.mGo
     signals = [signalmodel]
     mus=[0.0]
-    lumis = [25.0];
+    lumis = [24.5];
 
     #variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
     #variations = ['allNotau','llpOnly', 'tauOnly']
@@ -148,7 +148,7 @@ if __name__ == '__main__':
                     #combine_cmmd = "combine  -M ProfileLikelihood  --uncapped 1 --significance --rMin -10 %s/allcards.txt -n %s" % (the_odir,the_odir); 
                     #os.system(combine_cmmd);
                     # # run m/ax likelihood fit
-                    #combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.txt -n %s --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); 
+                    #combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.txt -n %s --minimizerStrategy 0 --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); 
                     #print combine_cmmd;
                     #os.system(combine_cmmd);
                     # run asymptotic

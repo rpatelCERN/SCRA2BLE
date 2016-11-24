@@ -59,7 +59,8 @@ class Uncertainty:
                       or ('njets' in self.corrs and 'nbjets' in self.corrs and jbin.ihtmht == ibin.ihtmht) \
                       or ('htmht' in self.corrs and 'nbjets' not in self.corrs and jbin.inb == ibin.inb and jbin.inj == ibin.inj) \
                       or ('htmht' in self.corrs and 'nbjets' in self.corrs and jbin.inj == ibin.inj) \
-                      or ('DYsysPur' in self.corrs and ((ibin.inb == 1 and jbin.inb == 1) or (ibin.inb > 1 and jbin.inb > 1))) \
+                      or ('DYstat' in self.corrs and ibin.inb == jbin.inb and ((ibin.inj == jbin.inj) or (ibin.inj>2 and jbin.inj>2))) \
+                      or ('DYsysPur' in self.corrs and ibin.inb == jbin.inb and ((ibin.inj == jbin.inj) or (ibin.inj>1 and jbin.inj>1))) \
                       or ('LLAcc' in self.corrs and ibin.ihtmht == jbin.ihtmht and ibin.inj == jbin.inj and \
                           (ibin.inb + ibin.inj >=2) and (ibin.inb >= 2 or ibin.inj >= 2)):
                       #print("\t and adding correlated jbin %d: %f" % (jbin.num, self.hist.GetBinContent(jbin.num)))

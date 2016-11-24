@@ -20,23 +20,22 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
 
    TH1D.SetDefaultSumw2(True)
    
-   infile = TFile.Open(inputfile);
-   hin = infile.Get("ZinvBGpred");
-   hin_systup = infile.Get("ZinvBGsysUp");
-   hin_0evt_statup = infile.Get("ZinvBG0EVsysUp");
-   hin_systdown = infile.Get("ZinvBGsysLow");
+   infile = TFile.Open(inputfile)
+   hin = infile.Get("ZinvBGpred")
+   hin_CR = infile.Get("hzvvgJNobs")
+   hin_TF = infile.Get("hzvvTF")
+   hin_systup = infile.Get("ZinvBGsysUp")
+   hin_0evt_statup = infile.Get("ZinvBG0EVsysUp")
+   hin_systdown = infile.Get("ZinvBGsysLow")
 
    # and load input systematics
    SYSTS = []
    for h in infile.GetListOfKeys():
        h = h.ReadObj()
        # skip the histograms that don't actually contain systematics -- make sure you check the names haven't changed
-       if (h.GetName().find('gJ') >= 0 and not h.GetName().find('gJPurErr') >= 0) \
-         or (h.GetName().find('DYvalue') >= 0) \
-         or (h.GetName().find('ZgR') >= 0) \
-         or (h.GetName() == 'hZgDR') \
-         or (h.GetName().find('TF') >= 0) \
-         or (h.GetName().find('Zinv') >= 0):
+       if h.GetName().find('hzvv') < 0 \
+         or h.GetName() == 'hzvvgJNobs' \
+         or h.GetName() == 'hzvvTF':
            continue
        # convert to absolute
        hout = h.Clone()
@@ -57,11 +56,11 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
    outfile.cd()
 
    # store the central values, +/1 stata and syst uncertainties in these histograms
-   hCV = TH1D("hCV", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
-   hStatUp = TH1D("hStatUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
-   hStatDown = TH1D("hStatDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
-   hSystUp = TH1D("hSystUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
-   hSystDown = TH1D("hSystDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+   hCV = TH1D("hCV", "Search BinEvents / Bin", nbins, 0.5, nbins + 0.5)
+   hStatUp = TH1D("hStatUp", "Search BinEvents / Bin", nbins, 0.5, nbins + 0.5)
+   hStatDown = TH1D("hStatDown", "Search BinEvents / Bin", nbins, 0.5, nbins + 0.5)
+   hSystUp = TH1D("hSystUp", "Search BinEvents / Bin", nbins, 0.5, nbins + 0.5)
+   hSystDown = TH1D("hSystDown", "Search BinEvents / Bin", nbins, 0.5, nbins + 0.5)
    
    # open text file, extract values
    if nbins != hin.GetNbinsX():
@@ -71,11 +70,16 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
        hCV.SetBinContent(ibin+1, CV)
        hCV.SetBinError(ibin+1, 0.)
        # get stat uncertainties
-       stat_up = hin.GetBinError(ibin+1);
+       NCR = hin_CR.GetBinContent(ibin+1)
+       L = 0.
+       if NCR > 0.:
+           L = Math.gamma_quantile(alpha/2,NCR,1.)
+       U = Math.gamma_quantile_c(alpha/2,NCR+1,1.)
+       stat_up = (U-NCR)*hin_TF.GetBinContent(ibin+1)
        if stat_up==0.:
            stat_up = hin_0evt_statup.GetBinError(ibin+1)
        hStatUp.SetBinContent(ibin+1, stat_up)
-       stat_down = hin.GetBinError(ibin+1)
+       stat_down = (NCR-L)*hin_TF.GetBinContent(ibin+1)
        if stat_down > CV: # for some reason, this one is sometimes greater than the central value, so truncate
            stat_down = CV
        hStatDown.SetBinContent(ibin+1, stat_down)
@@ -109,12 +113,14 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
        SYSTSUp_ASR = []
        SYSTSDown_ASR = []
        for hsyst in SYSTS:
-           correlation = 'all' # note:default is fully-correlated, corresponds to ZinvScaleErr, photon purity, and DYsysNj
+           correlation = 'all' # note:default is fully-correlated, corresponds to ZinvScaleErr, photon purity
            if hsyst.GetName() == 'hzvvDYsysKin':
                correlation = ''
            elif hsyst.GetName().find('hzvvZgDRerr') >= 0: # hzvvZgDRerrUp, hzvvZgDRerrLow
                correlation = 'nbjets'
-           elif hsyst.GetName().find('stat') >= 0: # DYstat, DYMCstat
+           elif hsyst.GetName().find('DYstat') >= 0: # special
+               correlation = 'DYstat'
+           elif hsyst.GetName().find('DYMCstat') >= 0 or hsyst.GetName().find('hzvvDYsysNj') >= 0: # 3 values for nb = 1, 2, 3 for njets>8
                correlation = 'htmht'
            elif hsyst.GetName().find('DYsysPur') >= 0: # funny
                correlation = 'DYsysPur'
