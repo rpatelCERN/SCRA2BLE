@@ -55,7 +55,10 @@ asr_xbins = {'ASR': [i+0.5 for i in range(13)], \
             'T2qq' : [1.5, 2.5, 4.5, 6.5, 8.5, 12.5]}
 
 def AddHistsInQuadrature(name, hists):
-    hout = TH1D(name, "", hists[0].GetNbinsX(), hists[0].GetXaxis().GetXbins().GetArray())
+    if hists[0].GetXaxis().GetXbins().GetSize()==0: # fixed bin width--there is no TArrayD?
+        hout = TH1D(name, "", hists[0].GetNbinsX(), 0.5, 0.5+hists[0].GetNbinsX())
+    else: ## variable bin width
+        hout = TH1D(name, "", hists[0].GetNbinsX(), hists[0].GetXaxis().GetXbins().GetArray())
     for ibin in range(hout.GetNbinsX()):
         total = 0.
         for ihist in hists:

@@ -24,12 +24,11 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
    hin = infile.Get("ZinvBGpred")
    hin_CR = infile.Get("hzvvgJNobs")
    hin_TF = infile.Get("hzvvTF")
-   hin_systup = infile.Get("ZinvBGsysUp")
-   hin_0evt_statup = infile.Get("ZinvBG0EVsysUp")
-   hin_systdown = infile.Get("ZinvBGsysLow")
 
    # and load input systematics
    SYSTS = []
+   SYSTS_Up = []
+   SYSTS_Down = []
    for h in infile.GetListOfKeys():
        h = h.ReadObj()
        # skip the histograms that don't actually contain systematics -- make sure you check the names haven't changed
@@ -50,17 +49,27 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
                hout.SetBinContent(ibin+1, 0.)            
            ## note: it appears we no longer need to assign gJets syst from NB = 0 to corresponding bins with NB > 0 -- already filled in
        SYSTS.append(hout)
+       if hout.GetName().find('Low') >= 0:
+           SYSTS_Down.append(hout)
+           print("%s (down-only): %3.2f" % (hout.GetName(), hout.GetBinContent(161)))       
+       elif hout.GetName().find('Up') >= 0:
+           SYSTS_Up.append(hout)
+           print("%s (up-only): %3.2f" % (hout.GetName(), hout.GetBinContent(161)))       
+       else:
+           SYSTS_Up.append(hout)
+           SYSTS_Down.append(hout)
+           print("%s (sym): %3.2f" % (hout.GetName(), hout.GetBinContent(161)))       
 
+   hSystUp = AddHistsInQuadrature('hSystUp', SYSTS_Up)       
+   hSystDown = AddHistsInQuadrature('hSystDown', SYSTS_Down)
    
    outfile = TFile(outputfile, "recreate")
    outfile.cd()
 
    # store the central values, +/1 stata and syst uncertainties in these histograms
-   hCV = TH1D("hCV", "Search BinEvents / Bin", nbins, 0.5, nbins + 0.5)
-   hStatUp = TH1D("hStatUp", "Search BinEvents / Bin", nbins, 0.5, nbins + 0.5)
-   hStatDown = TH1D("hStatDown", "Search BinEvents / Bin", nbins, 0.5, nbins + 0.5)
-   hSystUp = TH1D("hSystUp", "Search BinEvents / Bin", nbins, 0.5, nbins + 0.5)
-   hSystDown = TH1D("hSystDown", "Search BinEvents / Bin", nbins, 0.5, nbins + 0.5)
+   hCV = TH1D("hCV", "Search region bin number;Events", nbins, 0.5, nbins + 0.5)
+   hStatUp = TH1D("hStatUp", "Search region bin number;Events", nbins, 0.5, nbins + 0.5)
+   hStatDown = TH1D("hStatDown", "Search region bin number;Events", nbins, 0.5, nbins + 0.5)
    
    # open text file, extract values
    if nbins != hin.GetNbinsX():
@@ -83,14 +92,11 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
        if stat_down > CV: # for some reason, this one is sometimes greater than the central value, so truncate
            stat_down = CV
        hStatDown.SetBinContent(ibin+1, stat_down)
-       # get syst uncertainties
-       syst_up = hin_systup.GetBinContent(ibin+1)
-       syst_down = hin_systdown.GetBinContent(ibin+1)
-       if syst_down > CV - hStatDown.GetBinContent(ibin+1): # truncate if necessary
-           syst_down = CV - hStatDown.GetBinContent(ibin+1)
-       hSystUp.SetBinContent(ibin+1, syst_up)
-       hSystDown.SetBinContent(ibin+1, syst_down)
-       ## print ('Bin %d: %f + %f + %f - %f - %f' % (ibin+1, CV, hStatUp.GetBinContent(ibin+1), hSystUp.GetBinContent(ibin+1), hStatDown.GetBinContent(ibin+1), hSystDown.GetBinContent(ibin+1)))
+       if hSystDown.GetBinContent(ibin+1) > CV - hStatDown.GetBinContent(ibin+1): # truncate if necessary
+           hSystDown.SetBinContent(ibin+1, CV - hStatDown.GetBinContent(ibin+1))
+       ## hSystUp.SetBinContent(ibin+1, syst_up)
+       ## hSystDown.SetBinContent(ibin+1, syst_down)
+       print ('Bin %d: %f + %f + %f - %f - %f' % (ibin+1, CV, hStatUp.GetBinContent(ibin+1), hSystUp.GetBinContent(ibin+1), hStatDown.GetBinContent(ibin+1), hSystDown.GetBinContent(ibin+1)))
            
              
    outfile.cd()

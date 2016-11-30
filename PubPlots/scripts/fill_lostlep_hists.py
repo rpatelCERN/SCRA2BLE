@@ -5,7 +5,7 @@ from __future__ import print_function
 
 import os
 import sys, getopt
-import math
+from math import sqrt
 from ROOT import TFile, TH1D, Math, TProfile, gDirectory
 from uncertainty import Uncertainty
 from agg_bins import *
@@ -65,7 +65,7 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction.root', outputfi
        # get stat uncertainties
        stat_up = pow(hAvgWeight.GetBinContent(ibin+1)*1.84102, 2.);
        stat_up += pow(hin.GetBinError(ibin+1), 2.);
-       hStatUp.SetBinContent(ibin+1, math.sqrt(stat_up))
+       hStatUp.SetBinContent(ibin+1, sqrt(stat_up))
        hStatDown.SetBinContent(ibin+1, hin.GetBinError(ibin+1))
        # get syst uncertainties
        syst_up = 0.
@@ -76,12 +76,13 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction.root', outputfi
            syst_down = syst_down + pow((1.-hsystdown.GetBinContent(ibin+1))*hin.GetBinContent(ibin+1), 2.)
        syst_up = syst_up + pow((hnonclosureup.GetBinContent(ibin+1)-1.)*hin.GetBinContent(ibin+1), 2.)
        syst_down = syst_down + pow((1.-hnonclosuredown.GetBinContent(ibin+1))*hin.GetBinContent(ibin+1), 2.)
-       syst_up = math.sqrt(syst_up)
-       syst_down = math.sqrt(syst_down)
+       syst_up = sqrt(syst_up)
+       syst_down = sqrt(syst_down)
        if syst_down > CV - hStatDown.GetBinContent(ibin+1): # truncate if necessary
            syst_down = CV - hStatDown.GetBinContent(ibin+1)
        hSystUp.SetBinContent(ibin+1, syst_up)
        hSystDown.SetBinContent(ibin+1, syst_down)
+       print ("Bin %d: %3.2f + %3.2f + %3.2f - %3.2f - %3.2f" % (ibin+1, CV, sqrt(stat_up), syst_up, hin.GetBinError(ibin+1), syst_down))
 
              
    outfile.cd()
