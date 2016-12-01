@@ -66,8 +66,8 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_notCombined.roo
        hCV.SetBinError(ibin+1, 0.)
        # get stat uncertainties
        stat_up = pow(hAvgWeight.GetBinContent(ibin+1)*1.84102, 2.);
-       stat_up += pow(hin.GetBinError(ibin+1), 2.);
-       hStatUp.SetBinContent(ibin+1, lumiSF*sqrt(stat_up))
+       stat_up += pow(lumiSF*hin.GetBinError(ibin+1), 2.);
+       hStatUp.SetBinContent(ibin+1, sqrt(stat_up))
        stat_down = lumiSF*hin.GetBinError(ibin+1)
        if stat_down > CV: # just to be safe
                stat_down = CV
