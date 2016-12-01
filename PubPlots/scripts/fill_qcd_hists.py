@@ -12,7 +12,7 @@ from agg_bins import *
 
 alpha = 1 - 0.6827
 
-def fill_qcd_hists(inputfile = 'inputs/bg_hists/mc-combine-input-all.txt', outputfile = 'qcd_hists.root', nbins = 174):
+def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-24.5ifb-nov24-dashes.txt', outputfile = 'qcd_hists.root', nbins = 174):
       
 
    print ('Input file is %s' % inputfile)
@@ -33,11 +33,15 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/mc-combine-input-all.txt', outpu
    hNonQCDErr = TH1D("hNonQCDErr", ";Search Bin;Fractional syst.", nbins, 0.5, nbins + 0.5);
    ## for ibin in range(nbins): # sert default to 1 -- no uncertainty
    ##     hNonQCDErr.SetBinContent(ibin+1,1.)
-   SYSTS = [hNonQCDErr, hNonQCDErr.Clone("hKHT1"), hNonQCDErr.Clone("hKHT2"), hNonQCDErr.Clone("hKHT3"), \
-            hNonQCDErr.Clone("hSNJ1"), hNonQCDErr.Clone("hSNJ3"), hNonQCDErr.Clone("hSNJ4"), hNonQCDErr.Clone("hSNJ5"), \
-            hNonQCDErr.Clone("hSH1M1"), hNonQCDErr.Clone("hSH1M2"), \
-            hNonQCDErr.Clone("hSH2M1"), hNonQCDErr.Clone("hSH2M2"), hNonQCDErr.Clone("hSH2M3"), hNonQCDErr.Clone("hSH2M4"), \
-            hNonQCDErr.Clone("hSH3M1"), hNonQCDErr.Clone("hSH3M2"), hNonQCDErr.Clone("hSH3M3"), hNonQCDErr.Clone("hSH3M4"), \
+   SYSTS = [hNonQCDErr,
+            hNonQCDErr.Clone("Kj1h1"), hNonQCDErr.Clone("hKj1h2"), hNonQCDErr.Clone("hKj1h3"),
+            hNonQCDErr.Clone("hKj2h1"), hNonQCDErr.Clone("hKj2h2"), hNonQCDErr.Clone("hKj2h3"),
+            hNonQCDErr.Clone("hKj3h1"), hNonQCDErr.Clone("hKj3h2"), hNonQCDErr.Clone("hKj3h3"),
+            hNonQCDErr.Clone("hKj4h2"), hNonQCDErr.Clone("hKj4h3"),
+            hNonQCDErr.Clone("hKj5h2"), hNonQCDErr.Clone("hKj5h3"),
+            hNonQCDErr.Clone("hSh1m1"), hNonQCDErr.Clone("hSh1m2"),
+            hNonQCDErr.Clone("hSh2m1"), hNonQCDErr.Clone("hSh2m2"), hNonQCDErr.Clone("hSh2m3"), hNonQCDErr.Clone("hSh2m4"),
+            hNonQCDErr.Clone("hSh3m1"), hNonQCDErr.Clone("hSh3m2"), hNonQCDErr.Clone("hSh3m3"), hNonQCDErr.Clone("hSh3m4"),
             hNonQCDErr.Clone("hMCC")]
    
    
@@ -53,7 +57,7 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/mc-combine-input-all.txt', outpu
            if ibin < 1:
                continue
            values = line.split()
-           if len(values) != 36:
+           if len(values) != 42:
                print ('Warning: this line looks funny')
            CV = abs(max(float(values[len(values)-6]), 0.))
            hCV.SetBinContent(ibin, CV)

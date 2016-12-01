@@ -15,8 +15,8 @@ from optparse import OptionParser
 parser = OptionParser()
 parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='use fastsim signal (default = %default)')
 parser.add_option('--keeptar', action='store_true', dest='keeptar', default=False, help='keep old tarball for condor jobs (default = %default)')
-parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Cards2016/FullSim",help="EOS output directory  (default = %default)", metavar="outDir")
-parser.add_option('--lpc', action='store_true', dest='lpc', default=False, help='running on lpc condor  (default = %default)')
+parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond/",help="EOS output directory  (default = %default)", metavar="outDir")
+parser.add_option('--lpc', action='store_true', dest='lpc', default=True, help='running on lpc condor  (default = %default)')
 
 (options, args) = parser.parse_args()
 
@@ -42,14 +42,25 @@ def condorize(command,tag,odir,CMSSWVER):
     print "Launching phase space point:",tag
 
     #change to a tmp dir
-#    os.chdir("tmp");
-    #startdir = os.getcwd();
+    os.chdir("tmp");
+    startdir = os.getcwd();
     f1n = "tmp_%s.sh" %(tag);
     f1=open(f1n, 'w')
     f1.write("#!/bin/sh \n");
 
     # setup environment
     if options.lpc:
+	f1.write("tar -xzf %s.tar.gz \n" % (CMSSWVER));
+    	f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
+    	f1.write("set SCRAM_ARCH=slc6_amd64_gcc481\n")
+    	f1.write("cd %s \n" %(CMSSWVER));
+    	f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
+    	f1.write("eval `scramv1 runtime -sh`\n")
+    	f1.write(command+" \n")
+    	mu=0.0
+    	f1.write("xrdcp -f results_%s_mu%1.1f.root root://cmseos.fnal.gov/%s/results_%s_mu%1.1f.root 2>&1 \n" % (tag,float(mu),odir,tag,float(mu)));
+    	f1.write("rm -r *.py input* *.root *.tar.gz \n")
+    	f1.close();
     	f2n = "tmp_%s.condor" % (tag);
     	outtag = "out_%s_$(Cluster)" % (tag)
      
@@ -69,7 +80,9 @@ def condorize(command,tag,odir,CMSSWVER):
     	f2.write("x509userproxy = $ENV(X509_USER_PROXY) \n")
     	f2.write("Queue 1 \n");
     	f2.close();
+	
     	os.system("condor_submit %s" % (f2n));
+	
  	os.chdir("../.");
     else:    
 	f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
@@ -97,7 +110,6 @@ if __name__ == '__main__':
     CMSSWVER = os.getenv("CMSSW_VERSION")
     CMSSWBASE = os.getenv("CMSSW_BASE")
     # tar it up for usage
-    '''
 
     if not os.path.exists('tmp'):
         os.makedirs('tmp')
@@ -105,9 +117,7 @@ if __name__ == '__main__':
 
     #if not options.keeptar:
     os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
-    '''
-    f = TFile.Open("inputHistograms/fastsimSignalT2qq/RA2bin_signal.root");
-    '''
+    f = TFile.Open("inputHistograms/fastsimSignalT1tttt/RA2bin_signal.root");
     names = [k.GetName() for k in f.GetListOfKeys()]
     models = []
     mGos=[]
@@ -119,16 +129,15 @@ if __name__ == '__main__':
         models.append(parse[1])
         mGos.append(int(parse[2]))
         mLSPs.append(int(parse[3]))
-    '''
 	    	#print parse
     #models=["T5qqqqVV"]
     #mGos  = [975];
     #mLSPs = [775];
 
-    #if not options.fastsim:
-    models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq','T1qqqq','T2tt','T2tt','T2tt'];
-    mGos = [1500,1000,1500,1200,1400,1000,425,500,850];
-    mLSPs = [100,800,100,800,100,900,325,325,100]
+    if not options.fastsim:
+    	models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq','T1qqqq','T2tt','T2tt','T2tt'];
+    	mGos = [1500,1000,1500,1200,1400,1000,425,500,850];
+    	mLSPs = [100,800,100,800,100,900,325,325,100]
 
     # for signal in signals:
     for m in range(len(mGos)):
