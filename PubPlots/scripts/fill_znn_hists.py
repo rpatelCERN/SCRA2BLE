@@ -12,7 +12,7 @@ from agg_bins import *
 
 alpha = 1 - 0.6827
 
-def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = 'znn_hists.root', nbins = 174):
+def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = 'znn_hists.root', nbins = 174, lumiSF=1.):
    
    print ('Input file is %s' % inputfile)
    print ('Output file is %s' % outputfile)
@@ -42,9 +42,9 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
        for ibin in range(nbins):
            if hin.GetBinContent(ibin+1) > 0.:
                if hout.GetName().find("Low") >= 0:
-                   hout.SetBinContent(ibin+1, (1.-h.GetBinContent(ibin+1))*hin.GetBinContent(ibin+1))
+                   hout.SetBinContent(ibin+1, lumiSF*(1.-h.GetBinContent(ibin+1))*hin.GetBinContent(ibin+1))
                else:
-                   hout.SetBinContent(ibin+1, (h.GetBinContent(ibin+1)-1.)*hin.GetBinContent(ibin+1))
+                   hout.SetBinContent(ibin+1, lumiSF*(h.GetBinContent(ibin+1)-1.)*hin.GetBinContent(ibin+1))
            else:
                hout.SetBinContent(ibin+1, 0.)            
            ## note: it appears we no longer need to assign gJets syst from NB = 0 to corresponding bins with NB > 0 -- already filled in
@@ -75,7 +75,7 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
    if nbins != hin.GetNbinsX():
        print ('Warning: input file has %d bins, but I need to fill %d bins!' % (hin.GetNbinsX(), nbins))
    for ibin in range(nbins):
-       CV = hin.GetBinContent(ibin+1)
+       CV = lumiSF*hin.GetBinContent(ibin+1)
        hCV.SetBinContent(ibin+1, CV)
        hCV.SetBinError(ibin+1, 0.)
        # get stat uncertainties
@@ -84,18 +84,14 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
        if NCR > 0.:
            L = Math.gamma_quantile(alpha/2,NCR,1.)
        U = Math.gamma_quantile_c(alpha/2,NCR+1,1.)
-       stat_up = (U-NCR)*hin_TF.GetBinContent(ibin+1)
-       if stat_up==0.:
-           stat_up = hin_0evt_statup.GetBinError(ibin+1)
+       stat_up = lumiSF*(U-NCR)*hin_TF.GetBinContent(ibin+1)
        hStatUp.SetBinContent(ibin+1, stat_up)
-       stat_down = (NCR-L)*hin_TF.GetBinContent(ibin+1)
+       stat_down = lumiSF*(NCR-L)*hin_TF.GetBinContent(ibin+1)
        if stat_down > CV: # for some reason, this one is sometimes greater than the central value, so truncate
            stat_down = CV
        hStatDown.SetBinContent(ibin+1, stat_down)
        if hSystDown.GetBinContent(ibin+1) > CV - hStatDown.GetBinContent(ibin+1): # truncate if necessary
            hSystDown.SetBinContent(ibin+1, CV - hStatDown.GetBinContent(ibin+1))
-       ## hSystUp.SetBinContent(ibin+1, syst_up)
-       ## hSystDown.SetBinContent(ibin+1, syst_down)
        print ('Bin %d: %f + %f + %f - %f - %f' % (ibin+1, CV, hStatUp.GetBinContent(ibin+1), hSystUp.GetBinContent(ibin+1), hStatDown.GetBinContent(ibin+1), hSystDown.GetBinContent(ibin+1)))
            
              
@@ -119,11 +115,13 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
        SYSTSUp_ASR = []
        SYSTSDown_ASR = []
        for hsyst in SYSTS:
-           correlation = 'all' # note:default is fully-correlated, corresponds to ZinvScaleErr, photon purity
+           correlation = 'all' # note:default is fully-correlated, corresponds to ScaleErr, photon purity
            if hsyst.GetName() == 'hzvvDYsysKin':
                correlation = ''
-           elif hsyst.GetName().find('hzvvZgDRerr') >= 0: # hzvvZgDRerrUp, hzvvZgDRerrLow
+           elif hsyst.GetName().find('hzvvZgDRerr') >= 0 or hsyst.GetName().find('hzvvgJFdirErr') >= 0: # hzvvZgDRerrUp, hzvvZgDRerrLow, fragmentation factor
                correlation = 'nbjets'
+           elif hsyst.GetName().find('hzvvgJEtrgErr') >= 0: # trigger efficiency, binned in MHT
+               correlation = 'njets:nbjets'
            elif hsyst.GetName().find('DYstat') >= 0: # special
                correlation = 'DYstat'
            elif hsyst.GetName().find('DYMCstat') >= 0 or hsyst.GetName().find('hzvvDYsysNj') >= 0: # 3 values for nb = 1, 2, 3 for njets>8
