@@ -5,14 +5,14 @@ from __future__ import print_function
 
 import os
 import sys, getopt
-import math
+from math import sqrt
 from ROOT import TFile, TH1D, Math, TKey, gDirectory
 from uncertainty import Uncertainty
 from agg_bins import *
 
 alpha = 1 - 0.6827
 
-def fill_hadtau_hists(inputfile = 'inputs/bg_hists/HadTauEstimation_data_formatted.root', outputfile = 'hadtau_hists.root', nbins = 174):
+def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog94_36.35fb_HadTauEstimation_data_formatted_V11.root', outputfile = 'hadtau_hists.root', nbins = 174, lumiSF=1.):
    
    print ('Input file is %s' % inputfile)
    print ('Output file is %s' % outputfile)
@@ -33,21 +33,24 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/HadTauEstimation_data_formatt
         if "QCDBin_" in kname or "nominal" in kname or "ControlStat" in kname or "BMistag" in kname:
             continue
         hist = infile.Get(kname)
-        if ("Down" in kname or 'MTSysUp' in kname) and 'MTSysDown' not in kname:
+        # convert to absolute
+        hout = hist.Clone()
+        hout.Reset() 
+        if ("Down" in kname or 'Dn' in kname or 'MTSysUp' in kname) and 'MTSysDown' not in kname:
             for ibin in range(hist.GetNbinsX()):
-                CV = hin.GetBinContent(ibin+1) 
-                hist.SetBinContent(ibin+1, (hist.GetBinContent(ibin+1)-1.)*CV)
-            upsysts.append(hist) # yes, this is counterintuitive, just go with it
+                CV = lumiSF*hin.GetBinContent(ibin+1) 
+                hout.SetBinContent(ibin+1, (hist.GetBinContent(ibin+1)-1.)*CV)
+            upsysts.append(hout) # yes, this is counterintuitive, just go with it
         elif ("Up" in kname or 'MTSysDown' in kname) and 'MTSysUp' not in kname:
             for ibin in range(hist.GetNbinsX()):
-                CV = hin.GetBinContent(ibin+1) 
-                hist.SetBinContent(ibin+1, (1.-hist.GetBinContent(ibin+1))*CV)
-            downsysts.append(hist)
+                CV = lumiSF*hin.GetBinContent(ibin+1) 
+                hout.SetBinContent(ibin+1, (1.-hist.GetBinContent(ibin+1))*CV)
+            downsysts.append(hout)
         else:
             for ibin in range(hist.GetNbinsX()):
-                CV = hin.GetBinContent(ibin+1) 
-                hist.SetBinContent(ibin+1, (hist.GetBinContent(ibin+1)-1.)*CV)
-            symsysts.append(hist)
+                CV = lumiSF*hin.GetBinContent(ibin+1) 
+                hout.SetBinContent(ibin+1, (hist.GetBinContent(ibin+1)-1.)*CV)
+            symsysts.append(hout)
             #print ('Symmetric systematic: ' + hist.GetName())
 
    ## treat bonkers BMistag systematics separately
@@ -55,7 +58,7 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/HadTauEstimation_data_formatt
    specialsysts = [TH1D("jack_BMistagUp", "", nbins, 0.5, nbins + 0.5), TH1D("jack_BMistagDown", "", nbins, 0.5, nbins + 0.5)]
    for hbmistag_in in bmistags_in:
        for ibin in range(hist.GetNbinsX()):
-           CV = hin.GetBinContent(ibin+1)
+           CV = lumiSF*hin.GetBinContent(ibin+1)
            if hbmistag_in.GetBinContent(ibin+1) > 1.: # these can migrate in either direction -- put all > 1 in Up and all < 1 in Down
                specialsysts[0].SetBinContent(ibin+1, (hbmistag_in.GetBinContent(ibin+1)-1.)*CV)
            else:
@@ -72,17 +75,19 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/HadTauEstimation_data_formatt
    hStatDown = TH1D("hStatDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
    hSystUp = TH1D("hSystUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
    hSystDown = TH1D("hSystDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+
+   poiscl0 = 0.460255
    
-   # open text file, extract values
    if nbins != hin.GetNbinsX():
        print ('Warning: input file has %d bins, but I need to fill %d bins!' % (hin.GetNbinsX(), nbins))
    for ibin in range(nbins):
-       CV = hin.GetBinContent(ibin+1)
+       CV = lumiSF*hin.GetBinContent(ibin+1)
        hCV.SetBinContent(ibin+1, CV)
        hCV.SetBinError(ibin+1, 0.)
        # get stat uncertainties
-       stat_up = hin.GetBinError(ibin+1)
-       stat_down = hin_stats_no_poiscl0.GetBinError(ibin+1)
+       stat = lumiSF*hin_stats_no_poiscl0.GetBinError(ibin+1)
+       stat_up = sqrt(stat**2+poiscl0**2)
+       stat_down = stat
        if stat_down > CV: # just to be safe
                stat_down = CV
        hStatUp.SetBinContent(ibin+1, stat_up)
@@ -100,14 +105,15 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/HadTauEstimation_data_formatt
        ## BMistags
        syst_up = syst_up + specialsysts[0].GetBinContent(ibin+1)**2
        syst_down = syst_down + specialsysts[1].GetBinContent(ibin+1)**2
-       syst_up=math.sqrt(syst_up)
-       syst_down=math.sqrt(syst_down)            
+       ## already lumi-scaled
+       syst_up = sqrt(syst_up)
+       syst_down = sqrt(syst_down)            
        if syst_down > CV - hStatDown.GetBinContent(ibin+1): # truncate if necessary
            syst_down = CV - hStatDown.GetBinContent(ibin+1)
        hSystUp.SetBinContent(ibin+1, syst_up)
        hSystDown.SetBinContent(ibin+1, syst_down)
        
-       # print ('Bin %d: %f + %f + %f - %f - %f' % (ibin+1, CV, hStatUp.GetBinContent(ibin+1), hSystUp.GetBinContent(ibin+1), hStatDown.GetBinContent(ibin+1), hSystDown.GetBinContent(ibin+1)))
+       print ('Bin %d: %f + %f + %f - %f - %f' % (ibin+1, CV, hStatUp.GetBinContent(ibin+1), hSystUp.GetBinContent(ibin+1), hStatDown.GetBinContent(ibin+1), hSystDown.GetBinContent(ibin+1)))
            
              
    outfile.cd()

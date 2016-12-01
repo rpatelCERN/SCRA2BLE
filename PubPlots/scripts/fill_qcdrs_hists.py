@@ -147,5 +147,5 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_24.6.root',
         
 if __name__ == "__main__":
     import sys
-    fill_qcdrs_hists(sys.argv[1], sys.argv[2], int(sys.argv[3]), float(sys.argv[4]))
+    fill_qcdrs_hists(sys.argv[1], sys.argv[2], int(sys.argv[3]))
    
