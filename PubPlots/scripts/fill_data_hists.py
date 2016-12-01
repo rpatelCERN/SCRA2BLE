@@ -13,7 +13,7 @@ from ROOT import TFile
 from data_obs import DataObs
 from agg_bins import *
 
-def fill_data_hists(inputfile = 'inputs/data_hists/Data_174Bins_SR_DryRun_12.9.root', outputfile = 'data_hists.root', nbins = 174):
+def fill_data_hists(inputfile = 'inputs/data_hists/Data_174Bins_SR_DryRun_12.9.root', inputhist = 'RA2bin_data', outputfile = 'data_hists.root', nbins = 174):
 
     print ('Input file is %s' % inputfile)
     print ('Output file is %s' % outputfile)
@@ -22,7 +22,7 @@ def fill_data_hists(inputfile = 'inputs/data_hists/Data_174Bins_SR_DryRun_12.9.r
     TH1D.SetDefaultSumw2(True)
    
     infile = TFile.Open(inputfile);
-    data_obs = DataObs(infile.Get("data"))
+    data_obs = DataObs(infile.Get(inputhist))
 
     outfile = TFile(outputfile, "recreate")
     outfile.cd()

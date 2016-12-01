@@ -75,7 +75,7 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_24.6.root',
        hCV.SetBinContent(ibin+1, CV)
        hCV.SetBinError(ibin+1, 0.)
        # get stat uncertainties
-       stat = lumiSF*(hstat.GetBinContent(ibin+1)-1.)*CV;
+       stat = (hstat.GetBinContent(ibin+1)-1.)*CV;
        hStatUp.SetBinContent(ibin+1, stat)
        if stat > CV: # just to be safe
            hStatDown.SetBinContent(ibin+1, CV)
