@@ -12,7 +12,7 @@ from agg_bins import *
 
 alpha = 1 - 0.6827
 
-def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction.root', outputfile = 'lostlep_hists.root', nbins = 174):
+def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_notCombined.root', outputfile = 'lostlep_hists.root', nbins = 174, lumiSF=1.):
    
    print ('Input file is %s' % inputfile)
    print ('Output file is %s' % outputfile)
@@ -35,14 +35,17 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction.root', outputfi
        # skip the histograms that don't actually contain systematics -- make sure you check the names haven't changed
        if h.GetName() == "totalPred_LL" or h.GetName() == "avgWeight_0L1L" or h.GetName()=="totalPredControlStat_LL" or h.GetName().find('CS') >= 0:
            continue
+       # convert to absolute
+       hout = h.Clone()
+       hout.Reset() 
        for ibin in range(nbins):
            if float(hin.GetBinContent(ibin+1)) == 0.:
-               h.SetBinContent(ibin+1, 0.)
+               hout.SetBinContent(ibin+1, 0.)
            elif h.GetName().find('Up') >= 0:
-               h.SetBinContent(ibin+1, (h.GetBinContent(ibin+1)-1.)*hin.GetBinContent(ibin+1))
+               hout.SetBinContent(ibin+1, lumiSF*(h.GetBinContent(ibin+1)-1.)*hin.GetBinContent(ibin+1))
            else:
-               h.SetBinContent(ibin+1, (1.-h.GetBinContent(ibin+1))*hin.GetBinContent(ibin+1))           
-       SYSTS.append(h)
+               hout.SetBinContent(ibin+1, lumiSF*(1.-h.GetBinContent(ibin+1))*hin.GetBinContent(ibin+1))           
+       SYSTS.append(hout)
 
            
    outfile = TFile(outputfile, "recreate")
@@ -55,18 +58,17 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction.root', outputfi
    hSystUp = TH1D("hSystUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
    hSystDown = TH1D("hSystDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
    
-   # open text file, extract values
    if nbins != hin.GetNbinsX():
        print ('Warning: input file has %d bins, but I need to fill %d bins!' % (hin.GetNbinsX(), nbins))
    for ibin in range(nbins):
-       CV = hin.GetBinContent(ibin+1)
+       CV = lumiSF*hin.GetBinContent(ibin+1)
        hCV.SetBinContent(ibin+1, CV)
        hCV.SetBinError(ibin+1, 0.)
        # get stat uncertainties
        stat_up = pow(hAvgWeight.GetBinContent(ibin+1)*1.84102, 2.);
        stat_up += pow(hin.GetBinError(ibin+1), 2.);
-       hStatUp.SetBinContent(ibin+1, sqrt(stat_up))
-       stat_down = hin.GetBinError(ibin+1)
+       hStatUp.SetBinContent(ibin+1, lumiSF*sqrt(stat_up))
+       stat_down = lumiSF*hin.GetBinError(ibin+1)
        if stat_down > CV: # just to be safe
                stat_down = CV
        hStatDown.SetBinContent(ibin+1, stat_down)
@@ -74,13 +76,13 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction.root', outputfi
        syst_up = 0.
        syst_down = 0.
        if hsystup.GetBinContent(ibin+1) > 0.:
-           syst_up = syst_up + pow((hsystup.GetBinContent(ibin+1)-1.)*hin.GetBinContent(ibin+1), 2.)
+           syst_up = syst_up + pow((hsystup.GetBinContent(ibin+1)-1.)*CV, 2.)
        if hsystdown.GetBinContent(ibin+1) > 0.:
-           syst_down = syst_down + pow((1.-hsystdown.GetBinContent(ibin+1))*hin.GetBinContent(ibin+1), 2.)
-       syst_up = syst_up + pow((hnonclosureup.GetBinContent(ibin+1)-1.)*hin.GetBinContent(ibin+1), 2.)
-       syst_down = syst_down + pow((1.-hnonclosuredown.GetBinContent(ibin+1))*hin.GetBinContent(ibin+1), 2.)
-       syst_up = sqrt(syst_up)
-       syst_down = sqrt(syst_down)
+           syst_down = syst_down + pow((1.-hsystdown.GetBinContent(ibin+1))*CV, 2.)
+       syst_up = syst_up + pow((hnonclosureup.GetBinContent(ibin+1)-1.)*CV, 2.)
+       syst_down = syst_down + pow((1.-hnonclosuredown.GetBinContent(ibin+1))*CV, 2.)
+       syst_up = lumiSF*sqrt(syst_up) # these need to be scaled because they're not coming from the individual systs that we already scaled
+       syst_down = lumiSF*sqrt(syst_down)
        if syst_down > CV - hStatDown.GetBinContent(ibin+1): # truncate if necessary
            syst_down = CV - hStatDown.GetBinContent(ibin+1)
        hSystUp.SetBinContent(ibin+1, syst_up)
@@ -112,14 +114,14 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction.root', outputfi
        for hsyst in SYSTS:
            hname = hsyst.GetName()
            correlation = 'htmht:nbjets' # note:default is correlated across these dimensions, corresponds to mTEff, SLpurity, DL
-           if hname.find('NonClosure') >= 0: # one for each bin
+           if hname.find('NonClosure') >= 0 or hname.find('IsoTrackStat') >= 0 or hname.find('MTWStat') >= 0 or hname.find('AccStat') >= 0: # one for each bin
                correlation = ''
-           elif hname.find('IsoTrack') >= 0: # only binned in HT and MHT
-               correlation = 'njets:nbjets'
-           elif hname.find('Iso') >= 0 or hname.find('Reco') >= 0: # binned in properties of lepton, fully-correlated across search bins
+           elif hname.find('Iso') >= 0 or hname.find('Reco') >= 0: # binned in properties of lepton, fully-correlated across search bins -- now includes isolated track sys
                correlation = 'all'
-           elif hname.find('Acc') >= 0: # funny
-               correlation = 'LLAcc'
+           elif hname.find('MTWSys') >= 0 or hname.find('Acc') >= 0: # binned in htmht, njets
+               correlation = 'nbjets'
+           ## elif hname.find('Acc') >= 0: # funny
+           ##     correlation = 'LLAcc'
            hist_asr = Uncertainty(hsyst, correlation).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist           
            ## now group by Up, Down, symmetric
            if hname.find('Down') >= 0:
