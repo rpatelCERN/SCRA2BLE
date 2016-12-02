@@ -5,30 +5,47 @@ import os
 import errno
 from bg_est import BGEst
 from data_obs import DataObs
-from results_table import ResultsTable
+from utils import GetPred
 from ROOT import TFile
 
 def make_asr_table(output_file, lostlep, hadtau, znn, qcd, data_obs): #, 
 
-    # define common cut labels
-    njets_cuts = ['2+', '3+', '5+', '5+', '9+']*2 + ['7+', '5+']
-    nbjets_cuts = ['0']*5 + ['2+', '1+', '3+', '2+', '3+', '1+', '1+']
-    ht_cuts = ['500+', '1500+', '500+', '1500+', '1500+', '500+', '750+', '500+', '1500+', '750+', '300+', '750+']
-    mht_cuts = ['500+', '750+', '500+', '750+', '750+', '500+', '750+', '500+', '750+', '750+', '300+', '750+']
-
             
     with open("/".join(["output", output_file+".tex"]), 'w') as fout:
-        ## copy preamble already saved in output directory
-        with open('output/reference/preamble.tex', 'r') as fpre:
-            preamble = fpre.read()
+        ## open template file saved in output reference directory
+        with open('output/reference/asr_table_template.tex', 'r') as ftemp:
+            template = ftemp.read().split('\n')
+            edit = False
+            for line in template:
+                if line.find('Bin') == 0:
+                    edit = True
+                    fout.write(line+'\n')
+                    continue
+                elif line.find('\\end') == 0:
+                    edit = False
+                if edit:
+                    ibin = int(line[0:2])
+                    lostlep_pred = GetPred(lostlep, ibin)
+                    line = line.replace('$$', lostlep_pred, 1)
+                    hadtau_pred = GetPred(hadtau, ibin)
+                    line = line.replace('$$', hadtau_pred, 1)
+                    znn_pred = GetPred(znn, ibin)
+                    line = line.replace('$$', znn_pred, 1)
+                    qcd_pred = GetPred(qcd, ibin)
+                    line = line.replace('$$', qcd_pred, 1)
+                    sumBG_pred = GetPred(BGEst.sumBG(lostlep, hadtau, znn, qcd), ibin)
+                    line = line.replace('$$', sumBG_pred, 1)
+                    nobs = int(data_obs.hist.GetBinContent(ibin))
+                    line = line.replace('$$', str(nobs), 1)
+                fout.write(line+'\n')
 
-        fout.write(preamble)
-        ## get table and write it
-        table = ResultsTable(data_obs, lostlep, hadtau, znn, qcd, 1, 12, \
-                              "Observed number of events and pre-fit background predictions in the aggregate search regions.", "tab:pre-fit-results-asrs")
-        fout.write(table.full+"\n")
-
-        fout.write("\\end{document}\n")
+##        fout.write(preamble)
+##        ## get table and write it
+##        table = ResultsTable(data_obs, lostlep, hadtau, znn, qcd, 1, 12, \
+##                              "Observed number of events and pre-fit background predictions in the aggregate search regions.", "tab:pre-fit-results-asrs")
+##        fout.write(table.full+"\n")
+##
+##        fout.write("\\end{document}\n")
         
 if __name__ == "__main__": # to run from command line, just give the name of the BG estimation files
     import sys
