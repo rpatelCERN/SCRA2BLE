@@ -201,7 +201,7 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
 
     ## now wite CMS headers
     canv.cd()
-    lumi = 5.189904
+    lumi = 18.077491
     CMS_lumi.cmsTextSize = 0.85
     CMS_lumi.writeExtraText = True
     CMS_lumi.extraText = "   Preliminary"
@@ -223,7 +223,7 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
         if exception.errno != errno.EEXIST:
             raise
     gPad.Print(plot_dir+plot_title+".pdf")
-    gPad.Print(plot_dir+plot_title+".png")
+    ##    gPad.Print(plot_dir+plot_title+".png")
 
     gPad.Close()
 

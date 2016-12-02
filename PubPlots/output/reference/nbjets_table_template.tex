@@ -1,0 +1,36 @@
+\documentclass[11pt, oneside]{article}
+\usepackage{geometry}
+\geometry{letterpaper}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{xspace}
+\usepackage{amstext}
+
+\newcommand{\MHT}{\ensuremath{H_{\mathrm T}^{\text{miss}}}\xspace}
+\newcommand{\HT}{\ensuremath{H_{\mathrm T}}\xspace}
+\newcommand{\njets}{\ensuremath{N_{\text{jet}}}\xspace}
+\newcommand{\nbjets}{\ensuremath{N_{\text{b-jet}}}\xspace}
+
+\title{Results of 18.1 fb$^{-1}$ unblinding}
+\author{RA2/b Integration Team}
+\begin{document}
+\maketitle
+
+\begin{table}
+\renewcommand{\arraystretch}{1.25}
+\centering
+\caption{Observed number of events and pre-fit background predictions
+  as a function of \nbjets, integrating over all other search variables.}
+\label{tab:pre-fit-results-nbjets-proj}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{ |c|c|c|c|c||c|c|c|c||c|c| }
+\hline
+Bin & $\nbjets$ & $\MHT$ [GeV] & $\HT$ [GeV] & $\njets$ & Lost-$e/\mu$ & $\tau\rightarrow\mathrm{had}$ & $Z\rightarrow\nu\bar{\nu}$ & QCD & Total Pred. & Obs. \\ \hline
+1 & 0 & 300+ & 300+ & 2+ & $$ & $$ & $$ & $$ & $$ & $$ \\ \hline
+2 & 1 & 300+ & 300+ & 2+ & $$ & $$ & $$ & $$ & $$ & $$ \\ \hline
+3 & 2 & 300+ & 300+ & 2+ & $$ & $$ & $$ & $$ & $$ & $$ \\ \hline
+4 & 3+ & 300+ & 300+ & 2+ & $$ & $$ & $$ & $$ & $$ & $$ \\ \hline
+\end{tabular}}
+\end{table}
+
+\end{document}

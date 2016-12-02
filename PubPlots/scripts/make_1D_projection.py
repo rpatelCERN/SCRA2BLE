@@ -8,11 +8,16 @@ from ROOT import TFile, TH1D, Math, gStyle, THStack, TLegend, TCanvas, TPad, gPa
 from bg_est import BGEst
 from data_obs import DataObs
 from obs_exp_ratio import ObsExpRatio
+from utils import GetPred
 import CMS_lumi
 
 
 plot_dir = "output/"
-lumi = 5.189904
+lumi = 18.077491
+
+latex_templates = {'N_{jet} (p_{T} > 30 GeV)': 'njets',\
+                   'N_{b-jet} (p_{T} > 30 GeV)': 'nbjets',\
+                   'H_{T}^{miss} [GeV]': 'mht'}
 
 signal_to_latex = {'T1tttt': '#tilde{g}#rightarrowt#bar{t} #tilde{#chi}_{1}^{0}',\
                    'T1bbbb': '#tilde{g}#rightarrowb#bar{b} #tilde{#chi}_{1}^{0}',\
@@ -125,8 +130,8 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     pull.GetYaxis().SetTitleSize(0.11)
     pull.GetYaxis().SetTitleOffset(0.4)
     hratdummy = ratio.dummy_hist
-    hratdummy.SetMaximum(2.3)
-    hratdummy.SetMinimum(-2.3)
+    hratdummy.SetMaximum(1.3)
+    hratdummy.SetMinimum(-1.3)
     hratdummy.GetXaxis().SetLabelSize(0.12)
     hratdummy.GetXaxis().SetTitleSize(0.14)
     hratdummy.GetYaxis().SetLabelSize(0.1)
@@ -277,7 +282,7 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     ratiomid.Draw()
         
     ## lines again
-    ratio_max = 2.3
+    ratio_max = 1.3
     if doPull:
         ratio_max = 3.2
 
@@ -309,7 +314,41 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
         if exception.errno != errno.EEXIST:
             raise
     gPad.Print(plot_dir+plot_title+".pdf")
-    gPad.Print(plot_dir+plot_title+".png")
+    ##    gPad.Print(plot_dir+plot_title+".png")
+
+    ## now print pretty table
+    if doPull:
+        gPad.Close()
+        return
+    
+    temp_file = latex_templates[hlostlep.GetXaxis().GetTitle()]
+    with open("/".join(["output", plot_title+"_table.tex"]), 'w') as fout:
+        ## open template file saved in output reference directory
+        with open('output/reference/%s_table_template.tex' % (temp_file), 'r') as ftemp:
+            template = ftemp.read().split('\n')
+            edit = False
+            for line in template:
+                if line.find('Bin') == 0:
+                    edit = True
+                    fout.write(line+'\n')
+                    continue
+                elif line.find('\\end') == 0:
+                    edit = False
+                if edit:
+                    ibin = int(line[0:1])
+                    lostlep_pred = GetPred(lostlep_proj, ibin)
+                    line = line.replace('$$', lostlep_pred, 1)
+                    hadtau_pred = GetPred(hadtau_proj, ibin)
+                    line = line.replace('$$', hadtau_pred, 1)
+                    znn_pred = GetPred(znn_proj, ibin)
+                    line = line.replace('$$', znn_pred, 1)
+                    qcd_pred = GetPred(qcd_proj, ibin)
+                    line = line.replace('$$', qcd_pred, 1)
+                    sumBG_pred = GetPred(sumBG, ibin)
+                    line = line.replace('$$', sumBG_pred, 1)
+                    nobs = int(hdata_obs.GetBinContent(ibin))
+                    line = line.replace('$$', str(nobs), 1)
+                fout.write(line+'\n')    
 
     gPad.Close()
     

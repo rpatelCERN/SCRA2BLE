@@ -24,7 +24,7 @@ def make_1d_pull_dist(plot_title, lostlep, hadtau, znn, qcd, data_obs):
     ratio = ObsExpRatio(DataObs(hdata_obs), sumBG)
     pull = ratio.pull
 
-    hpull = TH1D("hPull", ";Pull = [N_{Obs.}-N_{Pred.}] / #sqrt{N_{Pred.}+(#deltaN_{Pred.})^{2}};N_{bins}", 19, -3.65, 3.65)
+    hpull = TH1D("hPull", ";Pull = [N_{Obs.}-N_{Pred.}] / #sqrt{N_{Pred.}+(#deltaN_{Pred.})^{2}};N_{bins}", 25, -3.25, 3.25)
     hpull.GetXaxis().SetLabelSize(0.035)
     hpull.GetXaxis().SetTitleSize(0.035)
     hpull.GetXaxis().SetTitleOffset(1.3)
@@ -51,7 +51,8 @@ def make_1d_pull_dist(plot_title, lostlep, hadtau, znn, qcd, data_obs):
         if hpull.GetBinContent(ibin+1)>0.:
             hpull.SetBinError(ibin+1,0.0001)
 
-						    
+    if hpull.GetBinContent(hpull.GetNbinsX()+1)>0.:
+        hpull.SetBinContent(hpull.GetNbinsX(), hpull.GetBinContent(hpull.GetNbinsX())+hpull.GetBinContent(hpull.GetNbinsX()+1))
 
     W = 800
     H = 800
@@ -77,7 +78,7 @@ def make_1d_pull_dist(plot_title, lostlep, hadtau, znn, qcd, data_obs):
 
     hpull.Draw("hist");
 
-    lumi = 5.189904
+    lumi = 18.077491
     CMS_lumi.writeExtraText = True
     CMS_lumi.extraText = "       Preliminary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi

@@ -71,19 +71,20 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     pull.GetXaxis().SetTitle("Search region bin number")
     pull.SetMaximum(3.55)
     pull.SetMinimum(-3.55)
-    pull.LabelsOption("h")
     hratdummy = ratio.dummy_hist
     hratdummy.GetXaxis().SetTitle("Search region bin number")
     hratdummy.SetMaximum(3.5)
     hratdummy.SetMinimum(-3.5)
-    hratdummy.LabelsOption("h")
-    ## remove bin labels
+    ## fix bin labels
     for ibin in range(174):
         hratdummy.GetXaxis().SetBinLabel(ibin+1, "")
         pull.GetXaxis().SetBinLabel(ibin+1, "")
         if (ibin+1) % 20 == 0:
            hratdummy.GetXaxis().SetBinLabel(ibin+1, "%d" % int(ibin+1)) 
            pull.GetXaxis().SetBinLabel(ibin+1, "%d" % int(ibin+1)) 
+    hratdummy.LabelsOption("h")
+    pull.LabelsOption("h")
+
 
 
     ## setup canvas and pads
@@ -283,7 +284,7 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
 
     ## now wite CMS headers
     canv.cd()
-    lumi = 5.189904
+    lumi = 18.077491
     CMS_lumi.writeExtraText = True
     CMS_lumi.extraText = "       Preliminary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
@@ -304,7 +305,7 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
         if exception.errno != errno.EEXIST:
             raise
     gPad.Print(plot_dir+plot_title+".pdf")
-    gPad.Print(plot_dir+plot_title+".png")
+    ##    gPad.Print(plot_dir+plot_title+".png")
     
     gPad.Close()
         

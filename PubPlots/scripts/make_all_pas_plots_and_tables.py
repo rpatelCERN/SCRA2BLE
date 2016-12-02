@@ -24,10 +24,10 @@ def make_all_pas_plots_and_tables(lostlep_file = 'lostlep_hists.root', hadtau_fi
     lostlep = BGEst(f_lostlep.Get("hCV"), f_lostlep.Get("hStatUp"), f_lostlep.Get("hStatDown"), f_lostlep.Get("hSystUp"), f_lostlep.Get("hSystDown"), 2006)
     hadtau = BGEst(f_hadtau.Get("hCV"), f_hadtau.Get("hStatUp"), f_hadtau.Get("hStatDown"), f_hadtau.Get("hSystUp"), f_hadtau.Get("hSystDown"), 2007)
 
-    make_174_bin_plot('results-plot-prefit-RunG5_full_status-log', lostlep, hadtau, znn, qcd, data_obs)
-    make_174_bin_plot('results-plot-prefit-RunG5_full_status-log-pull', lostlep, hadtau, znn, qcd, data_obs, True)
-    make_1d_pull_dist('results-prefit-pulls-1D-RunGF-full_status', lostlep, hadtau, znn, qcd, data_obs)
-    make_174_bin_tables('results-prefit-tables-RunG5_full_status', lostlep, hadtau, znn, qcd, data_obs)
+    make_174_bin_plot('results-plot-prefit-18_1_full_status-log', lostlep, hadtau, znn, qcd, data_obs)
+    make_174_bin_plot('results-plot-prefit-18_1_full_status-log-pull', lostlep, hadtau, znn, qcd, data_obs, True)
+    make_1d_pull_dist('results-prefit-pulls-1D-18_1-full_status', lostlep, hadtau, znn, qcd, data_obs)
+    make_174_bin_tables('results-prefit-tables-18_1_full_status', lostlep, hadtau, znn, qcd, data_obs)
 
     ## aggregate search regions
     data_obs_12_asrs = DataObs(f_data_obs.Get("ASR/hCV"))
@@ -36,12 +36,12 @@ def make_all_pas_plots_and_tables(lostlep_file = 'lostlep_hists.root', hadtau_fi
     lostlep_12_asrs = BGEst(f_lostlep.Get("ASR/hCV"), f_lostlep.Get("ASR/hStatUp"), f_lostlep.Get("ASR/hStatDown"), f_lostlep.Get("ASR/hSystUp"), f_lostlep.Get("ASR/hSystDown"), 2006)
     hadtau_12_asrs = BGEst(f_hadtau.Get("ASR/hCV"), f_hadtau.Get("ASR/hStatUp"), f_hadtau.Get("ASR/hStatDown"), f_hadtau.Get("ASR/hSystUp"), f_hadtau.Get("ASR/hSystDown"), 2007)
 
-    make_12_asr_plot('results-plot-prefit-12-asrs-RunG5-log', lostlep_12_asrs, hadtau_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs)
-    make_12_asr_plot('results-plot-prefit-12-asrs-RunG5-log-pull', lostlep_12_asrs, hadtau_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs, True)
-    ## need to fix the labels on this one
-    ## make_asr_table('asr_table', lostlep_12_asrs, hadtau_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs)
+    make_12_asr_plot('results-plot-prefit-12-asrs-18_1-log', lostlep_12_asrs, hadtau_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs)
+    make_12_asr_plot('results-plot-prefit-12-asrs-18_1-log-pull', lostlep_12_asrs, hadtau_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs, True)
+    need to fix the labels on this one
+    make_asr_table('asr_table', lostlep_12_asrs, hadtau_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs)
 
-    ## ## 1D projections
+    ## 1D projections
     make_all_1D_projections(lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file)
 
 if __name__ == "__main__": # to run from command line, just give the name of the BG estimation files
