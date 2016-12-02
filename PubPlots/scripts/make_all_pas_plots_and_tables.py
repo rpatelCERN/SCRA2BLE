@@ -1,9 +1,9 @@
 from make_174_bin_plot import make_174_bin_plot
 from make_1d_pull_dist import make_1d_pull_dist
 from make_174_bin_tables import make_174_bin_tables
-##from make_12_asr_plot import make_12_asr_plot
+from make_12_asr_plot import make_12_asr_plot
 ##from make_asr_table import make_asr_table
-##from make_all_1D_projections import make_all_1D_projections
+from make_all_1D_projections import make_all_1D_projections
 from ROOT import TFile
 from bg_est import BGEst
 from data_obs import DataObs
@@ -29,19 +29,19 @@ def make_all_pas_plots_and_tables(lostlep_file = 'lostlep_hists.root', hadtau_fi
     make_1d_pull_dist('results-prefit-pulls-1D-RunGF-full_status', lostlep, hadtau, znn, qcd, data_obs)
     make_174_bin_tables('results-prefit-tables-RunG5_full_status', lostlep, hadtau, znn, qcd, data_obs)
 
-    ## ## aggregate search regions
-    ## data_obs_12_asrs = DataObs(f_data_obs.Get("ASR/hCV"))
-    ## qcd_12_asrs = BGEst(f_qcd.Get("ASR/hCV"), f_qcd.Get("ASR/hStatUp"), f_qcd.Get("ASR/hStatDown"), f_qcd.Get("ASR/hSystUp"), f_qcd.Get("ASR/hSystDown"), 2001)
-    ## znn_12_asrs = BGEst(f_znn.Get("ASR/hCV"), f_znn.Get("ASR/hStatUp"), f_znn.Get("ASR/hStatDown"), f_znn.Get("ASR/hSystUp"), f_znn.Get("ASR/hSystDown"), 2002)
-    ## lostlep_12_asrs = BGEst(f_lostlep.Get("ASR/hCV"), f_lostlep.Get("ASR/hStatUp"), f_lostlep.Get("ASR/hStatDown"), f_lostlep.Get("ASR/hSystUp"), f_lostlep.Get("ASR/hSystDown"), 2006)
-    ## hadtau_12_asrs = BGEst(f_hadtau.Get("ASR/hCV"), f_hadtau.Get("ASR/hStatUp"), f_hadtau.Get("ASR/hStatDown"), f_hadtau.Get("ASR/hSystUp"), f_hadtau.Get("ASR/hSystDown"), 2007)
+    ## aggregate search regions
+    data_obs_12_asrs = DataObs(f_data_obs.Get("ASR/hCV"))
+    qcd_12_asrs = BGEst(f_qcd.Get("ASR/hCV"), f_qcd.Get("ASR/hStatUp"), f_qcd.Get("ASR/hStatDown"), f_qcd.Get("ASR/hSystUp"), f_qcd.Get("ASR/hSystDown"), 2001)
+    znn_12_asrs = BGEst(f_znn.Get("ASR/hCV"), f_znn.Get("ASR/hStatUp"), f_znn.Get("ASR/hStatDown"), f_znn.Get("ASR/hSystUp"), f_znn.Get("ASR/hSystDown"), 2002)
+    lostlep_12_asrs = BGEst(f_lostlep.Get("ASR/hCV"), f_lostlep.Get("ASR/hStatUp"), f_lostlep.Get("ASR/hStatDown"), f_lostlep.Get("ASR/hSystUp"), f_lostlep.Get("ASR/hSystDown"), 2006)
+    hadtau_12_asrs = BGEst(f_hadtau.Get("ASR/hCV"), f_hadtau.Get("ASR/hStatUp"), f_hadtau.Get("ASR/hStatDown"), f_hadtau.Get("ASR/hSystUp"), f_hadtau.Get("ASR/hSystDown"), 2007)
 
-    ## make_12_asr_plot('results-plot-prefit-12-asrs-log', lostlep_12_asrs, hadtau_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs)
-    ## make_12_asr_plot('results-plot-prefit-12-asrs-log-pull', lostlep_12_asrs, hadtau_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs, True)
+    make_12_asr_plot('results-plot-prefit-12-asrs-RunG5-log', lostlep_12_asrs, hadtau_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs)
+    make_12_asr_plot('results-plot-prefit-12-asrs-RunG5-log-pull', lostlep_12_asrs, hadtau_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs, True)
     ## make_asr_table('asr_table', lostlep_12_asrs, hadtau_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs)
 
     ## ## 1D projections
-    ## make_all_1D_projections(lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file)
+    make_all_1D_projections(lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file)
 
 if __name__ == "__main__": # to run from command line, just give the name of the BG estimation files
     import sys
