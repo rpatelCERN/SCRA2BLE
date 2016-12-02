@@ -5,6 +5,8 @@ znn_penn_red = TColor(2002, 255/255.,0/255.,43/255.)
 lost_lep_dusk_blue = TColor(2006, 105/255.,166/255., 202/255.)
 had_tau_grayed_jade = TColor(2007, 133/255.,189/255., 164/255.)
 
+pull_blue = TColor(2029, 20/255., 125/255., 97/255.)
+
 def tdrGrid( gridOn):
   tdrStyle.SetPadGridX(gridOn)
   tdrStyle.SetPadGridY(gridOn)

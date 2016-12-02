@@ -1,5 +1,6 @@
 from make_174_bin_plot import make_174_bin_plot
-##from make_174_bin_tables import make_174_bin_tables
+from make_1d_pull_dist import make_1d_pull_dist
+from make_174_bin_tables import make_174_bin_tables
 ##from make_12_asr_plot import make_12_asr_plot
 ##from make_asr_table import make_asr_table
 ##from make_all_1D_projections import make_all_1D_projections
@@ -7,7 +8,7 @@ from ROOT import TFile
 from bg_est import BGEst
 from data_obs import DataObs
 
-def make_all_pas_plots_and_tables(lostlep_file = 'lostlep_hists.root', hadtau_file = 'hadtau_hists.root', znn_file = 'znn_hists.root', qcd_file = 'qcd_hists.root', data_file = 'data_hists.root', signal_file = 'signal_hists.root'):
+def make_all_pas_plots_and_tables(lostlep_file = 'lostlep_hists.root', hadtau_file = 'hadtau_hists.root', znn_file = 'znn_hists.root', qcd_file = 'qcdrs_hists.root', data_file = 'data_hists.root', signal_file = 'signal_hists.root'):
 
     # open input files
     f_lostlep = TFile.Open(lostlep_file)
@@ -23,9 +24,10 @@ def make_all_pas_plots_and_tables(lostlep_file = 'lostlep_hists.root', hadtau_fi
     lostlep = BGEst(f_lostlep.Get("hCV"), f_lostlep.Get("hStatUp"), f_lostlep.Get("hStatDown"), f_lostlep.Get("hSystUp"), f_lostlep.Get("hSystDown"), 2006)
     hadtau = BGEst(f_hadtau.Get("hCV"), f_hadtau.Get("hStatUp"), f_hadtau.Get("hStatDown"), f_hadtau.Get("hSystUp"), f_hadtau.Get("hSystDown"), 2007)
 
-    make_174_bin_plot('results-plot-prefit-12_9-dryrun-log', lostlep, hadtau, znn, qcd, data_obs)
-    make_174_bin_plot('results-plot-prefit-12_9-dryrun-log-pull', lostlep, hadtau, znn, qcd, data_obs, True)
-    ## make_174_bin_tables('results-prefit-12_9-dryrun', lostlep, hadtau, znn, qcd, data_obs)
+    make_174_bin_plot('results-plot-prefit-RunG5_full_status-log', lostlep, hadtau, znn, qcd, data_obs)
+    make_174_bin_plot('results-plot-prefit-RunG5_full_status-log-pull', lostlep, hadtau, znn, qcd, data_obs, True)
+    make_1d_pull_dist('results-prefit-pulls-1D-RunGF-full_status', lostlep, hadtau, znn, qcd, data_obs)
+    make_174_bin_tables('results-prefit-tables-RunG5_full_status', lostlep, hadtau, znn, qcd, data_obs)
 
     ## ## aggregate search regions
     ## data_obs_12_asrs = DataObs(f_data_obs.Get("ASR/hCV"))

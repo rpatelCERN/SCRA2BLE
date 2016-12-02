@@ -62,18 +62,28 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
          ymax=hdata_obs.GetMaximum()
     hbg_pred.SetMaximum(500*ymax)
     hbg_pred.SetMinimum(0.09)
+
     
     ratio = ObsExpRatio(DataObs(hdata_obs), sumBG) # note that this also sets the style
     ratio_markers = ratio.markers
     ratio_bands = ratio.bands
     pull = ratio.pull
     pull.GetXaxis().SetTitle("Search region bin number")
-    pull.SetMaximum(3.2)
-    pull.SetMinimum(-3.2)
+    pull.SetMaximum(3.55)
+    pull.SetMinimum(-3.55)
+    pull.LabelsOption("h")
     hratdummy = ratio.dummy_hist
     hratdummy.GetXaxis().SetTitle("Search region bin number")
-    hratdummy.SetMaximum(2.3)
-    hratdummy.SetMinimum(-2.3)
+    hratdummy.SetMaximum(3.5)
+    hratdummy.SetMinimum(-3.5)
+    hratdummy.LabelsOption("h")
+    ## remove bin labels
+    for ibin in range(174):
+        hratdummy.GetXaxis().SetBinLabel(ibin+1, "")
+        pull.GetXaxis().SetBinLabel(ibin+1, "")
+        if (ibin+1) % 20 == 0:
+           hratdummy.GetXaxis().SetBinLabel(ibin+1, "%d" % int(ibin+1)) 
+           pull.GetXaxis().SetBinLabel(ibin+1, "%d" % int(ibin+1)) 
 
 
     ## setup canvas and pads
@@ -216,16 +226,20 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
         pull.Draw("hist")
         p1 = TLine(pull.GetBinLowEdge(1), 1., pull.GetBinLowEdge(pull.GetNbinsX()+1), 1.)
         p2 = TLine(pull.GetBinLowEdge(1), 2., pull.GetBinLowEdge(pull.GetNbinsX()+1), 2.)
+        p3 = TLine(pull.GetBinLowEdge(1), 3., pull.GetBinLowEdge(pull.GetNbinsX()+1), 3.)
         m1 = TLine(pull.GetBinLowEdge(1), -1., pull.GetBinLowEdge(pull.GetNbinsX()+1), -1.)
         m2 = TLine(pull.GetBinLowEdge(1), -2., pull.GetBinLowEdge(pull.GetNbinsX()+1), -2.)
+        m3 = TLine(pull.GetBinLowEdge(1), -3., pull.GetBinLowEdge(pull.GetNbinsX()+1), -3.)
         ## p1.SetLineStyle(2)
         ## p2.SetLineStyle(2)
         ## m1.SetLineStyle(2)
         ## m2.SetLineStyle(2)
         p1.Draw()
         p2.Draw()
+        p3.Draw()
         m1.Draw()
         m2.Draw()
+        m3.Draw()
     else:
         hratdummy.Draw("axis")
         ratio_bands.Draw("e2, same")
@@ -235,14 +249,14 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     ratiomid.Draw()
         
     ## lines again
-    ratio_max = 2.3
+    ratio_max = 3.5
     if doPull:
-        ratio_max = 3.2
+        ratio_max = 3.55
     tl_njet.DrawLine(31.-0.5, 0.-ratio_max, 31.-0.5,ratio_max) 
     tl_njet.DrawLine(71.-0.5, 0.-ratio_max, 71.-0.5,ratio_max)
     tl_njet.DrawLine(111.-0.5, 0.-ratio_max,111.-0.5,ratio_max)
     tl_njet.DrawLine(143.-0.5, 0.-ratio_max,143.-0.5,ratio_max)
-    tl_nb.DrawLine(11.-0.5,ratio_max,11.-0.5,ratio_max) 
+    tl_nb.DrawLine(11.-0.5,0.-ratio_max,11.-0.5,ratio_max) 
     tl_nb.DrawLine(21.-0.5,0.-ratio_max,21.-0.5,ratio_max) 
     tl_nb.DrawLine(41.-0.5,0.-ratio_max,41.-0.5,ratio_max)
     tl_nb.DrawLine(51.-0.5,0.-ratio_max,51.-0.5,ratio_max) 
@@ -269,7 +283,7 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
 
     ## now wite CMS headers
     canv.cd()
-    lumi = 12.902808
+    lumi = 5.189904
     CMS_lumi.writeExtraText = True
     CMS_lumi.extraText = "       Preliminary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi

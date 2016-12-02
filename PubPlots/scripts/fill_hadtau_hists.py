@@ -36,7 +36,7 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog94_36.35fb_HadTauEstima
         # convert to absolute
         hout = hist.Clone()
         hout.Reset() 
-        if ("Down" in kname or 'Dn' in kname or 'MTSysUp' in kname) and 'MTSysDown' not in kname:
+        if ("Down" in kname or 'MTSysUp' in kname) and 'MTSysDown' not in kname:
             for ibin in range(hist.GetNbinsX()):
                 CV = lumiSF*hin.GetBinContent(ibin+1) 
                 hout.SetBinContent(ibin+1, (hist.GetBinContent(ibin+1)-1.)*CV)

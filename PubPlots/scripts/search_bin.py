@@ -2,6 +2,11 @@
 ## stores properties of bin, including links to possibly-correlated bins
 from __future__ import division
 
+njets_cuts = ['2', '3-4', '5-6', '7-8', '9+']
+nbjets_cuts = ['0', '1', '2', '3+']
+mht_cuts = ['300-350', '350-500', '500-750', '750+']
+ht_cuts = ['300-500', '500-1000', '1000+', '350-500', '500-1000', '1000+', '500-1000', '1000+', '750-1500', '1500+']
+
 class SearchBin:
 
     def __init__(self, binnum):
@@ -14,6 +19,10 @@ class SearchBin:
         self.ihtmht = self.GetIHTMHT()
         self.imht = self.GetIMHT()
         self.iht = self.GetIHT()
+        self.nj_s = njets_cuts[self.inj]
+        self.nb_s = njets_cuts[self.inb]
+        self.mht_s = mht_cuts[self.imht]
+        self.ht_s = ht_cuts[self.ihtmht]
         
     def GetINJ(self):
         if self.num > 141:

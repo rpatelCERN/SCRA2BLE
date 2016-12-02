@@ -32,14 +32,15 @@ class BGEst:
         cls.gFull.SetLineColor(0)
         cls.gFull.SetFillStyle(3445)
 
-    def GetTGraph(cls, CV, gname, errUp, errDown, errUp2 = None, errDown2 = None):
+    
+    def GetTGraph(self, CV, gname, errUp, errDown, errUp2 = None, errDown2 = None):
         x = []
         y = []
         ex_l = []
         ex_h = []
         ey_l = []
         ey_h = []
-        for ibin in range(cls.nbins):
+        for ibin in range(self.nbins):
             x.append(CV.GetBinCenter(ibin+1))
             ex_l.append(CV.GetBinWidth(ibin+1) / 2.)
             ex_h.append(CV.GetBinWidth(ibin+1) / 2.)
@@ -52,7 +53,7 @@ class BGEst:
                 ey_h.append(math.sqrt(errUp.GetBinContent(ibin+1)**2 + errUp2.GetBinContent(ibin+1)**2))
             else:
                ey_h.append(errUp.GetBinContent(ibin+1))
-        gbg = TGraphAsymmErrors(cls.nbins, array('d', x), array('d', y), array('d', ex_l), array('d', ex_h), array('d', ey_l), array('d', ey_h))
+        gbg = TGraphAsymmErrors(self.nbins, array('d', x), array('d', y), array('d', ex_l), array('d', ex_h), array('d', ey_l), array('d', ey_h))
         gbg.SetName(gname)
         return gbg
       
