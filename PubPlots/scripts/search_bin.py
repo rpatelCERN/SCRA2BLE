@@ -20,7 +20,7 @@ class SearchBin:
         self.imht = self.GetIMHT()
         self.iht = self.GetIHT()
         self.nj_s = njets_cuts[self.inj]
-        self.nb_s = njets_cuts[self.inb]
+        self.nb_s = nbjets_cuts[self.inb]
         self.mht_s = mht_cuts[self.imht]
         self.ht_s = ht_cuts[self.ihtmht]
         
