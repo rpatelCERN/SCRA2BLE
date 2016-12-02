@@ -2,7 +2,7 @@ from make_174_bin_plot import make_174_bin_plot
 from make_1d_pull_dist import make_1d_pull_dist
 from make_174_bin_tables import make_174_bin_tables
 from make_12_asr_plot import make_12_asr_plot
-##from make_asr_table import make_asr_table
+from make_asr_table import make_asr_table
 from make_all_1D_projections import make_all_1D_projections
 from ROOT import TFile
 from bg_est import BGEst
@@ -38,6 +38,7 @@ def make_all_pas_plots_and_tables(lostlep_file = 'lostlep_hists.root', hadtau_fi
 
     make_12_asr_plot('results-plot-prefit-12-asrs-RunG5-log', lostlep_12_asrs, hadtau_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs)
     make_12_asr_plot('results-plot-prefit-12-asrs-RunG5-log-pull', lostlep_12_asrs, hadtau_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs, True)
+    ## need to fix the labels on this one
     ## make_asr_table('asr_table', lostlep_12_asrs, hadtau_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs)
 
     ## ## 1D projections

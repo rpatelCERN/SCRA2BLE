@@ -5,18 +5,18 @@ from math import sqrt
 from bin_navigation import *
 
 ## here define aggregate regions as lists of the bin indices  
-asr1 = [i for i in range(160) if SearchBin(i).inb == 0 and SearchBin(i).imht > 1]
-asr2 = [i for i in range(160) if SearchBin(i).inb == 0 and SearchBin(i).ihtmht == 9]
-asr3 = [i for i in range(160) if SearchBin(i).inb == 0 and SearchBin(i).imht > 1 and SearchBin(i).inj > 1]
-asr4 = [i for i in range(160) if SearchBin(i).inb == 0 and SearchBin(i).ihtmht == 9 and SearchBin(i).inj > 1]
+asr1 = [i for i in range(174) if SearchBin(i).inb == 0 and SearchBin(i).imht > 1]
+asr2 = [i for i in range(174) if SearchBin(i).inb == 0 and SearchBin(i).inj > 0 and SearchBin(i).ihtmht == 9]
+asr3 = [i for i in range(174) if SearchBin(i).inb == 0 and SearchBin(i).imht > 1 and SearchBin(i).inj > 1]
+asr4 = [i for i in range(174) if SearchBin(i).inb == 0 and SearchBin(i).ihtmht == 9 and SearchBin(i).inj > 1]
 asr5 = [149]
-asr6 = [i for i in range(160) if SearchBin(i).inb >= 2 and SearchBin(i).imht > 1]
-asr7 = [i for i in range(160) if SearchBin(i).inb >= 1 and SearchBin(i).imht > 2]
-asr8 = [i for i in range(160) if SearchBin(i).inb == 3 and SearchBin(i).imht > 1 and SearchBin(i).inj >= 2]
-asr9 = [i for i in range(160) if SearchBin(i).inb >= 2 and SearchBin(i).ihtmht == 9 and SearchBin(i).inj >= 2]
+asr6 = [i for i in range(174) if SearchBin(i).inb >= 2 and SearchBin(i).imht > 1]
+asr7 = [i for i in range(174) if SearchBin(i).inb >= 1 and SearchBin(i).inj > 0 and SearchBin(i).imht > 2]
+asr8 = [i for i in range(174) if SearchBin(i).inb == 3 and SearchBin(i).imht > 1 and SearchBin(i).inj >= 2]
+asr9 = [i for i in range(174) if SearchBin(i).inb >= 2 and SearchBin(i).ihtmht == 9 and SearchBin(i).inj >= 2]
 asr10 = [172, 173]
-asr11 = [i for i in range(160) if SearchBin(i).inb >= 1 and SearchBin(i).inj >= 3]
-asr12 = [i for i in range(160) if SearchBin(i).inb >= 1 and SearchBin(i).imht > 2 and SearchBin(i).inj >= 2]
+asr11 = [i for i in range(174) if SearchBin(i).inb >= 1 and SearchBin(i).inj >= 3]
+asr12 = [i for i in range(174) if SearchBin(i).inb >= 1 and SearchBin(i).imht > 2 and SearchBin(i).inj >= 2]
 
 
 ## Each histogram of aggregrate bins shouls be added to this dictionary with a name (e.g. 'ASR' for the 12 standard aggregate regions) and a tuple of the aggregate regions defined above. This will be turned into a histogram with one bin per aggregate region, in the order specified in the tuple. You should also specify the x-axis title and visual binning
