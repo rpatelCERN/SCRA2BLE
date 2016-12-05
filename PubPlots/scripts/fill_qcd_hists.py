@@ -12,7 +12,7 @@ from agg_bins import *
 
 alpha = 1 - 0.6827
 
-def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-24.5ifb-nov24-dashes.txt', outputfile = 'qcd_hists.root', nbins = 174):
+def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-24.5ifb-nov24-dashes.txt', outputfile = 'qcd_hists.root', nbins = 174, lumiSF=1.):
       
 
    print ('Input file is %s' % inputfile)
@@ -59,7 +59,7 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-24.5ifb-nov
            values = line.split()
            if len(values) != 42:
                print ('Warning: this line looks funny')
-           CV = abs(max(float(values[len(values)-6]), 0.))
+           CV = lumiSF*abs(max(float(values[len(values)-6]), 0.))
            hCV.SetBinContent(ibin, CV)
            hCV.SetBinError(ibin, 0.)
            # get stat uncertainties from CR observation - EWK contamination
@@ -71,8 +71,8 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-24.5ifb-nov
            if NCR > 0.:
                L = Math.gamma_quantile(alpha/2,NCR,1.)
            U = Math.gamma_quantile_c(alpha/2,NCR+1,1.)
-           hStatUp.SetBinContent(ibin,RQCD*(U-NCR))
-           stat_down = RQCD*(NCR-L)
+           hStatUp.SetBinContent(ibin,lumiSF*RQCD*(U-NCR))
+           stat_down = lumiSF*RQCD*(NCR-L)
            if stat_down > CV: #  due to rounding issues, this one is sometimes greater than the central value, so truncate
                stat_down = CV
            hStatDown.SetBinContent(ibin, stat_down)
@@ -80,13 +80,13 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-24.5ifb-nov
            syst = 0.
            if CV > 0.:
                syst = syst + pow(err_nonQCD, 2.)
-               hNonQCDErr.SetBinContent(ibin, err_nonQCD)
+               hNonQCDErr.SetBinContent(ibin, lumiSF*err_nonQCD)
                isyst = 0
                for systval in values[8:-10]:
                    isyst += 1
                    syst = syst + pow((float(systval)-1.)*CV, 2.)
-                   SYSTS[isyst].SetBinContent(ibin, (float(systval)-1.)*CV)
-               syst = math.sqrt(syst)
+                   SYSTS[isyst].SetBinContent(ibin, lumiSF*(float(systval)-1.)*CV)
+               syst = lumiSF*math.sqrt(syst)
            hSystUp.SetBinContent(ibin, syst)
            if syst > CV - hStatDown.GetBinContent(ibin): # truncate if necessary
                syst = CV - hStatDown.GetBinContent(ibin)
