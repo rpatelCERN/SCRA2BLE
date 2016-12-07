@@ -84,17 +84,19 @@ if __name__ == '__main__':
 	LLControlStatUnc_Hist=LL_file.Get("Prediction_data/totalPredControlStat_LL")	
 	HadTau_file = TFile(idir+"/HadTauEstimation_data.root");
 	HadTauPrediction=HadTau_file.Get("searchBin_nominal");
-	HadTauStatUnc=HadTau_file.Get("searchBin_StatUncertainties")
+	HadTauStatUnc=HadTauPrediction.Clone("HadTauStatUnc")
 	for i in range(1,175):
-		if HadTauPrediction.GetBinContent(i)>0.0:HadTauStatUnc.SetBinContent(1, 1.0+HadTauStatUnc.GetBinContent(i)/HadTauPrediction.GetBinContent(i))
+		if HadTauPrediction.GetBinContent(i)>0.0:HadTauStatUnc.SetBinContent(1, 1.0+HadTauStatUnc.GetBinError(i)/HadTauPrediction.GetBinContent(i))
 	
 	#HERE ADD Bin Errors for the Had Tau Stat Error
 	DYinputfile = TFile(idir+"/ZinvHistos.root")
 	ZPred=DYinputfile.Get("ZinvBGpred")
 	ZRatios=DYinputfile.Get("hzvvTF")
 	GammaObs=DYinputfile.Get("hzvvgJNobs")
-	ZgammaErrUp=DYinputfile.Get("hzvvgJZgRerrUp");
-	ZgammaErrDn=DYinputfile.Get("hzvvgJZgRerrLow");
+	#ZgammaErrUp=DYinputfile.Get("hzvvZgRerrUp");
+	#ZgammaErrDn=DYinputfile.Get("hzvvZgRerrLow");
+	GammaETErr=DYinputfile.Get("hzvvgJEtrgErr")
+	FdirErr=DYinputfile.Get("hzvvgJFdirErr")
 	GammaPurityErr=DYinputfile.Get("hzvvgJPurErr");
 	DoubleRatioErrUp=DYinputfile.Get("hzvvZgDRerrUp");
 	DoubleRatioErrDn=DYinputfile.Get("hzvvZgDRerrLow");
@@ -105,8 +107,8 @@ if __name__ == '__main__':
 	DYMCStatErr=DYinputfile.Get("hzvvDYMCstat");
 	DYNJExtrapErrUp=DYinputfile.Get("hzvvDYsysNjUp");
 	DYNJExtrapErrDn=DYinputfile.Get("hzvvDYsysNjLow");
-	for i in range(1,ZgammaErrDn.GetNbinsX()+1):	
-		ZgammaErrDn.SetBinContent(i,1.0/ZgammaErrDn.GetBinContent(i))
+	for i in range(1,DYNJExtrapErrDn.GetNbinsX()+1):	
+		#ZgammaErrDn.SetBinContent(i,1.0/ZgammaErrDn.GetBinContent(i))
 		DYNJExtrapErrDn.SetBinContent(i,1.0/DYNJExtrapErrDn.GetBinContent(i))
 		DoubleRatioErrDn.SetBinContent(i,1.0/DoubleRatioErrDn.GetBinContent(i))
 	for i in range(1, HadTauPrediction.GetNbinsX()+1):
@@ -129,7 +131,7 @@ if __name__ == '__main__':
 		ContaminSubtracted=NCRForLowdphiRegion_QCDList[i]-ContaminForLowdphiRegion[i]
 		if(ContaminSubtracted>0.0 and NSRForSignalRegion_QCDList[i]>0.0): 
 			ratesForLowdphiRegion_QCDList.append(ContaminSubtracted)
-			ratesForSignalRegion_QCDList.append(NSRForSignalRegion_QCDList[i])	
+			ratesForSignalRegion_QCDList.append(NSRForSignalRegion_QCDList[i]*12.9/lumi)	
 		else:
 			ratesForLowdphiRegion_QCDList.append(1.0)
 			ratesForSignalRegion_QCDList.append(ratiosForLowdphiRegion[i]);
@@ -174,26 +176,32 @@ if __name__ == '__main__':
 	signalRegion = searchRegion('signal', contributionsPerBin, tagsForSignalRegion)
 	signalRegion_Rates = [];
 	signalRegion_Obs = [];
+	DataHist_In=TFile("inputHistograms/histograms_%1.1ffb/RA2bin_signalICHEP.root" %lumi)
+	Data_Hist=DataHist_In.Get("RA2bin_data")
+	Data_List=binsToList(Data_Hist)
 	for i in range(signalRegion._nBins):
 		tmpList = [];
 		srobs = 0;
-		tmpList.append(CorrSigHist.GetBinContent(i+1))
-		tmpList.append(LLPrediction_Hist.GetBinContent(i+1))
+		tmpList.append(CorrSigHist.GetBinContent(i+1)*12.9/lumi)
+		tmpList.append(LLPrediction_Hist.GetBinContent(i+1)*12.9/lumi)
 		tmpList.append(LLAvgHeight_Hist.GetBinContent(i+1))
-		tmpList.append(HadTauPrediction.GetBinContent(i+1))
+		tmpList.append(HadTauPrediction.GetBinContent(i+1)*12.9/lumi)
 		tmpList.append(0.25)
-		if GammaObs.GetBinContent(i+1)>0.0:tmpList.append(ZPred.GetBinContent(i+1))
+		if GammaObs.GetBinContent(i+1)>0.0:tmpList.append(ZPred.GetBinContent(i+1)*12.9/lumi)
 		else: tmpList.append(ZRatios.GetBinContent(i+1))
 		tmpList.append( ratesForSignalRegion_QCDList[i] );
-		srobs=(ZPred.GetBinContent(i+1)+LLPrediction_Hist.GetBinContent(i+1)+HadTauPrediction.GetBinContent(i+1)+(NSRForSignalRegion_QCDList[i]))
-		
-		qcd.Fill(i+.5, NSRForSignalRegion_QCDList[i])
-		zvv.Fill(i+.5, ZPred.GetBinContent(i+1))
-		ll.Fill(i+.5, + LLPrediction_Hist.GetBinContent(i+1))
-		tau.Fill(i+.5, HadTauPrediction.GetBinContent(i+1))	
-		sig.Fill(i+.5,CorrSigHist.GetBinContent(i+1)*signalmu)
+		#srobs=(ZPred.GetBinContent(i+1)+LLPrediction_Hist.GetBinContent(i+1)+HadTauPrediction.GetBinContent(i+1)+(NSRForSignalRegion_QCDList[i]))
+		#if (int(options.mGo)==1400 and int(options.mLSP)==600):
+			#srobs=srobs+CorrSigHist.GetBinContent(i+1);
+		srobs=Data_List[i]
+		qcd.Fill(i+.5, NSRForSignalRegion_QCDList[i]*12.9/lumi)
+		zvv.Fill(i+.5, ZPred.GetBinContent(i+1)*12.9/lumi)
+		ll.Fill(i+.5, + LLPrediction_Hist.GetBinContent(i+1)*12.9/lumi)
+		tau.Fill(i+.5, HadTauPrediction.GetBinContent(i+1)*12.9/lumi)	
+		sig.Fill(i+.5,CorrSigHist.GetBinContent(i+1)*signalmu*12.9/lumi)
 		#randPois=TRandom3(random.randint(1,10000000))
 		#srobs=randPois.Poisson(srobs)
+		
 		signalRegion_Rates.append(tmpList)
 		signalRegion_Obs.append(srobs)
 		data.Fill(i+.5, srobs)
@@ -261,7 +269,6 @@ if __name__ == '__main__':
 	signalSysmistagCFuncUp=signalSysmistagCFuncUp_file.Get(signaltag)
 	signalSysmistagCFuncDown=signalSysmistagCFuncDown_file.Get(signaltag)
 	
-	for  i in range(1,signalSysSFUp.GetNbinsX()+1):print signalSysSFUp.GetBinContent(i)
         signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.027);
         signalRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.03);
         signalRegion.addSingleSystematic('JetIDUnc','lnN',['sig'],1.01);
@@ -293,8 +300,9 @@ if __name__ == '__main__':
 		HadTauHighW.SetBinContent(i,0.25)
 		LLAvgHeight_Hist.GetXaxis().SetBinLabel(i,"HighWeightStatUnc_"+LLAvgHeight_Hist.GetXaxis().GetBinLabel(i))
 	signalRegion.addCorrelGammaSystematic(['WTopSLHighW','WTopHadHighW'],CSZero,LLAvgHeight_Hist,HadTauHighW)
+	for i in range(len(GammaObs)):GammaObs[i]=GammaObs[i]*12.9/lumi
 	signalRegion.addGammaSystematic(['zvv'],GammaObs,ZRatios )
-	signalRegion.addSystematicsLineAsymShape('lnN',['zvv'],ZgammaErrUp,ZgammaErrDn)
+	#signalRegion.addSystematicsLineAsymShape('lnN',['zvv'],ZgammaErrUp,ZgammaErrDn)
 	signalRegion.addSystematicsLineAsymShape('lnN',['zvv'],DoubleRatioErrUp,DoubleRatioErrDn)
 	signalRegion.addSystematicsLineAsymShape('lnN',['zvv'],DYNJExtrapErrUp,DYNJExtrapErrDn)
 	signalRegion.addSystematicsLine('lnN',['zvv'],ZScaleErr)	
@@ -303,17 +311,18 @@ if __name__ == '__main__':
 	signalRegion.addSystematicsLine('lnN',['zvv'],DYPurErr)	
 	signalRegion.addSystematicsLine('lnN',['zvv'],DYKinErr)	
 	signalRegion.addSystematicsLine('lnN',['zvv'],DYMCStatErr)	
-
-	HadTauClosureUnc=HadTau_file.Get("searchBin_closureUncertainty")		
-	HadTauClosureCorrUnc=HadTau_file.Get("searchBin_closureUncertainty_adhoc")		
-	HadTauBMistagUp=HadTau_file.Get("searchBin_BMistagUp")
-	HadTauBMistagDn=HadTau_file.Get("searchBin_BMistagDn")
+	signalRegion.addSystematicsLine('lnN',['zvv'],GammaETErr)
+	signalRegion.addSystematicsLine('lnN',['zvv'],FdirErr)
+	HadTauClosureUnc=HadTau_file.Get("totalPredNonClosure_HadTau")		
+	HadTauClosureCorrUnc=HadTau_file.Get("totalPredAdhoc_HadTau")		
+	HadTauBMistagUp=HadTau_file.Get("totalPredBMistagUp_HadTau")
+	HadTauBMistagDn=HadTau_file.Get("totalPredBMistagDown_HadTau")
 	HadTauJECUp=HadTau_file.Get("searchBin_JECSysUp")
 	HadTauJECDn=HadTau_file.Get("searchBin_JECSysDn")
-	HadTauDiMuonUnc=HadTau_file.Get("searchBin_DileptonUncertainty")
-	HadTauMuFromTau=HadTau_file.Get("searchBin_MuFromTauStat")
+	HadTauDiMuonUnc=HadTau_file.Get("totalPredDilep_HadTau")
+	HadTauMuFromTau=HadTau_file.Get("totalPredMuFromTauStat_HadTau")
 
-	HadTauTrigEff=HadTau_file.Get("searchBin_TrigEffUncertainty")
+	HadTauTrigEff=HadTau_file.Get("totalPredTrigSyst_HadTau")
 	signalRegion.addSystematicsLine('lnN',['WTopHad'],HadTauClosureUnc)
 	signalRegion.addSystematicsLine('lnN',['WTopHad'],HadTauClosureCorrUnc)
 	signalRegion.addSystematicsLineAsymShape('lnN',['WTopHad'],HadTauBMistagUp,HadTauBMistagDn)
@@ -321,45 +330,45 @@ if __name__ == '__main__':
 	signalRegion.addSystematicsLine('lnN',['WTopHad'],HadTauDiMuonUnc)	
 	signalRegion.addSystematicsLine('lnN',['WTopHad'],HadTauMuFromTau)	
 	signalRegion.addSystematicsLine('lnN',['WTopHad'],HadTauTrigEff)	
-	HadTauMTSysUp=HadTau_file.Get("searchBin_MTSysUp")	
-	HadTauMTSysDn=HadTau_file.Get("searchBin_MTSysDn")	
+	HadTauMTSysUp=HadTau_file.Get("totalPredMTSysUp_HadTau")	
+	HadTauMTSysDn=HadTau_file.Get("totalPredMTSysDown_HadTau")	
 	LLSysMTUp=LL_file.Get("Prediction_data/totalPredMTWSysUp_LL")	
 	LLSysMTDn=LL_file.Get("Prediction_data/totalPredMTWSysDown_LL")	
 	signalRegion.addCorrelAsymSystematicLine('lnN', ['WTopSL','WTopHad'],LLSysMTUp,LLSysMTDn,HadTauMTSysUp,HadTauMTSysDn)	
-	HadTauMTEffStat=HadTau_file.Get("searchBin_MtEffStat")	
+	HadTauMTEffStat=HadTau_file.Get("totalPredMtEffStat_HadTau")	
 	LLStatMTStatUp=LL_file.Get("Prediction_data/totalPredMTWStatUp_LL")	
 	LLStatMTStatDn=LL_file.Get("Prediction_data/totalPredMTWStatDown_LL")	
 	HadTauMTEffStatDn=HadTauMTEffStat.Clone("HadTauMTEffStatDn")
 	for i in range(1,175):HadTauMTEffStatDn.SetBinContent(i,1.0/HadTauMTEffStat.GetBinContent(i))
 	signalRegion.addCorrelAsymSystematicLine('lnN', ['WTopSL','WTopHad'],LLStatMTStatUp,LLStatMTStatDn,HadTauMTEffStat,HadTauMTEffStatDn)	
 
-	HadTauAccStat=HadTau_file.Get("searchBin_AccStat")
+	HadTauAccStat=HadTau_file.Get("totalPredLepAccStat_LL")
 	LLAccStatUp=LL_file.Get("Prediction_data/totalPredLepAccStatUp_LL")
 	LLAccStatDn=LL_file.Get("Prediction_data/totalPredLepAccStatDown_LL")
 	HadTauAccStatDn=HadTauAccStat.Clone("HadTauAccStatDn")
         for i in range(1,175):HadTauAccStatDn.SetBinContent(i,1.0/HadTauAccStatDn.GetBinContent(i))
 	signalRegion.addCorrelAsymSystematicLine('lnN', ['WTopSL','WTopHad'],LLAccStatUp,LLAccStatDn,HadTauAccStat,LLAccStatDn)
 
-	HadTauAccPDFSysUp=HadTau_file.Get("searchBin_AccSysPDFUp")
-	HadTauAccPDFSysDn=HadTau_file.Get("searchBin_AccSysPDFDn")
+	HadTauAccPDFSysUp=HadTau_file.Get("totalPredPDFUp_LL")
+	HadTauAccPDFSysDn=HadTau_file.Get("totalPredPDFDown_LL")
 	LLAccPDFSysUp=LL_file.Get("Prediction_data/totalPredLepAccSysUp_LL")
 	LLAccPDFSysDn=LL_file.Get("Prediction_data/totalPredLepAccSysDown_LL")
 	signalRegion.addCorrelAsymSystematicLine('lnN',['WTopSL','WTopHad'],HadTauAccPDFSysUp,HadTauAccPDFSysDn, HadTauAccPDFSysUp,HadTauAccPDFSysDn)
 
-	HadTauAccQScaleUp=HadTau_file.Get("searchBin_AccSysScaleUp");
-	HadTauAccQScaleDn=HadTau_file.Get("searchBin_AccSysScaleDn");
+	HadTauAccQScaleUp=HadTau_file.Get("totalPredScaleUp_LL");
+	HadTauAccQScaleDn=HadTau_file.Get("totalPredScaleDown_LL");
 	LLQScaleSysUp=LL_file.Get("Prediction_data/totalPredLepAccQsquareSysUp_LL")
 	LLQScaleSysDn=LL_file.Get("Prediction_data/totalPredLepAccQsquareSysDown_LL")
 	signalRegion.addCorrelAsymSystematicLine('lnN',['WTopSL','WTopHad'],LLQScaleSysUp,LLQScaleSysDn, HadTauAccQScaleUp,HadTauAccQScaleDn)
 
 	LLIsoTrackStatUp=LL_file.Get("Prediction_data/totalPredIsoTrackStatUp_LL")
 	LLIsoTrackStatDn=LL_file.Get("Prediction_data/totalPredIsoTrackStatDown_LL")
-	HadTauIsoTrackStat=HadTau_file.Get("searchBin_IsoTrkVetoEffUncertaintyStat")	
+	HadTauIsoTrackStat=HadTau_file.Get("totalPredIsoTrackStat_LL")	
 	HadTauIsoTrackStatDn=HadTauIsoTrackStat.Clone("HadTauIsoTrackStatDn")
 	for i in range(1,175):HadTauIsoTrackStatDn.SetBinContent(i,1.0/HadTauIsoTrackStat.GetBinContent(i))
         signalRegion.addCorrelAsymSystematicLine('lnN',['WTopSL','WTopHad'],LLIsoTrackStatUp,LLIsoTrackStatDn, HadTauIsoTrackStat,HadTauIsoTrackStatDn)
 
-	HadTauIsoTrackSys=HadTau_file.Get("searchBin_IsoTrkVetoEffUncertaintySys")
+	HadTauIsoTrackSys=HadTau_file.Get("totalPredIsoTrackSys_LL")
 	LLIsoTrackSysUp=LL_file.Get("Prediction_data/totalPredIsoTrackSysUp_LL")
 	LLIsoTrackSysDn=LL_file.Get("Prediction_data/totalPredIsoTrackSysDown_LL")
         HadTauIsoTrackSysDn=HadTauIsoTrackSys.Clone("HadTauIsoTrackSysDn")
@@ -367,13 +376,13 @@ if __name__ == '__main__':
         signalRegion.addCorrelAsymSystematicLine('lnN',['WTopSL','WTopHad'],LLIsoTrackSysUp,LLIsoTrackSysDn, HadTauIsoTrackSys,HadTauIsoTrackSysDn)
 	LLSysIsoUp=LL_file.Get("Prediction_data/totalPredMuIsoSysUp_LL")	
 	LLSysIsoDn=LL_file.Get("Prediction_data/totalPredMuIsoSysDown_LL")	
-	HadTauMuIsoUp=HadTau_file.Get("searchBin_MuIsoSysUp")
-	HadTauMuIsoDn=HadTau_file.Get("searchBin_MuIsoSysDn")
+	HadTauMuIsoUp=HadTau_file.Get("totalPredMuIsoSysUp_LL")
+	HadTauMuIsoDn=HadTau_file.Get("totalPredMuIsoSysDown_LL")
 	signalRegion.addCorrelAsymSystematicLine('lnN',['WTopSL','WTopHad'],LLSysIsoUp,LLSysIsoDn,HadTauMuIsoUp,HadTauMuIsoDn)
 	LLSysRecoUp=LL_file.Get("Prediction_data/totalPredMuRecoSysUp_LL")	
 	LLSysRecoDn=LL_file.Get("Prediction_data/totalPredMuRecoSysDown_LL")	
-	HadTauMuRecoUp=HadTau_file.Get("searchBin_MuRecoSysUp")
-	HadTauMuRecoDn=HadTau_file.Get("searchBin_MuRecoSysDn")
+	HadTauMuRecoUp=HadTau_file.Get("totalPredMuRecoSysUp_LL")
+	HadTauMuRecoDn=HadTau_file.Get("totalPredMuRecoSysDown_LL")
 	signalRegion.addCorrelAsymSystematicLine('lnN',['WTopSL','WTopHad'],LLSysRecoUp,LLSysRecoDn,HadTauMuRecoUp,HadTauMuRecoDn)
 	PredDir=LL_file.Get("Prediction_data")	
 	names = [k.GetName() for k in PredDir.GetListOfKeys()]
@@ -408,7 +417,14 @@ if __name__ == '__main__':
 		ListOfQCDSysK14 = textToListStr(idir+"/qcd-bg-combine-input.txt",20)	
 		ListOfQCDSysK15 = textToListStr(idir+"/qcd-bg-combine-input.txt",21)	
 		ListOfQCDSysK16 = textToListStr(idir+"/qcd-bg-combine-input.txt",22)	
-		ListOfMCCSys = textToListStr(idir+"/qcd-bg-combine-input.txt",23)	
+		ListOfQCDSysK17 = textToListStr(idir+"/qcd-bg-combine-input.txt",23)	
+		ListOfQCDSysK18 = textToListStr(idir+"/qcd-bg-combine-input.txt",24)	
+		ListOfQCDSysK19 = textToListStr(idir+"/qcd-bg-combine-input.txt",25)	
+		ListOfQCDSysK20 = textToListStr(idir+"/qcd-bg-combine-input.txt",26)	
+		ListOfQCDSysK21 = textToListStr(idir+"/qcd-bg-combine-input.txt",27)	
+		ListOfQCDSysK22 = textToListStr(idir+"/qcd-bg-combine-input.txt",28)	
+		ListOfQCDSysK23 = textToListStr(idir+"/qcd-bg-combine-input.txt",29)	
+		ListOfMCCSys = textToListStr(idir+"/qcd-bg-combine-input.txt",30)	
 		#print ListOfMCCSys
 		ContaminUncForLowdphiRegion = textToList(idir+"/qcd-bg-combine-input.txt",4);
 
@@ -418,22 +434,29 @@ if __name__ == '__main__':
 			LowdphiControlRegion.addSingleSystematic("QCDControlC"+tagsForSignalRegion[i],'lnU','qcd',100,'',i);				
 			if(ContaminForLowdphiRegion[i]>0.0 and (NCRForLowdphiRegion_QCDList[i]>0.5)):LowdphiControlRegion.addSingleSystematic("contamUnc"+str(i), 'lnN','contam',1+(ContaminUncForLowdphiRegion[i]/ContaminForLowdphiRegion[i]),'',i)
 		for i in range(len(ListOfQCDSysK1)):
-			if(ListOfQCDSysK1[i]!='-'):signalRegion.addSingleSystematic("KQCDHT1",'lnN','qcd',float(ListOfQCDSysK1[i]),'',i);
-			if(ListOfQCDSysK2[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2",'lnN','qcd',float(ListOfQCDSysK2[i]),'',i);
-			if(ListOfQCDSysK3[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3",'lnN','qcd',float(ListOfQCDSysK3[i]),'',i);
-			if(ListOfQCDSysK4[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ2",'lnN','qcd',float(ListOfQCDSysK4[i]),'',i);
-			if(ListOfQCDSysK5[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ3",'lnN','qcd',float(ListOfQCDSysK5[i]),'',i);
-			if(ListOfQCDSysK6[i]!='-'):signalRegion.addSingleSystematic("KQCDNJ4",'lnN','qcd',float(ListOfQCDSysK6[i]),'',i);
-			if(ListOfQCDSysK7[i]!='-'):signalRegion.addSingleSystematic("KQCDHT1MHT1",'lnN','qcd',float(ListOfQCDSysK7[i]),'',i);
-			if(ListOfQCDSysK8[i]!='-'):signalRegion.addSingleSystematic("KQCDHT1MHT2",'lnN','qcd',float(ListOfQCDSysK8[i]),'',i);
-			if(ListOfQCDSysK9[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2MHT1",'lnN','qcd',float(ListOfQCDSysK9[i]),'',i);
-			if(ListOfQCDSysK10[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2MHT2",'lnN','qcd',float(ListOfQCDSysK10[i]),'',i);
-			if(ListOfQCDSysK11[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2MHT3",'lnN','qcd',float(ListOfQCDSysK11[i]),'',i);
-			if(ListOfQCDSysK12[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2MHT4",'lnN','qcd',float(ListOfQCDSysK12[i]),'',i);
-			if(ListOfQCDSysK13[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3MHT1",'lnN','qcd',float(ListOfQCDSysK13[i]),'',i);
-			if(ListOfQCDSysK14[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3MHT2",'lnN','qcd',float(ListOfQCDSysK14[i]),'',i);
-			if(ListOfQCDSysK15[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3MHT3",'lnN','qcd',float(ListOfQCDSysK15[i]),'',i);
-			if(ListOfQCDSysK16[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3MHT4",'lnN','qcd',float(ListOfQCDSysK16[i]),'',i);
+			if(ListOfQCDSysK1[i]!='-'):signalRegion.addSingleSystematic("KQCDJ1HT1",'lnN','qcd',float(ListOfQCDSysK1[i]),'',i);
+			if(ListOfQCDSysK2[i]!='-'):signalRegion.addSingleSystematic("KQCDJ1HT2",'lnN','qcd',float(ListOfQCDSysK2[i]),'',i);
+			if(ListOfQCDSysK3[i]!='-'):signalRegion.addSingleSystematic("KQCDJ1HT3",'lnN','qcd',float(ListOfQCDSysK3[i]),'',i);
+			if(ListOfQCDSysK4[i]!='-'):signalRegion.addSingleSystematic("KQCDJ2HT1",'lnN','qcd',float(ListOfQCDSysK4[i]),'',i);
+			if(ListOfQCDSysK5[i]!='-'):signalRegion.addSingleSystematic("KQCDJ2HT2",'lnN','qcd',float(ListOfQCDSysK5[i]),'',i);
+			if(ListOfQCDSysK6[i]!='-'):signalRegion.addSingleSystematic("KQCDJ2HT3",'lnN','qcd',float(ListOfQCDSysK6[i]),'',i);
+			if(ListOfQCDSysK7[i]!='-'):signalRegion.addSingleSystematic("KQCDJ3HT1",'lnN','qcd',float(ListOfQCDSysK7[i]),'',i);
+			if(ListOfQCDSysK8[i]!='-'):signalRegion.addSingleSystematic("KQCDJ3HT2",'lnN','qcd',float(ListOfQCDSysK8[i]),'',i);
+			if(ListOfQCDSysK9[i]!='-'):signalRegion.addSingleSystematic("KQCDJ3HT3",'lnN','qcd',float(ListOfQCDSysK9[i]),'',i);
+			if(ListOfQCDSysK10[i]!='-'):signalRegion.addSingleSystematic("KQCDJ4HT2",'lnN','qcd',float(ListOfQCDSysK10[i]),'',i);
+			if(ListOfQCDSysK11[i]!='-'):signalRegion.addSingleSystematic("KQCDJ4HT3",'lnN','qcd',float(ListOfQCDSysK11[i]),'',i);
+			if(ListOfQCDSysK12[i]!='-'):signalRegion.addSingleSystematic("KQCDJ5HT2",'lnN','qcd',float(ListOfQCDSysK12[i]),'',i);
+			if(ListOfQCDSysK13[i]!='-'):signalRegion.addSingleSystematic("KQCDJ5HT3",'lnN','qcd',float(ListOfQCDSysK13[i]),'',i);
+			if(ListOfQCDSysK14[i]!='-'):signalRegion.addSingleSystematic("KQCDHT1MHT1",'lnN','qcd',float(ListOfQCDSysK14[i]),'',i);
+			if(ListOfQCDSysK15[i]!='-'):signalRegion.addSingleSystematic("KQCDHT1MHT2",'lnN','qcd',float(ListOfQCDSysK15[i]),'',i);
+			if(ListOfQCDSysK16[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2MHT1",'lnN','qcd',float(ListOfQCDSysK16[i]),'',i);
+			if(ListOfQCDSysK17[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2MHT2",'lnN','qcd',float(ListOfQCDSysK17[i]),'',i);
+			if(ListOfQCDSysK18[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2MHT3",'lnN','qcd',float(ListOfQCDSysK18[i]),'',i);
+			if(ListOfQCDSysK19[i]!='-'):signalRegion.addSingleSystematic("KQCDHT2MHT4",'lnN','qcd',float(ListOfQCDSysK19[i]),'',i);
+			if(ListOfQCDSysK20[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3MHT1",'lnN','qcd',float(ListOfQCDSysK20[i]),'',i);
+			if(ListOfQCDSysK21[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3MHT2",'lnN','qcd',float(ListOfQCDSysK21[i]),'',i);
+			if(ListOfQCDSysK22[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3MHT3",'lnN','qcd',float(ListOfQCDSysK22[i]),'',i);
+			if(ListOfQCDSysK23[i]!='-'):signalRegion.addSingleSystematic("KQCDHT3MHT4",'lnN','qcd',float(ListOfQCDSysK23[i]),'',i);
 			if(ListOfMCCSys[i]!='-'):signalRegion.addSingleSystematic("KQCDMCCorr",'lnN','qcd',float(ListOfMCCSys[i]),'',i);
 	######################################################################
 	######################################################################
