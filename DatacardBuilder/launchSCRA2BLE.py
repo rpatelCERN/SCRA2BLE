@@ -134,10 +134,10 @@ if __name__ == '__main__':
     #mGos  = [975];
     #mLSPs = [775];
 
-    if not options.fastsim:
-    	models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq','T1qqqq','T2tt','T2tt','T2tt'];
-    	mGos = [1500,1000,1500,1200,1400,1000,425,500,850];
-    	mLSPs = [100,800,100,800,100,900,325,325,100]
+    #if not options.fastsim:
+    models = ['T1bbbb','T1bbbb','T1tttt','T1tttt','T1qqqq','T1qqqq','T2tt','T2tt','T2tt'];
+    mGos = [1500,1000,1500,1200,1400,1000,425,500,850];
+    mLSPs = [100,800,100,800,100,900,325,325,100]
 
     # for signal in signals:
     for m in range(len(mGos)):

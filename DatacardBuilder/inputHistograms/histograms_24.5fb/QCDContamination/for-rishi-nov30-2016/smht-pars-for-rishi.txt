@@ -1,0 +1,10 @@
+Sqcd_mht1_ht1   0.981     0.600
+Sqcd_mht2_ht1   0.968     0.823
+Sqcd_mht1_ht2   0.772     0.425
+Sqcd_mht2_ht2   1.542     1.008
+Sqcd_mht3_ht2   1.756     1.847
+Sqcd_mht4_ht2   0.738     0.652
+Sqcd_mht1_ht3   0.701     0.104
+Sqcd_mht2_ht3   0.605     0.126
+Sqcd_mht3_ht3   0.341     0.191
+Sqcd_mht4_ht3   0.195     0.109
