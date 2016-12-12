@@ -17,7 +17,8 @@ lumi = 18.077491
 
 latex_templates = {'N_{jet} (p_{T} > 30 GeV)': 'njets',\
                    'N_{b-jet} (p_{T} > 30 GeV)': 'nbjets',\
-                   'H_{T}^{miss} [GeV]': 'mht'}
+                   'H_{T}^{miss} [GeV]': 'mht',\
+                   'H_{T} [GeV]': 'ht'}
 
 signal_to_latex = {'T1tttt': '#tilde{g}#rightarrowt#bar{t} #tilde{#chi}_{1}^{0}',\
                    'T1bbbb': '#tilde{g}#rightarrowb#bar{b} #tilde{#chi}_{1}^{0}',\
@@ -155,7 +156,7 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
         
     ## setup canvas and pads
     W = 800
-    H = 1000
+    H = 800
     T = 0.08*H
     B = 0.12*H 
     L = 0.12*W

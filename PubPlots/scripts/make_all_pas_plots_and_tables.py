@@ -8,7 +8,7 @@ from ROOT import TFile
 from bg_est import BGEst
 from data_obs import DataObs
 
-def make_all_pas_plots_and_tables(lostlep_file = 'lostlep_hists.root', hadtau_file = 'hadtau_hists.root', znn_file = 'znn_hists.root', qcd_file = 'qcd_hists.root', data_file = 'data_hists.root', signal_file = 'signal_hists.root'):
+def make_all_pas_plots_and_tables(lostlep_file = 'lostlep_hists.root', hadtau_file = 'hadtau_hists.root', znn_file = 'znn_hists.root', qcd_file = 'qcdrs_hists.root', data_file = 'data_hists.root', signal_file = 'signal_hists.root'):
 
     # open input files
     f_lostlep = TFile.Open(lostlep_file)

@@ -98,6 +98,20 @@ def GetMHTBins(minNJ=0, maxNJ=4, minNB=0, maxNB=3, minHT=0, maxHT=2, nbins=174):
         bin_set[bini.imht].append(ibin)
     return bin_set
 
+def GetHTBins(minNJ=0, maxNJ=4, minNB=0, maxNB=3, minMHT=0, maxMHT=3, nbins=174):
+## seems to be buggy--work in progress
+    bin_set = [[], [], []]
+    for ibin in range(nbins):
+        bini = SearchBin(ibin)
+        if bini.inj < minNJ or bini.inj > maxNJ:
+            continue
+        if bini.inb < minNB or bini.inb > maxNB:
+            continue
+        if bini.imht < minMHT or bini.imht > maxMHT: # and not (maxMHT==1 and bini.ihtmht==8):
+            continue
+        bin_set[bini.iht].append(ibin)
+    return bin_set
+
 def SumFromBinSubset(full_list, subset):
     total = 0.
     for ibin in range(len(full_list)):

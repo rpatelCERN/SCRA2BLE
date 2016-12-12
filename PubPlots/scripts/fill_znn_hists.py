@@ -118,7 +118,7 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
            correlation = 'all' # note:default is fully-correlated, corresponds to ScaleErr, photon purity
            if hsyst.GetName() == 'hzvvDYsysKin':
                correlation = ''
-           elif hsyst.GetName().find('hzvvZgDRerr') >= 0 or hsyst.GetName().find('hzvvgJFdirErr') >= 0: # hzvvZgDRerrUp, hzvvZgDRerrLow, fragmentation factor
+           elif hsyst.GetName().find('hzvvNbCorrel') >= 0: # DR, fragmentation factor
                correlation = 'nbjets'
            elif hsyst.GetName().find('hzvvgJEtrgErr') >= 0: # trigger efficiency, binned in MHT
                correlation = 'njets:nbjets'

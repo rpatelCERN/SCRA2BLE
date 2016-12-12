@@ -24,6 +24,7 @@ asr_sets = {'ASR': [asr1, asr2, asr3, asr4, asr5, asr6, asr7, asr8, asr9, asr10,
             'NJ': GetNJetsBins(), \
             'NB': GetNBJetsBins(), \
             'MHT': GetMHTBins(), \
+            'HT': GetHTBins(), \
             'T1tttt': GetNJetsBins(minNB=2, minMHT=2, minHT=1), \
             'T1bbbb': GetNBJetsBins(minNJ=2, minMHT=2, minHT=2), \
             'T1qqqq' : GetMHTBins(minNJ=3, minNB=0, maxNB=0, minHT=2), \
@@ -36,6 +37,7 @@ asr_xtitle = {'ASR': 'Aggregate search region binning', \
             'NJ': 'N_{jet} (p_{T} > 30 GeV)', \
             'NB': 'N_{b-jet} (p_{T} > 30 GeV)', \
             'MHT': 'H_{T}^{miss} [GeV]', \
+            'HT': 'H_{T} [GeV]', \
             'T1tttt': 'N_{jet} (p_{T} > 30 GeV)', \
             'T1bbbb': 'N_{b-jet} (p_{T} > 30 GeV)', \
             'T1qqqq' : 'H_{T}^{miss} [GeV]', \
@@ -47,6 +49,7 @@ asr_xbins = {'ASR': [i+0.5 for i in range(13)], \
             'NJ': [1.5, 2.5, 4.5, 6.5, 8.5, 12.5], \
             'NB': [-0.499, 0.5, 1.5, 2.5, 3.499], \
             'MHT': [300., 350., 500., 750., 1050.], \
+            'HT': [300., 500., 1000., 1550.], \
             'T1tttt': [1.5, 2.5, 4.5, 6.5, 8.5, 12.5], \
             'T1bbbb': [-0.499, 0.5, 1.5, 2.5, 3.499], \
             'T1qqqq' : [300., 350., 500., 750., 1050.], \

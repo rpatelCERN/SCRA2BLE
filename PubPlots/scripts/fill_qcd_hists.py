@@ -12,7 +12,7 @@ from agg_bins import *
 
 alpha = 1 - 0.6827
 
-def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-24.5ifb-nov24-dashes.txt', outputfile = 'qcd_hists.root', nbins = 174, lumiSF=1.):
+def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-36.3ifb-dec09-dashes.txt', outputfile = 'qcd_hists.root', nbins = 174, lumiSF=1.):
       
 
    print ('Input file is %s' % inputfile)

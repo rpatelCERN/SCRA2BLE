@@ -19,6 +19,11 @@ def make_all_1D_projections(lostlep_file = 'lostlep_hists.root', hadtau_file = '
                        "T1qqqq_1400_100", "T1qqqq_1000_800", "", True)
     make_1D_projection('mht-projection-pull', 'MHT', lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
                        "T1qqqq_1400_100", "T1qqqq_1000_800", "", True, True)
+    ## HT projection -- work in progress?
+    ## make_1D_projection('ht-projection', 'HT', lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
+    ##                    "T1qqqq_1400_100", "T1qqqq_1000_800", "", True)
+    ## make_1D_projection('ht-projection-pull', 'HT', lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
+    ##                    "T1qqqq_1400_100", "T1qqqq_1000_800", "", True, True)
     ## T1tttt plot: 2+ b-jets, MHT > 500, HT > 500
     make_1D_projection('t1tttt-projection-njets-nb2-mht500-ht500', 'T1tttt', lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
                        "T1tttt_1500_100", "T1tttt_1200_800", "N_{b-jet} #geq 2, H_{T}^{miss} > 500 GeV, H_{T} > 500 GeV")
