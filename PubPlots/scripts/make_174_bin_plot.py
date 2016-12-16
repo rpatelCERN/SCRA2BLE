@@ -69,12 +69,14 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     ratio_bands = ratio.bands
     pull = ratio.pull
     pull.GetXaxis().SetTitle("Search region bin number")
-    pull.SetMaximum(3.55)
-    pull.SetMinimum(-3.55)
+    pull_max = pull.GetMaximum()*1.1
+    pull.SetMaximum(pull_max)
+    pull.SetMinimum(-pull_max)
     hratdummy = ratio.dummy_hist
     hratdummy.GetXaxis().SetTitle("Search region bin number")
-    hratdummy.SetMaximum(3.5)
-    hratdummy.SetMinimum(-3.5)
+    rat_max = 2.45
+    hratdummy.SetMaximum(rat_max)
+    hratdummy.SetMinimum(-rat_max)
     ## fix bin labels
     for ibin in range(174):
         hratdummy.GetXaxis().SetBinLabel(ibin+1, "")
@@ -250,27 +252,26 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     ratiomid.Draw()
         
     ## lines again
-    ratio_max = 3.5
     if doPull:
-        ratio_max = 3.55
-    tl_njet.DrawLine(31.-0.5, 0.-ratio_max, 31.-0.5,ratio_max) 
-    tl_njet.DrawLine(71.-0.5, 0.-ratio_max, 71.-0.5,ratio_max)
-    tl_njet.DrawLine(111.-0.5, 0.-ratio_max,111.-0.5,ratio_max)
-    tl_njet.DrawLine(143.-0.5, 0.-ratio_max,143.-0.5,ratio_max)
-    tl_nb.DrawLine(11.-0.5,0.-ratio_max,11.-0.5,ratio_max) 
-    tl_nb.DrawLine(21.-0.5,0.-ratio_max,21.-0.5,ratio_max) 
-    tl_nb.DrawLine(41.-0.5,0.-ratio_max,41.-0.5,ratio_max)
-    tl_nb.DrawLine(51.-0.5,0.-ratio_max,51.-0.5,ratio_max) 
-    tl_nb.DrawLine(61.-0.5,0.-ratio_max,61.-0.5,ratio_max) 
-    tl_nb.DrawLine(81.-0.5,0.-ratio_max,81.-0.5,ratio_max) 
-    tl_nb.DrawLine(91.-0.5,0.-ratio_max,91.-0.5,ratio_max) 
-    tl_nb.DrawLine(101.-0.5,0.-ratio_max,101.-0.5,ratio_max) 
-    tl_nb.DrawLine(119.-0.5,0.-ratio_max,119.-0.5,ratio_max)
-    tl_nb.DrawLine(127.-0.5,0.-ratio_max,127.-0.5,ratio_max)
-    tl_nb.DrawLine(135.-0.5,0.-ratio_max,135.-0.5,ratio_max)
-    tl_nb.DrawLine(151.-0.5,0.-ratio_max,151.-0.5,ratio_max)
-    tl_nb.DrawLine(159.-0.5,0.-ratio_max,159.-0.5,ratio_max)
-    tl_nb.DrawLine(167.-0.5,0.-ratio_max,167.-0.5,ratio_max)
+        rat_max = pull_max
+    tl_njet.DrawLine(31.-0.5, 0.-rat_max, 31.-0.5,rat_max) 
+    tl_njet.DrawLine(71.-0.5, 0.-rat_max, 71.-0.5,rat_max)
+    tl_njet.DrawLine(111.-0.5, 0.-rat_max,111.-0.5,rat_max)
+    tl_njet.DrawLine(143.-0.5, 0.-rat_max,143.-0.5,rat_max)
+    tl_nb.DrawLine(11.-0.5,0.-rat_max,11.-0.5,rat_max) 
+    tl_nb.DrawLine(21.-0.5,0.-rat_max,21.-0.5,rat_max) 
+    tl_nb.DrawLine(41.-0.5,0.-rat_max,41.-0.5,rat_max)
+    tl_nb.DrawLine(51.-0.5,0.-rat_max,51.-0.5,rat_max) 
+    tl_nb.DrawLine(61.-0.5,0.-rat_max,61.-0.5,rat_max) 
+    tl_nb.DrawLine(81.-0.5,0.-rat_max,81.-0.5,rat_max) 
+    tl_nb.DrawLine(91.-0.5,0.-rat_max,91.-0.5,rat_max) 
+    tl_nb.DrawLine(101.-0.5,0.-rat_max,101.-0.5,rat_max) 
+    tl_nb.DrawLine(119.-0.5,0.-rat_max,119.-0.5,rat_max)
+    tl_nb.DrawLine(127.-0.5,0.-rat_max,127.-0.5,rat_max)
+    tl_nb.DrawLine(135.-0.5,0.-rat_max,135.-0.5,rat_max)
+    tl_nb.DrawLine(151.-0.5,0.-rat_max,151.-0.5,rat_max)
+    tl_nb.DrawLine(159.-0.5,0.-rat_max,159.-0.5,rat_max)
+    tl_nb.DrawLine(167.-0.5,0.-rat_max,167.-0.5,rat_max)
     
     ## refresh everything, to be safe
     pad1.cd()

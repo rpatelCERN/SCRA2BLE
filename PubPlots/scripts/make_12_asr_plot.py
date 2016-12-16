@@ -72,8 +72,8 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
     pull.SetMinimum(-3.2)
     hratdummy = ratio.dummy_hist
     hratdummy.GetXaxis().SetTitle("Aggregate search region bin number")
-    hratdummy.SetMaximum(2.3)
-    hratdummy.SetMinimum(-2.3)
+    hratdummy.SetMaximum(1.25)
+    hratdummy.SetMinimum(-1.25)
 
 
     ## setup canvas and pads
@@ -184,7 +184,7 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
     ratiomid.Draw()
         
     ## lines again
-    ratio_max = 2.3
+    ratio_max = 1.25
     if doPull:
         ratio_max = 3.2
 

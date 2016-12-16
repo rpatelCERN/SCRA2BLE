@@ -123,16 +123,18 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     ratio.markers.SetMarkerSize(1.5)
     ratio_bands = ratio.bands
     pull = ratio.pull
-    pull.SetMaximum(3.2)
-    pull.SetMinimum(-3.2)
+    pull_max = 1.75
+    pull.SetMaximum(pull_max)
+    pull.SetMinimum(-pull_max)
     pull.GetXaxis().SetLabelSize(0.12)
     pull.GetXaxis().SetTitleSize(0.14)
     pull.GetYaxis().SetLabelSize(0.1)
     pull.GetYaxis().SetTitleSize(0.11)
     pull.GetYaxis().SetTitleOffset(0.4)
     hratdummy = ratio.dummy_hist
-    hratdummy.SetMaximum(1.3)
-    hratdummy.SetMinimum(-1.3)
+    rat_max = 0.45
+    hratdummy.SetMaximum(rat_max)
+    hratdummy.SetMinimum(-rat_max)
     hratdummy.GetXaxis().SetLabelSize(0.12)
     hratdummy.GetXaxis().SetTitleSize(0.14)
     hratdummy.GetYaxis().SetLabelSize(0.1)
@@ -270,9 +272,9 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
         m1.SetLineStyle(2)
         m2.SetLineStyle(2)
         p1.Draw()
-        p2.Draw()
+        #p2.Draw()
         m1.Draw()
-        m2.Draw()
+        #m2.Draw()
         pull.Draw("hist,same")
     else:
         hratdummy.Draw("axis")
@@ -283,9 +285,8 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     ratiomid.Draw()
         
     ## lines again
-    ratio_max = 1.3
     if doPull:
-        ratio_max = 3.2
+        rat_max = pull_max
 
 
     ## refresh everything, to be safe
