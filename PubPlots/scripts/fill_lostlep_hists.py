@@ -12,7 +12,7 @@ from agg_bins import *
 
 alpha = 1 - 0.6827
 
-def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_notCombined.root', outputfile = 'lostlep_hists.root', nbins = 174, lumiSF=1.):
+def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction.root', outputfile = 'lostlep_hists.root', nbins = 174, lumiSF=1.):
    
    print ('Input file is %s' % inputfile)
    print ('Output file is %s' % outputfile)
@@ -67,7 +67,8 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_notCombined.roo
        # get stat uncertainties
        stat_up = pow(hAvgWeight.GetBinContent(ibin+1)*1.84102, 2.);
        stat_up += pow(lumiSF*hin.GetBinError(ibin+1), 2.);
-       hStatUp.SetBinContent(ibin+1, sqrt(stat_up))
+       stat_up = sqrt(stat_up)
+       hStatUp.SetBinContent(ibin+1, stat_up)
        stat_down = lumiSF*hin.GetBinError(ibin+1)
        if stat_down > CV: # just to be safe
                stat_down = CV
@@ -75,19 +76,21 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_notCombined.roo
        # get syst uncertainties
        syst_up = 0.
        syst_down = 0.
-       if hsystup.GetBinContent(ibin+1) > 0.:
-           syst_up = syst_up + pow((hsystup.GetBinContent(ibin+1)-1.)*CV, 2.)
-       if hsystdown.GetBinContent(ibin+1) > 0.:
-           syst_down = syst_down + pow((1.-hsystdown.GetBinContent(ibin+1))*CV, 2.)
-       syst_up = syst_up + pow((hnonclosureup.GetBinContent(ibin+1)-1.)*CV, 2.)
-       syst_down = syst_down + pow((1.-hnonclosuredown.GetBinContent(ibin+1))*CV, 2.)
-       syst_up = lumiSF*sqrt(syst_up) # these need to be scaled because they're not coming from the individual systs that we already scaled
-       syst_down = lumiSF*sqrt(syst_down)
+       for hsyst in SYSTS:
+           if hCV.GetBinContent(ibin+1) > 0.:
+               syst_up = syst_up + hsyst.GetBinContent(ibin+1)**2
+               syst_down = syst_down + hsyst.GetBinContent(ibin+1)**2
+       syst_up = sqrt(syst_up) #should be already scaled
+       syst_down = sqrt(syst_down)
+       ## syst_up = syst_up + pow((hnonclosureup.GetBinContent(ibin+1)-1.)*CV, 2.)
+       ## syst_down = syst_down + pow((1.-hnonclosuredown.GetBinContent(ibin+1))*CV, 2.)
+       ## syst_up = lumiSF*sqrt(syst_up) # these need to be scaled because they're not coming from the individual systs that we already scaled
+       ## syst_down = lumiSF*sqrt(syst_down)
        if syst_down > CV - hStatDown.GetBinContent(ibin+1): # truncate if necessary
            syst_down = CV - hStatDown.GetBinContent(ibin+1)
        hSystUp.SetBinContent(ibin+1, syst_up)
        hSystDown.SetBinContent(ibin+1, syst_down)
-       print ("Bin %d: %3.2f + %3.2f + %3.2f - %3.2f - %3.2f" % (ibin+1, CV, sqrt(stat_up), syst_up, hin.GetBinError(ibin+1), syst_down))
+       print ("Bin %d: %3.2f + %3.2f + %3.2f - %3.2f - %3.2f" % (ibin+1, CV, stat_up, syst_up, stat_down, syst_down))
 
              
    outfile.cd()
