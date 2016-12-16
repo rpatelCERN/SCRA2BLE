@@ -12,7 +12,7 @@ from agg_bins import *
 
 alpha = 1 - 0.6827
 
-def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_24.6.root', outputfile = 'qcdrs_hists.root', nbins = 174, lumiSF = 1.):
+def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_36.3.root', outputfile = 'qcdrs_hists.root', nbins = 174, lumiSF = 1.):
    
    print ('Input file is %s' % inputfile)
    print ('Output file is %s' % outputfile)
