@@ -13,7 +13,7 @@ import CMS_lumi
 
 
 plot_dir = "output/"
-lumi = 18.077491
+lumi = 36.348547
 
 latex_templates = {'N_{jet} (p_{T} > 30 GeV)': 'njets',\
                    'N_{b-jet} (p_{T} > 30 GeV)': 'nbjets',\
@@ -114,7 +114,7 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
         hbg_pred.SetMaximum(100*ymax)
         hbg_pred.SetMinimum(0.09)
     else:
-        hbg_pred.SetMaximum(1.7*ymax)
+        hbg_pred.SetMaximum(1.45*ymax)
         hbg_pred.SetMinimum(0.0)
             
     

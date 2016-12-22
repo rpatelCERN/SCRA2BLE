@@ -33,13 +33,14 @@ class ObsExpRatio:
         ey_h = []
         nbins = self.data_obs.hist.GetNbinsX()
         for ibin in range(nbins):
-            if self.bg_pred.hCV.GetBinContent(ibin+1)>0 and self.data_obs.hist.GetBinContent(ibin+1)>0:
-                x.append(self.data_obs.hist.GetBinCenter(ibin+1))
-                ex_l.append(0.0001)
-                ex_h.append(0.0001)
+            x.append(self.data_obs.hist.GetBinCenter(ibin+1))
+            ex_l.append(0.0001)
+            ex_h.append(0.0001)
+            if self.bg_pred.hCV.GetBinContent(ibin+1)>0 and self.data_obs.hist.GetBinContent(ibin+1)>0:                
                 y.append( (self.data_obs.hist.GetBinContent(ibin+1)-self.bg_pred.hCV.GetBinContent(ibin+1))/self.bg_pred.hCV.GetBinContent(ibin+1) )
                 ey_l.append(self.data_obs.graph.GetErrorYlow(ibin)/self.bg_pred.hCV.GetBinContent(ibin+1))
                 ey_h.append(self.data_obs.graph.GetErrorYhigh(ibin)/self.bg_pred.hCV.GetBinContent(ibin+1))
+                ## print("Bin %d -- Obs: %3.0f, Exp: %3.2f, Rat: %3.2f" % (ibin+1, self.data_obs.hist.GetBinContent(ibin+1), self.bg_pred.hCV.GetBinContent(ibin+1), y[ibin]))
             else: # 0 estimated
                 y.append(-999.)
                 ey_l.append(0.0001)

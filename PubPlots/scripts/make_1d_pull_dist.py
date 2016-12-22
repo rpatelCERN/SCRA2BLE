@@ -1,7 +1,7 @@
 from __future__ import print_function
 import os
 import errno
-from ROOT import TFile, TH1D, Math, gStyle, THStack, TLegend, TCanvas, TPad, gPad, TLatex, TLine
+from ROOT import TFile, TH1D, Math, gStyle, THStack, TLegend, TCanvas, TPad, gPad, TLatex, TLine, TF1
 from bg_est import BGEst
 from data_obs import DataObs
 from obs_exp_ratio import ObsExpRatio
@@ -54,6 +54,9 @@ def make_1d_pull_dist(plot_title, lostlep, hadtau, znn, qcd, data_obs):
     if hpull.GetBinContent(hpull.GetNbinsX()+1)>0.:
         hpull.SetBinContent(hpull.GetNbinsX(), hpull.GetBinContent(hpull.GetNbinsX())+hpull.GetBinContent(hpull.GetNbinsX()+1))
 
+    fit = hpull.Fit("gaus")
+    gStyle.SetOptFit(0)
+
     W = 800
     H = 800
     T = 0.08*H
@@ -78,8 +81,7 @@ def make_1d_pull_dist(plot_title, lostlep, hadtau, znn, qcd, data_obs):
 
     hpull.Draw("hist");
 
-    lumi = 18.077491
-##    lumi = 5.2
+    lumi = 36.348547
     CMS_lumi.writeExtraText = True
     CMS_lumi.extraText = "       Preliminary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi

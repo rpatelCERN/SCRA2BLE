@@ -30,13 +30,13 @@ def make_all_1D_projections(lostlep_file = 'lostlep_hists.root', hadtau_file = '
     make_1D_projection('t1tttt-projection-njets-nb2-mht500-ht500-pull', 'T1tttt', lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
                        "T1tttt_1500_100", "T1tttt_1200_800", "N_{b-jet} #geq 2, H_{T}^{miss} > 500 GeV, H_{T} > 500 GeV", False, True)
     ## T1bbbb plot: 5+ b-jets, MHT > 500, HT > 1000
-    make_1D_projection('t1bbbb-projection-nbjets-nj5-mht500-ht1000', 'T1bbbb', lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1bbbb_1500_100", "T1bbbb_1000_900", "N_{jet} #geq 5, H_{T}^{miss} > 500 GeV, H_{T} > 1000 GeV")
-    make_1D_projection('t1bbbb-projection-nbjets-nj5-mht500-ht1000-pull', 'T1bbbb', lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1bbbb_1500_100", "T1bbbb_1000_900", "N_{jet} #geq 5, N_{b-jet} = 0, H_{T} > 1000 GeV", False, True)
+    make_1D_projection('t1bbbb-projection-nbjets-nj5-mht750-ht1500', 'T1bbbb', lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
+                       "T1bbbb_1500_100", "T1bbbb_1000_900", "N_{jet} #geq 5, H_{T}^{miss} > 750 GeV, H_{T} > 1500 GeV")
+    make_1D_projection('t1bbbb-projection-nbjets-nj5-mht750-ht1500-pull', 'T1bbbb', lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
+                       "T1bbbb_1500_100", "T1bbbb_1000_900", "N_{jet} #geq 5, H_{T}^{miss} > 750 GeV, H_{T} > 1500 GeV", False, True)
     ## T1qqqq plot: 0 b-jets, 5+ jets HT > 1000
     make_1D_projection('t1qqqq-projection-mht-nj5-nb0-ht1000', 'T1qqqq', lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1qqqq_1400_100", "T1qqqq_1000_800", "N_{jet} #geq 5, H_{T}^{miss} > 500 GeV, H_{T} > 1000 GeV")
+                       "T1qqqq_1400_100", "T1qqqq_1000_800", "N_{jet} #geq 5, N_{b-jet} = 0, H_{T} > 1000 GeV")
     make_1D_projection('t1qqqq-projection-mht-nj5-nb0-ht1000-pull', 'T1qqqq', lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
                        "T1qqqq_1400_100", "T1qqqq_1000_800", "N_{jet} #geq 5, N_{b-jet} = 0, H_{T} > 1000 GeV", False, True)
     ## T2tt plot: 5-8 b-jets, MHT > 500, HT > 500

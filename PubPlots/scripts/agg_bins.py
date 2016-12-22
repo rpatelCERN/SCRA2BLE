@@ -26,7 +26,7 @@ asr_sets = {'ASR': [asr1, asr2, asr3, asr4, asr5, asr6, asr7, asr8, asr9, asr10,
             'MHT': GetMHTBins(), \
             'HT': GetHTBins(), \
             'T1tttt': GetNJetsBins(minNB=2, minMHT=2, minHT=1), \
-            'T1bbbb': GetNBJetsBins(minNJ=2, minMHT=2, minHT=2), \
+            'T1bbbb': GetNBJetsBins(minNJ=2, minMHT=3, minHT=2), \
             'T1qqqq' : GetMHTBins(minNJ=3, minNB=0, maxNB=0, minHT=2), \
             'T2tt' : GetNBJetsBins(minNJ=2, maxNJ=3, minMHT=2, minHT=1), \
             'T2bb' : GetMHTBins(minNJ=0, maxNJ=1, minNB=2, maxNB=2, minHT=1), \
