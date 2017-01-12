@@ -112,11 +112,9 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_36.3.root',
        SYSTSDown_ASR = []
        for hsyst in SYSTS:
            hname = hsyst.GetName()
-           correlation = '' # note: default is uncorrelated across these dimensions, corresponds to Stat, Contam, Trig,  Prior, Closure
-           if hname.find('Core') >= 0 or hname.find('Tail') >= 0: # fully-correlated across search bins
-               correlation = 'all'
-           elif hname.find('BTag'):
-               correlation = 'nbjets'
+           correlation = 'all' # note: default is correlated across these dimensions, corresponds to Core, Tail, BTags
+           if hname.find('Uncorrelated') >= 0: # fully-uncorrelated across search bins
+               correlation = ''
            hist_asr = Uncertainty(hsyst, correlation).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist           
            ## now group by Up, Down, symmetric
            if hname.find('Down') >= 0:
