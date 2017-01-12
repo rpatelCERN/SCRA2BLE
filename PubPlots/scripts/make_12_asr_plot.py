@@ -201,7 +201,7 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
 
     ## now wite CMS headers
     canv.cd()
-    lumi = 18.077491
+    lumi = 36.3
     CMS_lumi.cmsTextSize = 0.85
     CMS_lumi.writeExtraText = True
     CMS_lumi.extraText = "   Preliminary"
