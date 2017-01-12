@@ -45,4 +45,7 @@ def make_all_pas_plots_and_tables(lostlep_file = 'lostlep_hists.root', hadtau_fi
 
 if __name__ == "__main__": # to run from command line, just give the name of the BG estimation files
     import sys
-    make_all_pas_plots_and_tables(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6]) # 
+    if len(sys.argv) == 1: # no command line inputs -- just use defaults
+       make_all_pas_plots_and_tables()
+    else:
+        make_all_pas_plots_and_tables(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6]) # 

@@ -22,7 +22,7 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_36.3.root',
    
    infile = TFile.Open(inputfile);
    hin = infile.Get("PredictionCV");
-   hstat = infile.Get("PredictionStat")
+   #hstat = infile.Get("PredictionStat")
            
    outfile = TFile(outputfile, "recreate")
    outfile.cd()
@@ -39,7 +39,7 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_36.3.root',
    for h in infile.GetListOfKeys():
        h = h.ReadObj()
        # skip the histograms that don't actually contain systematics -- make sure you check the names haven't changed
-       if h.GetName().find('CV') >= 0 or h.GetName().find('Stat') >= 0:
+       if h.GetName().find('CV') >= 0: # or h.GetName().find('Stat') >= 0:
            continue
        # convert to absolute
        hout = h.Clone()
@@ -75,7 +75,8 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_36.3.root',
        hCV.SetBinContent(ibin+1, CV)
        hCV.SetBinError(ibin+1, 0.)
        # get stat uncertainties
-       stat = (hstat.GetBinContent(ibin+1)-1.)*CV;
+       #stat = (hstat.GetBinContent(ibin+1)-1.)*CV;
+       stat = lumiSF*hin.GetBinError(ibin+1)
        hStatUp.SetBinContent(ibin+1, stat)
        if stat > CV: # just to be safe
            hStatDown.SetBinContent(ibin+1, CV)
@@ -114,6 +115,8 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_36.3.root',
            correlation = '' # note: default is uncorrelated across these dimensions, corresponds to Stat, Contam, Trig,  Prior, Closure
            if hname.find('Core') >= 0 or hname.find('Tail') >= 0: # fully-correlated across search bins
                correlation = 'all'
+           elif hname.find('BTag'):
+               correlation = 'nbjets'
            hist_asr = Uncertainty(hsyst, correlation).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist           
            ## now group by Up, Down, symmetric
            if hname.find('Down') >= 0:
