@@ -73,7 +73,9 @@ if __name__ == '__main__':
 	model=parse[0]
 	#print parse
 	if options.fastsim: signaltag+="_fast"
-	CorrSigHist=genMHTCorr(signaldirtag,signaltag,lumi)
+	CorrSigHist=genMHTCorr(signaldirtag,signaltag,lumi)		
+	if "T2tt" in sms: 
+		CorrSigHist=LeptonCorr(signaldirtag,"T2tt",lumi, int(options.mGo), int(options.mLSP))   
 	MHTSyst=genMHTSyst(signaldirtag,signaltag,lumi)	
 	tagsForSignalRegion = binLabelsToList(CorrSigHist);	
 	LL_file=TFile(idir+"LLPrediction_combined.root");
@@ -319,7 +321,8 @@ if __name__ == '__main__':
 	signalRegion.addSystematicsLine('lnN',['zvv'],DYKinErr)	
 	#signalRegion.addSystematicsLine('lnN',['zvv'],DYMCStatErr)	
 	signalRegion.addSystematicsLine('lnN',['zvv'],GammaETErr)
-	signalRegion.addSystematicsLineAsymShape('lnN',['zvv'],FdirErrUp, FdirErrDn)
+	#signalRegion.addSystematicsLineAsymShape('lnN',['zvv'],FdirErrUp, FdirErrDn)
+
 
 	QCDContamUnc=QCDInputFile.Get("PredictionContam")		
 	QCDCloseUnc=QCDInputFile.Get("PredictionClosure")		
@@ -331,13 +334,15 @@ if __name__ == '__main__':
 	QCDTrigDn=QCDInputFile.Get("PredictionTrigDown")	
 	QCDTrigUp=QCDInputFile.Get("PredictionTrigUp")	
 	signalRegion.addSystematicsLine('lnN', ['qcd'], qcdBCorrUnc);
-	signalRegion.addSystematicsLine('lnN',['qcd'], QCDCloseUnc);
-	signalRegion.addSystematicsLine('lnN',['qcd'], QCDContamUnc);
-	signalRegion.addSystematicsLine('lnN',['qcd'], QCDStatUnc);
-	signalRegion.addSystematicsLine('lnN',['qcd'], QCDPriorUnc);
+	#signalRegion.addSystematicsLine('lnN',['qcd'], QCDCloseUnc);
+	#signalRegion.addSystematicsLine('lnN',['qcd'], QCDContamUnc);
+	#signalRegion.addSystematicsLine('lnN',['qcd'], QCDStatUnc);
+	#signalRegion.addSystematicsLine('lnN',['qcd'], QCDPriorUnc);
+	QCDUnCorrel=QCDInputFile.Get("hPredictionUncorrelated")
+	signalRegion.addSystematicsLine('lnN',['qcd'], QCDUnCorrel);
 	signalRegion.addSystematicsLine('lnN',['qcd'], QCDTail);
         signalRegion.addSystematicsLineAsymShape('lnN',['qcd'],QCDCoreUp,QCDCoreDn)
-        signalRegion.addSystematicsLineAsymShape('lnN',['qcd'],QCDTrigUp,QCDTrigDn)
+        #signalRegion.addSystematicsLineAsymShape('lnN',['qcd'],QCDTrigUp,QCDTrigDn)
         #signalRegion.addSystematicsLineAsymShape('lnN',['qcd'],QCDTailUp,QCDTailDn)
 	HadTauClosureUnc=HadTau_file.Get("totalPredNonClosure_HadTau")		
 	HadTauClosureCorrUnc=HadTau_file.Get("totalPredAdhoc_HadTau")		
