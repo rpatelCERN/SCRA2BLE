@@ -90,8 +90,8 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
        if stat_down > CV: # for some reason, this one is sometimes greater than the central value, so truncate
            stat_down = CV
        hStatDown.SetBinContent(ibin+1, stat_down)
-       if hSystDown.GetBinContent(ibin+1) > CV - hStatDown.GetBinContent(ibin+1): # truncate if necessary
-           hSystDown.SetBinContent(ibin+1, CV - hStatDown.GetBinContent(ibin+1))
+       if hSystDown.GetBinContent(ibin+1) > sqrt(CV**2 - hStatDown.GetBinContent(ibin+1)**2): # truncate if necessary
+           hSystDown.SetBinContent(ibin+1, sqrt(CV**2 - hStatDown.GetBinContent(ibin+1)**2))
        print ('Bin %d: %f + %f + %f - %f - %f' % (ibin+1, CV, hStatUp.GetBinContent(ibin+1), hSystUp.GetBinContent(ibin+1), hStatDown.GetBinContent(ibin+1), hSystDown.GetBinContent(ibin+1)))
            
              

@@ -13,7 +13,7 @@ from ROOT import TFile
 from data_obs import DataObs
 from agg_bins import *
 
-def fill_data_hists(inputfile = 'inputs/data_hists/Data_174Bins_SR_Moriond2017_36.3.root', inputhist = 'RA2bin_data', outputfile = 'data_hists.root', nbins = 174):
+def fill_data_hists(inputfile = 'inputs/data_hists/RA2bin_signal.root', inputhist = 'RA2bin_data', outputfile = 'data_hists.root', nbins = 174):
 
     print ('Input file is %s' % inputfile)
     print ('Output file is %s' % outputfile)

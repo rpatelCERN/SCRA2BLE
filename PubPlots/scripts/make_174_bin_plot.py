@@ -285,7 +285,7 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
 
     ## now wite CMS headers
     canv.cd()
-    lumi = 36.348547
+    lumi = 35.862345
     CMS_lumi.writeExtraText = True
     CMS_lumi.extraText = "       Preliminary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi

@@ -88,8 +88,8 @@ def fill_qcd_hists(inputfile = 'inputs/bg_hists/qcd-bg-combine-input-36.3ifb-dec
                    SYSTS[isyst].SetBinContent(ibin, lumiSF*(float(systval)-1.)*CV)
                syst = lumiSF*math.sqrt(syst)
            hSystUp.SetBinContent(ibin, syst)
-           if syst > CV - hStatDown.GetBinContent(ibin): # truncate if necessary
-               syst = CV - hStatDown.GetBinContent(ibin)
+           if syst > sqrt(CV**2 - hStatDown.GetBinContent(ibin)**2): # truncate if necessary
+               syst = sqrt(CV**2 - hStatDown.GetBinContent(ibin)**2)
            hSystDown.SetBinContent(ibin, syst)
            
            

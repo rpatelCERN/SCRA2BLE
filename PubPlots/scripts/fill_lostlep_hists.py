@@ -12,7 +12,7 @@ from agg_bins import *
 
 alpha = 1 - 0.6827
 
-def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction.root', outputfile = 'lostlep_hists.root', nbins = 174, lumiSF=1.):
+def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_HT5.root', outputfile = 'lostlep_hists.root', nbins = 174, lumiSF=1.):
    
    print ('Input file is %s' % inputfile)
    print ('Output file is %s' % outputfile)
@@ -86,8 +86,8 @@ def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction.root', outputfi
        ## syst_down = syst_down + pow((1.-hnonclosuredown.GetBinContent(ibin+1))*CV, 2.)
        ## syst_up = lumiSF*sqrt(syst_up) # these need to be scaled because they're not coming from the individual systs that we already scaled
        ## syst_down = lumiSF*sqrt(syst_down)
-       if syst_down > CV - hStatDown.GetBinContent(ibin+1): # truncate if necessary
-           syst_down = CV - hStatDown.GetBinContent(ibin+1)
+       if syst_down > sqrt(CV**2 - hStatDown.GetBinContent(ibin+1)**2): # truncate if necessary
+           syst_down = sqrt(CV**2 - hStatDown.GetBinContent(ibin+1)**2)
        hSystUp.SetBinContent(ibin+1, syst_up)
        hSystDown.SetBinContent(ibin+1, syst_down)
        print ("Bin %d: %3.2f + %3.2f + %3.2f - %3.2f - %3.2f" % (ibin+1, CV, stat_up, syst_up, stat_down, syst_down))

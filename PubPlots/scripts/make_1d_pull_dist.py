@@ -81,7 +81,7 @@ def make_1d_pull_dist(plot_title, lostlep, hadtau, znn, qcd, data_obs):
 
     hpull.Draw("hist");
 
-    lumi = 36.348547
+    lumi = 35.862345
     CMS_lumi.writeExtraText = True
     CMS_lumi.extraText = "       Preliminary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi

@@ -12,7 +12,7 @@ from agg_bins import *
 
 alpha = 1 - 0.6827
 
-def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog98_36.35ifb_HadTauEstimation_data_formatted_V11.root', outputfile = 'hadtau_hists.root', nbins = 174, lumiSF=1.):
+def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog116_35.9ifb_HadTauEstimation_data_formatted_V12.root', outputfile = 'hadtau_hists.root', nbins = 174, lumiSF=1.):
    
    print ('Input file is %s' % inputfile)
    print ('Output file is %s' % outputfile)
@@ -108,8 +108,8 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog98_36.35ifb_HadTauEstim
        ## already lumi-scaled
        syst_up = sqrt(syst_up)
        syst_down = sqrt(syst_down)            
-       if syst_down > CV - hStatDown.GetBinContent(ibin+1): # truncate if necessary
-           syst_down = CV - hStatDown.GetBinContent(ibin+1)
+       if syst_down > sqrt(CV**2 - hStatDown.GetBinContent(ibin+1)**2): # truncate if necessary
+           syst_down = sqrt(CV**2 - hStatDown.GetBinContent(ibin+1)**2)
        hSystUp.SetBinContent(ibin+1, syst_up)
        hSystDown.SetBinContent(ibin+1, syst_down)
        
