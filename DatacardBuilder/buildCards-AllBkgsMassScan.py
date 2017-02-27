@@ -57,8 +57,7 @@ if __name__ == '__main__':
 	# signal 
 	signaldirtag = idir;
 	if options.fastsim: 
-		#signaldirtag += "/fastsimSignalScan";
-		'''
+		signaldirtag += "/fastsimSignalScan";
 		if "T2bb" in sms:  signaldirtag ="inputHistograms/fastsimSignalT2bb"
 		if "T1tttt" in sms:  signaldirtag ="inputHistograms/fastsimSignalT1tttt"
 		if "T1bbbb" in sms:  signaldirtag ="inputHistograms/fastsimSignalT1bbbb"
@@ -68,11 +67,11 @@ if __name__ == '__main__':
 		if ("T2qq" in sms): signaldirtag ="inputHistograms/fastsimSignalT2qq"
 		if ("T2tt" in sms): signaldirtag ="inputHistograms/fastsimSignalT2tt"
 		if "T1ttbb" in sms or "T1tbtb" in sms: signaldirtag="/fastsimSignalScanMixedFinalState"
-		'''
+			
 		#signaldirtag="root://cmsxrootd.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"
 		#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
 		#signaldirtag="/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
-		signaldirtag="./inputHistograms/fastsimSignalT1bbbb/"
+		#signaldirtag="./inputHistograms/fastsimSignalT1bbbb/"
 	else: signaldirtag ="inputHistograms/FullSim"
 	signaltag = "RA2bin_proc_"+sms;
 	parse=sms.split('_')
