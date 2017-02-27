@@ -63,7 +63,7 @@ if __name__ == '__main__':
     signalmodel=options.signal+options.mGo
     signals = [signalmodel]
     mus=[0.0]
-    lumis = [36.3];
+    lumis = [35.86];
 
     #variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
     #variations = ['allNotau','llpOnly', 'tauOnly']
@@ -137,8 +137,10 @@ if __name__ == '__main__':
                     if options.fastsim: the_odir = 'testCards-%s-%s_%s_%s-%1.1f-mu%0.1f' % (vary,options.signal,options.mGo, options.mLSP, lumi,mu);
                     allcardnames = os.listdir(the_odir);
                     command = 'combineCards.py';
-                    for cn in allcardnames:
-                        if 'card_' in cn: command += " " + the_odir+'/'+cn;
+                    #for cn in allcardnames:
+		    for i in range(0,174):
+                        cn="card_signal%d.txt" %i
+                        command += " " + the_odir+'/'+cn;
                     command += " > "+the_odir+'/allcards.txt'
                     os.system(command);
                     #combine_cmmd = "text2workspace.py %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);

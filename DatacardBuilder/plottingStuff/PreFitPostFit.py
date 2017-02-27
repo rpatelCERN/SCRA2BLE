@@ -64,8 +64,8 @@ if __name__ == '__main__':
 	#theDir = 'testCards-allBkgs-SMSbbbb1500-2.1-mu0.0'
 	# theDir = 'testCards-allBkgswithPho-SMSbbbb1500-2.1-mu0.0'
 	#theDir = 'testCards-allBkgsTestingFit-SMSbbbb1500-2.1-mu0.0';
-	theDir='/fdata/hepx/store/user/rish/CombineCards/Unblinding/CMSSW_7_4_7/src/SCRA2BLE/DatacardBuilder/testCards-allBkgs-T1tttt_1500_100-36.3-mu0.0/'
-	fin=TFile("/fdata/hepx/store/user/rish/CombineCards/Unblinding/CMSSW_7_4_7/src/SCRA2BLE/DatacardBuilder"+"/mlfittestCards-allBkgs-T1tttt_1500_100-36.3-mu0.0.root", "READ")
+	theDir='/fdata/hepx/store/user/rish/CombineCards/gitCommitMoriond/CMSSW_7_4_7/src/SCRA2BLE/DatacardBuilder/'
+	fin=TFile(theDir+"mlfittestCards-allBkgs-T1bbbb_1500_100-35.9-mu0.0.root", "READ")
 	#fin=TFile("/fdata/hepx/store/user/rish/CombineCards//CMSSW_7_4_7/src/SCRA2BLE/DatacardBuilder/"+"/mlfittestCards-allBkgs-T1tttt_1200_800-24.5-mu0.0.root", "READ")
 	BinProcesses=fin.Get("norm_fit_b");
 	mybins=[]
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 	hspostfit = THStack();
 
 
-	YieldsFile=TFile(theDir+"/yields.root", "READ")
+	YieldsFile=TFile(theDir+"/testCards-allBkgs-T1bbbb_1500_100-35.9-mu0.0/yields.root", "READ")
 	histqcd=YieldsFile.Get("QCD")
 	histZ=YieldsFile.Get("Zvv")
 	histTau=YieldsFile.Get("tau")
@@ -160,14 +160,22 @@ if __name__ == '__main__':
 
 		TZ   = BinProcessesPostFit.find("ch%d/WTopSLHighW" %c)
 		LZ   = BinProcessesPostFit.find("ch%d/WTopHadHighW" %c)
-		#print (c+1),"TZ,LZ = ", TZ.getVal(), LZ.getVal()
+		
 		histZpost.SetBinContent(c, Z.getVal())
 		histZpost.SetBinError(c, Z.getError())
 		histqcdpost.SetBinContent(c, Q.getVal())
-		histLLpost.SetBinContent(c, L.getVal()+LZ.getVal())
-		histLLpost.SetBinError(c, math.sqrt((L.getError()*L.getError())+(LZ.getError()*LZ.getError())))
-		histTaupost.SetBinContent(c, T.getVal()+TZ.getVal())
-		histTaupost.SetBinError(c, math.sqrt((T.getError()*T.getError())+(TZ.getError()*TZ.getError())))
+		if(type(L) is RooAbsArg):
+			histLLpost.SetBinContent(c, LZ.getVal())
+			histLLpost.SetBinError(c, LZ.getError())
+		else:
+			histLLpost.SetBinContent(c, L.getVal()+LZ.getVal())
+			histLLpost.SetBinError(c, math.sqrt((L.getError()*L.getError())+(LZ.getError()*LZ.getError())))
+		if(type(T) is RooAbsArg):
+                        histTaupost.SetBinContent(c, TZ.getVal())
+                        histTaupost.SetBinError(c,TZ.getError())
+		else:
+			histTaupost.SetBinContent(c, T.getVal()+TZ.getVal())
+			histTaupost.SetBinError(c, math.sqrt((T.getError()*T.getError())+(TZ.getError()*TZ.getError())))
 
 		qerr = Q.getError()
 		if Q.getError()/Q.getVal() > 100 and Q.getError() > 1.0: 
@@ -179,9 +187,9 @@ if __name__ == '__main__':
 		#print "{0:2} & {1:6.2f} \pm {2:6.2f} & {3:6.2f} \pm {4:6.2f} & {5:6.2f} \pm {6:6.2f} & {7:6.2f} \pm {8:6.2f} \\\\".format(c,Z.getVal(),Z.getError(),Q.getVal(),Q.getError(),L.getVal(),L.getError(),T.getVal(),T.getError());		
 
 	hspostfit.Add(histqcdpost)
-	hspostfit.Add(histZpost)
 	hspostfit.Add(histTaupost)
 	hspostfit.Add(histLLpost)
+	hspostfit.Add(histZpost)
 	hspostfit_tot = hspostfit.GetStack().Last();
 
 	hspostfit_tot_clone = hspostfit_tot.Clone();
@@ -322,7 +330,7 @@ if __name__ == '__main__':
 			NJetsZPostFit.Fill(9,histZpost.GetBinContent(i))
 			NJetsHTauPostFit.Fill(9,histTaupost.GetBinContent(i))
 			NJetsLostLPostFit.Fill(9,histLLpost.GetBinContent(i))
-			print "Post-fit at High NJ %g %g " %(histqcdpost.GetBinContent(i),histZpost.GetBinContent(i)) 
+			#print "Post-fit at High NJ %g %g " %(histqcdpost.GetBinContent(i),histZpost.GetBinContent(i)) 
 		if "BTags0" in binlabel:
 			NBtagsPreFit.Fill(0.1,hsprefit_tot.GetBinContent(i)); 
 			NBtagsData.Fill(0.1,DataHist.GetBinContent(i)); 
@@ -438,7 +446,8 @@ if __name__ == '__main__':
 		LZ   = BinProcessesPostFit.find("ch%d/WTopHadHighW" %mybins[i])
 
 		DataHistNew.SetBinContent(i+1,DataHist.GetBinContent(i+1));
-		staterr_dat = max(DataHistNew.GetBinErrorUp(i+1),DataHistNew.GetBinErrorLow(i+1));
+		#staterr_dat = max(DataHistNew.GetBinErrorUp(i+1),DataHistNew.GetBinErrorLow(i+1));
+		staterr_dat = max(DataHistNew.GetBinError(i+1),DataHistNew.GetBinErrorLow(i+1));
 
 		PostFitErrorsNew.SetBinContent(i+1,hspostfit_tot.GetBinContent(i+1));
 		staterr_post = max(PostFitErrorsNew.GetBinErrorUp(i+1),PostFitErrorsNew.GetBinErrorLow(i+1));
@@ -447,12 +456,13 @@ if __name__ == '__main__':
 		# print DataHist.GetBinContent(i+1),TMP1.GetBinErrorUp(i+1),TMP1.GetBinErrorLow(i+1),hsprefit_tot.GetBinError(i+1)
 
 		curerr_dat = math.sqrt(hspostfit_tot_clone.GetBinError(i+1)*hspostfit_tot_clone.GetBinError(i+1) + staterr_post*staterr_post);
+	
+		#if DataHist.GetBinContent(i+1)<1: curerr_dat = math.sqrt(hspostfit_tot_clone.GetBinError(i+1)*hspostfit_tot_clone.GetBinError(i+1) +1)
 		curerr_pre = math.sqrt(hspostfit_tot_clone.GetBinError(i+1)*hspostfit_tot_clone.GetBinError(i+1) + staterr_post*staterr_post);
 		curdat = DataHist.GetBinContent(i+1);
 		curpre = hsprefit_tot.GetBinContent(i+1);
 		curpos = hspostfit_tot.GetBinContent(i+1);
 		i_dat_rat = (curdat-curpos)/curerr_dat;
-		
 		#print errorsPrefitFromJack_Up[i],errorsPrefitFromJack_Dn[i],curpre,curpos
 		#i_pre_rat = (curpre-curpos)/errorsPrefitFromJack_Up[i];
 		i_pre_rat = (curpos-curpre)/curerr_dat;
@@ -499,7 +509,7 @@ if __name__ == '__main__':
 		if i >= 60: tmptot2 += curpre;
 		# print "bin{0:2}: {1:4} {2:6} +/- {7:6f} +/- {8:6f} ||| Z={3:4f} Q={4:4f} L={5:4f} T={6:4f}".format(i,curdat,curpos,histZpost.GetBinContent(i+1),histqcdpost.GetBinContent(i+1),histLLpost.GetBinContent(i+1),histTaupost.GetBinContent(i+1),hspostfit_tot_clone.GetBinError(i+1),staterr_post)
 		#print "bin{0:2}: {1:4.4} {2:4.4} +/- {3:4.4f} +/- {4:4.4f} | prefit = {5:4.4f}".format(i,curdat,curpos,hspostfit_tot_clone.GetBinError(i+1),staterr_post,curpre)
-		print "{0:2} & ${1:6.2f} \pm {2:6.2f}$ & ${3:6.2f} \pm {4:6.2f}$ & ${5:6.2f} \pm {6:6.2f}$ & ${7:6.2f} \pm {8:6.2f}$ & ${9:6.2f} \pm {10:6.2f}$ & ${11:1}$ \\\\ \hline".format(i+1,histLLpost.GetBinContent(i+1),histLLpost.GetBinError(i+1),histTaupost.GetBinContent(i+1),histTaupost.GetBinError(i+1),histZpost.GetBinContent(i+1),histZpost.GetBinError(i+1),histqcdpost.GetBinContent(i+1),histqcdpost.GetBinError(i+1),curpos,hspostfit_tot.GetBinError(i+1),int(curdat));		
+		print "${0:6.2f} \pm {1:6.2f}$ & ${2:6.2f} \pm {3:6.2f}$ & ${4:6.2f} \pm {5:6.2f}$ & ${6:6.2f} \pm {7:6.2f}$ & ${8:6.2f} \pm {9:6.2f}$ & ${10:1}$ & {11:6.2f} \\\\ \hline".format(histLLpost.GetBinContent(i+1),histLLpost.GetBinError(i+1),histTaupost.GetBinContent(i+1),histTaupost.GetBinError(i+1),histZpost.GetBinContent(i+1),histZpost.GetBinError(i+1),histqcdpost.GetBinContent(i+1),histqcdpost.GetBinError(i+1),curpos,hspostfit_tot.GetBinError(i+1),int(curdat),i_dat_rat);		
 		#print " %d &  %g & %g & %g & %g " %(i+1, histLL.GetBinContent(i+1),histTau.GetBinContent(i+1),histZ.GetBinContent(i+1), histqcd.GetBinContent(i+1))
 		#print "%d & %g %g %g" %(i+1, histZ.GetBinContent(i+1),histZ.GetBinContent(i+1) , prepost_rat_Z.GetBinContent(i+1))
 		#print "bin{0:2}: {1:4} {2:4.2f} {5:4.2f}".format(i+1,curdat,curpos,hspostfit_tot_clone.GetBinError(i+1),staterr_post,curpre)
@@ -543,7 +553,7 @@ if __name__ == '__main__':
 	txta.SetNDC(); txta.SetTextSize(0.035);
 	txtb = TLatex(0.22,0.94,"Preliminary");
 	txtb.SetNDC(); txtb.SetTextFont(52); txtb.SetTextSize(0.035);
-	txtc = TLatex(0.70,0.94,"36.3 fb^{-1} (13 TeV)");
+	txtc = TLatex(0.70,0.94,"35.9 fb^{-1} (13 TeV)");
 	txtc.SetNDC(); txtc.SetTextFont(42); txtc.SetTextSize(0.035);	
 
 	txt1 = TLatex(0.25,0.25,"pull_{data} = (N_{obs}-N_{post})/#sigma_{post}");
@@ -662,7 +672,7 @@ if __name__ == '__main__':
 	####
 	
 	canPrePost_ovTot = TCanvas("canPrePost_ovTot","canPrePost_ovTot",1200,800);
-	prepost_rat_Z_ovTot.SetMaximum(1.1 );
+	prepost_rat_Z_ovTot.SetMaximum(3.1 );
 	prepost_rat_Z_ovTot.SetMinimum(-1.1);
 	prepost_rat_Z_ovTot.GetYaxis().SetTitleOffset(0.7);
 

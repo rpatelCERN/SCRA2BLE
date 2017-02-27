@@ -69,17 +69,20 @@ if __name__ == '__main__':
 		if ("T2tt" in sms): signaldirtag ="inputHistograms/fastsimSignalT2tt"
 		if "T1ttbb" in sms or "T1tbtb" in sms: signaldirtag="/fastsimSignalScanMixedFinalState"
 		'''
-		#signaldirtag="root://cmsxrootd.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV11new/"
-		signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
+		#signaldirtag="root://cmsxrootd.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"
+		#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
+		#signaldirtag="/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
+		signaldirtag="./inputHistograms/fastsimSignalT1bbbb/"
 	else: signaldirtag ="inputHistograms/FullSim"
 	signaltag = "RA2bin_proc_"+sms;
 	parse=sms.split('_')
 	model=parse[0]
 	#print parse
 	if options.fastsim: signaltag+="_fast"
-	print signaldirtag
-	signal_inputfile =TFile(signaldirtag+"/%s.root" %signaltag);
+	print signaldirtag+"/%s.root" %signaltag
+	signal_inputfile =TFile(signaldirtag+"%s.root" %signaltag);
 	signaltag="RA2bin_"+sms+"_fast";
+	print "%s_nominal" %signaltag
 	CorrSigHist=signal_inputfile.Get("%s_nominal" %signaltag)
 	CorrSigHist.Scale(lumi*1000.)	
 	#genMHTCorr(signaldirtag,signaltag,lumi)		
@@ -340,7 +343,7 @@ if __name__ == '__main__':
 	QCDStatUnc=QCDInputFile.Get("PredictionStat")		
 	QCDPriorUnc=QCDInputFile.Get("PredictionPrior")		
 	QCDCoreUp=QCDInputFile.Get("PredictionCoreUp")	
-	QCDCoreDn=QCDInputFile.Get("PredictionCoreDown")	
+	#QCDCoreDn=QCDInputFile.Get("PredictionCoreDown")	
 	QCDTail=QCDInputFile.Get("PredictionTail")	
 	QCDTrigDn=QCDInputFile.Get("PredictionTrigDown")	
 	QCDTrigUp=QCDInputFile.Get("PredictionTrigUp")	
@@ -352,7 +355,7 @@ if __name__ == '__main__':
 	QCDUnCorrel=QCDInputFile.Get("hPredictionUncorrelated")
 	signalRegion.addSystematicsLine('lnN',['qcd'], QCDUnCorrel);
 	signalRegion.addSystematicsLine('lnN',['qcd'], QCDTail);
-        signalRegion.addSystematicsLineAsymShape('lnN',['qcd'],QCDCoreUp,QCDCoreDn)
+        signalRegion.addSystematicsLine('lnN',['qcd'],QCDCoreUp)
         #signalRegion.addSystematicsLineAsymShape('lnN',['qcd'],QCDTrigUp,QCDTrigDn)
         #signalRegion.addSystematicsLineAsymShape('lnN',['qcd'],QCDTailUp,QCDTailDn)
 	HadTauClosureUnc=HadTau_file.Get("totalPredNonClosure_HadTau")		
