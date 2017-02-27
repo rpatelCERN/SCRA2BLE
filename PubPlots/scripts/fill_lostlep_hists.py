@@ -12,7 +12,7 @@ from agg_bins import *
 
 alpha = 1 - 0.6827
 
-def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction_HT5.root', outputfile = 'lostlep_hists.root', nbins = 174, lumiSF=1.):
+def fill_lostlep_hists(inputfile = 'inputs/bg_hists/LLPrediction.root', outputfile = 'lostlep_hists.root', nbins = 174, lumiSF=1.):
    
    print ('Input file is %s' % inputfile)
    print ('Output file is %s' % outputfile)
