@@ -68,7 +68,7 @@ if __name__ == '__main__':
 		if ("T2tt" in sms): signaldirtag ="inputHistograms/fastsimSignalT2tt"
 		if "T1ttbb" in sms or "T1tbtb" in sms: signaldirtag="/fastsimSignalScanMixedFinalState"
 			
-		#signaldirtag="root://cmsxrootd.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"
+		signaldirtag="root://cmseos.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"
 		#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
 		#signaldirtag="/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
 		#signaldirtag="./inputHistograms/fastsimSignalT1bbbb/"
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 	#print parse
 	if options.fastsim: signaltag+="_fast"
 	print signaldirtag+"/%s.root" %signaltag
-	signal_inputfile =TFile(signaldirtag+"/%s.root" %signaltag);
+	signal_inputfile =TFile.Open(signaldirtag+"/%s.root" %signaltag);
 	signaltag="RA2bin_"+sms+"_fast";
 	print "%s_nominal" %signaltag
 	CorrSigHist=signal_inputfile.Get("%s_nominal" %signaltag)
