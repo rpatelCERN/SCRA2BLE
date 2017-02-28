@@ -117,7 +117,7 @@ if __name__ == '__main__':
         cachedir('tmp')
 
     if not options.keeptar:
-    	os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
+    	os.system("tar --exclude-caches-all --exclude inputHistograms/fastsimSignalT*  -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
    
     #f = TFile.Open("inputHistograms/fastsimSignalT1tttt/RA2bin_signal.root");
     filenames = next(os.walk("/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"))[2]
