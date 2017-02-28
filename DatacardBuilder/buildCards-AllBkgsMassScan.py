@@ -68,7 +68,7 @@ if __name__ == '__main__':
 		if ("T2tt" in sms): signaldirtag ="inputHistograms/fastsimSignalT2tt"
 		if "T1ttbb" in sms or "T1tbtb" in sms: signaldirtag="/fastsimSignalScanMixedFinalState"
 			
-		signaldirtag="root://cmseos.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"
+		#signaldirtag="root://cmseos.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"
 		#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
 		#signaldirtag="/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
 		#signaldirtag="./inputHistograms/fastsimSignalT1bbbb/"
@@ -85,8 +85,8 @@ if __name__ == '__main__':
 	CorrSigHist=signal_inputfile.Get("%s_nominal" %signaltag)
 	CorrSigHist.Scale(lumi*1000.)	
 	#genMHTCorr(signaldirtag,signaltag,lumi)		
-	if "T2tt" in sms: 
-		CorrSigHist=LeptonCorr(signaldirtag,"T2tt",lumi, int(options.mGo), int(options.mLSP))   
+	if "T2tt" in sms or "T1tttt" in sms or "T5qqqqVV" in sms: 
+		CorrSigHist=LeptonCorr(signaldirtag,options.signal,lumi, int(options.mGo), int(options.mLSP))   
 	#MHTSyst=genMHTSyst(signaldirtag,signaltag,lumi)	
 
 	tagsForSignalRegion = binLabelsToList(CorrSigHist);	
