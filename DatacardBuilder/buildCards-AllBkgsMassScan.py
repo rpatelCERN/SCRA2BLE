@@ -274,7 +274,7 @@ if __name__ == '__main__':
 	signalSysJECUp=signal_inputfile.Get(signaltag+"_JECup")
 	signalSysJECDown=signal_inputfile.Get(signaltag+"_JECdown")
 	signalPUUp=signal_inputfile.Get(signaltag+"_puaccuncUp")
-	signalPUDn=signal_inputfile.Get(signaltag+"_puaccuncDown")
+	signalPUDown=signal_inputfile.Get(signaltag+"_puaccuncDown")
 	signalSysScaleUp=signal_inputfile.Get(signaltag+"_scaleuncUp")
 	signalSysScaleDown=signal_inputfile.Get(signaltag+"_scaleuncDown")
 	signalMCStatError=signal_inputfile.Get(signaltag+"_MCStatErr")
