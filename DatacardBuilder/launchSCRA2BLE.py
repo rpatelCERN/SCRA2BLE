@@ -116,11 +116,11 @@ if __name__ == '__main__':
         os.makedirs('tmp')
         cachedir('tmp')
 
-    #if not options.keeptar:
-    #os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
+    if not options.keeptar:
+    	os.system("tar --exclude-caches-all -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
    
     #f = TFile.Open("inputHistograms/fastsimSignalT1tttt/RA2bin_signal.root");
-    filenames = next(os.walk("/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV11new/"))[2]
+    filenames = next(os.walk("/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"))[2]
     #print filenames
 	
     models = []
@@ -129,6 +129,7 @@ if __name__ == '__main__':
     for f in filenames:
 	parse=f.split("_")
 	#print parse
+	if not "proc" in parse[1]:continue
 	if options.model==parse[2]:
 		models.append(parse[2])	
 		mGos.append(int(parse[3]))

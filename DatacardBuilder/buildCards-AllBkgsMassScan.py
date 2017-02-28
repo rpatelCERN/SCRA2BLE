@@ -79,7 +79,7 @@ if __name__ == '__main__':
 	#print parse
 	if options.fastsim: signaltag+="_fast"
 	print signaldirtag+"/%s.root" %signaltag
-	signal_inputfile =TFile(signaldirtag+"%s.root" %signaltag);
+	signal_inputfile =TFile(signaldirtag+"/%s.root" %signaltag);
 	signaltag="RA2bin_"+sms+"_fast";
 	print "%s_nominal" %signaltag
 	CorrSigHist=signal_inputfile.Get("%s_nominal" %signaltag)
@@ -273,7 +273,8 @@ if __name__ == '__main__':
 	signalSysJERDown=signal_inputfile.Get(signaltag+"_JERdown")
 	signalSysJECUp=signal_inputfile.Get(signaltag+"_JECup")
 	signalSysJECDown=signal_inputfile.Get(signaltag+"_JECdown")
-
+	signalPUUp=signal_inputfile.Get(signaltag+"_puaccuncUp")
+	signalPUDn=signal_inputfile.Get(signaltag+"_puaccuncDown")
 	signalSysScaleUp=signal_inputfile.Get(signaltag+"_scaleuncUp")
 	signalSysScaleDown=signal_inputfile.Get(signaltag+"_scaleuncDown")
 	signalMCStatError=signal_inputfile.Get(signaltag+"_MCStatErr")
@@ -296,6 +297,7 @@ if __name__ == '__main__':
 	signalRegion.addSystematicsLine('lnN',['sig'],signalMCStatError);	
 	signalRegion.addSystematicsLine('lnU',['sig'],MHTSyst);
 	
+	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalPUUp,signalPUDown)	
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysMisSFUp,signalSysMisSFDown)	
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysTrigSystUp,signalSysTrigSystDown)	
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],TkIsoUncUp,TkIsoUncDn)	
