@@ -23,8 +23,10 @@ def LeptonCorr(signaldirtag,model,lumi, mGo, mLSP): #Here you can also add the g
 	LLHist.Scale(1000*lumi)
 	TauHist.Scale(1000*lumi)
 	sms=model+'_%d_%d_fast' %(mGo,mLSP)
-        signal_file =TFile(signaldirtag+"/RA2bin_proc_%s.root" %sms);
+	signal_file=TFile.Open(signaldirtag+"/RA2bin_proc_%s.root" %sms);
+        #signal_file =TFile(signaldirtag+"/RA2bin_proc_%s.root" %sms);
 	signaltag="RA2bin_"+sms;
+	print signaltag
         signalRegion_sigHist = signal_file.Get(signaltag+"_nominalOrig");
         signalRegion_genHist = signal_file.Get(signaltag+"_genMHT");
 	signalRegion_sigHist.Scale(1000*lumi)
