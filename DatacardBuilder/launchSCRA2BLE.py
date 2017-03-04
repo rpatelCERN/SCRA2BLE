@@ -70,7 +70,7 @@ def condorize(command,tag,odir,CMSSWVER):
     	f2.write("Executable = %s \n" % (f1n) );
     	f2.write("Requirements = OpSys == \"LINUX\"&& (Arch != \"DUMMY\" ) \n");
     	f2.write("request_disk = 10000000 \n");
-    	f2.write("request_memory = 21000 \n");
+    	f2.write("request_memory = 5000 \n");
     	f2.write("Should_Transfer_Files = YES \n");
     	f2.write("WhenToTransferOutput  = ON_EXIT \n");
     	f2.write("Transfer_Input_Files = %s, %s.tar.gz \n" % (f1n,CMSSWVER));
@@ -120,8 +120,8 @@ if __name__ == '__main__':
     	os.system("tar --exclude-caches-all --exclude inputHistograms/fastsimSignalT*  -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
    
     #f = TFile.Open("inputHistograms/fastsimSignalT1tttt/RA2bin_signal.root");
-    #filenames = next(os.walk("/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"))[2]
-    filenames = next(os.walk("./inputHistograms/fastsimSignal%s/" %options.model))[2]
+    filenames = next(os.walk("/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"))[2]
+    #filenames = next(os.walk("./inputHistograms/fastsimSignal%s/" %options.model))[2]
     #print filenames
 	
     models = []
