@@ -66,8 +66,11 @@ if __name__ == '__main__':
 		#if ("T1" in sms or "T5qqqqVV" in sms): signaldirtag +="Gluino"
 		if ("T2qq" in sms): signaldirtag ="inputHistograms/fastsimSignalT2qq"
 		if ("T2tt" in sms): signaldirtag ="inputHistograms/fastsimSignalT2tt"
-		if "T1ttbb" in sms or "T1tbtb" in sms: signaldirtag="/fastsimSignalScanMixedFinalState"
-			
+		if "T1ttbb" in sms : signaldirtag="/fastsimSignalScanT1ttbb/"
+		if "T1tbtb" in sms : signaldirtag="/fastsimSignalScanT1tbtb/"			
+		if "T1tbtb" in sms : signaldirtag="/fastsimSignalScanT1tbtb/"			
+		if "T1tbtbT1tbbbT1bbbb" in sms : signaldirtag="/fastsimSignalScanT1tbtbT1tbbbT1bbbb/"			
+		if "T1tbtbT1tbttT1tttt" in sms : signaldirtag="/fastsimSignalScanT1tbtbT1tbttT1tttt/"			
 		signaldirtag="root://cmseos.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"
 
 		#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
@@ -86,7 +89,7 @@ if __name__ == '__main__':
 	CorrSigHist=signal_inputfile.Get("%s_nominal" %signaltag)
 	CorrSigHist.Scale(lumi*1000.)	
 	#genMHTCorr(signaldirtag,signaltag,lumi)		
-	if "T2tt" in sms or "T1tttt" in sms or "T5qqqqVV" in sms: 
+	if "T2tt" in sms or "T1tttt" in sms or "T5qqqqVV" in sms or "T1t" in sms: 
 		CorrSigHist=LeptonCorr(signaldirtag,options.signal,lumi, int(options.mGo), int(options.mLSP))   
 	#MHTSyst=genMHTSyst(signaldirtag,signaltag,lumi)	
 

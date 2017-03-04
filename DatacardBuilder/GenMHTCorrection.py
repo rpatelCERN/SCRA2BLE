@@ -4,6 +4,7 @@ def LeptonCorr(signaldirtag,model,lumi, mGo, mLSP): #Here you can also add the g
 	signalContamTau_file=TFile("inputHistograms/SignalContamin/Signal%sHtauContamin.root" %model)
 	signalContamGenLL_file=TFile("inputHistograms/SignalContamin/LLContamination_genMHT_%s.root" %model)
 	signalContamGenTau_file=TFile("inputHistograms/SignalContamin/Signal%sHtauContamin_genMHT.root" %model)
+	
 	LLHist=TH1D()
 	LLGenHist=TH1D()
 	TauHist=TH1D()
@@ -35,6 +36,7 @@ def LeptonCorr(signaldirtag,model,lumi, mGo, mLSP): #Here you can also add the g
 	for i in range(1,signalHistContam.GetNbinsX()+1):
 		YieldGen=signalRegion_genHist.GetBinContent(i)
 		#if signalHistContam.GetBinContent(i)>0.0:
+		print signalRegion_genHist.GetBinContent(i),(TauGenHist.GetBinContent(i)+LLGenHist.GetBinContent(i))
 		YieldGen=signalRegion_genHist.GetBinContent(i)-((TauGenHist.GetBinContent(i)+LLGenHist.GetBinContent(i))) #CORRECT THIS TO BE THE CONTAMINATION RUN OVER GEN
 		Yield=signalHistContam.GetBinContent(i)-TauHist.GetBinContent(i)-LLHist.GetBinContent(i)
 		Yield=(YieldGen+Yield)/2.0
