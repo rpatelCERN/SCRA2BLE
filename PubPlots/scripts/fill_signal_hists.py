@@ -42,7 +42,7 @@ def fill_signal_hists(outputfile = 'signal_hists.root', nbins = 174):
             inhist = model.inhist
             asr_hist = model.AggregateBins(asrs, asr_xtitle[name], asr_xbins[name])
             # do some standard formatting -- does not set line style
-            asr_hist.SetLineWidth(3)
+            asr_hist.SetLineWidth(4)
             asr_hist.SetLineColor(4)
             asr_hist.SetFillColor(0)
             asr_hist.SetMarkerSize(0)

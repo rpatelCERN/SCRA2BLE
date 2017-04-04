@@ -111,10 +111,12 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     if hdata_obs.GetMaximum()>ymax:
          ymax=hdata_obs.GetMaximum()
     if logy:
-        hbg_pred.SetMaximum(100*ymax)
+        hbg_pred.SetMaximum(300*ymax)
         hbg_pred.SetMinimum(0.09)
     else:
-        hbg_pred.SetMaximum(1.45*ymax)
+        hbg_pred.SetMaximum(1.625*ymax)
+        if signal1.find('T1tttt')>=0:
+            hbg_pred.SetMaximum(2.1*ymax)
         hbg_pred.SetMinimum(0.0)
             
     
@@ -132,7 +134,7 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     pull.GetYaxis().SetTitleSize(0.11)
     pull.GetYaxis().SetTitleOffset(0.4)
     hratdummy = ratio.dummy_hist
-    rat_max = 0.45
+    rat_max = 0.97
     hratdummy.SetMaximum(rat_max)
     hratdummy.SetMinimum(-rat_max)
     hratdummy.GetXaxis().SetLabelSize(0.12)
@@ -143,8 +145,10 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
 
     ## load signal histograms
     f_signal = open_if_necessary(signal_file)
-    hsig1 = f_signal.Get("%s/RA2bin_%s_fast" % (asr_name, signal1))
-    hsig2 = f_signal.Get("%s/RA2bin_%s_fast" % (asr_name, signal2))
+    # f_signal.ls()
+    # print (asr_name, signal1, signal2)
+    hsig1 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal1))
+    hsig2 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal2))
     hsig2.SetLineStyle(7)
     # scale to current luminosity
     if signal1.find("T2qq") >= 0:
@@ -210,38 +214,43 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     hsig1.Draw("hist,same")
     hsig2.Draw("hist,same")
     sumBG.gFull.Draw("2, same")
-    gdata_obs.Draw("p, same")
+    gdata_obs.Draw("p, 0, same")
 
     ## legends
-    legdata = TLegend(0.25-0.1, 0.78, 0.45-0.14, 0.9);
-    legdata.SetTextSize(0.03)
+    legdata = TLegend(0.25-0.1, 0.756, 0.45-0.14, 0.9);
+    legdata.SetTextSize(0.045)
     legdata.SetFillStyle(0)
-    leg1 = TLegend(0.27, 0.806, 0.56, 0.88);
-    leg1.SetTextSize(0.03)
+    leg1 = TLegend(0.27, 0.756, 0.56, 0.88);
+    leg1.SetTextSize(0.045)
     leg1.SetFillStyle(0)
-    leg2 = TLegend(0.44, 0.806, 0.73, 0.88);
-    leg2.SetTextSize(0.03)
+    leg2 = TLegend(0.44, 0.756, 0.73, 0.88);
+    leg2.SetTextSize(0.045)
     leg2.SetFillStyle(0)
-    leg3 = TLegend(0.6, 0.806, 0.89, 0.88);
-    leg3.SetTextSize(0.03)
+    leg3 = TLegend(0.61, 0.756, 0.90, 0.88);
+    leg3.SetTextSize(0.045)
     leg3.SetFillStyle(0)
-    leg4 = TLegend(0.82, 0.806, 1.1, 0.88);
-    leg4.SetTextSize(0.03)
+    leg4 = TLegend(0.825, 0.756, 1.105, 0.88);
+    leg4.SetTextSize(0.045)
     leg4.SetFillStyle(0)
-    legsig = TLegend(0.41, 0.7, 0.98, 0.8);
-    legsig.SetTextSize(0.03)
-    legsig.SetFillStyle(0)
-    legsig.SetMargin(0.2)
+
     
     legdata.AddEntry(gdata_obs.GetName(), "Data", "pes")
     leg1.AddEntry(hznn, "Z#rightarrow#nu#bar{#nu}", "f")
     leg2.AddEntry(hlostlep, "#splitline{Lost}{lepton}", "f")
     leg3.AddEntry(hhadtau, "#splitline{Hadronic}{#tau lepton}", "f")
     leg4.AddEntry(hqcd, "QCD", "f")
+
     sig1_arr = signal1.split("_")
-    legsig.AddEntry(hsig1, "%s (%s = %d GeV, m_{#tilde{#chi}_{1}^{0}} = %d GeV)" % (signal_to_latex[sig1_arr[0]], signal_to_mass[sig1_arr[0]], int(sig1_arr[1]), int(sig1_arr[2])), "l")
     sig2_arr = signal2.split("_")
-    legsig.AddEntry(hsig2, "%s (%s = %d GeV, m_{#tilde{#chi}_{1}^{0}} = %d GeV)" % (signal_to_latex[sig2_arr[0]], signal_to_mass[sig2_arr[0]], int(sig2_arr[1]), int(sig2_arr[2])), "l")
+    legs1 = "%s (%s = %d GeV, m_{#tilde{#chi}_{1}^{0}} = %d GeV)" % (signal_to_latex[sig1_arr[0]], signal_to_mass[sig1_arr[0]], int(sig1_arr[1]), int(sig1_arr[2]))
+    legs2 = "%s (%s = %d GeV, m_{#tilde{#chi}_{1}^{0}} = %d GeV)" % (signal_to_latex[sig2_arr[0]], signal_to_mass[sig2_arr[0]], int(sig2_arr[1]), int(sig2_arr[2]))
+    slength = max(len(legs1), len(legs2))
+    legsig = TLegend(1.-slength/165.5, 0.62, 1.-slength/165.5+0.55, 0.75);
+    legsig.SetTextSize(0.04)
+    legsig.SetFillStyle(0)
+    legsig.SetMargin(0.125)
+    legsig.AddEntry(hsig1, legs1, "l")
+    legsig.AddEntry(hsig2, legs2, "l")
 
     legdata.Draw()
     leg1.Draw()
@@ -255,8 +264,8 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     latex.SetNDC();
     latex.SetTextAlign(12);
     latex.SetTextFont(62);
-    latex.SetTextSize(0.03);
-    latex.DrawLatex(1.-len(cut_labels)/120., 0.655, cut_labels);
+    latex.SetTextSize(0.038);
+    latex.DrawLatex(1.-len(cut_labels)/99.5, 0.575, cut_labels);
 
     pad2.cd()
     ratiomid = TLine(hbg_pred.GetBinLowEdge(1), 0., hbg_pred.GetBinLowEdge(hbg_pred.GetNbinsX()+1), 0.)
@@ -279,7 +288,7 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     else:
         hratdummy.Draw("axis")
         ratio_bands.Draw("e2, same")
-        ratio_markers.Draw("p, same")
+        ratio_markers.Draw("p, 0, same")
         ratiomid.SetLineStyle(2)
 
     ratiomid.Draw()
@@ -301,8 +310,8 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
 
     ## now wite CMS headers
     canv.cd()
-    CMS_lumi.writeExtraText = True
-    CMS_lumi.extraText = "      Preliminary"
+    CMS_lumi.writeExtraText = False
+    CMS_lumi.extraText = "        Preliminary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
     CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (13 TeV)"
     iPos=0

@@ -74,9 +74,10 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     pull.SetMinimum(-pull_max)
     hratdummy = ratio.dummy_hist
     hratdummy.GetXaxis().SetTitle("Search region bin number")
-    rat_max = 2.45
+    rat_max = 3.5
+    rat_min = -1
     hratdummy.SetMaximum(rat_max)
-    hratdummy.SetMinimum(-rat_max)
+    hratdummy.SetMinimum(rat_min)
     ## fix bin labels
     for ibin in range(174):
         hratdummy.GetXaxis().SetBinLabel(ibin+1, "")
@@ -121,7 +122,7 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     pad1.SetPad(0., 1 - up_height,    1., 1.00)
     pad1.SetFrameFillColor(0)
     pad1.SetFillColor(0)
-    pad1.SetTopMargin(0.12)
+    pad1.SetTopMargin(0.1)
     pad1.SetLeftMargin(0.1)
     pad1.SetRightMargin(0.02)
     pad1.SetLogy()    
@@ -144,13 +145,13 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     gdata_obs.Draw("p, same")
 
     ## legends
-    leg1 = TLegend(0.675, 0.45, 0.92, 0.77)
+    leg1 = TLegend(0.675, 0.5, 0.92, 0.82)
     leg1.SetTextSize(0.035)
     leg1.SetFillStyle(0)
     leg1.AddEntry(gdata_obs.GetName(), "Data", "pes")
     leg1.AddEntry(hznn, "Z#rightarrow#nu#bar{#nu}", "f")
     leg1.AddEntry(hlostlep, "#splitline{Lost}{lepton}", "f")
-    leg2 = TLegend(0.83, 0.45, 1.075, 0.77)
+    leg2 = TLegend(0.83, 0.5, 1.075, 0.82)
     leg2.SetTextSize(0.035)
     leg2.SetFillStyle(0)
     leg2.AddEntry(hbg_pred, "", "f")
@@ -246,7 +247,7 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     else:
         hratdummy.Draw("axis")
         ratio_bands.Draw("e2, same")
-        ratio_markers.Draw("p, same")
+        ratio_markers.Draw("p, 0, same")
     ratiomid = TLine(hbg_pred.GetBinLowEdge(1), 0., hbg_pred.GetBinLowEdge(hbg_pred.GetNbinsX()+1), 0.)
     ratiomid.SetLineStyle(2)
     ratiomid.Draw()
@@ -254,24 +255,25 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     ## lines again
     if doPull:
         rat_max = pull_max
-    tl_njet.DrawLine(31.-0.5, 0.-rat_max, 31.-0.5,rat_max) 
-    tl_njet.DrawLine(71.-0.5, 0.-rat_max, 71.-0.5,rat_max)
-    tl_njet.DrawLine(111.-0.5, 0.-rat_max,111.-0.5,rat_max)
-    tl_njet.DrawLine(143.-0.5, 0.-rat_max,143.-0.5,rat_max)
-    tl_nb.DrawLine(11.-0.5,0.-rat_max,11.-0.5,rat_max) 
-    tl_nb.DrawLine(21.-0.5,0.-rat_max,21.-0.5,rat_max) 
-    tl_nb.DrawLine(41.-0.5,0.-rat_max,41.-0.5,rat_max)
-    tl_nb.DrawLine(51.-0.5,0.-rat_max,51.-0.5,rat_max) 
-    tl_nb.DrawLine(61.-0.5,0.-rat_max,61.-0.5,rat_max) 
-    tl_nb.DrawLine(81.-0.5,0.-rat_max,81.-0.5,rat_max) 
-    tl_nb.DrawLine(91.-0.5,0.-rat_max,91.-0.5,rat_max) 
-    tl_nb.DrawLine(101.-0.5,0.-rat_max,101.-0.5,rat_max) 
-    tl_nb.DrawLine(119.-0.5,0.-rat_max,119.-0.5,rat_max)
-    tl_nb.DrawLine(127.-0.5,0.-rat_max,127.-0.5,rat_max)
-    tl_nb.DrawLine(135.-0.5,0.-rat_max,135.-0.5,rat_max)
-    tl_nb.DrawLine(151.-0.5,0.-rat_max,151.-0.5,rat_max)
-    tl_nb.DrawLine(159.-0.5,0.-rat_max,159.-0.5,rat_max)
-    tl_nb.DrawLine(167.-0.5,0.-rat_max,167.-0.5,rat_max)
+        rat_min = 0-rat_max
+    tl_njet.DrawLine(31.-0.5, rat_min, 31.-0.5,rat_max) 
+    tl_njet.DrawLine(71.-0.5, rat_min, 71.-0.5,rat_max)
+    tl_njet.DrawLine(111.-0.5, rat_min,111.-0.5,rat_max)
+    tl_njet.DrawLine(143.-0.5, rat_min,143.-0.5,rat_max)
+    tl_nb.DrawLine(11.-0.5,rat_min,11.-0.5,rat_max) 
+    tl_nb.DrawLine(21.-0.5,rat_min,21.-0.5,rat_max) 
+    tl_nb.DrawLine(41.-0.5,rat_min,41.-0.5,rat_max)
+    tl_nb.DrawLine(51.-0.5,rat_min,51.-0.5,rat_max) 
+    tl_nb.DrawLine(61.-0.5,rat_min,61.-0.5,rat_max) 
+    tl_nb.DrawLine(81.-0.5,rat_min,81.-0.5,rat_max) 
+    tl_nb.DrawLine(91.-0.5,rat_min,91.-0.5,rat_max) 
+    tl_nb.DrawLine(101.-0.5,rat_min,101.-0.5,rat_max) 
+    tl_nb.DrawLine(119.-0.5,rat_min,119.-0.5,rat_max)
+    tl_nb.DrawLine(127.-0.5,rat_min,127.-0.5,rat_max)
+    tl_nb.DrawLine(135.-0.5,rat_min,135.-0.5,rat_max)
+    tl_nb.DrawLine(151.-0.5,rat_min,151.-0.5,rat_max)
+    tl_nb.DrawLine(159.-0.5,rat_min,159.-0.5,rat_max)
+    tl_nb.DrawLine(167.-0.5,rat_min,167.-0.5,rat_max)
     
     ## refresh everything, to be safe
     pad1.cd()
@@ -286,7 +288,7 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     ## now wite CMS headers
     canv.cd()
     lumi = 35.862345
-    CMS_lumi.writeExtraText = True
+    CMS_lumi.writeExtraText = False
     CMS_lumi.extraText = "       Preliminary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
     CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (13 TeV)"

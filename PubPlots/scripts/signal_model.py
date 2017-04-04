@@ -19,7 +19,7 @@ class SignalModel:
         self.inhist = self.GetInputHist()
 
     def GetInputFile(self): # returns pointer to Kevin's file containing signal input
-        fname = "../DatacardBuilder/inputHistograms/fastsimSignal%s/RA2bin_signal.root" % self.model
+        fname = "../DatacardBuilder/inputHistograms/fastsimSignal%s/RA2bin_proc_%s_%d_%d_fast.root" % (self.model, self.model, int(self.mMom), int(self.mLSP))
         # if we've already opened the file, just return the pointer already in memory, else create it
         if gROOT.GetListOfFiles().FindObject(fname) == None: 
             return TFile.Open(fname)
@@ -27,7 +27,7 @@ class SignalModel:
             return gROOT.GetListOfFiles().FindObject(fname)
         
     def GetInputHist(self): # returns histogram loaded from input file
-        hname = "RA2bin_%s_%d_%d_fast" % (self.model, int(self.mMom), int(self.mLSP))
+        hname = "RA2bin_%s_%d_%d_fast_nominal" % (self.model, int(self.mMom), int(self.mLSP))
         return self.infile.Get(hname)
 
     def AggregateBins(self, agg_bins, xaxis_title=None, xaxis_binning=None): # creates a histogram from aggregated bins -- this is used in fill_signal_hists.py
@@ -39,7 +39,7 @@ class SignalModel:
         for iasr in range(len(agg_bins)):
             asr_yield = 0.
             for isub in range(len(agg_bins[iasr])):
-                asr_yield += self.inhist.GetBinContent(agg_bins[iasr][isub]) # note: agg_bins[iasr][isub] index runs from 1 to nbins -- no need to add 1
+                asr_yield += self.inhist.GetBinContent(agg_bins[iasr][isub]+1)
             hagg.SetBinContent(iasr+1, asr_yield)
         return hagg
     

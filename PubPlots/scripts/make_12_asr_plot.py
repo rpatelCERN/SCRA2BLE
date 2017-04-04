@@ -72,8 +72,8 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
     pull.SetMinimum(-3.2)
     hratdummy = ratio.dummy_hist
     hratdummy.GetXaxis().SetTitle("Aggregate search region bin number")
-    hratdummy.SetMaximum(1.25)
-    hratdummy.SetMinimum(-1.25)
+    hratdummy.SetMaximum(1.8)
+    hratdummy.SetMinimum(-1.8)
 
 
     ## setup canvas and pads
@@ -108,7 +108,7 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
     pad1.SetPad(0., 1 - up_height,    1., 1.00)
     pad1.SetFrameFillColor(0)
     pad1.SetFillColor(0)
-    pad1.SetTopMargin(0.12)
+    pad1.SetTopMargin(0.1)
     pad1.SetLeftMargin(0.1)
     pad1.SetRightMargin(0.02)
     pad1.SetLogy()    
@@ -127,8 +127,8 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
     ## draw graphs on top pad
     hbg_pred.Draw()
     hs.Draw("hist, same")
-    sumBG.gFull.Draw("2, same")
-    gdata_obs.Draw("p, same")
+    sumBG.gFull.Draw("2, 0, same")
+    gdata_obs.Draw("p, 0, same")
 
     ## legends
     legdata = TLegend(0.25-0.1, 0.73, 0.45-0.14, 0.85);
@@ -203,8 +203,8 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
     canv.cd()
     lumi = 35.862345
     CMS_lumi.cmsTextSize = 0.85
-    CMS_lumi.writeExtraText = True
-    CMS_lumi.extraText = "   Preliminary"
+    CMS_lumi.writeExtraText = False
+    CMS_lumi.extraText = "        Preliminary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
     CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (13 TeV)"
     iPos=0

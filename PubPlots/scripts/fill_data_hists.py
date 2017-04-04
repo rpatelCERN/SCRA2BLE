@@ -30,9 +30,12 @@ def fill_data_hists(inputfile = 'inputs/data_hists/RA2bin_signal.root', inputhis
     data_obs.graph.Write()
 
     for name, asrs in asr_sets.items():
+        print(name)
         dASR = outfile.mkdir(name)
         dASR.cd()
-        data_obs_asr = data_obs.AggregateBins(asrs, asr_xtitle[name], asr_xbins[name])
+        verbose=False
+        if name=='ASR': verbose=True
+        data_obs_asr = data_obs.AggregateBins(asrs, asr_xtitle[name], asr_xbins[name], verbose)
         data_obs_asr.hist.Write()
         data_obs_asr.graph.Write()
 
