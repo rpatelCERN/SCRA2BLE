@@ -46,8 +46,9 @@ class DataObs:
         gData.SetMarkerColor(1)
         return gData
 
-    def AggregateBins(self, agg_bins, xaxis_title=None, xaxis_binning=None):
+    def AggregateBins(self, agg_bins, xaxis_title=None, xaxis_binning=None, verbose=False):
         ## can define the x-axis here if you want
+        #if verbose: self.hist.Print("all")
         if xaxis_title != None and xaxis_binning!=None:
             hagg = TH1D(self.hist.GetName(), ";"+xaxis_title, len(xaxis_binning)-1, array('d', xaxis_binning))
         else:
@@ -55,7 +56,8 @@ class DataObs:
         for iasr in range(len(agg_bins)):
             asr_yield = 0.
             for isub in range(len(agg_bins[iasr])):
-                asr_yield += self.hist.GetBinContent(agg_bins[iasr][isub]) # note: agg_bins[iasr][isub] index runs from 1 to nbins -- no need to add 1
+                #if verbose: print iasr, isub, agg_bins[iasr][isub]+1, self.hist.GetBinContent(agg_bins[iasr][isub]+1)
+                asr_yield += self.hist.GetBinContent(agg_bins[iasr][isub]+1)
             hagg.SetBinContent(iasr+1, asr_yield)
         return DataObs(hagg)
         

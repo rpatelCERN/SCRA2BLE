@@ -34,17 +34,17 @@ class Uncertainty:
             for isub in range(len(agg_bins[iasr])):
                 if done[isub]: # if we've already counted this one, skip it
                     continue
-                if self.hist.GetBinContent(agg_bins[iasr][isub]) < 0.:  # no uncertainty, skip it
+                if self.hist.GetBinContent(agg_bins[iasr][isub]+1) < 0.:  # no uncertainty, skip it
                     done[isub] = True
                     continue
                 ibin = SearchBin(agg_bins[iasr][isub])
-                corr_part = self.hist.GetBinContent(ibin.num) # we'll separately sum groups of uncertainties that are correlated, then add them in quadrature with the uncorrelated ones
+                corr_part = self.hist.GetBinContent(ibin.num+1) # we'll separately sum groups of uncertainties that are correlated, then add them in quadrature with the uncorrelated ones
                 #print("Adding ibin %d: %f" % (ibin.num, corr_part))
                 done[isub] = True
                 for jsub in range(len(agg_bins[iasr])):
                     if isub == jsub or done[jsub]:
                         continue
-                    if self.hist.GetBinContent(agg_bins[iasr][jsub]) < 0.:  # no uncertainty, skip it
+                    if self.hist.GetBinContent(agg_bins[iasr][jsub]+1) < 0.:  # no uncertainty, skip it
                         done[jsub] = True
                         continue
                     jbin = SearchBin(agg_bins[iasr][jsub])
@@ -64,7 +64,7 @@ class Uncertainty:
                       or ('LLAcc' in self.corrs and ibin.ihtmht == jbin.ihtmht and ibin.inj == jbin.inj and \
                           (ibin.inb + ibin.inj >=2) and (ibin.inb >= 2 or ibin.inj >= 2)):
                       #print("\t and adding correlated jbin %d: %f" % (jbin.num, self.hist.GetBinContent(jbin.num)))
-                      corr_part += self.hist.GetBinContent(jbin.num)
+                      corr_part += self.hist.GetBinContent(jbin.num+1)
                       done[jsub] = True
                       # end jsub loop
                 err += corr_part**2
