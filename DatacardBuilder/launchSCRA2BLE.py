@@ -16,7 +16,7 @@ parser = OptionParser()
 parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='use fastsim signal (default = %default)')
 parser.add_option('--keeptar', action='store_true', dest='keeptar', default=False, help='keep old tarball for condor jobs (default = %default)')
 parser.add_option("--model", dest="model", default = "T1bbbb",help="SMS model", metavar="model")
-parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond/SignifScan",help="EOS output directory  (default = %default)", metavar="outDir")
+parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond/BugFix",help="EOS output directory  (default = %default)", metavar="outDir")
 parser.add_option('--lpc', action='store_true', dest='lpc', default=True, help='running on lpc condor  (default = %default)')
 
 (options, args) = parser.parse_args()
