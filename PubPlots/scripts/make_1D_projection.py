@@ -311,7 +311,7 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     ## now wite CMS headers
     canv.cd()
     CMS_lumi.writeExtraText = False
-    CMS_lumi.extraText = "        Preliminary"
+    CMS_lumi.extraText = "     Preliminary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
     CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (13 TeV)"
     iPos=0
