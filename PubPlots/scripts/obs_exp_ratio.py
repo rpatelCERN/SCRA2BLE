@@ -92,7 +92,7 @@ class ObsExpRatio:
         hratdummy.SetStats(0)
         hratdummy.SetFillColor(0)
         hratdummy.SetFillStyle(0)
-        hratdummy.GetYaxis().SetTitle("#frac{(Obs.-Exp.)}{Exp.}")
+        hratdummy.GetYaxis().SetTitle("#frac{Obs.-Exp.}{Exp.}")
         hratdummy.GetXaxis().SetLabelSize(0.15)
         hratdummy.GetXaxis().SetLabelOffset(0.03)
         hratdummy.GetXaxis().SetTitleSize(0.14)

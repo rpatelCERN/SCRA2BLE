@@ -2,7 +2,7 @@
 from __future__ import print_function
 import os
 import errno
-from ROOT import TFile, TH1D, Math, gStyle, THStack, TLegend, TCanvas, TPad, gPad, TLatex, TLine
+from ROOT import TFile, TH1D, Math, gStyle, THStack, TLegend, TCanvas, TPad, gPad, TLatex, TLine, TGaxis
 from bg_est import BGEst
 from data_obs import DataObs
 from obs_exp_ratio import ObsExpRatio
@@ -120,12 +120,13 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
     pad2.SetBottomMargin(0.35)
     pad2.SetTopMargin(0)
     pad2.SetLeftMargin(0.1)
-    pad2.SetRightMargin(0.025)
+    pad2.SetRightMargin(0.02)
     pad2.Draw()
     pad1.cd()
 
     ## draw graphs on top pad
     hbg_pred.Draw()
+    hbg_pred.GetXaxis().SetNdivisions(12,0,0)
     hs.Draw("hist, same")
     sumBG.gFull.Draw("2, 0, same")
     gdata_obs.Draw("p, 0, same")
@@ -162,6 +163,7 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
     pad2.cd()
     if doPull:
         pull.Draw("hist")
+        pull.GetXaxis().SetNdivisions(12,0,0)
         p1 = TLine(pull.GetBinLowEdge(1), 1., pull.GetBinLowEdge(pull.GetNbinsX()+1), 1.)
         p2 = TLine(pull.GetBinLowEdge(1), 2., pull.GetBinLowEdge(pull.GetNbinsX()+1), 2.)
         m1 = TLine(pull.GetBinLowEdge(1), -1., pull.GetBinLowEdge(pull.GetNbinsX()+1), -1.)
@@ -177,6 +179,7 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
         pull.Draw("hist,same")
     else:
         hratdummy.Draw("axis")
+        hratdummy.GetXaxis().SetNdivisions(12,0,0)
         ratio_bands.Draw("e2, same")
         ratio_markers.Draw("p, same")
     ratiomid = TLine(hbg_pred.GetBinLowEdge(1), 0., hbg_pred.GetBinLowEdge(hbg_pred.GetNbinsX()+1), 0.)
@@ -192,6 +195,10 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
     ## refresh everything, to be safe
     pad1.cd()
     gPad.RedrawAxis()
+    rightaxis = TGaxis(12.5, 0.09, 12.5, 100*ymax, 0.09, 100*ymax, 510, "+L")
+    rightaxis.SetLabelSize(0)
+    rightaxis.SetNdivisions(0)
+    rightaxis.Draw()
     gPad.Modified()
     gPad.Update()
     pad2.cd()

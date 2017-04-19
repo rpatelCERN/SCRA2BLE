@@ -134,7 +134,7 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     pad2.SetBottomMargin(0.35)
     pad2.SetTopMargin(0)
     pad2.SetLeftMargin(0.1)
-    pad2.SetRightMargin(0.025)
+    pad2.SetRightMargin(0.02)
     pad2.Draw()
     pad1.cd()
 
@@ -164,8 +164,8 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     ymax_top = hbg_pred.GetMaximum()
     ymin_top = 0.09
 
-    ymax2_top = 1000.
-    ymax3_top = 200.
+    ymax2_top = 40000.
+    ymax3_top = 400.
     ymax4_top = 30.
     ymax5_top = 5.
 
@@ -198,20 +198,21 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     ## Nb separation lines
     tl_nb = TLine()
     tl_nb.SetLineStyle(3)
+    tl_nb.SetLineWidth(2)
     tl_nb.DrawLine(11.-0.5,ymin_top,11.-0.5,ymax2_top) 
     tl_nb.DrawLine(21.-0.5,ymin_top,21.-0.5,ymax2_top) 
     tl_nb.DrawLine(41.-0.5,ymin_top,41.-0.5,ymax2_top)
-    tl_nb.DrawLine(51.-0.5,ymin_top,51.-0.5,ymax3_top) 
-    tl_nb.DrawLine(61.-0.5,ymin_top,61.-0.5,ymax3_top) 
-    tl_nb.DrawLine(81.-0.5,ymin_top,81.-0.5,ymax3_top) 
-    tl_nb.DrawLine(91.-0.5,ymin_top,91.-0.5,ymax4_top) 
-    tl_nb.DrawLine(101.-0.5,ymin_top,101.-0.5,ymax4_top) 
-    tl_nb.DrawLine(119.-0.5,ymin_top,119.-0.5,ymax4_top)
-    tl_nb.DrawLine(127.-0.5,ymin_top,127.-0.5,ymax5_top)
-    tl_nb.DrawLine(135.-0.5,ymin_top,135.-0.5,ymax5_top)
-    tl_nb.DrawLine(151.-0.5,ymin_top,151.-0.5,ymax5_top)
-    tl_nb.DrawLine(159.-0.5,ymin_top,159.-0.5,ymax5_top)
-    tl_nb.DrawLine(167.-0.5,ymin_top,167.-0.5,ymax5_top)
+    tl_nb.DrawLine(51.-0.5,ymin_top,51.-0.5,ymax2_top) 
+    tl_nb.DrawLine(61.-0.5,ymin_top,61.-0.5,ymax2_top) 
+    tl_nb.DrawLine(81.-0.5,ymin_top,81.-0.5,ymax2_top) 
+    tl_nb.DrawLine(91.-0.5,ymin_top,91.-0.5,ymax2_top) 
+    tl_nb.DrawLine(101.-0.5,ymin_top,101.-0.5,ymax2_top) 
+    tl_nb.DrawLine(119.-0.5,ymin_top,119.-0.5,ymax3_top)
+    tl_nb.DrawLine(127.-0.5,ymin_top,127.-0.5,ymax3_top)
+    tl_nb.DrawLine(135.-0.5,ymin_top,135.-0.5,ymax3_top)
+    tl_nb.DrawLine(151.-0.5,ymin_top,151.-0.5,ymax3_top)
+    tl_nb.DrawLine(159.-0.5,ymin_top,159.-0.5,ymax3_top)
+    tl_nb.DrawLine(167.-0.5,ymin_top,167.-0.5,ymax3_top)
     
     ## Nb labels
     ttext_nb = TLatex()
@@ -219,11 +220,15 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     ttext_nb.SetTextSize(0.04)
     ttext_nb.SetTextAlign(22)
     
-    ttext_nb.DrawLatex(9.-0.5 , ymax_top/12. , "N_{#scale[0.2]{ }b-jet}")
+    ttext_nb.DrawLatex(11.-0.5 , ymax_top/16. , "N_{#scale[0.2]{ }b-jet}")
     ttext_nb.DrawLatex(6.-0.5 , ymax_top/40. , "0")
     ttext_nb.DrawLatex(16.-0.5 , ymax_top/40. , "1")
     ttext_nb.DrawLatex(26.-0.5 , ymax_top/40. , "2")
-    ## ttext_nb.DrawLatex(36.-0.5 , ymax_top/40. , "#geq 3")
+
+    ttext_nb.DrawLatex(36.-0.5 , ymax_top/40. , "0")
+    ttext_nb.DrawLatex(46.-0.5 , ymax_top/40. , "1")
+    ttext_nb.DrawLatex(56.-0.5 , ymax_top/40. , "2")
+    ttext_nb.DrawLatex(66.-0.5 , ymax_top/40. , "#geq 3")
 
     pad2.cd()
     if doPull:
@@ -246,6 +251,7 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
         m3.Draw()
     else:
         hratdummy.Draw("axis")
+        ratio_bands.SetFillStyle(3245)
         ratio_bands.Draw("e2, same")
         ratio_markers.Draw("p, 0, same")
     ratiomid = TLine(hbg_pred.GetBinLowEdge(1), 0., hbg_pred.GetBinLowEdge(hbg_pred.GetNbinsX()+1), 0.)

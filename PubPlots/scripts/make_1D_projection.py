@@ -4,11 +4,12 @@
 from __future__ import print_function
 import os
 import errno
-from ROOT import TFile, TH1D, Math, gStyle, THStack, TLegend, TCanvas, TPad, gPad, TLatex, TLine, gROOT
+from ROOT import TFile, TH1D, Math, gStyle, THStack, TLegend, TCanvas, TPad, gPad, TLatex, TLine, gROOT, TGaxis
 from bg_est import BGEst
 from data_obs import DataObs
 from obs_exp_ratio import ObsExpRatio
 from utils import GetPred
+from math import floor
 import CMS_lumi
 
 
@@ -19,6 +20,8 @@ latex_templates = {'N_{jet} (p_{T} > 30 GeV)': 'njets',\
                    'N_{b-jet} (p_{T} > 30 GeV)': 'nbjets',\
                    'H_{T}^{miss} [GeV]': 'mht',\
                    'H_{T} [GeV]': 'ht'}
+
+n_divisions = {'N_{jet} (p_{T} > 30 GeV)': 10, 'N_{b-jet} (p_{T} > 30 GeV)': 4}
 
 signal_to_latex = {'T1tttt': '#tilde{g}#rightarrowt#bar{t} #tilde{#chi}_{1}^{0}',\
                    'T1bbbb': '#tilde{g}#rightarrowb#bar{b} #tilde{#chi}_{1}^{0}',\
@@ -100,9 +103,9 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
         hbg_pred.GetYaxis().SetTitleSize(0.04*1.18)
         hbg_pred.GetYaxis().SetTitleOffset(1.05)
     else:
-        hbg_pred.GetYaxis().SetLabelSize(0.03*1.08)
-        hbg_pred.GetYaxis().SetTitleSize(0.04*1.08)
-        hbg_pred.GetYaxis().SetTitleOffset(1.38)
+        hbg_pred.GetYaxis().SetLabelSize(0.04*1.08)
+        hbg_pred.GetYaxis().SetTitleSize(0.045*1.18)
+        hbg_pred.GetYaxis().SetTitleOffset(1.13)
     hbg_pred.Add(hlostlep)
     hbg_pred.Add(hhadtau)
     hbg_pred.Add(hqcd)
@@ -139,9 +142,9 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     hratdummy.SetMinimum(-rat_max)
     hratdummy.GetXaxis().SetLabelSize(0.12)
     hratdummy.GetXaxis().SetTitleSize(0.14)
-    hratdummy.GetYaxis().SetLabelSize(0.1)
-    hratdummy.GetYaxis().SetTitleSize(0.11)
-    hratdummy.GetYaxis().SetTitleOffset(0.4)
+    hratdummy.GetYaxis().SetLabelSize(0.11)
+    hratdummy.GetYaxis().SetTitleSize(0.128)
+    hratdummy.GetYaxis().SetTitleOffset(0.39)
 
     ## load signal histograms
     f_signal = open_if_necessary(signal_file)
@@ -194,7 +197,7 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     pad1.SetFillColor(0)
     pad1.SetTopMargin(0.1)
     pad1.SetLeftMargin(0.12)
-    pad1.SetRightMargin(0.025)
+    pad1.SetRightMargin(0.02)
     pad1.SetLogy(logy)    
     pad1.Draw()
 
@@ -204,11 +207,13 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     pad2.SetBottomMargin(0.35)
     pad2.SetTopMargin(0)
     pad2.SetLeftMargin(0.12)
-    pad2.SetRightMargin(0.025)
+    pad2.SetRightMargin(0.02)
     pad2.Draw()
     pad1.cd()
 
     ## draw graphs on top pad
+    if hlostlep.GetXaxis().GetTitle() in n_divisions.keys():
+        hbg_pred.GetXaxis().SetNdivisions(n_divisions[hlostlep.GetXaxis().GetTitle()],0,0)
     hbg_pred.Draw()
     hs.Draw("hist, same")
     hsig1.Draw("hist,same")
@@ -271,6 +276,8 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     ratiomid = TLine(hbg_pred.GetBinLowEdge(1), 0., hbg_pred.GetBinLowEdge(hbg_pred.GetNbinsX()+1), 0.)
     if doPull:
         pull.Draw("hist")
+        if hlostlep.GetXaxis().GetTitle() in n_divisions.keys():
+            pull.GetXaxis().SetNdivisions(n_divisions[hlostlep.GetXaxis().GetTitle()],0,0)
         p1 = TLine(pull.GetBinLowEdge(1), 1., pull.GetBinLowEdge(pull.GetNbinsX()+1), 1.)
         p2 = TLine(pull.GetBinLowEdge(1), 2., pull.GetBinLowEdge(pull.GetNbinsX()+1), 2.)
         m1 = TLine(pull.GetBinLowEdge(1), -1., pull.GetBinLowEdge(pull.GetNbinsX()+1), -1.)
@@ -287,6 +294,8 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
         pull.Draw("hist,same")
     else:
         hratdummy.Draw("axis")
+        if hlostlep.GetXaxis().GetTitle() in n_divisions.keys():
+            hratdummy.GetXaxis().SetNdivisions(n_divisions[hlostlep.GetXaxis().GetTitle()],0,0)
         ratio_bands.Draw("e2, same")
         ratio_markers.Draw("p, 0, same")
         ratiomid.SetLineStyle(2)
@@ -301,6 +310,11 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     ## refresh everything, to be safe
     pad1.cd()
     gPad.RedrawAxis()
+    rightcoord = hbg_pred.GetBinLowEdge(sumBG.nbins)+hbg_pred.GetBinWidth(sumBG.nbins)
+    rightaxis = TGaxis(rightcoord, 0., rightcoord, hbg_pred.GetMaximum(), 0., hbg_pred.GetMaximum(), 510, "+L")
+    rightaxis.SetLabelSize(0)
+    rightaxis.SetNdivisions(0)
+    rightaxis.Draw()
     gPad.Modified()
     gPad.Update()
     pad2.cd()
