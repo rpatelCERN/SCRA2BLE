@@ -48,9 +48,9 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     hbg_pred.SetLineWidth(0)
     hbg_pred.SetLineColor(0)
     hbg_pred.SetFillColor(0)
-    hbg_pred.GetYaxis().SetLabelSize(0.035*1.18)
-    hbg_pred.GetYaxis().SetTitleSize(0.045*1.18)
-    hbg_pred.GetYaxis().SetTitleOffset(0.75)
+    hbg_pred.GetYaxis().SetLabelSize(0.048*1.24)
+    hbg_pred.GetYaxis().SetTitleSize(0.05625*1.3)
+    hbg_pred.GetYaxis().SetTitleOffset(0.7)
     hbg_pred.GetYaxis().SetTitleFont(42)
     hbg_pred.GetXaxis().SetLabelSize(0)
     hbg_pred.Add(hlostlep)
@@ -72,12 +72,26 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     pull_max = pull.GetMaximum()*1.1
     pull.SetMaximum(pull_max)
     pull.SetMinimum(-pull_max)
+    pull.GetXaxis().SetLabelSize(0.12*1.25)
+    pull.GetXaxis().SetTitleSize(0.14*1.25)
+    pull.GetYaxis().SetLabelSize(0.1*1.25)
+    pull.GetYaxis().SetTitleSize(0.115*1.25)
+    pull.GetXaxis().SetTitleOffset(0.9)
+    pull.GetXaxis().SetLabelOffset(0.01)
+    pull.GetYaxis().SetTitleOffset(0.275)
     hratdummy = ratio.dummy_hist
     hratdummy.GetXaxis().SetTitle("Search region bin number")
     rat_max = 3.5
     rat_min = -1
     hratdummy.SetMaximum(rat_max)
     hratdummy.SetMinimum(rat_min)
+    hratdummy.GetXaxis().SetLabelSize(0.15*1.5)
+    hratdummy.GetXaxis().SetTitleSize(0.15*1.35)
+    hratdummy.GetYaxis().SetLabelSize(0.12*1.3)
+    hratdummy.GetYaxis().SetTitleSize(0.12*1.3)
+    hratdummy.GetXaxis().SetTitleOffset(0.75)
+    hratdummy.GetXaxis().SetLabelOffset(0.02)
+    hratdummy.GetYaxis().SetTitleOffset(0.25)
     ## fix bin labels
     for ibin in range(174):
         hratdummy.GetXaxis().SetBinLabel(ibin+1, "")

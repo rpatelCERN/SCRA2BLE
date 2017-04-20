@@ -48,9 +48,9 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
     hbg_pred.SetLineWidth(0)
     hbg_pred.SetLineColor(0)
     hbg_pred.SetFillColor(0)
-    hbg_pred.GetYaxis().SetLabelSize(0.035*1.18)
-    hbg_pred.GetYaxis().SetTitleSize(0.045*1.18)
-    hbg_pred.GetYaxis().SetTitleOffset(0.75)
+    hbg_pred.GetYaxis().SetLabelSize(0.048*1.24)
+    hbg_pred.GetYaxis().SetTitleSize(0.05625*1.3)
+    hbg_pred.GetYaxis().SetTitleOffset(0.7)
     hbg_pred.GetYaxis().SetTitleFont(42)
     hbg_pred.GetXaxis().SetLabelSize(0)
     hbg_pred.Add(hlostlep)
@@ -70,10 +70,26 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
     pull.GetXaxis().SetTitle("Aggregate search region bin number")
     pull.SetMaximum(3.2)
     pull.SetMinimum(-3.2)
+    pull.GetXaxis().SetLabelSize(0.12*1.2)
+    pull.GetXaxis().SetTitleSize(0.14*1.19)
+    pull.GetYaxis().SetLabelSize(0.1*1.25)
+    pull.GetYaxis().SetTitleSize(0.115*1.25)
+    pull.GetXaxis().SetTitleOffset(0.9)
+    pull.GetXaxis().SetLabelOffset(0.01)
+    pull.GetYaxis().SetTitleOffset(0.275)
+    
     hratdummy = ratio.dummy_hist
     hratdummy.GetXaxis().SetTitle("Aggregate search region bin number")
     hratdummy.SetMaximum(1.8)
     hratdummy.SetMinimum(-1.8)
+
+    hratdummy.GetXaxis().SetLabelSize(0.12*1.4)
+    hratdummy.GetXaxis().SetTitleSize(0.15*1.35)
+    hratdummy.GetYaxis().SetLabelSize(0.1*1.25)
+    hratdummy.GetYaxis().SetTitleSize(0.115*1.25)
+    hratdummy.GetXaxis().SetTitleOffset(0.8)
+    hratdummy.GetXaxis().SetLabelOffset(0.01)
+    hratdummy.GetYaxis().SetTitleOffset(0.275)
 
 
     ## setup canvas and pads

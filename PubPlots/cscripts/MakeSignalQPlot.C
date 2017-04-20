@@ -39,10 +39,10 @@ TGraphAsymmErrors* GetBGErr(TString graph_name, TH1D* hdata_obs, TFile* f_lostle
   TString stat_name = "g"+graph_name+"Stat";
   TString syst_name = "g"+graph_name+"Syst";
 
-  TH1D* hqcd = (TH1D*) f_qcd->Get("hPredAllBins");
-  TH1D* hlostlep = (TH1D*) f_lostlep->Get("hPredAllBins");
-  TH1D* hhadtau = (TH1D*) f_hadtau->Get("hPredAllBins");
-  TH1D* hznn = (TH1D*) f_znn->Get("hPredAllBins");
+  TH1D* hqcd = (TH1D*) f_qcd->Get("hCV");
+  TH1D* hlostlep = (TH1D*) f_lostlep->Get("hCV");
+  TH1D* hhadtau = (TH1D*) f_hadtau->Get("hCV");
+  TH1D* hznn = (TH1D*) f_znn->Get("hCV");
 
   TH1D* lostlepstatUp = (TH1D*) f_lostlep->Get("hStatUp");
   TH1D* lostlepstatDown = (TH1D*) f_lostlep->Get("hStatDown");
@@ -253,45 +253,59 @@ void MakePlot(TString plot_title, TGraphAsymmErrors* gdata_obs, TGraphAsymmError
   }
  
   // Setup legends                                                                                                                                                                                                                                                         
-  TLegend * leg1 = new TLegend(0.54, 0.5, 0.7, 0.77);
+  TLegend * leg1 = new TLegend(0.6525, 0.52, 0.8025, 0.79);
   set_style(leg1,0.025);
   leg1->SetMargin(0.15);
   cout << leg1->GetMargin() << endl;
   if (t2) {
-    leg1->AddEntry(h1, "#splitline{pp #rightarrow #tilde{t}#tilde{t}, #tilde{t} #rightarrow t #tilde{#chi}_{1}^{0}}{(m_{#tilde{t}}=700 GeV, m_{#tilde{#chi}_{1}^{0}}=50 GeV)}", "p");
-    leg1->AddEntry(h3, "#splitline{pp #rightarrow #tilde{b}#tilde{b}, #tilde{b} #rightarrow b #tilde{#chi}_{1}^{0}}{(m_{#tilde{b}}=650 GeV, m_{#tilde{#chi}_{1}^{0}}=1 GeV)}", "p");
-    leg1->AddEntry(h5, "#splitline{pp #rightarrow #tilde{q}#tilde{q}, #tilde{q} #rightarrow q #tilde{#chi}_{1}^{0}}{(m_{#tilde{q}}=1000 GeV, m_{#tilde{#chi}_{1}^{0}}=100 GeV)}", "p");
+    leg1->AddEntry(h1, "#splitline{#tilde{t} #rightarrow t #tilde{#chi}_{1}^{0}}{(700 GeV, 50 GeV)}", "p");
+    leg1->AddEntry(h3, "#splitline{#tilde{b} #rightarrow b #tilde{#chi}_{1}^{0}}{(650 GeV, 1 GeV)}", "p");
+    leg1->AddEntry(h5, "#splitline{#tilde{q} #rightarrow q #tilde{#chi}_{1}^{0}}{(1000 GeV, 100 GeV)}", "p");
   } else {
-    leg1->AddEntry(h1, "#splitline{pp #rightarrow #tilde{g}#tilde{g}, #tilde{g} #rightarrow t#bar{t} #tilde{#chi}_{1}^{0}}{(m_{#tilde{g}}=1500 GeV, m_{#tilde{#chi}_{1}^{0}}=100 GeV)}", "p");
-    leg1->AddEntry(h3, "#splitline{pp #rightarrow #tilde{g}#tilde{g}, #tilde{g} #rightarrow b#bar{b} #tilde{#chi}_{1}^{0}}{(m_{#tilde{g}}=1500 GeV, m_{#tilde{#chi}_{1}^{0}}=100 GeV)}", "p");
-    leg1->AddEntry(h5, "#splitline{pp #rightarrow #tilde{g}#tilde{g}, #tilde{g} #rightarrow q#bar{q} #tilde{#chi}_{1}^{0}}{(m_{#tilde{g}}=1400 GeV, m_{#tilde{#chi}_{1}^{0}}=100 GeV)}", "p");
+    leg1->AddEntry(h1, "#splitline{#tilde{g} #rightarrow t#bar{t} #tilde{#chi}_{1}^{0}}{(1500 GeV, 100 GeV)}", "p");
+    leg1->AddEntry(h3, "#splitline{#tilde{g} #rightarrow b#bar{b} #tilde{#chi}_{1}^{0}}{(1500 GeV, 100 GeV)}", "p");
+    leg1->AddEntry(h5, "#splitline{#tilde{g} #rightarrow q#bar{q} #tilde{#chi}_{1}^{0}}{(1400 GeV, 100 GeV)}", "p");
   }
-  // leg1->AddEntry(h1, "T1tttt (1500 GeV, 100 GeV)", "p");
-  // leg1->AddEntry(h3, "T1bbbb (1500 GeV, 100 GeV)", "p");
-  // leg1->AddEntry(h5, "T1qqqq (1400 GeV, 100 GeV)", "p");
+  // if (t2) {
+  //   leg1->AddEntry(h1, "#splitline{pp #rightarrow #tilde{t}#tilde{t}, #tilde{t} #rightarrow t #tilde{#chi}_{1}^{0}}{(m_{#tilde{t}}=700 GeV, m_{#tilde{#chi}_{1}^{0}}=50 GeV)}", "p");
+  //   leg1->AddEntry(h3, "#splitline{pp #rightarrow #tilde{b}#tilde{b}, #tilde{b} #rightarrow b #tilde{#chi}_{1}^{0}}{(m_{#tilde{b}}=650 GeV, m_{#tilde{#chi}_{1}^{0}}=1 GeV)}", "p");
+  //   leg1->AddEntry(h5, "#splitline{pp #rightarrow #tilde{q}#tilde{q}, #tilde{q} #rightarrow q #tilde{#chi}_{1}^{0}}{(m_{#tilde{q}}=1000 GeV, m_{#tilde{#chi}_{1}^{0}}=100 GeV)}", "p");
+  // } else {
+  //   leg1->AddEntry(h1, "#splitline{pp #rightarrow #tilde{g}#tilde{g}, #tilde{g} #rightarrow t#bar{t} #tilde{#chi}_{1}^{0}}{(m_{#tilde{g}}=1500 GeV, m_{#tilde{#chi}_{1}^{0}}=100 GeV)}", "p");
+  //   leg1->AddEntry(h3, "#splitline{pp #rightarrow #tilde{g}#tilde{g}, #tilde{g} #rightarrow b#bar{b} #tilde{#chi}_{1}^{0}}{(m_{#tilde{g}}=1500 GeV, m_{#tilde{#chi}_{1}^{0}}=100 GeV)}", "p");
+  //   leg1->AddEntry(h5, "#splitline{pp #rightarrow #tilde{g}#tilde{g}, #tilde{g} #rightarrow q#bar{q} #tilde{#chi}_{1}^{0}}{(m_{#tilde{g}}=1400 GeV, m_{#tilde{#chi}_{1}^{0}}=100 GeV)}", "p");
+  // }
+
 
   
-  TLegend * leg2 = new TLegend(0.755, 0.5, 0.985, 0.77);
+  TLegend * leg2 = new TLegend(0.8125, 0.52, 1.0425, 0.79);
   set_style(leg2,0.025);
   leg2->SetMargin(0.13);
-  if (t2) {
-    leg2->AddEntry(h2, "#splitline{pp #rightarrow #tilde{t}#tilde{t}, #tilde{t} #rightarrow t #tilde{#chi}_{1}^{0}}{(m_{#tilde{t}}=300 GeV, m_{#tilde{#chi}_{1}^{0}}=200 GeV)}", "p");
-    leg2->AddEntry(h4, "#splitline{pp #rightarrow #tilde{b}#tilde{b}, #tilde{b} #rightarrow b #tilde{#chi}_{1}^{0}}{(m_{#tilde{b}}=500 GeV, m_{#tilde{#chi}_{1}^{0}}=300 GeV)}", "p");
-    leg2->AddEntry(h6, "#splitline{pp #rightarrow #tilde{q}#tilde{q}, #tilde{q} #rightarrow q #tilde{#chi}_{1}^{0}}{(m_{#tilde{q}}=700 GeV, m_{#tilde{#chi}_{1}^{0}}=400 GeV)}", "p");
+    if (t2) {
+    leg2->AddEntry(h2, "#splitline{#tilde{t} #rightarrow t #tilde{#chi}_{1}^{0}}{(300 GeV, 200 GeV)}", "p");
+    leg2->AddEntry(h4, "#splitline{#tilde{b} #rightarrow b #tilde{#chi}_{1}^{0}}{(500 GeV, 300 GeV)}", "p");
+    leg2->AddEntry(h6, "#splitline{#tilde{q} #rightarrow q #tilde{#chi}_{1}^{0}}{(400 GeV, 700 GeV)}", "p");
   } else {
-    leg2->AddEntry(h2, "#splitline{pp #rightarrow #tilde{g}#tilde{g}, #tilde{g} #rightarrow t#bar{t} #tilde{#chi}_{1}^{0}}{(m_{#tilde{g}}=1200 GeV, m_{#tilde{#chi}_{1}^{0}}=800 GeV)}", "p");
-    leg2->AddEntry(h4, "#splitline{pp #rightarrow #tilde{g}#tilde{g}, #tilde{g} #rightarrow b#bar{b} #tilde{#chi}_{1}^{0}}{(m_{#tilde{g}}=1000 GeV, m_{#tilde{#chi}_{1}^{0}}=900 GeV)}", "p");
-    leg2->AddEntry(h6, "#splitline{pp #rightarrow #tilde{g}#tilde{g}, #tilde{g} #rightarrow q#bar{q} #tilde{#chi}_{1}^{0}}{(m_{#tilde{g}}=1000 GeV, m_{#tilde{#chi}_{1}^{0}}=800 GeV)}", "p");
+    leg2->AddEntry(h2, "#splitline{#tilde{g} #rightarrow t#bar{t} #tilde{#chi}_{1}^{0}}{(1200 GeV, 800 GeV)}", "p");
+    leg2->AddEntry(h4, "#splitline{#tilde{g} #rightarrow b#bar{b} #tilde{#chi}_{1}^{0}}{(1000 GeV, 900 GeV)}", "p");
+    leg2->AddEntry(h6, "#splitline{#tilde{g} #rightarrow q#bar{q} #tilde{#chi}_{1}^{0}}{(1000 GeV, 800 GeV)}", "p");
   }
-  // leg2->AddEntry(h2, "T1tttt (1200 GeV, 800 GeV)", "p");
-  // leg2->AddEntry(h4, "T1bbbb (1000 GeV, 900 GeV)", "p");
-  // leg2->AddEntry(h6, "T1qqqq (1000 GeV, 800 GeV)", "p");
-  
-  TLegend * leg3 = new TLegend(0.4, 0.65, 0.63, 0.75);
+    
+  // if (t2) {
+  //   leg2->AddEntry(h2, "#splitline{pp #rightarrow #tilde{t}#tilde{t}, #tilde{t} #rightarrow t #tilde{#chi}_{1}^{0}}{(m_{#tilde{t}}=300 GeV, m_{#tilde{#chi}_{1}^{0}}=200 GeV)}", "p");
+  //   leg2->AddEntry(h4, "#splitline{pp #rightarrow #tilde{b}#tilde{b}, #tilde{b} #rightarrow b #tilde{#chi}_{1}^{0}}{(m_{#tilde{b}}=500 GeV, m_{#tilde{#chi}_{1}^{0}}=300 GeV)}", "p");
+  //   leg2->AddEntry(h6, "#splitline{pp #rightarrow #tilde{q}#tilde{q}, #tilde{q} #rightarrow q #tilde{#chi}_{1}^{0}}{(m_{#tilde{q}}=700 GeV, m_{#tilde{#chi}_{1}^{0}}=400 GeV)}", "p");
+  // } else {
+  //   leg2->AddEntry(h2, "#splitline{pp #rightarrow #tilde{g}#tilde{g}, #tilde{g} #rightarrow t#bar{t} #tilde{#chi}_{1}^{0}}{(m_{#tilde{g}}=1200 GeV, m_{#tilde{#chi}_{1}^{0}}=800 GeV)}", "p");
+  //   leg2->AddEntry(h4, "#splitline{pp #rightarrow #tilde{g}#tilde{g}, #tilde{g} #rightarrow b#bar{b} #tilde{#chi}_{1}^{0}}{(m_{#tilde{g}}=1000 GeV, m_{#tilde{#chi}_{1}^{0}}=900 GeV)}", "p");
+  //   leg2->AddEntry(h6, "#splitline{pp #rightarrow #tilde{g}#tilde{g}, #tilde{g} #rightarrow q#bar{q} #tilde{#chi}_{1}^{0}}{(m_{#tilde{g}}=1000 GeV, m_{#tilde{#chi}_{1}^{0}}=800 GeV)}", "p");
+  // }
+
+  TLegend * leg3 = new TLegend(0.53, 0.62, 0.76, 0.72);
   set_style(leg3,0.025);
   leg3->AddEntry(hbg_pred, "Total BG", "f");
 
-  TLegend * leg4 = new TLegend(0.33, 0.65, 0.4, 0.75);
+  TLegend * leg4 = new TLegend(0.46, 0.62, 0.53, 0.72);
   set_style(leg4,0.025);
   leg4->AddEntry(gdata_obs, "Data", "pes");
 
@@ -402,52 +416,58 @@ void MakePlot(TString plot_title, TGraphAsymmErrors* gdata_obs, TGraphAsymmError
   float ymax3_bottom = 2.15;
   float ymax4_bottom = 2.15;
   
-  TLine *tl_njet = new TLine();
+  TLine* tl_njet = new TLine();
   tl_njet->SetLineStyle(2);
-  tl_njet->DrawLine(41.-0.5,ymin_top,41.-0.5,ymax_top); 
-  tl_njet->DrawLine(81.-0.5,ymin_top,81.-0.5,ymax_top); 
-  tl_njet->DrawLine(121.-0.5,ymin_top,121.-0.5,ymax_top); 
-
+  tl_njet->DrawLine(31.-0.5,ymin_top,31.-0.5,ymax_top) ;
+  tl_njet->DrawLine(71.-0.5,ymin_top,71.-0.5,ymax_top) ;
+  tl_njet->DrawLine(111.-0.5,ymin_top,111.-0.5,ymax_top) ;
+  tl_njet->DrawLine(143.-0.5,ymin_top,143.-0.5,ymax_top) ;
+    
   // Njet labels
-  TLatex * ttext_njet = new TLatex();
+  TLatex* ttext_njet = new TLatex();
   ttext_njet->SetTextFont(42);
   ttext_njet->SetTextSize(0.04);
   ttext_njet->SetTextAlign(22);
-  ttext_njet->DrawLatex(20.-0.5 , ymax_top/4. , "3 #leq N_{#scale[0.2]{ }jet} #leq 4");
-  ttext_njet->DrawLatex(60.-0.5 , ymax_top/4. , "5 #leq N_{#scale[0.2]{ }jet} #leq 6");
-  ttext_njet->DrawLatex(100.-0.5 , ymax_top/4. , "7 #leq N_{#scale[0.2]{ }jet} #leq 8");
-  ttext_njet->DrawLatex(140.-0.5 , ymax_top/4. , "N_{#scale[0.2]{ }jet} #geq 9");
-
+  ttext_njet->DrawLatex(15.-0.5 , ymax_top/4. , "N_{#scale[0.2]{ }jet} = 2");
+  ttext_njet->DrawLatex(51.-0.5 , ymax_top/4. , "3 #leq N_{#scale[0.2]{ }jet} #leq 4");
+  ttext_njet->DrawLatex(91.-0.5 , ymax_top/4. , "5 #leq N_{#scale[0.2]{ }jet} #leq 6");
+  ttext_njet->DrawLatex(126.-0.5 , ymax_top/4. , "7 #leq N_{#scale[0.2]{ }jet} #leq 8");
+  ttext_njet->DrawLatex(158.-0.5 , ymax_top/4. , "N_{#scale[0.2]{ }jet} #geq 9");
+    
   // Nb separation lines
-  TLine *tl_nb = new TLine();
+  TLine* tl_nb = new TLine();
   tl_nb->SetLineStyle(3);
-  tl_nb->DrawLine(11.-0.5,ymin_top,11.-0.5,ymax2_top); 
-  tl_nb->DrawLine(21.-0.5,ymin_top,21.-0.5,ymax2_top); 
-  tl_nb->DrawLine(31.-0.5,ymin_top,31.-0.5,ymax2_top);
+  tl_nb->SetLineWidth(2);
+  tl_nb->DrawLine(11.-0.5,ymin_top,11.-0.5,ymax2_top) ;
+  tl_nb->DrawLine(21.-0.5,ymin_top,21.-0.5,ymax2_top) ;
   tl_nb->DrawLine(41.-0.5,ymin_top,41.-0.5,ymax2_top);
-  tl_nb->DrawLine(51.-0.5,ymin_top,51.-0.5,ymax3_top); 
-  tl_nb->DrawLine(61.-0.5,ymin_top,61.-0.5,ymax3_top); 
-  tl_nb->DrawLine(71.-0.5,ymin_top,71.-0.5,ymax3_top); 
-  tl_nb->DrawLine(81.-0.5,ymin_top,81.-0.5,ymax3_top); 
-  tl_nb->DrawLine(91.-0.5,ymin_top,91.-0.5,ymax4_top); 
-  tl_nb->DrawLine(101.-0.5,ymin_top,101.-0.5,ymax4_top); 
-  tl_nb->DrawLine(111.-0.5,ymin_top,111.-0.5,ymax4_top);
-  tl_nb->DrawLine(121.-0.5,ymin_top,121.-0.5,ymax4_top);
-  tl_nb->DrawLine(131.-0.5,ymin_top,131.-0.5,ymax5_top);
-  tl_nb->DrawLine(141.-0.5,ymin_top,141.-0.5,ymax5_top);
-  tl_nb->DrawLine(151.-0.5,ymin_top,151.-0.5,ymax5_top);
+  tl_nb->DrawLine(51.-0.5,ymin_top,51.-0.5,ymax2_top) ;
+  tl_nb->DrawLine(61.-0.5,ymin_top,61.-0.5,ymax2_top) ;
+  tl_nb->DrawLine(81.-0.5,ymin_top,81.-0.5,ymax2_top) ;
+  tl_nb->DrawLine(91.-0.5,ymin_top,91.-0.5,ymax2_top) ;
+  tl_nb->DrawLine(101.-0.5,ymin_top,101.-0.5,ymax2_top) ;
+  tl_nb->DrawLine(119.-0.5,ymin_top,119.-0.5,ymax3_top);
+  tl_nb->DrawLine(127.-0.5,ymin_top,127.-0.5,ymax3_top);
+  tl_nb->DrawLine(135.-0.5,ymin_top,135.-0.5,ymax3_top);
+  tl_nb->DrawLine(151.-0.5,ymin_top,151.-0.5,ymax3_top);
+  tl_nb->DrawLine(159.-0.5,ymin_top,159.-0.5,ymax3_top);
+  tl_nb->DrawLine(167.-0.5,ymin_top,167.-0.5,ymax3_top);
     
   // Nb labels
-  TLatex * ttext_nb = new TLatex();
+  TLatex* ttext_nb = new TLatex();
   ttext_nb->SetTextFont(42);
   ttext_nb->SetTextSize(0.04);
   ttext_nb->SetTextAlign(22);
     
-  ttext_nb->DrawLatex(9.-0.5 , ymax_top/12. , "N_{#scale[0.2]{ }b-jet}");
+  ttext_nb->DrawLatex(11.-0.5 , ymax_top/16. , "N_{#scale[0.2]{ }b-jet}");
   ttext_nb->DrawLatex(6.-0.5 , ymax_top/40. , "0");
   ttext_nb->DrawLatex(16.-0.5 , ymax_top/40. , "1");
   ttext_nb->DrawLatex(26.-0.5 , ymax_top/40. , "2");
-  ttext_nb->DrawLatex(36.-0.5 , ymax_top/40. , "#geq 3");
+    
+  ttext_nb->DrawLatex(36.-0.5 , ymax_top/40. , "0");
+  ttext_nb->DrawLatex(46.-0.5 , ymax_top/40. , "1");
+  ttext_nb->DrawLatex(56.-0.5 , ymax_top/40. , "2");
+  ttext_nb->DrawLatex(66.-0.5 , ymax_top/40. , "#geq 3");
 
   
 
@@ -468,8 +488,8 @@ void MakePlot(TString plot_title, TGraphAsymmErrors* gdata_obs, TGraphAsymmError
 
   
   // Luminosity information for scaling
-  double lumi     = 12.902808; // 
-  double lumi_ref = 12.902808; //
+  double lumi     = 35.9; // 
+  double lumi_ref = 35.9; //
 
   char tempname[200];
   TString line = "";
@@ -481,7 +501,7 @@ void MakePlot(TString plot_title, TGraphAsymmErrors* gdata_obs, TGraphAsymmError
   int iPos=0;
     
   writeExtraText = true;
-  extraText   = "       Preliminary";
+  extraText   = "       Supplementary";
   TString lumi_sqrtS = line;
   
   TPaveText * pave = new TPaveText(0.18, 0.86, 0.4, 0.96, "brNDC");
@@ -491,8 +511,8 @@ void MakePlot(TString plot_title, TGraphAsymmErrors* gdata_obs, TGraphAsymmError
   pad2->cd();
   pad2->SetGridy(0);
 
-  if (t2) htemp->SetMaximum(8.5);
-  else htemp->SetMaximum(4.3);
+  if (t2) htemp->SetMaximum(4.85);
+  else htemp->SetMaximum(4.85);
   htemp->SetMinimum(0);
     
   htemp->Draw("axis");
@@ -510,36 +530,34 @@ void MakePlot(TString plot_title, TGraphAsymmErrors* gdata_obs, TGraphAsymmError
   // q_t1bbbb_1000_900->Draw("p, same");
   // q_t1qqqq_1400_100->Draw("p, same");
   // q_t1qqqq_1000_800->Draw("p, same");
-  if (!t2) qp1->Draw();
+  qp1->Draw();
   qp2->Draw();
-  if (!t2) qp3->Draw();
+  qp3->Draw();
   qp4->Draw();
-  if (t2) {
-    qp6->Draw();
-    qp8->Draw();
-  }
-  double ymax_low = htemp->GetMaximum();
-  tl_njet->DrawLine(41.-0.5,0., 41.-0.5,ymax_low); 
-  tl_njet->DrawLine(81.-0.5,0., 81.-0.5,ymax_low);
-  tl_njet->DrawLine(121.-0.5,0.,121.-0.5,ymax_low);
-  tl_nb->DrawLine(11.-0.5,0.,11.-0.5,ymax_low); 
-  tl_nb->DrawLine(21.-0.5,0.,21.-0.5,ymax_low); 
-  tl_nb->DrawLine(31.-0.5,0.,31.-0.5,ymax_low);
-  //  tl_nb->DrawLine(41.-0.5,0.,41.-0.5,ymax_low);
-  tl_nb->DrawLine(51.-0.5,0.,51.-0.5,ymax_low); 
-  tl_nb->DrawLine(61.-0.5,0.,61.-0.5,ymax_low); 
-  tl_nb->DrawLine(71.-0.5,0.,71.-0.5,ymax_low); 
-  // tl_nb->DrawLine(81.-0.5,0.,81.-0.5,ymax_low); 
-  tl_nb->DrawLine(91.-0.5,0.,91.-0.5,ymax_low); 
-  tl_nb->DrawLine(101.-0.5,0.,101.-0.5,ymax_low); 
-  tl_nb->DrawLine(111.-0.5,0.,111.-0.5,ymax_low);
-  //   tl_nb->DrawLine(121.-0.5,0.,121.-0.5,ymax_low);
-  tl_nb->DrawLine(131.-0.5,0.,131.-0.5,ymax_low);
-  tl_nb->DrawLine(141.-0.5,0.,141.-0.5,ymax_low);
-  tl_nb->DrawLine(151.-0.5,0.,151.-0.5,ymax_low);
-
-  // // hratiogerr->GetXaxis()->SetRangeUser(0,6);
-  //  hratiogerr->Draw("e2");
+  // if (t2) {
+  //   qp6->Draw();
+  //   qp8->Draw();
+  // }
+  double rat_min = 0., rat_max = 4.85;
+  tl_njet->DrawLine(31.-0.5, rat_min, 31.-0.5,rat_max);
+  tl_njet->DrawLine(71.-0.5, rat_min, 71.-0.5,rat_max);
+  tl_njet->DrawLine(111.-0.5, rat_min,111.-0.5,rat_max);
+  tl_njet->DrawLine(143.-0.5, rat_min,143.-0.5,rat_max);
+  tl_nb->DrawLine(11.-0.5,rat_min,11.-0.5,rat_max);
+  tl_nb->DrawLine(21.-0.5,rat_min,21.-0.5,rat_max);
+  tl_nb->DrawLine(41.-0.5,rat_min,41.-0.5,rat_max);
+  tl_nb->DrawLine(51.-0.5,rat_min,51.-0.5,rat_max);
+  tl_nb->DrawLine(61.-0.5,rat_min,61.-0.5,rat_max);
+  tl_nb->DrawLine(81.-0.5,rat_min,81.-0.5,rat_max);
+  tl_nb->DrawLine(91.-0.5,rat_min,91.-0.5,rat_max);
+  tl_nb->DrawLine(101.-0.5,rat_min,101.-0.5,rat_max);
+  tl_nb->DrawLine(119.-0.5,rat_min,119.-0.5,rat_max);
+  tl_nb->DrawLine(127.-0.5,rat_min,127.-0.5,rat_max);
+  tl_nb->DrawLine(135.-0.5,rat_min,135.-0.5,rat_max);
+  tl_nb->DrawLine(151.-0.5,rat_min,151.-0.5,rat_max);
+  tl_nb->DrawLine(159.-0.5,rat_min,159.-0.5,rat_max);
+  tl_nb->DrawLine(167.-0.5,rat_min,167.-0.5,rat_max);
+  
 
 
   q1->GetXaxis()->SetLabelSize(font_size_dw);
@@ -580,8 +598,8 @@ void MakePlot(TString plot_title, TGraphAsymmErrors* gdata_obs, TGraphAsymmError
   CMS_lumi(canv, iPeriod, iPos, lumi_sqrtS);
 
  
-  gPad->Print(plotdir+plot_title+".pdf");
-  gPad->Print(plotdir+plot_title+".png");
+  gPad->Print(plotdir+"/"+plot_title+".pdf");
+  gPad->Print(plotdir+"/"+plot_title+".png");
 
   outfile->cd();
   gPad->Write();
@@ -615,10 +633,12 @@ void MakeSignalQPlot() {
   // gInterpreter->GenerateDictionary("vector<TLorentzVector>","TLorentzVector.h;vector");
 
   // Setup style
-  cout << "Setting tdr style."  << endl;
+  cout << "Setting tdr style...";
   TStyle *tdrStyle = new TStyle("tdrStyle","Style for P-TDR");
   setTDRStyle(tdrStyle);
   tdrStyle->cd();
+  cout << "Done." << endl;
+
 
   gStyle->SetHatchesLineWidth(1);
   gStyle->SetHatchesSpacing(1);
@@ -637,11 +657,11 @@ void MakeSignalQPlot() {
   TFile* f_data_obs = new TFile("data_hists.root", "read");
 
   
-  TH1D* hqcd = (TH1D*) f_qcd->Get("hPredAllBins");
-  TH1D* hlostlep = (TH1D*) f_lostlep->Get("hPredAllBins");
-  TH1D* hhadtau = (TH1D*) f_hadtau->Get("hPredAllBins");
-  TH1D* hznn = (TH1D*) f_znn->Get("hPredAllBins");
-  TH1D* hdata_obs = (TH1D*) f_data_obs->Get("data");
+  TH1D* hqcd = (TH1D*) f_qcd->Get("hCV");
+  TH1D* hlostlep = (TH1D*) f_lostlep->Get("hCV");
+  TH1D* hhadtau = (TH1D*) f_hadtau->Get("hCV");
+  TH1D* hznn = (TH1D*) f_znn->Get("hCV");
+  TH1D* hdata_obs = (TH1D*) f_data_obs->Get("hCV");
   
   hlostlep->Sumw2();
   hhadtau->Sumw2();

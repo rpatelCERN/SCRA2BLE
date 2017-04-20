@@ -63,7 +63,7 @@ def make_1d_pull_dist(plot_title, lostlep, hadtau, znn, qcd, data_obs):
     B = 0.15*H 
     L = 0.12*W
     R = 0.04*W
-    canv = TCanvas("canvName","canvName", 50, 50, W, H)
+    canv = TCanvas("pullcanv","pullcanv", 50, 50, W, H)
     canv.SetFillColor(0)
     canv.SetBorderMode(0)
     canv.SetFrameFillStyle(0)
