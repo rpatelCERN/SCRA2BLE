@@ -33,7 +33,8 @@ def fill_signal_hists(outputfile = 'signal_hists.root', nbins = 174):
                      SignalModel("T2tt", 700, 50), SignalModel("T2tt", 300, 200), \
                      SignalModel("T2bb", 650, 1), SignalModel("T2bb", 500, 300), \
                      SignalModel("T2qq", 1000, 100), SignalModel("T2qq", 700, 400), \
-                     SignalModel("T5qqqqVV", 1400, 100), SignalModel("T5qqqqVV", 1000, 800)]
+                     SignalModel("T5qqqqVV", 1400, 100), SignalModel("T5qqqqVV", 1000, 800), \
+                     SignalModel("T1tbtb", 1500, 100), SignalModel("T1tbtb", 1100, 700)]
                      
     for name, asrs in asr_sets.items():
         dASR = outfile.mkdir(name)
