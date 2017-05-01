@@ -42,8 +42,8 @@ def open_if_necessary(filename):
         return gROOT.GetListOfFiles().FindObject(filename)
 
 # note: this time the inputs are just the paths to *_hists.root files
-def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
-                       signal1, signal2, cut_labels, logy=False, doPull=False):
+def make_2D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
+                       signal1, cut_labels, logy=False, doPull=False):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -82,6 +82,22 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     hs.Add(hhadtau)
     hs.Add(hlostlep)
     hs.Add(hznn)
+
+        ## load signal histograms
+    f_signal = open_if_necessary(signal_file)
+    # f_signal.ls()
+    # print (asr_name, signal1, signal2)
+    hsig1 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal1))
+    # scale to current luminosity
+    if signal1.find("T2qq") >= 0:
+        hsig1.Scale(lumi*1000*0.8)
+    else:
+        hsig1.Scale(lumi*1000)
+
+    hs.Add(hsig1)
+    hsig1.SetFillColor(2072)
+    hsig1.SetLineStyle(7)
+    hsig1.SetLineWidth(2)
     
         
     sumBG = BGEst.sumBG(lostlep_proj, hadtau_proj, znn_proj, qcd_proj) # this will set the style of the hatched error bands
@@ -114,7 +130,7 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     if hdata_obs.GetMaximum()>ymax:
          ymax=hdata_obs.GetMaximum()
     if logy:
-        hbg_pred.SetMaximum(20000*ymax)
+        hbg_pred.SetMaximum(1500*ymax)
         hbg_pred.SetMinimum(0.09)
     else:
         hbg_pred.SetMaximum(1.625*ymax)
@@ -150,26 +166,12 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     hratdummy.GetXaxis().SetLabelOffset(0.01)
     hratdummy.GetYaxis().SetTitleOffset(0.374)
 
-    ## load signal histograms
-    f_signal = open_if_necessary(signal_file)
-    # f_signal.ls()
-    # print (asr_name, signal1, signal2)
-    hsig1 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal1))
-    hsig2 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal2))
-    hsig2.SetLineStyle(7)
-    # scale to current luminosity
-    if signal1.find("T2qq") >= 0:
-        hsig1.Scale(lumi*1000*0.8)
-    else:
-        hsig1.Scale(lumi*1000)
-    if signal2.find("T2qq") >= 0:
-        hsig2.Scale(lumi*1000*0.8)
-    else:
-        hsig2.Scale(lumi*1000)
+
+
         
     ## setup canvas and pads
     W = 800
-    H = 800
+    H = 600
     T = 0.08*H
     B = 0.12*H 
     L = 0.12*W
@@ -220,8 +222,7 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
         hbg_pred.GetXaxis().SetNdivisions(n_divisions[hlostlep.GetXaxis().GetTitle()],0,0)
     hbg_pred.Draw()
     hs.Draw("hist, same")
-    hsig1.Draw("hist,same")
-    hsig2.Draw("hist,same")
+    #hsig1.Draw("hist,same")
     sumBG.gFull.Draw("2, same")
     gdata_obs.Draw("p, 0, same")
 
@@ -250,16 +251,13 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     leg4.AddEntry(hqcd, "QCD", "f")
 
     sig1_arr = signal1.split("_")
-    sig2_arr = signal2.split("_")
     legs1 = "%s (%s = %d GeV, m_{#tilde{#chi}_{1}^{0}} = %d GeV)" % (signal_to_latex[sig1_arr[0]], signal_to_mass[sig1_arr[0]], int(sig1_arr[1]), int(sig1_arr[2]))
-    legs2 = "%s (%s = %d GeV, m_{#tilde{#chi}_{1}^{0}} = %d GeV)" % (signal_to_latex[sig2_arr[0]], signal_to_mass[sig2_arr[0]], int(sig2_arr[1]), int(sig2_arr[2]))
-    slength = max(len(legs1), len(legs2))
-    legsig = TLegend(1.-slength/165.5, 0.62, 1.-slength/165.5+0.55, 0.75);
+    slength = len(legs1)
+    legsig = TLegend(0.15, 0.62, 1.-slength/165.5+0.55, 0.75);
     legsig.SetTextSize(0.04)
     legsig.SetFillStyle(0)
     legsig.SetMargin(0.125)
-    legsig.AddEntry(hsig1, legs1, "l")
-    legsig.AddEntry(hsig2, legs2, "l")
+    legsig.AddEntry(hsig1, legs1, "f")
 
     legdata.Draw()
     leg1.Draw()
@@ -274,10 +272,7 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     latex.SetTextAlign(12);
     latex.SetTextFont(62);
     latex.SetTextSize(0.038);
-    if logy and plot_title.find('njets')>=0:
-        latex.DrawLatex(1.-len(cut_labels)/94.5, 0.575, cut_labels);
-    else:
-        latex.DrawLatex(1.-len(cut_labels)/99.5, 0.575, cut_labels);
+    latex.DrawLatex(1.-len(cut_labels)/95.5, 0.675, cut_labels);
 
     pad2.cd()
     ratiomid = TLine(hbg_pred.GetBinLowEdge(1), 0., hbg_pred.GetBinLowEdge(hbg_pred.GetNbinsX()+1), 0.)
@@ -331,9 +326,7 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
 
     ## now wite CMS headers
     canv.cd()
-    CMS_lumi.writeExtraText = False
-    if logy:
-        CMS_lumi.writeExtraText = True       
+    CMS_lumi.writeExtraText = False     
     CMS_lumi.extraText = "         Supplementary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
     CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (13 TeV)"
@@ -343,8 +336,7 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     latex = TLatex()
     latex.SetTextSize(0.0375)
     #print(latex.GetTextSize())
-    if logy:
-        latex.DrawLatex(0.7, 0.6, "arXiv:1704.07781");
+    latex.DrawLatex(0.7, 0.63, "arXiv:1704.07781");
 
 
     ## save plot to PDF and PNG
@@ -356,39 +348,9 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     gPad.Print(plot_dir+plot_title+".pdf")
     gPad.Print(plot_dir+plot_title+".png")
 
-    ## now print pretty table
     if doPull:
         gPad.Close()
-        return
-    
-    temp_file = latex_templates[hlostlep.GetXaxis().GetTitle()]
-    with open("/".join(["output", plot_title+"_table.tex"]), 'w') as fout:
-        ## open template file saved in output reference directory
-        with open('output/reference/%s_table_template.tex' % (temp_file), 'r') as ftemp:
-            template = ftemp.read().split('\n')
-            edit = False
-            for line in template:
-                if line.find('Bin') == 0:
-                    edit = True
-                    fout.write(line+'\n')
-                    continue
-                elif line.find('\\end') == 0:
-                    edit = False
-                if edit:
-                    ibin = int(line[0:1])
-                    lostlep_pred = GetPred(lostlep_proj, ibin)
-                    line = line.replace('$$', lostlep_pred, 1)
-                    hadtau_pred = GetPred(hadtau_proj, ibin)
-                    line = line.replace('$$', hadtau_pred, 1)
-                    znn_pred = GetPred(znn_proj, ibin)
-                    line = line.replace('$$', znn_pred, 1)
-                    qcd_pred = GetPred(qcd_proj, ibin)
-                    line = line.replace('$$', qcd_pred, 1)
-                    sumBG_pred = GetPred(sumBG, ibin)
-                    line = line.replace('$$', sumBG_pred, 1)
-                    nobs = int(hdata_obs.GetBinContent(ibin))
-                    line = line.replace('$$', str(nobs), 1)
-                fout.write(line+'\n')    
+        return 
 
     gPad.Close()
     

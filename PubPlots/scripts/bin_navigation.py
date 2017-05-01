@@ -159,3 +159,24 @@ def GetHTSelectionString(minHT=0, maxHT=2, minHTMHT=0, maxHTMHT=9):
             return 'H_{T} \\geq %d' % minHTMap[minHT]
     else:
         return "%d \\leq H_{T} \\leq %d" % (minHTMap[minHT], maxHTMap[maxHT])
+
+def Get2DBins(minHTMHT=0, maxHTMHT=9, nbins=174):
+    bin_set = []
+    inj=0
+    inb=0
+    for ibin in range(nbins):
+        bin_set.append([])
+        bini = SearchBin(ibin)
+        if bini.inb!=inb or bini.inj!=inj:
+            continue
+        if bini.ihtmht < minHTMHT or bini.ihtmht > maxHTMHT:
+            continue
+        bin_set[-1].append(ibin)
+        if inb==3 or (inj==0 and inb==2):
+            inb=0
+            inj+=1
+        else:
+            inb+=1
+        inj+=1
+        
+    return bin_set

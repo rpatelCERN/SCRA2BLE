@@ -7,6 +7,8 @@ had_tau_grayed_jade = TColor(2007, 133/255.,189/255., 164/255.)
 
 pull_blue = TColor(2029, 20/255., 125/255., 97/255.)
 
+signal_pinkle = TColor(2072, 205/255., 102/255., 255/255.) 
+
 def tdrGrid( gridOn):
   tdrStyle.SetPadGridX(gridOn)
   tdrStyle.SetPadGridY(gridOn)
