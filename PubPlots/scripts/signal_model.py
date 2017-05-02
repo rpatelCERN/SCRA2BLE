@@ -3,6 +3,7 @@
 
 from ROOT import TFile, gROOT, TH1D
 from array import array
+from math import sqrt
 
 alpha = 1 - 0.6827
 
@@ -38,9 +39,12 @@ class SignalModel:
             hagg = TH1D(self.inhist.GetName(), "", len(agg_bins), 0.5, float(len(agg_bins))+0.5)
         for iasr in range(len(agg_bins)):
             asr_yield = 0.
+            asr_err = 0.
             for isub in range(len(agg_bins[iasr])):
                 asr_yield += self.inhist.GetBinContent(agg_bins[iasr][isub]+1)
+                asr_err += self.inhist.GetBinError(agg_bins[iasr][isub]+1)**2
             hagg.SetBinContent(iasr+1, asr_yield)
+            hagg.SetBinError(iasr+1, sqrt(asr_err))
         return hagg
     
     @classmethod
