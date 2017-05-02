@@ -162,21 +162,18 @@ def GetHTSelectionString(minHT=0, maxHT=2, minHTMHT=0, maxHTMHT=9):
 
 def Get2DBins(minHTMHT=0, maxHTMHT=9, nbins=174):
     bin_set = []
-    inj=0
-    inb=0
-    for ibin in range(nbins):
-        bin_set.append([])
-        bini = SearchBin(ibin)
-        if bini.inb!=inb or bini.inj!=inj:
-            continue
-        if bini.ihtmht < minHTMHT or bini.ihtmht > maxHTMHT:
-            continue
-        bin_set[-1].append(ibin)
-        if inb==3 or (inj==0 and inb==2):
-            inb=0
-            inj+=1
-        else:
-            inb+=1
-        inj+=1
-        
+    for inj in range(5):
+        for inb in range(4):
+            if inj==0 and inb==3:
+                continue
+            # print (inj, inb)
+            bin_set.append([])
+            for ibin in range(nbins):
+                bini = SearchBin(ibin)
+                if bini.inb!=inb or bini.inj!=inj:
+                    continue
+                if bini.ihtmht < minHTMHT or bini.ihtmht > maxHTMHT:
+                    continue
+                # print('\t%d'% (ibin+1))
+                bin_set[-1].append(ibin)
     return bin_set

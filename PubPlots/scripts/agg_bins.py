@@ -58,7 +58,7 @@ asr_xbins = {'ASR': [i+0.5 for i in range(13)], \
             'T2tt' : [-0.499, 0.5, 1.5, 2.5, 3.499], \
             'T2bb' : [300., 350., 500., 750., 1050.], \
             'T2qq' : [1.5, 2.5, 4.5, 6.5, 8.5, 12.5], \
-            '2D' : [i+0.5 for i in range(19)]}
+            '2D' : [i+0.5 for i in range(20)]}
 
 def AddHistsInQuadrature(name, hists):
     if hists[0].GetXaxis().GetXbins().GetSize()==0: # fixed bin width--there is no TArrayD?

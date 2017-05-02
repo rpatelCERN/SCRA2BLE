@@ -43,7 +43,7 @@ def open_if_necessary(filename):
 
 # note: this time the inputs are just the paths to *_hists.root files
 def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
-                       signal1, signal2, cut_labels, logy=False, doPull=False):
+                       signal1, signal2, cut_labels, logy=False, doPull=False, printArXiv=False):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -118,7 +118,7 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
         hbg_pred.SetMinimum(0.09)
     else:
         hbg_pred.SetMaximum(1.625*ymax)
-        if signal1.find('T1tttt')>=0:
+        if signal1.find('T1tttt')>=0 or (signal1.find('T1bbbb')>=0 and doPull):
             hbg_pred.SetMaximum(2.1*ymax)
         hbg_pred.SetMinimum(0.0)
             
@@ -332,9 +332,9 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     ## now wite CMS headers
     canv.cd()
     CMS_lumi.writeExtraText = False
-    if logy:
+    if logy or doPull:
         CMS_lumi.writeExtraText = True       
-    CMS_lumi.extraText = "         Supplementary"
+    CMS_lumi.extraText = "        Supplementary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
     CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (13 TeV)"
     iPos=0
@@ -343,7 +343,8 @@ def make_1D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     latex = TLatex()
     latex.SetTextSize(0.0375)
     #print(latex.GetTextSize())
-    if logy:
+    if printArXiv:
+        latex.SetTextColor(4)
         latex.DrawLatex(0.7, 0.6, "arXiv:1704.07781");
 
 

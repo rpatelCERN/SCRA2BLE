@@ -43,7 +43,7 @@ def open_if_necessary(filename):
 
 # note: this time the inputs are just the paths to *_hists.root files
 def make_2D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
-                       signal1, cut_labels, logy=False, doPull=False):
+                       signal1, cut_labels, logy=True, doPull=False):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -58,7 +58,7 @@ def make_2D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     data_obs_proj = DataObs(f_data_obs.Get(asr_name+"/hCV"))
     hdata_obs = data_obs_proj.hist
     gdata_obs = data_obs_proj.graph # note that this also sets the style
-    gdata_obs.SetMarkerSize(1.5)
+    gdata_obs.SetMarkerSize(1.3)
 
     ## load BG predictions -- also sets histogram styles
 
@@ -115,9 +115,9 @@ def make_2D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     hbg_pred.GetYaxis().SetTitleFont(42)
     hbg_pred.GetXaxis().SetLabelSize(0)
     if logy:
-        hbg_pred.GetYaxis().SetLabelSize(0.0375*1.18)
-        hbg_pred.GetYaxis().SetTitleSize(0.05*1.18)
-        hbg_pred.GetYaxis().SetTitleOffset(1.05)
+        hbg_pred.GetYaxis().SetLabelSize(0.0455*1.18)
+        hbg_pred.GetYaxis().SetTitleSize(0.075*1.18)
+        hbg_pred.GetYaxis().SetTitleOffset(0.676)
     else:
         hbg_pred.GetYaxis().SetLabelSize(0.048*1.0)
         hbg_pred.GetYaxis().SetTitleSize(0.05625*1.15)
@@ -137,34 +137,37 @@ def make_2D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
         if signal1.find('T1tttt')>=0:
             hbg_pred.SetMaximum(2.1*ymax)
         hbg_pred.SetMinimum(0.0)
-            
-    
+
+
+        
     ratio = ObsExpRatio(DataObs(hdata_obs), sumBG) # note that this also sets the style
     ratio_markers = ratio.markers
-    ratio.markers.SetMarkerSize(1.5)
+    ratio.markers.SetMarkerSize(1.3)
     ratio_bands = ratio.bands
     pull = ratio.pull
-    pull_max = 1.75
+    pull_max = 3.75
+    pull_min = -3.75
     pull.SetMaximum(pull_max)
     pull.SetMinimum(-pull_max)
-    pull.GetXaxis().SetLabelSize(0.12*1.2)
-    pull.GetXaxis().SetTitleSize(0.14*1.19)
-    pull.GetYaxis().SetLabelSize(0.1*1.075)
-    pull.GetYaxis().SetTitleSize(0.115*1.12)
+    pull.GetXaxis().SetLabelSize(0.14*1.2)
+    pull.GetXaxis().SetTitleSize(0.12*1.19)
+    pull.GetYaxis().SetLabelSize(0.14*1.075)
+    pull.GetYaxis().SetTitleSize(0.155*1.12)
     pull.GetXaxis().SetTitleOffset(0.9)
     pull.GetXaxis().SetLabelOffset(0.01)
-    pull.GetYaxis().SetTitleOffset(0.374)
+    pull.GetYaxis().SetTitleOffset(0.274)
     hratdummy = ratio.dummy_hist
-    rat_max = 0.97
+    rat_max = 3.47
+    rat_min = -rat_max*0.25
     hratdummy.SetMaximum(rat_max)
-    hratdummy.SetMinimum(-rat_max)
-    hratdummy.GetXaxis().SetLabelSize(0.12*1.2)
-    hratdummy.GetXaxis().SetTitleSize(0.14*1.19)
-    hratdummy.GetYaxis().SetLabelSize(0.1*1.075)
-    hratdummy.GetYaxis().SetTitleSize(0.115*1.12)
-    hratdummy.GetXaxis().SetTitleOffset(0.9)
+    hratdummy.SetMinimum(rat_min)
+    hratdummy.GetXaxis().SetLabelSize(0.14*1.2)
+    hratdummy.GetXaxis().SetTitleSize(0.12*1.19)
+    hratdummy.GetYaxis().SetLabelSize(0.14*1.075)
+    hratdummy.GetYaxis().SetTitleSize(0.155*1.12)
+    hratdummy.GetXaxis().SetTitleOffset(1.05)
     hratdummy.GetXaxis().SetLabelOffset(0.01)
-    hratdummy.GetYaxis().SetTitleOffset(0.374)
+    hratdummy.GetYaxis().SetTitleOffset(0.274)
 
 
 
@@ -266,33 +269,70 @@ def make_2D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     leg4.Draw()
     legsig.Draw()
 
+    ymin_top=0.09
+    ymax_top=1150
+
+    ## labels and lines
+    tl_njet = TLine()
+    tl_njet.SetLineStyle(2)
+    tl_njet.SetLineWidth(2)
+    tl_njet.SetLineColor(1)
+    tl_njet.DrawLine(3.5,ymin_top,3.5,ymax_top) 
+    tl_njet.DrawLine(7.5,ymin_top,7.5,ymax_top) 
+    tl_njet.DrawLine(11.5,ymin_top,11.5,ymax_top) 
+    tl_njet.DrawLine(15.5,ymin_top,15.5,ymax_top)
+
+    ## Njet labels
+    ttext_njet = TLatex()
+    ttext_njet.SetTextFont(42)
+    ttext_njet.SetTextSize(0.04)
+    ttext_njet.SetTextAlign(22)
+    ttext_njet.DrawLatex(2 , ymax_top*0.75 , "N_{#scale[0.2]{ }jet} = 2")
+    ttext_njet.DrawLatex(5.5 , ymax_top*0.75 , "3 #leq N_{#scale[0.2]{ }jet} #leq 4")
+    ttext_njet.DrawLatex(9.5 , ymax_top*0.75, "5 #leq N_{#scale[0.2]{ }jet} #leq 6")
+    ttext_njet.DrawLatex(13.5 , ymax_top*0.75, "7 #leq N_{#scale[0.2]{ }jet} #leq 8")
+    ttext_njet.DrawLatex(17.5 , ymax_top*0.75, "N_{#scale[0.2]{ }jet} #geq 9")
+
     # cuts label
     latex = TLatex();
     latex.SetNDC();
     latex.SetTextAlign(12);
     latex.SetTextFont(62);
     latex.SetTextSize(0.038);
-    latex.DrawLatex(1.-len(cut_labels)/95.5, 0.675, cut_labels);
+    latex.DrawLatex(1.-len(cut_labels)/125.5, 0.695, cut_labels);
 
     pad2.cd()
     ratiomid = TLine(hbg_pred.GetBinLowEdge(1), 0., hbg_pred.GetBinLowEdge(hbg_pred.GetNbinsX()+1), 0.)
+
+    nb_labels = ['0','1','2']
+    x_labels = ['0','1','2', '0','1','2','3+', '0','1','2','3+', '0','1','2','3+', '0','1','2', '3+']
+    for xbin in range(hratdummy.GetNbinsX()):
+        hratdummy.GetXaxis().SetBinLabel(xbin+1, x_labels[xbin])
+        pull.GetXaxis().SetBinLabel(xbin+1, x_labels[xbin])
+    
     if doPull:
         pull.Draw("hist")
         if hlostlep.GetXaxis().GetTitle() in n_divisions.keys():
             pull.GetXaxis().SetNdivisions(n_divisions[hlostlep.GetXaxis().GetTitle()],0,0)
         p1 = TLine(pull.GetBinLowEdge(1), 1., pull.GetBinLowEdge(pull.GetNbinsX()+1), 1.)
         p2 = TLine(pull.GetBinLowEdge(1), 2., pull.GetBinLowEdge(pull.GetNbinsX()+1), 2.)
+        p3 = TLine(pull.GetBinLowEdge(1), 3., pull.GetBinLowEdge(pull.GetNbinsX()+1), 3.)
         m1 = TLine(pull.GetBinLowEdge(1), -1., pull.GetBinLowEdge(pull.GetNbinsX()+1), -1.)
         m2 = TLine(pull.GetBinLowEdge(1), -2., pull.GetBinLowEdge(pull.GetNbinsX()+1), -2.)
+        m3 = TLine(pull.GetBinLowEdge(1), -3., pull.GetBinLowEdge(pull.GetNbinsX()+1), -3.)
         ratiomid.SetLineWidth(3)
         p1.SetLineStyle(2)
         p2.SetLineStyle(2)
+        p3.SetLineStyle(2)
         m1.SetLineStyle(2)
         m2.SetLineStyle(2)
+        m3.SetLineStyle(2)
         p1.Draw()
-        #p2.Draw()
+        p2.Draw()
+        p3.Draw()
         m1.Draw()
-        #m2.Draw()
+        m2.Draw()
+        m3.Draw()
         pull.Draw("hist,same")
     else:
         hratdummy.Draw("axis")
@@ -307,6 +347,14 @@ def make_2D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
     ## lines again
     if doPull:
         rat_max = pull_max
+        rat_min = pull_min
+
+    ymin_bottom = rat_min
+    ymax_bottom = rat_max
+    tl_njet.DrawLine(3.5,ymin_bottom,3.5,ymax_bottom) 
+    tl_njet.DrawLine(7.5,ymin_bottom,7.5,ymax_bottom) 
+    tl_njet.DrawLine(11.5,ymin_bottom,11.5,ymax_bottom) 
+    tl_njet.DrawLine(15.5,ymin_bottom,15.5,ymax_bottom)
 
 
     ## refresh everything, to be safe
@@ -326,8 +374,8 @@ def make_2D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
 
     ## now wite CMS headers
     canv.cd()
-    CMS_lumi.writeExtraText = False     
-    CMS_lumi.extraText = "         Supplementary"
+    CMS_lumi.writeExtraText = True     
+    CMS_lumi.extraText = "        Supplementary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
     CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (13 TeV)"
     iPos=0
@@ -335,8 +383,12 @@ def make_2D_projection(plot_title, asr_name, lostlep_file, hadtau_file, znn_file
 
     latex = TLatex()
     latex.SetTextSize(0.0375)
-    #print(latex.GetTextSize())
-    latex.DrawLatex(0.7, 0.63, "arXiv:1704.07781");
+    #latex.SetNDC()
+    latex.SetTextAlign(12)
+    latex.SetTextFont(42)
+    latex.SetTextColor(4)
+    latex.SetTextSize(0.032)
+    latex.DrawLatex(0.48, 0.948, "arXiv:1704.07781")
 
 
     ## save plot to PDF and PNG

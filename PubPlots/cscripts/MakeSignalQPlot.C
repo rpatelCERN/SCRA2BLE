@@ -16,6 +16,7 @@
 #include "TLorentzVector.h"
 #include "TPaveText.h"
 #include "TText.h"
+#include "TLatex.h"
 #include "TGraphAsymmErrors.h"
 #include "Math/QuantFuncMathCore.h"
 #include "jack_style.h"
@@ -484,7 +485,7 @@ void MakePlot(TString plot_title, TGraphAsymmErrors* gdata_obs, TGraphAsymmError
   latex->SetTextFont(42);
   latex->SetTextColor(2000);
   latex->SetTextSize(0.035);
-  //  latex->DrawLatex(0.5, 0.935, "arXiv:1602.06581");
+  latex->DrawLatex(0.5, 0.935, "arXiv:1704.07781");
 
   
   // Luminosity information for scaling
@@ -503,6 +504,8 @@ void MakePlot(TString plot_title, TGraphAsymmErrors* gdata_obs, TGraphAsymmError
   writeExtraText = true;
   extraText   = "       Supplementary";
   TString lumi_sqrtS = line;
+
+
   
   TPaveText * pave = new TPaveText(0.18, 0.86, 0.4, 0.96, "brNDC");
   //  TText * text = NULL; 
