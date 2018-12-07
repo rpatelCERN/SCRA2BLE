@@ -14,10 +14,10 @@ from ROOT import *
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='use fastsim signal (default = %default)')
-parser.add_option('--keeptar', action='store_true', dest='keeptar', default=False, help='keep old tarball for condor jobs (default = %default)')
+parser.add_option('--keeptar', action='store_true', dest='keeptar', default=True, help='keep old tarball for condor jobs (default = %default)')
 parser.add_option("--model", dest="model", default = "T1bbbb",help="SMS model", metavar="model")
 parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond/BugFix",help="EOS output directory  (default = %default)", metavar="outDir")
-parser.add_option('--lpc', action='store_true', dest='lpc', default=True, help='running on lpc condor  (default = %default)')
+parser.add_option('--lpc', action='store_true', dest='lpc', default=False, help='running on lpc condor  (default = %default)')
 
 (options, args) = parser.parse_args()
 
@@ -42,15 +42,15 @@ def condorize(command,tag,odir,CMSSWVER):
     print "--------------------"
     print "Launching phase space point:",tag
 
-    #change to a tmp dir
-    os.chdir("tmp");
-    startdir = os.getcwd();
-    f1n = "tmp_%s.sh" %(tag);
-    f1=open(f1n, 'w')
-    f1.write("#!/bin/sh \n");
 
     # setup environment
     if options.lpc:
+    	#change to a tmp dir
+    	os.chdir("tmp");
+    	startdir = os.getcwd();
+    	f1n = "tmp_%s.sh" %(tag);
+    	f1=open(f1n, 'w')
+    	f1.write("#!/bin/sh \n");
 	f1.write("tar -xzf %s.tar.gz \n" % (CMSSWVER));
     	f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
     	f1.write("set SCRAM_ARCH=slc6_amd64_gcc481\n")
@@ -86,20 +86,21 @@ def condorize(command,tag,odir,CMSSWVER):
 	
  	os.chdir("../.");
     else:    
-	f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
-    	f1.write("#SBATCH -p background-4g\n")
-    	f1.write("#SBATCH --time=07:30:00\n")
-    	f1.write("#SBATCH --mem-per-cpu=8000 \n")
-    	f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
-    	f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
-    	f1.write("cd /fdata/hepx/store/user/rish/CombineCards/Moriond/%s \n" % (CMSSWVER));
-    	f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
-    	f1.write("eval `scramv1 runtime -sh`\n")
-    	f1.write("ls \n");
-    	f1.write(command+" \n") 
-    	f1.close();
-    	os.system("sbatch %s " %f1n)
- 
+	#f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
+    	#f1.write("#SBATCH -p background-4g\n")
+    	#f1.write("#SBATCH --time=07:30:00\n")
+    	#f1.write("#SBATCH --mem-per-cpu=8000 \n")
+    	#f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
+    	#f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
+    	#f1.write("cd /fdata/hepx/store/user/rish/CombineCards/Moriond/%s \n" % (CMSSWVER));
+    	#f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
+    	#f1.write("eval `scramv1 runtime -sh`\n")
+    	#f1.write("ls \n");
+    	#f1.write(command+" \n") 
+    	#f1.close();
+    	#os.system("Qsub -l lnxfarm -o OutPut_LogFile%s -e %s" %(tag,command))
+    	#os.system("Qsub -l lnxfarm -o OutPut_LogFile%s -e %s" %(tag,command))
+ 	print "Qsub -l lnxfarm -o OutPut_LogFile%s -e %s" %(tag,command)
 
 
 
@@ -120,8 +121,8 @@ if __name__ == '__main__':
     	os.system("tar --exclude-caches-all --exclude inputHistograms/fastsimSignalT*  -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
    
     #f = TFile.Open("inputHistograms/fastsimSignalT1tttt/RA2bin_signal.root");
-    filenames = next(os.walk("/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"))[2]
-    #filenames = next(os.walk("./inputHistograms/fastsimSignal%s/" %options.model))[2]
+    #filenames = next(os.walk("/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"))[2]
+    filenames = next(os.walk("./inputHistograms/fastsimSignal%s/" %options.model))[2]
     #print filenames
 	
     models = []

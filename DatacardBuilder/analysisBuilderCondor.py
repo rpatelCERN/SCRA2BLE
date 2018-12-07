@@ -164,7 +164,7 @@ if __name__ == '__main__':
                     if options.fastsim: signaltag = "%s_%s_%s" % (options.signal, options.mGo, options.mLSP);
                     #AR-180418:the_odir is different if FastSim is true or not
                     the_odir = 'testCards-%s-%s-%1.1f-mu%0.1f' % (vary,signaltag,lumi,mu);
-                    if options.fastsim: the_odir = 'testCardsMock3-%s-%s_%s_%s-%1.1f-mu%0.1f' % (vary,options.signal,options.mGo, options.mLSP, lumi,mu);
+                    if options.fastsim: the_odir = 'testCards-%s-%s_%s_%s-%1.1f-mu%0.1f' % (vary,options.signal,options.mGo, options.mLSP, lumi,mu);
 #AR-180418:Lists all cards in output directory the_odir     
                     allcardnames = os.listdir(the_odir);
  #AR-180427:combineCards.py file is located at /uscms_data/d3/arane/work/RA2bInterpretation/CMSSW_7_4_7/src/HiggsAnalysis/CombinedLimit/scripts. Where is location of file mentioned?
