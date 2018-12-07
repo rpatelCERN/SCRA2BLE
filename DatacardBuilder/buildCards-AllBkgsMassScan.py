@@ -47,7 +47,8 @@ if __name__ == '__main__':
 #AR-180426: odir=testCards-allBkgs-T1tttt_1500_100-35.9-mu0.0----Name of output directory
 	odir = 'testCards-%s-%s-%1.1f-mu%0.1f/' % ( tag,sms, lumi, signalmu );
 #AR-180426: idir=inputHistograms/histograms_35.9fb/. Here are various background estimates.
-	idir = 'inputHistograms/histograms_%1.1ffb/' % ( ((lumi)) );
+	#idir = 'inputHistograms/histograms_%1.1ffb/' % ( ((lumi)) );
+	idir = 'inputHistograms/MCForBinOptimization/';
 #AR-180426:os.path.exists(odir):Return True if path refers to an existing path. Returns False for broken symbolic links.
 #forcefully remove directory if it exists 
 	if os.path.exists(odir): os.system( "rm -rf %s" % (odir) );
