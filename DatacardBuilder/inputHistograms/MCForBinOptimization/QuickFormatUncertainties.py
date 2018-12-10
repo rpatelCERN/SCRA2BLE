@@ -40,6 +40,7 @@ ZeroBCount=1;
 NJetCount=1;
 for i in range(1, 175):
 	SRLabel=GJetsMC.GetXaxis().GetBinLabel(i)
+	ZinvBGpred.GetXaxis().SetBinLabel(i,SRLabel)
 	parseSR=SRLabel.split("_")
 	if parseSR[1]=="BTags0":
 		Photon0b.SetBinContent(ZeroBCount,GJetsMC.GetBinContent(i))
@@ -69,6 +70,7 @@ BExtrap3b=DYZll3b.Clone("BExtrap3b");
 BExtrap3b.Divide(DYZll0b);
 #high NJet ratio
 HighestJetBin=DYZll1b.Clone("HighestJetBin");
+HighestJetBin.Add(DYZll0b)
 HighestJetBin.Add(DYZll2b)
 HighestJetBin.Add(DYZll3b)
 HighNJetExtrap=HighestJetBin.GetBinContent(5)/HighestJetBin.GetBinContent(4)
@@ -90,43 +92,59 @@ for i in range(1, 175):
 		hzvvTF.SetBinContent(i,ZGammaRatio*BExtrap);
                 #print Zpred,ZinvMC.GetBinContent(i)
                 ZeroBCount=ZeroBCount+1
+
+for i in range(1, 175):
+        SRLabel=GJetsMC.GetXaxis().GetBinLabel(i)
+        parseSR=SRLabel.split("_")
+        BExtrap=1.0
         if parseSR[1]=="BTags1":
 		for j in range(0,5):
 			if parseSR[0]=="NJets%d" %j:BExtrap=BExtrap1b.GetBinContent(j+1)
 		ZGammaRatio=ZRatio0b.GetBinContent(OneBCount);
-		Zpred=ZGammaRatio*BExtrap*Photon0b.GetBinContent(OneBCount);
+		ZeroBBinLabel=parseSR[0]+"_BTags0"+"_"+parseSR[2]+"_"+parseSR[3]
+		ZeroPhotonPrediction=ZinvMC.GetBinContent(ZinvMC.GetXaxis().FindBin(ZeroBBinLabel))
+		#Zpred=ZGammaRatio*BExtrap*Photon0b.GetBinContent(OneBCount);
+		Zpred=BExtrap*ZeroPhotonPrediction;
 		ZinvBGpred.SetBinContent(i,Zpred);
 		hzvvTF.SetBinContent(i,ZGammaRatio*BExtrap);
+		#print SRLabel,ZeroBBinLabel,Zpred,ZinvMC.GetBinContent(i)
 		#print Zpred,ZinvMC.GetBinContent(i)
 		OneBCount=OneBCount+1
         if parseSR[1]=="BTags2":
 		for j in range(0,5):
 			if parseSR[0]=="NJets%d" %j:BExtrap=BExtrap2b.GetBinContent(j+1)
 		ZGammaRatio=ZRatio0b.GetBinContent(TwoBCount);
-		Zpred=ZGammaRatio*BExtrap*Photon0b.GetBinContent(TwoBCount);
+		ZeroBBinLabel=parseSR[0]+"_BTags0"+"_"+parseSR[2]+"_"+parseSR[3]
+		ZeroPhotonPrediction=ZinvMC.GetBinContent(ZinvMC.GetXaxis().FindBin(ZeroBBinLabel))
+		Zpred=ZeroPhotonPrediction*BExtrap#ZGammaRatio*BExtrap*Photon0b.GetBinContent(MultiBCount);
 		ZinvBGpred.SetBinContent(i,Zpred);
 		hzvvTF.SetBinContent(i,ZGammaRatio*BExtrap);
-		#print BExtrap,Zpred,ZinvMC.GetBinContent(i)
+		#print SRLabel,Photon0b.GetBinContent(TwoBCount),BExtrap,Zpred,ZinvMC.GetBinContent(i)
 		TwoBCount=TwoBCount+1
         if parseSR[1]=="BTags3":
 		for j in range(0,5):
 			if parseSR[0]=="NJets%d" %j:BExtrap=BExtrap3b.GetBinContent(j+1)
 		ZGammaRatio=ZRatio0b.GetBinContent(MultiBCount);
-		Zpred=ZGammaRatio*BExtrap*Photon0b.GetBinContent(MultiBCount);
+		ZeroBBinLabel=parseSR[0]+"_BTags0"+"_"+parseSR[2]+"_"+parseSR[3]
+		ZeroPhotonPrediction=ZinvMC.GetBinContent(ZinvMC.GetXaxis().FindBin(ZeroBBinLabel))
+		Zpred=ZeroPhotonPrediction*BExtrap#ZGammaRatio*BExtrap*Photon0b.GetBinContent(MultiBCount);
 		ZinvBGpred.SetBinContent(i,Zpred);
 		hzvvTF.SetBinContent(i,ZGammaRatio*BExtrap);
-		#print Zpred,ZinvMC.GetBinContent(i)
+		#print SRLabel,Zpred,ZinvMC.GetBinContent(i)
 		MultiBCount=MultiBCount+1
-'''
 for i in range(1, 175):
 	SRLabel=GJetsMC.GetXaxis().GetBinLabel(i)
 	parseSR=SRLabel.split("_")
-	if parseSR[0]=="NJets4":
-		LowerNJetBinLabel="NJets3_"+"_"+parseSR[1]+"_"+parseSR[2]+"_"+parseSR[3]
+	if parseSR[0]=="NJets4" and parseSR[1]!="BTags0":
+		LowerNJetBinLabel="NJets3"+"_"+parseSR[1]+"_"+parseSR[2]+"_"+parseSR[3]
 		LowerNJetBin=ZinvBGpred.GetXaxis().FindBin(LowerNJetBinLabel)	
 		LowerNJetPred=ZinvBGpred.GetBinContent(LowerNJetBin)
-		print HighNJetExtrap, ZinvMC.GetBinContent(i)
-'''
+		hzvvTF.SetBinContent(i,hzvvTF.GetBinContent(i)*HighNJetExtrap);
+		ZinvBGpred.SetBinContent(i,LowerNJetPred*HighNJetExtrap)
+		#print SRLabel,hzvvTF.GetXaxis().GetBinLabel(i)
+		#print HighNJetExtrap*LowerNJetPred, ZinvMC.GetBinContent(i)
+		#print LowerNJetBinLabel,SRLabel,LowerNJetPred*HighNJetExtrap,ZinvMC.GetBinContent(i)
+
 fout=TFile("ZinvHistos.root","RECREATE")
 fout.cd()
 hzvvgJNobs.Write("hzvvgJNobs");
@@ -157,4 +175,3 @@ finMCBkg.Get("QCDBkgSR").Write("PredictionCV")
 QCDSyst=["PredictionCoreUp", "PredictionTail", "PredictionBTag","hPredictionUncorrelated"]
 for q in QCDSyst:
 	finQCD.Get(q).Write(q);
-
