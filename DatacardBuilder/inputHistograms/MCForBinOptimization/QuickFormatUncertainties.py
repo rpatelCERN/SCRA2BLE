@@ -139,7 +139,8 @@ for i in range(1, 175):
 		LowerNJetBinLabel="NJets3"+"_"+parseSR[1]+"_"+parseSR[2]+"_"+parseSR[3]
 		LowerNJetBin=ZinvBGpred.GetXaxis().FindBin(LowerNJetBinLabel)	
 		LowerNJetPred=ZinvBGpred.GetBinContent(LowerNJetBin)
-		hzvvTF.SetBinContent(i,hzvvTF.GetBinContent(i)*HighNJetExtrap);
+		if hzvvTF.GetBinContent(i)!=0: hzvvTF.SetBinContent(i,hzvvTF.GetBinContent(i)*HighNJetExtrap);
+		else: hzvvTF.SetBinContent(i,HighNJetExtrap);
 		ZinvBGpred.SetBinContent(i,LowerNJetPred*HighNJetExtrap)
 		#print SRLabel,hzvvTF.GetXaxis().GetBinLabel(i)
 		#print HighNJetExtrap*LowerNJetPred, ZinvMC.GetBinContent(i)
