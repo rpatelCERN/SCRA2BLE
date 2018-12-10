@@ -98,9 +98,8 @@ def condorize(command,tag,odir,CMSSWVER):
     	#f1.write("ls \n");
     	#f1.write(command+" \n") 
     	#f1.close();
-    	#os.system("Qsub -l lnxfarm -o OutPut_LogFile%s -e %s" %(tag,command))
-    	#os.system("Qsub -l lnxfarm -o OutPut_LogFile%s -e %s" %(tag,command))
- 	print "Qsub -l lnxfarm -o OutPut_LogFile%s -e %s" %(tag,command)
+    	os.system("Qsub -l lnxfarm -o OutPut_LogFile%s -e %s" %(tag,command))
+ 	#print "Qsub -l lnxfarm -o OutPut_LogFile%s -e %s" %(tag,command)
 
 
 

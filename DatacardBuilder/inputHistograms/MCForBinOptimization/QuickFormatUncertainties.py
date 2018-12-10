@@ -27,13 +27,15 @@ for i in range(1, 175):
 	CRLabel=GJetsTemplate.GetXaxis().GetBinLabel(i)
 	parseCR=CRLabel.split("_")
 	#print parseCR
+	#GJYield=GJetsMC.GetBinContent(i)
 	for j in range(1, 175):#Patch the GJet Control Sample
 		SRLabel=GJetsMC.GetXaxis().GetBinLabel(j)
 		parseSR=SRLabel.split("_")
-		if parseSR[0]==parseCR[1] and parseSR[2]==parseCR[2] and parseSR[3]==parseCR[3]: 
+		if parseSR[0]==parseCR[1] and parseSR[2]==parseCR[2] and parseSR[3]==parseCR[3] and parseSR[1]=="BTags0": 
 			#print parseSR[1]
 			GJYield=GJetsMC.GetBinContent(j)
-			hzvvgJNobs.SetBinContent(i, hzvvgJNobs.GetBinContent(i)+GJYield)
+			hzvvgJNobs.SetBinContent(i, GJYield)
+			#hzvvgJNobs.GetXaxis().SetBinLabel(i, hzvvgJNobs.GetB)
 			#if parseSR[0]=="BTags0":
 				#Photon0b.SetBinContent(i, GJYield+Photon0b.GetBinContent(i)		
 ZeroBCount=1;
@@ -89,7 +91,7 @@ for i in range(1, 175):
                 ZGammaRatio=ZRatio0b.GetBinContent(ZeroBCount);
                 Zpred=ZGammaRatio*BExtrap*Photon0b.GetBinContent(ZeroBCount);
 		ZinvBGpred.SetBinContent(i,Zpred);
-		hzvvTF.SetBinContent(i,ZGammaRatio*BExtrap);
+		#hzvvTF.SetBinContent(i,ZGammaRatio*BExtrap);
                 #print Zpred,ZinvMC.GetBinContent(i)
                 ZeroBCount=ZeroBCount+1
 
@@ -106,7 +108,8 @@ for i in range(1, 175):
 		#Zpred=ZGammaRatio*BExtrap*Photon0b.GetBinContent(OneBCount);
 		Zpred=BExtrap*ZeroPhotonPrediction;
 		ZinvBGpred.SetBinContent(i,Zpred);
-		hzvvTF.SetBinContent(i,ZGammaRatio*BExtrap);
+		#hzvvTF.SetBinContent(i,ZGammaRatio*BExtrap);
+		#if(hzvvTF.GetBinContent(i)<=0.0): hzvvTF.SetBinContent(i,ZGammaRatio);
 		#print SRLabel,ZeroBBinLabel,Zpred,ZinvMC.GetBinContent(i)
 		#print Zpred,ZinvMC.GetBinContent(i)
 		OneBCount=OneBCount+1
@@ -118,7 +121,8 @@ for i in range(1, 175):
 		ZeroPhotonPrediction=ZinvMC.GetBinContent(ZinvMC.GetXaxis().FindBin(ZeroBBinLabel))
 		Zpred=ZeroPhotonPrediction*BExtrap#ZGammaRatio*BExtrap*Photon0b.GetBinContent(MultiBCount);
 		ZinvBGpred.SetBinContent(i,Zpred);
-		hzvvTF.SetBinContent(i,ZGammaRatio*BExtrap);
+		#hzvvTF.SetBinContent(i,ZGammaRatio*BExtrap);
+		#if(hzvvTF.GetBinContent(i)<=0.0): hzvvTF.SetBinContent(i,ZGammaRatio);
 		#print SRLabel,Photon0b.GetBinContent(TwoBCount),BExtrap,Zpred,ZinvMC.GetBinContent(i)
 		TwoBCount=TwoBCount+1
         if parseSR[1]=="BTags3":
@@ -129,7 +133,8 @@ for i in range(1, 175):
 		ZeroPhotonPrediction=ZinvMC.GetBinContent(ZinvMC.GetXaxis().FindBin(ZeroBBinLabel))
 		Zpred=ZeroPhotonPrediction*BExtrap#ZGammaRatio*BExtrap*Photon0b.GetBinContent(MultiBCount);
 		ZinvBGpred.SetBinContent(i,Zpred);
-		hzvvTF.SetBinContent(i,ZGammaRatio*BExtrap);
+		#hzvvTF.SetBinContent(i,ZGammaRatio*BExtrap);
+		#if(hzvvTF.GetBinContent(i)<=0.0): hzvvTF.SetBinContent(i,ZGammaRatio);
 		#print SRLabel,Zpred,ZinvMC.GetBinContent(i)
 		MultiBCount=MultiBCount+1
 for i in range(1, 175):
@@ -139,13 +144,17 @@ for i in range(1, 175):
 		LowerNJetBinLabel="NJets3"+"_"+parseSR[1]+"_"+parseSR[2]+"_"+parseSR[3]
 		LowerNJetBin=ZinvBGpred.GetXaxis().FindBin(LowerNJetBinLabel)	
 		LowerNJetPred=ZinvBGpred.GetBinContent(LowerNJetBin)
-		if hzvvTF.GetBinContent(i)!=0: hzvvTF.SetBinContent(i,hzvvTF.GetBinContent(i)*HighNJetExtrap);
-		else: hzvvTF.SetBinContent(i,HighNJetExtrap);
+		#if hzvvTF.GetBinContent(i)!=0:
+		 
+		#hzvvTF.SetBinContent(i,hzvvTF.GetBinContent(i)*HighNJetExtrap);
+		#else: hzvvTF.SetBinContent(i,HighNJetExtrap);
 		ZinvBGpred.SetBinContent(i,LowerNJetPred*HighNJetExtrap)
 		#print SRLabel,hzvvTF.GetXaxis().GetBinLabel(i)
 		#print HighNJetExtrap*LowerNJetPred, ZinvMC.GetBinContent(i)
 		#print LowerNJetBinLabel,SRLabel,LowerNJetPred*HighNJetExtrap,ZinvMC.GetBinContent(i)
-
+for i in range(1, 175):
+	TF= ZinvBGpred.GetBinContent(i)/hzvvgJNobs.GetBinContent(i)
+	hzvvTF.SetBinContent(i, TF);
 fout=TFile("ZinvHistos.root","RECREATE")
 fout.cd()
 hzvvgJNobs.Write("hzvvgJNobs");

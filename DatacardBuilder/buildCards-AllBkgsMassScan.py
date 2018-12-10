@@ -17,8 +17,7 @@ parser.add_option("--tag", dest="tag", default = 'SinglePhoton1',help="mass of L
 parser.add_option("--mu", dest="mu", default = 1.,help="mass of LSP", metavar="mu")
 parser.add_option("--lumi", dest="lumi", default = 10.,help="mass of LSP", metavar="lumi")
 parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='no X11 windows')
-parser.add_option('--realData', action='store_true', dest='realData', default=False, help='no X11 windows')
-
+parser.add_option('--realData',action='store_true', dest='realData', default=False, help='use real data')
 parser.add_option('--qcdOnly', action='store_true', dest='qcdOnly', default=False, help='no X11 windows')
 parser.add_option('--zvvOnly', action='store_true', dest='zvvOnly', default=False, help='no X11 windows')
 parser.add_option('--tauOnly', action='store_true', dest='tauOnly', default=False, help='no X11 windows')
@@ -315,12 +314,19 @@ if __name__ == '__main__':
 
 	signalRegion_Rates = [];
 	signalRegion_Obs = [];
-        DataHist_In=TFile("inputHistograms/histograms_%1.1ffb/RA2bin_signalUnblind.root" %lumi)
+	Data_List=[]
 #*AR:180515-Reads data histogram containing number of events per search bin
-        Data_Hist=DataHist_In.Get("RA2bin_data")
-        Data_List=binsToList(Data_Hist) # creates a list of bin contents
+	'''
+	if options.realData:
+        	DataHist_In=TFile("inputHistograms/histograms_%1.1ffb/RA2bin_signalUnblind.root" %lumi)
+        	Data_Hist=DataHist_In.Get("RA2bin_data")
+        	Data_List=binsToList(Data_Hist) # creates a list of bin contents
+	else:
+	'''	
+	for i in range(signalRegion._nBins): #174, (0-173)
+		srobs=(ZPred.GetBinContent(i+1)+LLPlusHadTauPrediction_Hist.GetBinContent(i+1)+(qcdCV.GetBinContent(i+1)))
+		Data_List.append(srobs)
 	print "Data_List ", Data_List
-	print "range ",range(signalRegion._nBins)
 	for i in range(signalRegion._nBins): #174, (0-173)
 		tmpList = [];
 		srobs = 0;
@@ -340,7 +346,6 @@ if __name__ == '__main__':
 		zvv.Fill(i+.5, ZPred.GetBinContent(i+1))
 		#ll.Fill(i+.5, + LLPrediction_Hist.GetBinContent(i+1))
 		#tau.Fill(i+.5, HadTauPrediction.GetBinContent(i+1))
-		print "signalmu " ,signalmu
 #AR-180515:sig histogram is now the one scaled to 35.9/fb and not corresponding to 1/pb 	
 		sig.Fill(i+.5,CorrSigHist.GetBinContent(i+1)*signalmu)
 		#randPois=TRandom3(random.randint(1,10000000))
