@@ -1,0 +1,57 @@
+Warning in <TInterpreter::ReadRootmapFile>: class  TUnfold found in libUnfold.so  is already in libHist.so 
+Warning in <TInterpreter::ReadRootmapFile>: class  TUnfoldBinning found in libUnfold.so  is already in libHist.so 
+Warning in <TInterpreter::ReadRootmapFile>: class  TUnfoldDensity found in libUnfold.so  is already in libHist.so 
+Warning in <TInterpreter::ReadRootmapFile>: class  TUnfoldSys found in libUnfold.so  is already in libHist.so 
+Using /uscms/home/aperloff/.rootlogon.C
+Loading shared libraries: 
+ 	 Style: tdrStyle_mod14
+ 	 CMSSW_BASE: /uscms_data/d2/aperloff/YOURWORKINGAREA/SUSY/slc6/CMSSW_8_0_25
+ 	 SCRAM_ARCH: slc6_amd64_gcc530
+ 	 HOME: /uscms/home/aperloff
+ 	 libFWCoreFWLite
+ 	 libDataFormatsFWLite
+loaded
+
+
+Processing MakeAllDCsyst.C+(1,"T1tttt_650_425_fast","root://cmseos.fnal.gov//store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV12/scan","Combination_NJet3_MHT1_HT2_HTDPhiCut/FullScan/")...
+RA2bin yield:
+T1tttt_650_425_fast_nominal: 0.07694174 +/- 0.00087659
+T1tttt_650_425_fast_scaleuncUp: 0.07878614 +/- 0.00089790
+T1tttt_650_425_fast_scaleuncDown: 0.07530879 +/- 0.00085882
+T1tttt_650_425_fast_isruncUp: 0.07694174 +/- 0.00087659
+T1tttt_650_425_fast_isruncDown: 0.07694174 +/- 0.00087659
+T1tttt_650_425_fast_triguncUp: 0.07709251 +/- 0.00087831
+T1tttt_650_425_fast_triguncDown: 0.07674241 +/- 0.00087434
+T1tttt_650_425_fast_btagSFuncUp: 0.07694173 +/- 0.00087389
+T1tttt_650_425_fast_btagSFuncDown: 0.07694176 +/- 0.00087942
+T1tttt_650_425_fast_mistagSFuncUp: 0.07694172 +/- 0.00087404
+T1tttt_650_425_fast_mistagSFuncDown: 0.07694178 +/- 0.00087918
+T1tttt_650_425_fast_isotrackuncUp: 0.07694174 +/- 0.00087659
+T1tttt_650_425_fast_isotrackuncDown: 0.07694174 +/- 0.00087659
+T1tttt_650_425_fast_lumiuncUp: 0.07694174 +/- 0.00087659
+T1tttt_650_425_fast_lumiuncDown: 0.07694174 +/- 0.00087659
+
+RA2bin yield:
+T1tttt_650_425_fast_JECup: 0.07755963 +/- 0.00087289
+
+RA2bin yield:
+T1tttt_650_425_fast_JECdown: 0.07530267 +/- 0.00087409
+
+RA2bin yield:
+T1tttt_650_425_fast_JERup: 0.07714537 +/- 0.00087787
+
+RA2bin yield:
+T1tttt_650_425_fast_JERdown: 0.07647642 +/- 0.00087429
+
+Warning in <TInterpreter::ReadRootmapFile>: class  TUnfold found in libUnfold.so  is already in libHist.so 
+Warning in <TInterpreter::ReadRootmapFile>: class  TUnfoldBinning found in libUnfold.so  is already in libHist.so 
+Warning in <TInterpreter::ReadRootmapFile>: class  TUnfoldDensity found in libUnfold.so  is already in libHist.so 
+Warning in <TInterpreter::ReadRootmapFile>: class  TUnfoldSys found in libUnfold.so  is already in libHist.so 
+hadd Target file: datacards_fast/Combination_NJet3_MHT1_HT2_HTDPhiCut/FullScan/RA2bin_signal_T1tttt_650_425_fast.root
+hadd compression setting for all ouput: 1
+hadd Source file 1: datacards_fast/Combination_NJet3_MHT1_HT2_HTDPhiCut/FullScan/RA2bin_signal_T1tttt_650_425_fast_tmp.root
+hadd Source file 2: datacards_fast/Combination_NJet3_MHT1_HT2_HTDPhiCut/FullScan/RA2bin_signal_JECup_T1tttt_650_425_fast.root
+hadd Source file 3: datacards_fast/Combination_NJet3_MHT1_HT2_HTDPhiCut/FullScan/RA2bin_signal_JECdown_T1tttt_650_425_fast.root
+hadd Source file 4: datacards_fast/Combination_NJet3_MHT1_HT2_HTDPhiCut/FullScan/RA2bin_signal_JERup_T1tttt_650_425_fast.root
+hadd Source file 5: datacards_fast/Combination_NJet3_MHT1_HT2_HTDPhiCut/FullScan/RA2bin_signal_JERdown_T1tttt_650_425_fast.root
+hadd Target path: datacards_fast/Combination_NJet3_MHT1_HT2_HTDPhiCut/FullScan/RA2bin_signal_T1tttt_650_425_fast.root:/
