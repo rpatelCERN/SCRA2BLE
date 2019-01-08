@@ -172,6 +172,7 @@ if __name__ == '__main__':
                     command = "combineCards.py ";
                     #for cn in allcardnames:
 		    for i in range(0,174):
+		    #for i in range(173,174):
                         cn="card_signal%d.txt" %i
                         command += " " + the_odir+'/'+cn;
           #AR-180418:          You have to use indentation to represent something is for something else. This line is out of for loop as it is not indented.

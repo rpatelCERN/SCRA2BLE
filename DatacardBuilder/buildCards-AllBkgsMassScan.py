@@ -48,6 +48,7 @@ if __name__ == '__main__':
 #AR-180426: idir=inputHistograms/histograms_35.9fb/. Here are various background estimates.
 	#idir = 'inputHistograms/histograms_%1.1ffb/' % ( ((lumi)) );
 	idir = 'inputHistograms/MCForBinOptimization/';
+	#idir = 'inputHistograms/MCNominalBinning/';
 #AR-180426:os.path.exists(odir):Return True if path refers to an existing path. Returns False for broken symbolic links.
 #forcefully remove directory if it exists 
 	if os.path.exists(odir): os.system( "rm -rf %s" % (odir) );
@@ -92,6 +93,8 @@ if __name__ == '__main__':
 	else: signaldirtag ="inputHistograms/FullSim"
 	#AR-180427:when "fastsim" is true, sms=T1tttt_1500_100. Hence, signaltag=RA2bin_proc_T1tttt_1500_100
 	signaltag = "RA2bin_proc_"+sms;
+	signaldirtag="inputHistograms/MCForBinOptimization/FullScan/"
+	#signaltag = "RA2bin_"+sms;
 	parse=sms.split('_')
 	model=parse[0]
 	#print parse
@@ -108,8 +111,8 @@ if __name__ == '__main__':
 	CorrSigHist=signal_inputfile.Get("%s_nominal" %signaltag)
 	CorrSigHist.Scale(lumi*1000.)	
 	#genMHTCorr(signaldirtag,signaltag,lumi)		
-	if "T2tt" in sms or "T1tttt" in sms or "T5qqqqVV" in sms or "T1t" in sms: 
-		CorrSigHist=LeptonCorr(signaldirtag,options.signal,lumi, int(options.mGo), int(options.mLSP))   #AR-180427:returns signal contamination, need to look in carefully.
+	#if "T2tt" in sms or "T1tttt" in sms or "T5qqqqVV" in sms or "T1t" in sms: 
+	#	CorrSigHist=LeptonCorr(signaldirtag,options.signal,lumi, int(options.mGo), int(options.mLSP))   #AR-180427:returns signal contamination, need to look in carefully.
 	#MHTSyst=genMHTSyst(signaldirtag,signaltag,lumi)	
 #AR-180515: Return bin labels of histogram like ['NJets0_BTags0_MHT0_HT0', 'NJets0_BTags0_MHT0_HT1'....]
 	tagsForSignalRegion = binLabelsToList(CorrSigHist);	
@@ -337,8 +340,9 @@ if __name__ == '__main__':
 		#tmpList.append(LLAvgHeight_Hist.GetBinContent(i+1))
 #		tmpList.append(HadTauPrediction.GetBinContent(i+1))
 		#tmpList.append(0.25) 
-		if GammaObs.GetBinContent(i+1)>0.0:tmpList.append(ZPred.GetBinContent(i+1)) 
-		else: tmpList.append(ZRatios.GetBinContent(i+1))
+		#if GammaObs.GetBinContent(i+1)>0.0:
+		tmpList.append(ZPred.GetBinContent(i+1)) 
+		#else: tmpList.append(0.0 )
 		tmpList.append( qcdCV.GetBinContent(i+1) );
 		#srobs=(ZPred.GetBinContent(i+1)+LLPrediction_Hist.GetBinContent(i+1)+HadTauPrediction.GetBinContent(i+1)+(qcdCV.GetBinContent(i+1)))
 		#AR-180515: Just filling bin contents from bkg predictions. I think the purpose is to adjust bin centre.
@@ -423,27 +427,27 @@ if __name__ == '__main__':
 	TkIsoUncDn=signal_inputfile.Get(signaltag+"_isotrackuncDown")
 #AR-180516: addSystematicsLine(self,systype,channel,hist):
 #systype=lnN, channel='sig'=signal yield histogram, hist=LumiUnc
-	print "['sig'] ", ['sig']
-	signalRegion.addSystematicsLine('lnN',['sig'],LumiUnc)
-	signalRegion.addSystematicsLine('lnN',['sig'],JetIdUnc)	
-        #signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.027);
+
+	#signalRegion.addSystematicsLine('lnN',['sig'],LumiUnc)
+	#signalRegion.addSystematicsLine('lnN',['sig'],JetIdUnc)	
+        signalRegion.addSingleSystematic('lumi','lnN',['sig'],1.027);
         #signalRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.03);
         #signalRegion.addSingleSystematic('JetIDUnc','lnN',['sig'],1.01);
 	signalRegion.addSystematicsLine('lnN',['sig'],signalMCStatError);	
-	signalRegion.addSystematicsLine('lnU',['sig'],MHTSyst);
+	#signalRegion.addSystematicsLine('lnU',['sig'],MHTSyst);
 	
-	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalPUUp,signalPUDown)	
-	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysMisSFUp,signalSysMisSFDown)	
-	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysTrigSystUp,signalSysTrigSystDown)	
-	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],TkIsoUncUp,TkIsoUncDn)	
-	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysJERUp,signalSysJERDown)	
-	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysJECUp,signalSysJECDown)	
-	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysScaleUp,signalSysScaleDown)
-	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysbtagCFuncUp,signalSysbtagCFuncDown)		
-	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysctagCFuncUp,signalSysctagCFuncDown)		
-	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysmistagCFuncUp,signalSysmistagCFuncDown)		
-	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysISRUp,signalSysISRDown)	
-	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysSFUp,signalSysSFDown)	
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalPUUp,signalPUDown)	
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysMisSFUp,signalSysMisSFDown)	
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysTrigSystUp,signalSysTrigSystDown)	
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],TkIsoUncUp,TkIsoUncDn)	
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysJERUp,signalSysJERDown)	
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysJECUp,signalSysJECDown)	
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysScaleUp,signalSysScaleDown)
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysbtagCFuncUp,signalSysbtagCFuncDown)		
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysctagCFuncUp,signalSysctagCFuncDown)		
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysmistagCFuncUp,signalSysmistagCFuncDown)		
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysISRUp,signalSysISRDown)	
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysSFUp,signalSysSFDown)	
 	##############
 
 	#Correlate HAD TAU AND LOST LEPTON SYSTEMATICS
