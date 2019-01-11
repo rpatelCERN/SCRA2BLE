@@ -56,7 +56,7 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_35.9.root',
        if hout.GetName().find('Down') >= 0:
            SYSTS_Down.append(hout)
            print("%s (down-only)" % (hout.GetName()))
-       elif hout.GetName().find('Up') >= 0:
+       elif hout.GetName().find('Up') >= 0 and "Core" not in hout.GetName():
            SYSTS_Up.append(hout)
            print("%s (up-only)" % (hout.GetName()))
        else:
