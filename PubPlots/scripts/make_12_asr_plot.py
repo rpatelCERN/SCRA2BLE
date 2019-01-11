@@ -11,7 +11,7 @@ import CMS_lumi
 
 plot_dir = "output/"
 
-def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=False):
+def make_12_asr_plot(plot_title,  hadtau, znn, qcd, data_obs, doPull=False):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -28,15 +28,13 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
     ## load BG predictions -- also sets histogram styles   
     hqcd = qcd.hCV
     hznn = znn.hCV
-    hlostlep = lostlep.hCV
     hhadtau = hadtau.hCV
     ## build the stacked BG histogram    
     hs = THStack("hs", "")
     hs.Add(hqcd)
     hs.Add(hhadtau)
-    hs.Add(hlostlep)
     hs.Add(hznn)
-    sumBG = BGEst.sumBG(lostlep, hadtau, znn, qcd) # this will set the style of the hatched error bands
+    sumBG = BGEst.sumBG( hadtau, znn, qcd) # this will set the style of the hatched error bands
 
     ## setup dummy BG histogram for ratio, axes
     hbg_pred = hqcd.Clone("hbg_pred")
@@ -53,7 +51,6 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
     hbg_pred.GetYaxis().SetTitleOffset(0.7)
     hbg_pred.GetYaxis().SetTitleFont(42)
     hbg_pred.GetXaxis().SetLabelSize(0)
-    hbg_pred.Add(hlostlep)
     hbg_pred.Add(hhadtau)
     hbg_pred.Add(hqcd)
     hbg_pred.Add(hznn)
@@ -166,7 +163,6 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
     
     legdata.AddEntry(gdata_obs.GetName(), "Data", "pes")
     leg1.AddEntry(hznn, "Z#rightarrow#nu#bar{#nu}", "f")
-    leg2.AddEntry(hlostlep, "#splitline{Lost}{lepton}", "f")
     leg3.AddEntry(hhadtau, "#splitline{Hadronic}{#tau lepton}", "f")
     leg4.AddEntry(hqcd, "QCD", "f")
 
@@ -254,8 +250,6 @@ def make_12_asr_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fal
 if __name__ == "__main__":
     import sys
     output_file = sys.argv[1]
-    f_lostlep = TFile.Open(sys.argv[2])
-    lostlep = BGEst(f_lostlep.Get("ASR/hCV"), f_lostlep.Get("ASR/hStatUp"), f_lostlep.Get("ASR/hStatDown"), f_lostlep.Get("ASR/hSystUp"), f_lostlep.Get("ASR/hSystDown"), 2006)
     f_hadtau = TFile.Open(sys.argv[3])
     hadtau = BGEst(f_hadtau.Get("ASR/hCV"), f_hadtau.Get("ASR/hStatUp"), f_hadtau.Get("ASR/hStatDown"), f_hadtau.Get("ASR/hSystUp"), f_hadtau.Get("ASR/hSystDown"), 2007)
     f_znn = TFile.Open(sys.argv[4])
@@ -264,4 +258,4 @@ if __name__ == "__main__":
     qcd = BGEst(f_qcd.Get("ASR/hCV"), f_qcd.Get("ASR/hStatUp"), f_qcd.Get("ASR/hStatDown"), f_qcd.Get("ASR/hSystUp"), f_qcd.Get("ASR/hSystDown"), 2001)
     f_data_obs = TFile.Open(sys.argv[6])
     data_obs = DataObs(f_data_obs.Get("ASR/hCV"))
-    make_12_asr_plot(output_file, lostlep, hadtau, znn, qcd, data_obs)  
+    make_12_asr_plot(output_file,  hadtau, znn, qcd, data_obs)  

@@ -13,17 +13,17 @@ from agg_bins import *
 alpha = 1 - 0.6827
 
 def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_35.9.root', outputfile = 'qcdrs_hists.root', nbins = 174, lumiSF = 1.):
-   
+
    print ('Input file is %s' % inputfile)
    print ('Output file is %s' % outputfile)
    print ('Total number of bins is %d' % nbins)
 
    TH1D.SetDefaultSumw2(True)
-   
+
    infile = TFile.Open(inputfile);
    hin = infile.Get("PredictionCV");
-   hstat = infile.Get("PredictionStat")
-           
+   hstat = infile.Get("hPredictionUncorrelated")
+
    outfile = TFile(outputfile, "recreate")
    outfile.cd()
 
@@ -43,7 +43,7 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_35.9.root',
            continue
        # convert to absolute
        hout = h.Clone()
-       hout.Reset() 
+       hout.Reset()
        for ibin in range(nbins):
            if hin.GetBinContent(ibin+1) > 0.:
                if hout.GetName().find("Down") >= 0:
@@ -51,22 +51,22 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_35.9.root',
                else:
                    hout.SetBinContent(ibin+1, lumiSF*(h.GetBinContent(ibin+1)-1.)*hin.GetBinContent(ibin+1))
            else:
-               hout.SetBinContent(ibin+1, 0.)            
+               hout.SetBinContent(ibin+1, 0.)
        SYSTS.append(hout)
        if hout.GetName().find('Down') >= 0:
            SYSTS_Down.append(hout)
-           print("%s (down-only)" % (hout.GetName()))       
+           print("%s (down-only)" % (hout.GetName()))
        elif hout.GetName().find('Up') >= 0:
            SYSTS_Up.append(hout)
-           print("%s (up-only)" % (hout.GetName()))       
+           print("%s (up-only)" % (hout.GetName()))
        else:
            SYSTS_Up.append(hout)
            SYSTS_Down.append(hout)
-           print("%s (sym)" % hout.GetName())    
+           print("%s (sym)" % hout.GetName())
 
-   hSystUp = AddHistsInQuadrature('hSystUp', SYSTS_Up)       
+   hSystUp = AddHistsInQuadrature('hSystUp', SYSTS_Up)
    hSystDown = AddHistsInQuadrature('hSystDown', SYSTS_Down)
-           
+
    # open text file, extract values
    if nbins != hin.GetNbinsX():
        print ('Warning: input file has %d bins, but I need to fill %d bins!' % (hin.GetNbinsX(), nbins))
@@ -85,9 +85,9 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_35.9.root',
        if hSystDown.GetBinContent(ibin+1) > CV - hStatDown.GetBinContent(ibin+1): # truncate if necessary
            hSystDown.SetBinContent(ibin+1, CV - hStatDown.GetBinContent(ibin+1))
        print ('Bin %d: %f + %f + %f - %f - %f' % (ibin+1, CV, hStatUp.GetBinContent(ibin+1), hSystUp.GetBinContent(ibin+1), hStatDown.GetBinContent(ibin+1), hSystDown.GetBinContent(ibin+1)))
-       
 
-             
+
+
    outfile.cd()
    hCV.Write()
    hStatUp.Write()
@@ -103,10 +103,10 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_35.9.root',
        dASR.cd()
        hCV_ASR = Uncertainty(hCV, "all").AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist # pretending the CV is a fully-correlated uncertainty b/c we need to add it linearly
        # stat uncertainty fully-uncorrelated (174 CRs)
-       hStatUp_ASR = Uncertainty(hStatUp, '').AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist 
+       hStatUp_ASR = Uncertainty(hStatUp, '').AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
        hStatDown_ASR = Uncertainty(hStatDown, '').AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
        hCV_ASR.Write()
-       
+
        SYSTSUp_ASR = []
        SYSTSDown_ASR = []
        for hsyst in SYSTS:
@@ -114,17 +114,17 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_35.9.root',
            correlation = '' # note: default is uncorrelated across bins corresponds to closure, contamination, trigger, prior
            if hname.find('Core') >= 0 or hname.find('Tail') >= 0 or hname.find('BTag') >= 0: # fully-correlated across search bins
                correlation = 'all'
-           hist_asr = Uncertainty(hsyst, correlation).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist           
+           hist_asr = Uncertainty(hsyst, correlation).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
            ## now group by Up, Down, symmetric
            if hname.find('Down') >= 0:
-               SYSTSDown_ASR.append(hist_asr)            
+               SYSTSDown_ASR.append(hist_asr)
            elif hname.find('Up') >= 0:
                SYSTSUp_ASR.append(hist_asr)
            else:
                SYSTSUp_ASR.append(hist_asr)
                SYSTSDown_ASR.append(hist_asr)
-               
-       hSystUp_ASR = AddHistsInQuadrature('hSystUp', SYSTSUp_ASR)       
+
+       hSystUp_ASR = AddHistsInQuadrature('hSystUp', SYSTSUp_ASR)
        hSystDown_ASR = AddHistsInQuadrature('hSystDown', SYSTSDown_ASR)
        # sanity: make sure Stat and Syst Down not larger than CV
        for iasr in range(hCV_ASR.GetNbinsX()):
@@ -142,10 +142,9 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_35.9.root',
        hSystUp_ASR.Write()
        hStatDown_ASR.Write()
        hSystDown_ASR.Write()
-   
+
    outfile.Close()
-        
+
 if __name__ == "__main__":
     import sys
     fill_qcdrs_hists(sys.argv[1], sys.argv[2], int(sys.argv[3]))
-   

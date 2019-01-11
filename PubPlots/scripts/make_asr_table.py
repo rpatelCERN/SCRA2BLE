@@ -8,7 +8,7 @@ from data_obs import DataObs
 from utils import GetPred
 from ROOT import TFile
 
-def make_asr_table(output_file, lostlep, hadtau, znn, qcd, data_obs): #, 
+def make_asr_table(output_file,  hadtau, znn, qcd, data_obs): #, 
 
             
     with open("/".join(["output", output_file+".tex"]), 'w') as fout:
@@ -25,15 +25,13 @@ def make_asr_table(output_file, lostlep, hadtau, znn, qcd, data_obs): #,
                     edit = False
                 if edit:
                     ibin = int(line[0:2])
-                    lostlep_pred = GetPred(lostlep, ibin)
-                    line = line.replace('$$', lostlep_pred, 1)
                     hadtau_pred = GetPred(hadtau, ibin)
                     line = line.replace('$$', hadtau_pred, 1)
                     znn_pred = GetPred(znn, ibin)
                     line = line.replace('$$', znn_pred, 1)
                     qcd_pred = GetPred(qcd, ibin)
                     line = line.replace('$$', qcd_pred, 1)
-                    sumBG_pred = GetPred(BGEst.sumBG(lostlep, hadtau, znn, qcd), ibin)
+                    sumBG_pred = GetPred(BGEst.sumBG( hadtau, znn, qcd), ibin)
                     line = line.replace('$$', sumBG_pred, 1)
                     nobs = int(data_obs.hist.GetBinContent(ibin))
                     line = line.replace('$$', str(nobs), 1)
@@ -41,7 +39,7 @@ def make_asr_table(output_file, lostlep, hadtau, znn, qcd, data_obs): #,
 
 ##        fout.write(preamble)
 ##        ## get table and write it
-##        table = ResultsTable(data_obs, lostlep, hadtau, znn, qcd, 1, 12, \
+##        table = ResultsTable(data_obs,  hadtau, znn, qcd, 1, 12, \
 ##                              "Observed number of events and pre-fit background predictions in the aggregate search regions.", "tab:pre-fit-results-asrs")
 ##        fout.write(table.full+"\n")
 ##
@@ -50,8 +48,6 @@ def make_asr_table(output_file, lostlep, hadtau, znn, qcd, data_obs): #,
 if __name__ == "__main__": # to run from command line, just give the name of the BG estimation files
     import sys
     output_file = sys.argv[1]
-    f_lostlep = TFile.Open(sys.argv[2])
-    lostlep = BGEst(f_lostlep.Get("ASR/hCV"), f_lostlep.Get("ASR/hStatUp"), f_lostlep.Get("ASR/hStatDown"), f_lostlep.Get("ASR/hSystUp"), f_lostlep.Get("ASR/hSystDown"))
     f_hadtau = TFile.Open(sys.argv[3])
     hadtau = BGEst(f_hadtau.Get("ASR/hCV"), f_hadtau.Get("ASR/hStatUp"), f_hadtau.Get("ASR/hStatDown"), f_hadtau.Get("ASR/hSystUp"), f_hadtau.Get("ASR/hSystDown"))
     f_znn = TFile.Open(sys.argv[4])
@@ -61,4 +57,4 @@ if __name__ == "__main__": # to run from command line, just give the name of the
     f_data_obs = TFile.Open(sys.argv[6])
     data_obs = DataObs(f_data_obs.Get("ASR/hCV"))
 
-    make_asr_table(output_file, lostlep, hadtau, znn, qcd, data_obs) # , sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5]  
+    make_asr_table(output_file,  hadtau, znn, qcd, data_obs) # , sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5]  

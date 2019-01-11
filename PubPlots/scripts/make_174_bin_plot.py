@@ -11,7 +11,7 @@ import CMS_lumi
 plot_dir = "output/"
 #plot_title = "results-plot-prefit-12_9-log"
 
-def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=False):
+def make_174_bin_plot(plot_title,  hadtau, znn, qcd, data_obs, doPull=False):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -25,17 +25,15 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     gdata_obs = data_obs.graph # note that this also sets the style
 
     ## load BG predictions -- also sets histogram styles
-    sumBG = BGEst.sumBG(lostlep, hadtau, znn, qcd) # this will set the style of the hatched error bands
+    sumBG = BGEst.sumBG( hadtau, znn, qcd) # this will set the style of the hatched error bands
 
     ## build the stacked BG histogram    
     hqcd = qcd.hCV
     hznn = znn.hCV
-    hlostlep = lostlep.hCV
     hhadtau = hadtau.hCV  
     hs = THStack("hs", "")
     hs.Add(hqcd)
     hs.Add(hhadtau)
-    hs.Add(hlostlep)
     hs.Add(hznn)
 
     ## setup dummy BG histogram for ratio, axes
@@ -53,7 +51,6 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     hbg_pred.GetYaxis().SetTitleOffset(0.7)
     hbg_pred.GetYaxis().SetTitleFont(42)
     hbg_pred.GetXaxis().SetLabelSize(0)
-    hbg_pred.Add(hlostlep)
     hbg_pred.Add(hhadtau)
     hbg_pred.Add(hqcd)
     hbg_pred.Add(hznn)
@@ -164,7 +161,6 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
     leg1.SetFillStyle(0)
     leg1.AddEntry(gdata_obs.GetName(), "Data", "pes")
     leg1.AddEntry(hznn, "Z#rightarrow#nu#bar{#nu}", "f")
-    leg1.AddEntry(hlostlep, "#splitline{Lost}{lepton}", "f")
     leg2 = TLegend(0.83, 0.5, 1.075, 0.82)
     leg2.SetTextSize(0.035)
     leg2.SetFillStyle(0)
@@ -335,8 +331,6 @@ def make_174_bin_plot(plot_title, lostlep, hadtau, znn, qcd, data_obs, doPull=Fa
 if __name__ == "__main__":
     import sys
     output_file = sys.argv[1]
-    f_lostlep = TFile.Open(sys.argv[2])
-    lostlep = BGEst(f_lostlep.Get("hCV"), f_lostlep.Get("hStatUp"), f_lostlep.Get("hStatDown"), f_lostlep.Get("hSystUp"), f_lostlep.Get("hSystDown"), 2006)
     f_hadtau = TFile.Open(sys.argv[3])
     hadtau = BGEst(f_hadtau.Get("hCV"), f_hadtau.Get("hStatUp"), f_hadtau.Get("hStatDown"), f_hadtau.Get("hSystUp"), f_hadtau.Get("hSystDown"), 2007)
     f_znn = TFile.Open(sys.argv[4])
@@ -345,4 +339,4 @@ if __name__ == "__main__":
     qcd = BGEst(f_qcd.Get("hCV"), f_qcd.Get("hStatUp"), f_qcd.Get("hStatDown"), f_qcd.Get("hSystUp"), f_qcd.Get("hSystDown"), 2001)
     f_data_obs = TFile.Open(sys.argv[6])
     data_obs = DataObs(f_data_obs.Get("hCV"))
-    make_174_bin_plot(output_file, lostlep, hadtau, znn, qcd, data_obs)  
+    make_174_bin_plot(output_file,  hadtau, znn, qcd, data_obs)  

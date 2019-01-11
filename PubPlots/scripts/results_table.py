@@ -12,14 +12,13 @@ from search_bin import *
 
 class ResultsTable:
 
-    def __init__(self, data_obs, lostlep, hadtau, znn, qcd, first_bin=0, last_bin=None, caption=None, label=None):
-        self.set_vars(data_obs, lostlep, hadtau, znn, qcd, first_bin, last_bin, caption, label)
+    def __init__(self, data_obs, hadtau, znn, qcd, first_bin=0, last_bin=None, caption=None, label=None):
+        self.set_vars(data_obs, hadtau, znn, qcd, first_bin, last_bin, caption, label)
         
-    def set_vars(cls, data_obs, lostlep, hadtau, znn, qcd, first_bin, last_bin, caption, label):
+    def set_vars(cls, data_obs,  hadtau, znn, qcd, first_bin, last_bin, caption, label):
         cls.caption = caption
         cls.label = label
         cls.data_obs = data_obs
-        cls.lostlep = lostlep
         cls.hadtau = hadtau
         cls.znn = znn
         cls.qcd = qcd
@@ -51,7 +50,7 @@ class ResultsTable:
         header.append("\\resizebox{\\textwidth}{!}{")
         header.append("\\begin{tabular}{ |c|c|c|c|c||c|c|c|c||c|c| }")
         header.append("\\hline")
-        header.append("Bin & $\\MHT$ [GeV] & $\\HT$ [GeV] & $\\njets$ & $\\nbjets$ & Lost-$e/\\mu$ & $\\tau\\rightarrow\\mathrm{had}$ & $Z\\rightarrow\\nu\\bar{\\nu}$ & QCD & Total Pred. & Obs. \\\\ \\hline")
+        header.append("Bin & $\\MHT$ [GeV] & $\\HT$ [GeV] & $\\njets$ & $\\nbjets$ & $\\tau\\rightarrow\\mathrm{had}$ & $Z\\rightarrow\\nu\\bar{\\nu}$ & QCD & Total Pred. & Obs. \\\\ \\hline")
         return header
 
     def GetTrailer(self):
@@ -62,7 +61,7 @@ class ResultsTable:
 
     def GetContents(self):
         rows = []
-        sumBG = BGEst.sumBG(self.lostlep, self.hadtau, self.znn, self.qcd)
+        sumBG = BGEst.sumBG(self.hadtau, self.znn, self.qcd)
         ilabel = 0 ## gets it's own index in case we're taking a subset of input histogram bins
         for ibin in range(self.first_bin-1, self.last_bin):
             line = []
@@ -72,7 +71,6 @@ class ResultsTable:
             line.append(sbin.ht_s)
             line.append(sbin.nj_s)
             line.append(sbin.nb_s)
-            line.append(GetPred(self.lostlep, ibin+1))
             line.append(GetPred(self.hadtau, ibin+1))
             line.append(GetPred(self.znn, ibin+1))
             line.append(GetPred(self.qcd, ibin+1))

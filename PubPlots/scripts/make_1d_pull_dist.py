@@ -10,14 +10,14 @@ import CMS_lumi
 
 plot_dir = "output/"
 
-def make_1d_pull_dist(plot_title, lostlep, hadtau, znn, qcd, data_obs):
+def make_1d_pull_dist(plot_title,  hadtau, znn, qcd, data_obs):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
     tdrstyle.setTDRStyle()
     
     hdata_obs = data_obs.hist
-    sumBG = BGEst.sumBG(lostlep, hadtau, znn, qcd)
+    sumBG = BGEst.sumBG( hadtau, znn, qcd)
     hbg_pred = sumBG.hCV
     hbg_err_up = AddHistsInQuadrature('err_up', [sumBG.hStatUp, sumBG.hSystUp])
     hbg_err_down = AddHistsInQuadrature('err_down', [sumBG.hStatDown, sumBG.hSystDown])
