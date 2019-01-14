@@ -124,7 +124,7 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
                correlation = 'njets:nbjets'
            elif hsyst.GetName().find('DYstat') >= 0: # special
                correlation = 'DYstat'
-           elif hsyst.GetName().find('DYMCstat') >= 0 or hsyst.GetName().find('hzvvDYsysNj') >= 0: # 3 values for nb = 1, 2, 3 for njets>8
+           elif hsyst.GetName().find('zvvDYMCerr') >= 0 or hsyst.GetName().find('hzvvDYsysNj') >= 0: # 3 values for nb = 1, 2, 3 for njets>8
                correlation = 'htmht'
            elif hsyst.GetName().find('DYsysPur') >= 0: # funny
                correlation = 'DYsysPur'
