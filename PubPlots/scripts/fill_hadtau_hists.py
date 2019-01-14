@@ -23,6 +23,9 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog116_35.9ifb_HadTauEstim
    infile = TFile.Open(inputfile)
    hin = infile.Get("totalPred_LLPlusHadTau")
    hin_stats_no_poiscl0 = infile.Get("DataCSStatistics")
+   hin_statserr_no_poiscl0 = infile.Get("DataCSStatErr")
+   hin_TF = infile.Get("LLPlusHadTauTF")
+   hin_TFErr = infile.Get("LLPlusHadTauTFErr")
 
    # load many syst hists ...
    symsysts = []
@@ -85,8 +88,11 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog116_35.9ifb_HadTauEstim
        CV = lumiSF*hin.GetBinContent(ibin+1)
        hCV.SetBinContent(ibin+1, CV)
        hCV.SetBinError(ibin+1, 0.)
+       SumMCWeightsError=(hin_TFErr.GetBinContent(ibin+1)-1)*CV ;
+       CSStatsError=(hin_statserr_no_poiscl0.GetBinContent(ibin+1)-1)*CV;
        # get stat uncertainties
-       stat = lumiSF*hin_stats_no_poiscl0.GetBinError(ibin+1)
+       stat = lumiSF*(sqrt(SumMCWeightsError**2 + CSStatsError**2))#*hin_stats_no_poiscl0.GetBinError(ibin+1)
+       #stat = lumiSF*(CSStatsError)#*hin_stats_no_poiscl0.GetBinError(ibin+1)
        stat_up = sqrt(stat**2+poiscl0**2)
        stat_down = stat
        if stat_down > CV: # just to be safe
@@ -147,7 +153,7 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog116_35.9ifb_HadTauEstim
                correlation = ''
            elif hname.find('TrigSyst') >= 0: # only binned in HT and MHT
                correlation = 'njets:nbjets'
-           elif hname.find('MuReco') >= 0 or hname.find('MuIso') >= 0 or hname.find('MTSys') >= 0 or hname.find('JEC') >= 0 or hname.find('BMistagDown') >= 0 or hname.find('PDFDown')>=0 or hname.find('ScaleDown'): # 1 value, fully-correlated
+           elif hname.find('MuReco') >= 0 or hname.find('MuIso') >= 0 or hname.find('BMistagDown') >= 0 or hname.find('PDFDown')>=0 or hname.find('ScaleDown'): # 1 value, fully-correlated
                correlation = 'all'
            hist_asr = Uncertainty(hsyst, correlation).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
            ## now group by Up, Down, symmetric
