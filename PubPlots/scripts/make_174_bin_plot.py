@@ -11,7 +11,7 @@ import CMS_lumi
 plot_dir = "output/"
 #plot_title = "results-plot-prefit-12_9-log"
 
-def make_174_bin_plot(plot_title,  hadtau, znn, qcd, data_obs, doPull=False):
+def make_174_bin_plot(plot_title,  lostlept, znn, qcd, data_obs, doPull=False):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -25,15 +25,15 @@ def make_174_bin_plot(plot_title,  hadtau, znn, qcd, data_obs, doPull=False):
     gdata_obs = data_obs.graph # note that this also sets the style
 
     ## load BG predictions -- also sets histogram styles
-    sumBG = BGEst.sumBG( hadtau, znn, qcd) # this will set the style of the hatched error bands
+    sumBG = BGEst.sumBG( lostlept, znn, qcd) # this will set the style of the hatched error bands
 
-    ## build the stacked BG histogram    
+    ## build the stacked BG histogram
     hqcd = qcd.hCV
     hznn = znn.hCV
-    hhadtau = hadtau.hCV  
+    hlostlept = lostlept.hCV
     hs = THStack("hs", "")
     hs.Add(hqcd)
-    hs.Add(hhadtau)
+    hs.Add(hlostlept)
     hs.Add(hznn)
 
     ## setup dummy BG histogram for ratio, axes
@@ -51,7 +51,7 @@ def make_174_bin_plot(plot_title,  hadtau, znn, qcd, data_obs, doPull=False):
     hbg_pred.GetYaxis().SetTitleOffset(0.7)
     hbg_pred.GetYaxis().SetTitleFont(42)
     hbg_pred.GetXaxis().SetLabelSize(0)
-    hbg_pred.Add(hhadtau)
+    hbg_pred.Add(hlostlept)
     hbg_pred.Add(hqcd)
     hbg_pred.Add(hznn)
     ymax = hbg_pred.GetMaximum()
@@ -60,7 +60,7 @@ def make_174_bin_plot(plot_title,  hadtau, znn, qcd, data_obs, doPull=False):
     hbg_pred.SetMaximum(500*ymax)
     hbg_pred.SetMinimum(0.09)
 
-    
+
     ratio = ObsExpRatio(DataObs(hdata_obs), sumBG) # note that this also sets the style
     ratio_markers = ratio.markers
     ratio_bands = ratio.bands
@@ -94,8 +94,8 @@ def make_174_bin_plot(plot_title,  hadtau, znn, qcd, data_obs, doPull=False):
         hratdummy.GetXaxis().SetBinLabel(ibin+1, "")
         pull.GetXaxis().SetBinLabel(ibin+1, "")
         if (ibin+1) % 20 == 0:
-           hratdummy.GetXaxis().SetBinLabel(ibin+1, "%d" % int(ibin+1)) 
-           pull.GetXaxis().SetBinLabel(ibin+1, "%d" % int(ibin+1)) 
+           hratdummy.GetXaxis().SetBinLabel(ibin+1, "%d" % int(ibin+1))
+           pull.GetXaxis().SetBinLabel(ibin+1, "%d" % int(ibin+1))
     hratdummy.LabelsOption("h")
     pull.LabelsOption("h")
 
@@ -105,7 +105,7 @@ def make_174_bin_plot(plot_title,  hadtau, znn, qcd, data_obs, doPull=False):
     W = 800
     H = 600
     T = 0.08*H
-    B = 0.12*H 
+    B = 0.12*H
     L = 0.12*W
     R = 0.04*W
     canv = TCanvas("canvName","canvName", 50, 50, W, H)
@@ -136,7 +136,7 @@ def make_174_bin_plot(plot_title,  hadtau, znn, qcd, data_obs, doPull=False):
     pad1.SetTopMargin(0.1)
     pad1.SetLeftMargin(0.1)
     pad1.SetRightMargin(0.02)
-    pad1.SetLogy()    
+    pad1.SetLogy()
     pad1.Draw()
 
     pad2.SetPad(0., 0., 1., dw_height+dw_height_offset)
@@ -156,17 +156,20 @@ def make_174_bin_plot(plot_title,  hadtau, znn, qcd, data_obs, doPull=False):
     gdata_obs.Draw("p, same")
 
     ## legends
+    ## legends
     leg1 = TLegend(0.675, 0.5, 0.92, 0.82)
     leg1.SetTextSize(0.035)
     leg1.SetFillStyle(0)
     leg1.AddEntry(gdata_obs.GetName(), "Data", "pes")
     leg1.AddEntry(hznn, "Z#rightarrow#nu#bar{#nu}", "f")
+    leg1.AddEntry(hqcd, "QCD", "f")
+
     leg2 = TLegend(0.83, 0.5, 1.075, 0.82)
     leg2.SetTextSize(0.035)
     leg2.SetFillStyle(0)
     leg2.AddEntry(hbg_pred, "", "f")
-    leg2.AddEntry(hhadtau, "#splitline{Hadronic}{#tau lepton}", "f")
-    leg2.AddEntry(hqcd, "QCD", "f")
+    leg2.AddEntry(hlostlept, "#splitline{Lost}{lepton}", "f")
+    leg2.AddEntry(hbg_pred, "", "f")
 
     leg1.Draw()
     leg2.Draw()
@@ -189,51 +192,51 @@ def make_174_bin_plot(plot_title,  hadtau, znn, qcd, data_obs, doPull=False):
     ## labels and lines
     tl_njet = TLine()
     tl_njet.SetLineStyle(2)
-    tl_njet.DrawLine(31.-0.5,ymin_top,31.-0.5,ymax_top) 
-    tl_njet.DrawLine(71.-0.5,ymin_top,71.-0.5,ymax_top) 
-    tl_njet.DrawLine(111.-0.5,ymin_top,111.-0.5,ymax_top) 
-    tl_njet.DrawLine(143.-0.5,ymin_top,143.-0.5,ymax_top) 
+    tl_njet.DrawLine(31.-0.5,ymin_top,31.-0.5,ymax_top)
+    tl_njet.DrawLine(71.-0.5,ymin_top,71.-0.5,ymax_top)
+    tl_njet.DrawLine(111.-0.5,ymin_top,111.-0.5,ymax_top)
+    tl_njet.DrawLine(143.-0.5,ymin_top,143.-0.5,ymax_top)
 
     ## Njet labels
     ttext_njet = TLatex()
     ttext_njet.SetTextFont(42)
     ttext_njet.SetTextSize(0.04)
     ttext_njet.SetTextAlign(22)
-    ttext_njet.DrawLatex(15.-0.5 , ymax_top/4. , "N_{#scale[0.2]{ }jet} = 2")
-    ttext_njet.DrawLatex(51.-0.5 , ymax_top/4. , "3 #leq N_{#scale[0.2]{ }jet} #leq 4")
-    ttext_njet.DrawLatex(91.-0.5 , ymax_top/4. , "5 #leq N_{#scale[0.2]{ }jet} #leq 6")
-    ttext_njet.DrawLatex(126.-0.5 , ymax_top/4. , "7 #leq N_{#scale[0.2]{ }jet} #leq 8")
-    ttext_njet.DrawLatex(158.-0.5 , ymax_top/4. , "N_{#scale[0.2]{ }jet} #geq 9")
+    ttext_njet.DrawLatex(15.-0.5 , ymax_top/4. , "2 #leq N_{#scale[0.2]{ }jet} #leq 3")
+    ttext_njet.DrawLatex(51.-0.5 , ymax_top/4. , "4 #leq N_{#scale[0.2]{ }jet} #leq 5")
+    ttext_njet.DrawLatex(91.-0.5 , ymax_top/4. , "6 #leq N_{#scale[0.2]{ }jet} #leq 7")
+    ttext_njet.DrawLatex(126.-0.5 , ymax_top/4., "8 #leq N_{#scale[0.2]{ }jet} #leq 9")
+    ttext_njet.DrawLatex(158.-0.5 , ymax_top/4., "N_{#scale[0.2]{ }jet} #geq 10")
 
     ## Nb separation lines
     tl_nb = TLine()
     tl_nb.SetLineStyle(3)
     tl_nb.SetLineWidth(2)
-    tl_nb.DrawLine(11.-0.5,ymin_top,11.-0.5,ymax2_top) 
-    tl_nb.DrawLine(21.-0.5,ymin_top,21.-0.5,ymax2_top) 
+    tl_nb.DrawLine(11.-0.5,ymin_top,11.-0.5,ymax2_top)
+    tl_nb.DrawLine(21.-0.5,ymin_top,21.-0.5,ymax2_top)
     tl_nb.DrawLine(41.-0.5,ymin_top,41.-0.5,ymax2_top)
-    tl_nb.DrawLine(51.-0.5,ymin_top,51.-0.5,ymax2_top) 
-    tl_nb.DrawLine(61.-0.5,ymin_top,61.-0.5,ymax2_top) 
-    tl_nb.DrawLine(81.-0.5,ymin_top,81.-0.5,ymax2_top) 
-    tl_nb.DrawLine(91.-0.5,ymin_top,91.-0.5,ymax2_top) 
-    tl_nb.DrawLine(101.-0.5,ymin_top,101.-0.5,ymax2_top) 
+    tl_nb.DrawLine(51.-0.5,ymin_top,51.-0.5,ymax2_top)
+    tl_nb.DrawLine(61.-0.5,ymin_top,61.-0.5,ymax2_top)
+    tl_nb.DrawLine(81.-0.5,ymin_top,81.-0.5,ymax2_top)
+    tl_nb.DrawLine(91.-0.5,ymin_top,91.-0.5,ymax2_top)
+    tl_nb.DrawLine(101.-0.5,ymin_top,101.-0.5,ymax2_top)
     tl_nb.DrawLine(119.-0.5,ymin_top,119.-0.5,ymax3_top)
     tl_nb.DrawLine(127.-0.5,ymin_top,127.-0.5,ymax3_top)
     tl_nb.DrawLine(135.-0.5,ymin_top,135.-0.5,ymax3_top)
     tl_nb.DrawLine(151.-0.5,ymin_top,151.-0.5,ymax3_top)
     tl_nb.DrawLine(159.-0.5,ymin_top,159.-0.5,ymax3_top)
     tl_nb.DrawLine(167.-0.5,ymin_top,167.-0.5,ymax3_top)
-    
+
     ## Nb labels
     ttext_nb = TLatex()
     ttext_nb.SetTextFont(42)
     ttext_nb.SetTextSize(0.04)
     ttext_nb.SetTextAlign(22)
-    
+
     ttext_nb.DrawLatex(11.-0.5 , ymax_top/16. , "N_{#scale[0.2]{ }b-jet}")
     ttext_nb.DrawLatex(6.-0.5 , ymax_top/40. , "0")
     ttext_nb.DrawLatex(16.-0.5 , ymax_top/40. , "1")
-    ttext_nb.DrawLatex(26.-0.5 , ymax_top/40. , "2")
+    ttext_nb.DrawLatex(26.-0.5 , ymax_top/40. , "#geq 2")
 
     ttext_nb.DrawLatex(36.-0.5 , ymax_top/40. , "0")
     ttext_nb.DrawLatex(46.-0.5 , ymax_top/40. , "1")
@@ -267,30 +270,30 @@ def make_174_bin_plot(plot_title,  hadtau, znn, qcd, data_obs, doPull=False):
     ratiomid = TLine(hbg_pred.GetBinLowEdge(1), 0., hbg_pred.GetBinLowEdge(hbg_pred.GetNbinsX()+1), 0.)
     ratiomid.SetLineStyle(2)
     ratiomid.Draw()
-        
+
     ## lines again
     if doPull:
         rat_max = pull_max
         rat_min = 0-rat_max
-    tl_njet.DrawLine(31.-0.5, rat_min, 31.-0.5,rat_max) 
+    tl_njet.DrawLine(31.-0.5, rat_min, 31.-0.5,rat_max)
     tl_njet.DrawLine(71.-0.5, rat_min, 71.-0.5,rat_max)
     tl_njet.DrawLine(111.-0.5, rat_min,111.-0.5,rat_max)
     tl_njet.DrawLine(143.-0.5, rat_min,143.-0.5,rat_max)
-    tl_nb.DrawLine(11.-0.5,rat_min,11.-0.5,rat_max) 
-    tl_nb.DrawLine(21.-0.5,rat_min,21.-0.5,rat_max) 
+    tl_nb.DrawLine(11.-0.5,rat_min,11.-0.5,rat_max)
+    tl_nb.DrawLine(21.-0.5,rat_min,21.-0.5,rat_max)
     tl_nb.DrawLine(41.-0.5,rat_min,41.-0.5,rat_max)
-    tl_nb.DrawLine(51.-0.5,rat_min,51.-0.5,rat_max) 
-    tl_nb.DrawLine(61.-0.5,rat_min,61.-0.5,rat_max) 
-    tl_nb.DrawLine(81.-0.5,rat_min,81.-0.5,rat_max) 
-    tl_nb.DrawLine(91.-0.5,rat_min,91.-0.5,rat_max) 
-    tl_nb.DrawLine(101.-0.5,rat_min,101.-0.5,rat_max) 
+    tl_nb.DrawLine(51.-0.5,rat_min,51.-0.5,rat_max)
+    tl_nb.DrawLine(61.-0.5,rat_min,61.-0.5,rat_max)
+    tl_nb.DrawLine(81.-0.5,rat_min,81.-0.5,rat_max)
+    tl_nb.DrawLine(91.-0.5,rat_min,91.-0.5,rat_max)
+    tl_nb.DrawLine(101.-0.5,rat_min,101.-0.5,rat_max)
     tl_nb.DrawLine(119.-0.5,rat_min,119.-0.5,rat_max)
     tl_nb.DrawLine(127.-0.5,rat_min,127.-0.5,rat_max)
     tl_nb.DrawLine(135.-0.5,rat_min,135.-0.5,rat_max)
     tl_nb.DrawLine(151.-0.5,rat_min,151.-0.5,rat_max)
     tl_nb.DrawLine(159.-0.5,rat_min,159.-0.5,rat_max)
     tl_nb.DrawLine(167.-0.5,rat_min,167.-0.5,rat_max)
-    
+
     ## refresh everything, to be safe
     pad1.cd()
     gPad.RedrawAxis()
@@ -325,18 +328,18 @@ def make_174_bin_plot(plot_title,  hadtau, znn, qcd, data_obs, doPull=False):
             raise
     gPad.Print(plot_dir+plot_title+".pdf")
     ##    gPad.Print(plot_dir+plot_title+".png")
-    
+
     gPad.Close()
-        
+
 if __name__ == "__main__":
     import sys
     output_file = sys.argv[1]
-    f_hadtau = TFile.Open(sys.argv[3])
-    hadtau = BGEst(f_hadtau.Get("hCV"), f_hadtau.Get("hStatUp"), f_hadtau.Get("hStatDown"), f_hadtau.Get("hSystUp"), f_hadtau.Get("hSystDown"), 2007)
+    f_lostlept = TFile.Open(sys.argv[3])
+    lostlept = BGEst(f_lostlept.Get("hCV"), f_lostlept.Get("hStatUp"), f_lostlept.Get("hStatDown"), f_lostlept.Get("hSystUp"), f_lostlept.Get("hSystDown"), 2006)
     f_znn = TFile.Open(sys.argv[4])
     znn = BGEst(f_znn.Get("hCV"), f_znn.Get("hStatUp"), f_znn.Get("hStatDown"), f_znn.Get("hSystUp"), f_znn.Get("hSystDown"), 2002)
     f_qcd = TFile.Open(sys.argv[5])
     qcd = BGEst(f_qcd.Get("hCV"), f_qcd.Get("hStatUp"), f_qcd.Get("hStatDown"), f_qcd.Get("hSystUp"), f_qcd.Get("hSystDown"), 2001)
     f_data_obs = TFile.Open(sys.argv[6])
     data_obs = DataObs(f_data_obs.Get("hCV"))
-    make_174_bin_plot(output_file,  hadtau, znn, qcd, data_obs)  
+    make_174_bin_plot(output_file,  lostlept, znn, qcd, data_obs)

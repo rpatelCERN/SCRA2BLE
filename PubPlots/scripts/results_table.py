@@ -12,14 +12,14 @@ from search_bin import *
 
 class ResultsTable:
 
-    def __init__(self, data_obs, hadtau, znn, qcd, first_bin=0, last_bin=None, caption=None, label=None):
-        self.set_vars(data_obs, hadtau, znn, qcd, first_bin, last_bin, caption, label)
-        
-    def set_vars(cls, data_obs,  hadtau, znn, qcd, first_bin, last_bin, caption, label):
+    def __init__(self, data_obs, lostlept, znn, qcd, first_bin=0, last_bin=None, caption=None, label=None):
+        self.set_vars(data_obs, lostlept, znn, qcd, first_bin, last_bin, caption, label)
+
+    def set_vars(cls, data_obs,  lostlept, znn, qcd, first_bin, last_bin, caption, label):
         cls.caption = caption
         cls.label = label
         cls.data_obs = data_obs
-        cls.hadtau = hadtau
+        cls.lostlept = lostlept
         cls.znn = znn
         cls.qcd = qcd
         cls.header = cls.GetHeader()
@@ -37,7 +37,7 @@ class ResultsTable:
         cls.contents = cls.GetContents()
         cls.full = cls.GetFormattedTable()
         #print("Bins: (%d, %d)" % (cls.first_bin, cls.last_bin))
-        
+
     def GetHeader(self):
         header = []
         header.append("\\begin{table}")
@@ -48,9 +48,9 @@ class ResultsTable:
         if self.label != None:
             header.append("\\label{%s}" % self.label)
         header.append("\\resizebox{\\textwidth}{!}{")
-        header.append("\\begin{tabular}{ |c|c|c|c|c||c|c|c|c||c|c| }")
+        header.append("\\begin{tabular}{ |c|c|c|c|c||c|c|c||c|c| }")
         header.append("\\hline")
-        header.append("Bin & $\\MHT$ [GeV] & $\\HT$ [GeV] & $\\njets$ & $\\nbjets$ & $\\tau\\rightarrow\\mathrm{had}$ & $Z\\rightarrow\\nu\\bar{\\nu}$ & QCD & Total Pred. & Obs. \\\\ \\hline")
+        header.append("Bin & $\\MHT$ [GeV] & $\\HT$ [GeV] & $\\njets$ & $\\nbjets$ & Lost-lepton & $Z\\rightarrow\\nu\\bar{\\nu}$ & QCD & Total Pred. & Obs. \\\\ \\hline")
         return header
 
     def GetTrailer(self):
@@ -61,7 +61,7 @@ class ResultsTable:
 
     def GetContents(self):
         rows = []
-        sumBG = BGEst.sumBG(self.hadtau, self.znn, self.qcd)
+        sumBG = BGEst.sumBG(self.lostlept, self.znn, self.qcd)
         ilabel = 0 ## gets it's own index in case we're taking a subset of input histogram bins
         for ibin in range(self.first_bin-1, self.last_bin):
             line = []
@@ -71,15 +71,15 @@ class ResultsTable:
             line.append(sbin.ht_s)
             line.append(sbin.nj_s)
             line.append(sbin.nb_s)
-            line.append(GetPred(self.hadtau, ibin+1))
+            line.append(GetPred(self.lostlept, ibin+1))
             line.append(GetPred(self.znn, ibin+1))
             line.append(GetPred(self.qcd, ibin+1))
             line.append(GetPred(sumBG, ibin+1))
-            line.append("%d \\\\ \\hline" % self.data_obs.hist.GetBinContent(ibin+1))        
+            line.append("%d \\\\ \\hline" % self.data_obs.hist.GetBinContent(ibin+1))
             rows.append(" & ".join(line))
             ilabel += 1
 
         return rows
-        
+
     def GetFormattedTable(self):
         return "\n".join(self.header) + "\n" + "\n".join(self.contents) + "\n" + "\n".join(self.trailer)

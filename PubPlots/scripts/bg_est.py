@@ -10,7 +10,7 @@ import tdrstyle
 class BGEst:
     def __init__(self, CV, statUp, statDown, systUp, systDown, hist_color = None):
         self.set_vars(CV, statUp, statDown, systUp, systDown, hist_color)
-    
+
     def set_vars(cls, CV, statUp, statDown, systUp, systDown, hist_color):
         cls.nbins = CV.GetNbinsX()
         cls.hCV  = CV
@@ -32,7 +32,7 @@ class BGEst:
         cls.gFull.SetLineColor(0)
         cls.gFull.SetFillStyle(3445)
 
-    
+
     def GetTGraph(self, CV, gname, errUp, errDown, errUp2 = None, errDown2 = None):
         x = []
         y = []
@@ -56,35 +56,35 @@ class BGEst:
         gbg = TGraphAsymmErrors(self.nbins, array('d', x), array('d', y), array('d', ex_l), array('d', ex_h), array('d', ey_l), array('d', ey_h))
         gbg.SetName(gname)
         return gbg
-      
-      
+
+
     @classmethod
-    def sumBG(cls,  hadtau, znn, qcd): # in this case, sum the four BGs up accordingly
-        xbins = hadtau.hCV.GetXaxis().GetXbins()
+    def sumBG(cls,  lostlept, znn, qcd): # in this case, sum the four BGs up accordingly
+        xbins = lostlept.hCV.GetXaxis().GetXbins()
         if xbins.GetSum() == 0.0:
-            hSumBGCV = TH1D("hSumBGCV", ";"+hadtau.hCV.GetXaxis().GetTitle(), int(hadtau.nbins), 0.5, int(hadtau.nbins)+0.5)
-            hSumBGStatUp = TH1D("hSumBGStatUp", ";"+hadtau.hCV.GetXaxis().GetTitle(), int(hadtau.nbins), 0.5, int(hadtau.nbins)+0.5)
-            hSumBGStatDown = TH1D("hSumBGStatDown", ";"+hadtau.hCV.GetXaxis().GetTitle(), int(hadtau.nbins), 0.5, int(hadtau.nbins)+0.5)
-            hSumBGSystUp = TH1D("hSumBGSystUp", ";"+hadtau.hCV.GetXaxis().GetTitle(), int(hadtau.nbins), 0.5, int(hadtau.nbins)+0.5)
-            hSumBGSystDown = TH1D("hSumBGSystDown", ";"+hadtau.hCV.GetXaxis().GetTitle(), int(hadtau.nbins), 0.5, int(hadtau.nbins)+0.5)
+            hSumBGCV = TH1D("hSumBGCV", ";"+lostlept.hCV.GetXaxis().GetTitle(), int(lostlept.nbins), 0.5, int(lostlept.nbins)+0.5)
+            hSumBGStatUp = TH1D("hSumBGStatUp", ";"+lostlept.hCV.GetXaxis().GetTitle(), int(lostlept.nbins), 0.5, int(lostlept.nbins)+0.5)
+            hSumBGStatDown = TH1D("hSumBGStatDown", ";"+lostlept.hCV.GetXaxis().GetTitle(), int(lostlept.nbins), 0.5, int(lostlept.nbins)+0.5)
+            hSumBGSystUp = TH1D("hSumBGSystUp", ";"+lostlept.hCV.GetXaxis().GetTitle(), int(lostlept.nbins), 0.5, int(lostlept.nbins)+0.5)
+            hSumBGSystDown = TH1D("hSumBGSystDown", ";"+lostlept.hCV.GetXaxis().GetTitle(), int(lostlept.nbins), 0.5, int(lostlept.nbins)+0.5)
         else:
-            hSumBGCV = TH1D("hSumBGCV", ";"+hadtau.hCV.GetXaxis().GetTitle(), int(hadtau.nbins), xbins.GetArray())
-            hSumBGStatUp = TH1D("hSumBGStatUp", ";"+hadtau.hCV.GetXaxis().GetTitle(), int(hadtau.nbins), xbins.GetArray())
-            hSumBGStatDown = TH1D("hSumBGStatDown", ";"+hadtau.hCV.GetXaxis().GetTitle(), int(hadtau.nbins), xbins.GetArray())
-            hSumBGSystUp = TH1D("hSumBGSystUp", ";"+hadtau.hCV.GetXaxis().GetTitle(), int(hadtau.nbins), xbins.GetArray())
-            hSumBGSystDown = TH1D("hSumBGSystDown", ";"+hadtau.hCV.GetXaxis().GetTitle(), int(hadtau.nbins), xbins.GetArray())
-            
-        for ibin in range(hadtau.nbins):
-            cv = hadtau.hCV.GetBinContent(ibin+1)+znn.hCV.GetBinContent(ibin+1)+qcd.hCV.GetBinContent(ibin+1)
+            hSumBGCV = TH1D("hSumBGCV", ";"+lostlept.hCV.GetXaxis().GetTitle(), int(lostlept.nbins), xbins.GetArray())
+            hSumBGStatUp = TH1D("hSumBGStatUp", ";"+lostlept.hCV.GetXaxis().GetTitle(), int(lostlept.nbins), xbins.GetArray())
+            hSumBGStatDown = TH1D("hSumBGStatDown", ";"+lostlept.hCV.GetXaxis().GetTitle(), int(lostlept.nbins), xbins.GetArray())
+            hSumBGSystUp = TH1D("hSumBGSystUp", ";"+lostlept.hCV.GetXaxis().GetTitle(), int(lostlept.nbins), xbins.GetArray())
+            hSumBGSystDown = TH1D("hSumBGSystDown", ";"+lostlept.hCV.GetXaxis().GetTitle(), int(lostlept.nbins), xbins.GetArray())
+
+        for ibin in range(lostlept.nbins):
+            cv = lostlept.hCV.GetBinContent(ibin+1)+znn.hCV.GetBinContent(ibin+1)+qcd.hCV.GetBinContent(ibin+1)
             hSumBGCV.SetBinContent(ibin+1, cv)
-            stat_up = hadtau.hStatUp.GetBinContent(ibin+1) # treat as fully correlated, add these linearly
+            stat_up = lostlept.hStatUp.GetBinContent(ibin+1) # treat as fully correlated, add these linearly
             stat_up = math.sqrt(stat_up**2 + znn.hStatUp.GetBinContent(ibin+1)**2 + qcd.hStatUp.GetBinContent(ibin+1)**2)
             hSumBGStatUp.SetBinContent(ibin+1, stat_up)
-            stat_down = hadtau.hStatDown.GetBinContent(ibin+1) # treat as fully correlated, add these linearly
+            stat_down = lostlept.hStatDown.GetBinContent(ibin+1) # treat as fully correlated, add these linearly
             stat_down = math.sqrt(stat_down**2 + znn.hStatDown.GetBinContent(ibin+1)**2 + qcd.hStatDown.GetBinContent(ibin+1)**2)
             hSumBGStatDown.SetBinContent(ibin+1, stat_down)
-            syst_up = math.sqrt(hadtau.hSystUp.GetBinContent(ibin+1)**2 + znn.hSystUp.GetBinContent(ibin+1)**2 + qcd.hSystUp.GetBinContent(ibin+1)**2)
+            syst_up = math.sqrt(lostlept.hSystUp.GetBinContent(ibin+1)**2 + znn.hSystUp.GetBinContent(ibin+1)**2 + qcd.hSystUp.GetBinContent(ibin+1)**2)
             hSumBGSystUp.SetBinContent(ibin+1, syst_up)
-            syst_down = math.sqrt( hadtau.hSystDown.GetBinContent(ibin+1)**2 + znn.hSystDown.GetBinContent(ibin+1)**2 + qcd.hSystDown.GetBinContent(ibin+1)**2)
+            syst_down = math.sqrt( lostlept.hSystDown.GetBinContent(ibin+1)**2 + znn.hSystDown.GetBinContent(ibin+1)**2 + qcd.hSystDown.GetBinContent(ibin+1)**2)
             hSumBGSystDown.SetBinContent(ibin+1, syst_down)
         return cls(hSumBGCV, hSumBGStatUp, hSumBGStatDown, hSumBGSystUp, hSumBGSystDown)

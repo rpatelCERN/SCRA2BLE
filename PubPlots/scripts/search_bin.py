@@ -2,16 +2,17 @@
 ## stores properties of bin, including links to possibly-correlated bins
 from __future__ import division
 
-njets_cuts = ['2', '3-4', '5-6', '7-8', '9+']
+njets_cuts = ['2-3', '4-5', '6-7', '8-9', '10+']
 nbjets_cuts = ['0', '1', '2', '3+']
-mht_cuts = ['300-350', '350-500', '500-750', '750+']
-ht_cuts = ['300-500', '500-1000', '1000+', '350-500', '500-1000', '1000+', '500-1000', '1000+', '750-1500', '1500+']
+nbjetsLowjets_cuts = ['0', '1', '2+']
+mht_cuts = ['300-350', '350-600', '600-850', '850+']
+ht_cuts = ['300-700', '700-1200', '1200+', '350-700', '700-1200', '1200+', '700-1200', '1200+', '850-1700', '1700+']
 
 class SearchBin:
 
     def __init__(self, binnum):
         self.set_vars(binnum)
-        
+
     def set_vars(self, binnum):
         self.num = binnum
         self.inj = self.GetINJ()
@@ -20,10 +21,13 @@ class SearchBin:
         self.imht = self.GetIMHT()
         self.iht = self.GetIHT()
         self.nj_s = njets_cuts[self.inj]
-        self.nb_s = nbjets_cuts[self.inb]
+        if self.inj==0:
+            self.nb_s = nbjetsLowjets_cuts[self.inb]
+        else:
+            self.nb_s = nbjets_cuts[self.inb]
         self.mht_s = mht_cuts[self.imht]
         self.ht_s = ht_cuts[self.ihtmht]
-        
+
     def GetINJ(self):
         if self.num > 141:
             return 4
@@ -56,7 +60,7 @@ class SearchBin:
                 return offset+1
             else:
                 return offset+2
-    
+
     def GetIMHT(self):
         IHTMHT = self.GetIHTMHT()
         if IHTMHT < 3:
@@ -67,7 +71,7 @@ class SearchBin:
             return 2
         else:
             return 3
-    
+
     def GetIHT(self):
         IHTMHT = self.GetIHTMHT()
         if IHTMHT == 0 or IHTMHT == 3: # 300 < HT < 500
@@ -77,9 +81,8 @@ class SearchBin:
         else: # > 1000 (1500)
             return 2
             ## note: we're putting HTMHT Box 9 (MHT>750, 750<HT<1500) in the same HT range as the bins with 500 < HT < 1000
-            ## we're also putting HTMHT Box 10 (MHT>750, HT>1500) in the same HT range as the bins with HT > 1000      
-        
+            ## we're also putting HTMHT Box 10 (MHT>750, HT>1500) in the same HT range as the bins with HT > 1000
+
 
     def Print(self):
         print("Search bin %d: INJ/INB/IMHT/IHT = %d / %d / %d / %d" % (self.num+1, self.inj, self.inb, self.imht, self.iht) )
-    

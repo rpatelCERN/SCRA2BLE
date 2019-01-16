@@ -57,7 +57,7 @@ def GetMinMaxHTMHT(bins): ## takes an array of bins, returns min, max htmht
     return min_htmht, max_htmht
 
 def GetNBJetsBins(minNJ=0, maxNJ=4, minMHT=0, maxMHT=3, minHT=0, maxHT=2, nbins=174):
-    
+
     bin_set = [[], [], [], []]
     for ibin in range(nbins):
         bini = SearchBin(ibin)
@@ -71,7 +71,7 @@ def GetNBJetsBins(minNJ=0, maxNJ=4, minMHT=0, maxMHT=3, minHT=0, maxHT=2, nbins=
     return bin_set
 
 def GetNJetsBins(minNB=0, maxNB=3, minMHT=0, maxMHT=3, minHT=0, maxHT=2, nbins=174):
-    
+
     bin_set = [[], [], [], [], []]
     for ibin in range(nbins):
         bini = SearchBin(ibin)
@@ -119,8 +119,8 @@ def SumFromBinSubset(full_list, subset):
             total += full_list[ibin]
     return total
 
-minNJetsMap = {0:2, 1:3, 2:5, 3:7, 4:9}
-maxNJetsMap = {0:2, 1:4, 2:6, 3:8}
+minNJetsMap = {0:2, 1:4, 2:6, 3:8, 4:10}
+maxNJetsMap = {0:3, 1:5, 2:7, 3:9}
 
 def GetNJetsSelectionString(minNJets=0, maxNJets=4):
     if maxNJets == 4:
@@ -136,25 +136,25 @@ def GetNBJetsSelectionString(minNBJets=0, maxNBJets=3):
     else:
         return "%d \\leq N_{\\rm b-jet} \\leq %d" % (minNBJets, maxNBJets)
 
-minHTMHTToMHTMap = {0:300, 1:300, 2:300, 3:350, 4:350, 5:350, 6:500, 7:500, 8:750, 9:750}
-maxHTMHTToMHTMap = {0:350, 1:350, 2:350, 3:500, 4:500, 5:500, 6:750, 7:750}
-    
+minHTMHTToMHTMap = {0:300, 1:300, 2:300, 3:350, 4:350, 5:350, 6:600, 7:600, 8:850, 9:850}
+maxHTMHTToMHTMap = {0:350, 1:350, 2:350, 3:600, 4:600, 5:600, 6:850, 7:850}
+
 def GetMHTSelectionString(minHTMHT=0, maxHTMHT=9):
     if maxHTMHT>=8:
         return "H_{T}^{\\rm miss} \\geq %d" % minHTMHTToMHTMap[minHTMHT]
     else:
         return "%d \\leq H_{T}^{\\rm miss} \\leq %d" % (minHTMHTToMHTMap[minHTMHT], maxHTMHTToMHTMap[maxHTMHT])
 
-minHTMap = {0:300, 1:500, 2:1000}    
-maxHTMap = {0:500, 1:1000}    
+minHTMap = {0:300, 1:700, 2:1200}
+maxHTMap = {0:700, 1:1200}
 def GetHTSelectionString(minHT=0, maxHT=2, minHTMHT=0, maxHTMHT=9):
     if maxHT==2:
         if minHTMHT==8 and maxHTMHT==8:
-            return '750 \\leq H_{T} \\leq 1500'
+            return '850 \\leq H_{T} \\leq 1700'
         elif minHTMHT==8:
-            return 'H_{T} \\geq 750'
+            return 'H_{T} \\geq 850'
         elif minHTMHT==9:
-            return 'H_{T} \\geq 1500'
+            return 'H_{T} \\geq 1700'
         else:
             return 'H_{T} \\geq %d' % minHTMap[minHT]
     else:

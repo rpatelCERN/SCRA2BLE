@@ -10,14 +10,14 @@ import CMS_lumi
 
 plot_dir = "output/"
 
-def make_1d_pull_dist(plot_title,  hadtau, znn, qcd, data_obs):
+def make_1d_pull_dist(plot_title,  lostlept, znn, qcd, data_obs):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
     tdrstyle.setTDRStyle()
-    
+
     hdata_obs = data_obs.hist
-    sumBG = BGEst.sumBG( hadtau, znn, qcd)
+    sumBG = BGEst.sumBG( lostlept, znn, qcd)
     hbg_pred = sumBG.hCV
     hbg_err_up = AddHistsInQuadrature('err_up', [sumBG.hStatUp, sumBG.hSystUp])
     hbg_err_down = AddHistsInQuadrature('err_down', [sumBG.hStatDown, sumBG.hSystDown])
@@ -60,7 +60,7 @@ def make_1d_pull_dist(plot_title,  hadtau, znn, qcd, data_obs):
     W = 800
     H = 800
     T = 0.08*H
-    B = 0.15*H 
+    B = 0.15*H
     L = 0.12*W
     R = 0.04*W
     canv = TCanvas("pullcanv","pullcanv", 50, 50, W, H)
@@ -73,7 +73,7 @@ def make_1d_pull_dist(plot_title,  hadtau, znn, qcd, data_obs):
     canv.SetTopMargin( T/H )
     canv.SetBottomMargin( B/H )
     canv.SetTickx(0)
-    canv.SetTicky(0) 
+    canv.SetTicky(0)
     canv.SetFrameFillColor(0)
     canv.SetFillColor(0)
     canv.SetTopMargin(0.12)
@@ -91,5 +91,5 @@ def make_1d_pull_dist(plot_title,  hadtau, znn, qcd, data_obs):
     CMS_lumi.cmsTextSize = 0.5
     iPos=0.75
     CMS_lumi.CMS_lumi(canv, 0, iPos)
- 
+
     canv.Print(plot_dir+plot_title+".pdf")

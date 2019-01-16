@@ -4,7 +4,7 @@ from ROOT import TH1D
 from math import sqrt
 from bin_navigation import *
 
-## here define aggregate regions as lists of the bin indices  
+## here define aggregate regions as lists of the bin indices
 asr1 = [i for i in range(174) if SearchBin(i).inb == 0 and SearchBin(i).imht > 1]
 asr2 = [i for i in range(174) if SearchBin(i).inb == 0 and SearchBin(i).inj > 0 and SearchBin(i).ihtmht == 9]
 asr3 = [i for i in range(174) if SearchBin(i).inb == 0 and SearchBin(i).imht > 1 and SearchBin(i).inj > 1]
@@ -33,7 +33,7 @@ asr_sets = {'ASR': [asr1, asr2, asr3, asr4, asr5, asr6, asr7, asr8, asr9, asr10,
             'T2qq': GetNJetsBins(minNB=0, maxNB=0, minMHT=3, minHT=2), \
             '2D' : Get2DBins(8,9)
             }
-    
+
 asr_xtitle = {'ASR': 'Aggregate search region binning', \
             'NJ': 'N_{jet} (p_{T} > 30 GeV)', \
             'NB': 'N_{b-jet} (p_{T} > 30 GeV)', \
@@ -48,16 +48,16 @@ asr_xtitle = {'ASR': 'Aggregate search region binning', \
             '2D' : 'N_{b-jet} (p_{T} > 30 GeV)'}
 
 asr_xbins = {'ASR': [i+0.5 for i in range(13)], \
-            'NJ': [1.5, 2.5, 4.5, 6.5, 8.5, 12.5], \
+            'NJ': [1.5, 3.5, 5.5, 7.5, 9.5, 13.5], \
             'NB': [-0.499, 0.5, 1.5, 2.5, 3.499], \
-            'MHT': [300., 350., 500., 750., 1050.], \
-            'HT': [300., 500., 1000., 1550.], \
-            'T1tttt': [1.5, 2.5, 4.5, 6.5, 8.5, 12.5], \
+            'MHT': [300., 350., 600., 850., 1150.], \
+            'HT': [300., 700., 1200., 1750.], \
+            'T1tttt': [1.5, 3.5, 5.5, 7.5, 9.5, 13.5], \
             'T1bbbb': [-0.499, 0.5, 1.5, 2.5, 3.499], \
-            'T1qqqq' : [300., 350., 500., 750., 1050.], \
+            'T1qqqq' : [300., 350., 600., 850., 1150.], \
             'T2tt' : [-0.499, 0.5, 1.5, 2.5, 3.499], \
-            'T2bb' : [300., 350., 500., 750., 1050.], \
-            'T2qq' : [1.5, 2.5, 4.5, 6.5, 8.5, 12.5], \
+            'T2bb' : [300., 350., 600., 850., 1150.], \
+            'T2qq' : [1.5, 3.5, 5.5, 7.5, 9.5, 13.5], \
             '2D' : [i+0.5 for i in range(20)]}
 
 def AddHistsInQuadrature(name, hists):

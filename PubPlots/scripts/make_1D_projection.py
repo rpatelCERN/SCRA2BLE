@@ -32,7 +32,7 @@ signal_to_latex = {'T1tttt': '#tilde{g}#rightarrowt#bar{t} #tilde{#chi}_{1}^{0}'
 
 signal_to_mass = {'T1tttt': 'm_{#tilde{g}}','T1bbbb':'m_{#tilde{g}}', 'T1qqqq': 'm_{#tilde{g}}',\
                   'T2tt': 'm_{#tilde{t}}','T2bb':'m_{#tilde{b}}', 'T2qq': 'm_{#tilde{q}}'}
-               
+
 
 def open_if_necessary(filename):
     # if we've already opened the file, just return the pointer already in memory, else create it, then return the pointer
@@ -42,7 +42,7 @@ def open_if_necessary(filename):
         return gROOT.GetListOfFiles().FindObject(filename)
 
 # note: this time the inputs are just the paths to *_hists.root files
-def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, data_file, signal_file, \
+def make_1D_projection(plot_title, asr_name, lostlept_file, znn_file, qcd_file, data_file, signal_file, \
                        signal1, signal2, cut_labels, logy=False, doPull=False, printArXiv=False):
 
     TH1D.SetDefaultSumw2(True)
@@ -62,25 +62,25 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
 
     ## load BG predictions -- also sets histogram styles
 
-    f_hadtau = open_if_necessary(hadtau_file)
+    f_lostlept = open_if_necessary(lostlept_file)
     f_qcd = open_if_necessary(qcd_file)
     f_znn = open_if_necessary(znn_file)
     qcd_proj = BGEst(f_qcd.Get(asr_name+"/hCV"), f_qcd.Get(asr_name+"/hStatUp"), f_qcd.Get(asr_name+"/hStatDown"), f_qcd.Get(asr_name+"/hSystUp"), f_qcd.Get(asr_name+"/hSystDown"), 2001)
     znn_proj = BGEst(f_znn.Get(asr_name+"/hCV"), f_znn.Get(asr_name+"/hStatUp"), f_znn.Get(asr_name+"/hStatDown"), f_znn.Get(asr_name+"/hSystUp"), f_znn.Get(asr_name+"/hSystDown"), 2002)
-    hadtau_proj = BGEst(f_hadtau.Get(asr_name+"/hCV"), f_hadtau.Get(asr_name+"/hStatUp"), f_hadtau.Get(asr_name+"/hStatDown"), f_hadtau.Get(asr_name+"/hSystUp"), f_hadtau.Get(asr_name+"/hSystDown"), 2007)
+    lostlept_proj = BGEst(f_lostlept.Get(asr_name+"/hCV"), f_lostlept.Get(asr_name+"/hStatUp"), f_lostlept.Get(asr_name+"/hStatDown"), f_lostlept.Get(asr_name+"/hSystUp"), f_lostlept.Get(asr_name+"/hSystDown"), 2006)
 
-    
+
     hqcd = qcd_proj.hCV
     hznn = znn_proj.hCV
-    hhadtau = hadtau_proj.hCV
-    ## build the stacked BG histogram    
+    hlostlept = lostlept_proj.hCV
+    ## build the stacked BG histogram
     hs = THStack("hs", "")
     hs.Add(hqcd)
-    hs.Add(hhadtau)
+    hs.Add(hlostlept)
     hs.Add(hznn)
-    
-        
-    sumBG = BGEst.sumBG( hadtau_proj, znn_proj, qcd_proj) # this will set the style of the hatched error bands
+
+
+    sumBG = BGEst.sumBG( lostlept_proj, znn_proj, qcd_proj) # this will set the style of the hatched error bands
 
     ## setup dummy BG histogram for ratio, axes
     hbg_pred = hqcd.Clone("hbg_pred")
@@ -102,7 +102,7 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
         hbg_pred.GetYaxis().SetLabelSize(0.048*1.0)
         hbg_pred.GetYaxis().SetTitleSize(0.05625*1.15)
         hbg_pred.GetYaxis().SetTitleOffset(0.945)
-    hbg_pred.Add(hhadtau)
+    hbg_pred.Add(hlostlept)
     hbg_pred.Add(hqcd)
     hbg_pred.Add(hznn)
     ymax = hbg_pred.GetMaximum() + sumBG.hStatUp.GetMaximum()
@@ -116,8 +116,8 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
         if signal1.find('T1tttt')>=0 or (signal1.find('T1bbbb')>=0 and doPull):
             hbg_pred.SetMaximum(2.1*ymax)
         hbg_pred.SetMinimum(0.0)
-            
-    
+
+
     ratio = ObsExpRatio(DataObs(hdata_obs), sumBG) # note that this also sets the style
     ratio_markers = ratio.markers
     ratio.markers.SetMarkerSize(1.5)
@@ -161,12 +161,12 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
         hsig2.Scale(lumi*1000*0.8)
     else:
         hsig2.Scale(lumi*1000)
-        
+
     ## setup canvas and pads
     W = 800
     H = 800
     T = 0.08*H
-    B = 0.12*H 
+    B = 0.12*H
     L = 0.12*W
     R = 0.04*W
     canv = TCanvas("canvName","canvName", 50, 50, W, H)
@@ -197,7 +197,7 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
     pad1.SetTopMargin(0.1)
     pad1.SetLeftMargin(0.12)
     pad1.SetRightMargin(0.02)
-    pad1.SetLogy(logy)    
+    pad1.SetLogy(logy)
     pad1.Draw()
 
     pad2.SetPad(0., 0., 1., dw_height+dw_height_offset)
@@ -211,8 +211,8 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
     pad1.cd()
 
     ## draw graphs on top pad
-    if hhadtau.GetXaxis().GetTitle() in n_divisions.keys():
-        hbg_pred.GetXaxis().SetNdivisions(n_divisions[hhadtau.GetXaxis().GetTitle()],0,0)
+    if hlostlept.GetXaxis().GetTitle() in n_divisions.keys():
+        hbg_pred.GetXaxis().SetNdivisions(n_divisions[hlostlept.GetXaxis().GetTitle()],0,0)
     hbg_pred.Draw()
     hs.Draw("hist, same")
     hsig1.Draw("hist,same")
@@ -233,15 +233,13 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
     leg3 = TLegend(0.61, 0.756, 0.90, 0.88);
     leg3.SetTextSize(0.045)
     leg3.SetFillStyle(0)
-    leg4 = TLegend(0.825, 0.756, 1.105, 0.88);
-    leg4.SetTextSize(0.045)
-    leg4.SetFillStyle(0)
 
-    
+
     legdata.AddEntry(gdata_obs.GetName(), "Data", "pes")
     leg1.AddEntry(hznn, "Z#rightarrow#nu#bar{#nu}", "f")
-    leg3.AddEntry(hhadtau, "#splitline{Hadronic}{#tau lepton}", "f")
-    leg4.AddEntry(hqcd, "QCD", "f")
+    leg2.AddEntry(hlostlept, "#splitline{Lost}{lepton}", "f")
+    leg3.AddEntry(hqcd, "QCD", "f")
+
 
     sig1_arr = signal1.split("_")
     sig2_arr = signal2.split("_")
@@ -259,7 +257,6 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
     leg1.Draw()
     leg2.Draw()
     leg3.Draw()
-    leg4.Draw()
     legsig.Draw()
 
     # cuts label
@@ -277,8 +274,8 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
     ratiomid = TLine(hbg_pred.GetBinLowEdge(1), 0., hbg_pred.GetBinLowEdge(hbg_pred.GetNbinsX()+1), 0.)
     if doPull:
         pull.Draw("hist")
-        if hhadtau.GetXaxis().GetTitle() in n_divisions.keys():
-            pull.GetXaxis().SetNdivisions(n_divisions[hhadtau.GetXaxis().GetTitle()],0,0)
+        if hlostlept.GetXaxis().GetTitle() in n_divisions.keys():
+            pull.GetXaxis().SetNdivisions(n_divisions[hlostlept.GetXaxis().GetTitle()],0,0)
         p1 = TLine(pull.GetBinLowEdge(1), 1., pull.GetBinLowEdge(pull.GetNbinsX()+1), 1.)
         p2 = TLine(pull.GetBinLowEdge(1), 2., pull.GetBinLowEdge(pull.GetNbinsX()+1), 2.)
         m1 = TLine(pull.GetBinLowEdge(1), -1., pull.GetBinLowEdge(pull.GetNbinsX()+1), -1.)
@@ -295,14 +292,14 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
         pull.Draw("hist,same")
     else:
         hratdummy.Draw("axis")
-        if hhadtau.GetXaxis().GetTitle() in n_divisions.keys():
-            hratdummy.GetXaxis().SetNdivisions(n_divisions[hhadtau.GetXaxis().GetTitle()],0,0)
+        if hlostlept.GetXaxis().GetTitle() in n_divisions.keys():
+            hratdummy.GetXaxis().SetNdivisions(n_divisions[hlostlept.GetXaxis().GetTitle()],0,0)
         ratio_bands.Draw("e2, same")
         ratio_markers.Draw("p, 0, same")
         ratiomid.SetLineStyle(2)
 
     ratiomid.Draw()
-        
+
     ## lines again
     if doPull:
         rat_max = pull_max
@@ -327,7 +324,7 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
     canv.cd()
     CMS_lumi.writeExtraText = False
     if logy or doPull:
-        CMS_lumi.writeExtraText = True       
+        CMS_lumi.writeExtraText = True
     CMS_lumi.extraText = "        Supplementary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
     CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (13 TeV)"
@@ -339,7 +336,7 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
     #print(latex.GetTextSize())
     if printArXiv:
         latex.SetTextColor(4)
-        latex.DrawLatex(0.7, 0.6, "arXiv:1704.07781");
+        #latex.DrawLatex(0.7, 0.6, "arXiv:1704.07781");
 
 
     ## save plot to PDF and PNG
@@ -355,8 +352,8 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
     if doPull:
         gPad.Close()
         return
-    
-    temp_file = latex_templates[hhadtau.GetXaxis().GetTitle()]
+
+    temp_file = latex_templates[hlostlept.GetXaxis().GetTitle()]
     with open("/".join(["output", plot_title+"_table.tex"]), 'w') as fout:
         ## open template file saved in output reference directory
         with open('output/reference/%s_table_template.tex' % (temp_file), 'r') as ftemp:
@@ -371,8 +368,8 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
                     edit = False
                 if edit:
                     ibin = int(line[0:1])
-                    hadtau_pred = GetPred(hadtau_proj, ibin)
-                    line = line.replace('$$', hadtau_pred, 1)
+                    lostlept_pred = GetPred(lostlept_proj, ibin)
+                    line = line.replace('$$', lostlept_pred, 1)
                     znn_pred = GetPred(znn_proj, ibin)
                     line = line.replace('$$', znn_pred, 1)
                     qcd_pred = GetPred(qcd_proj, ibin)
@@ -381,12 +378,12 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
                     line = line.replace('$$', sumBG_pred, 1)
                     nobs = int(hdata_obs.GetBinContent(ibin))
                     line = line.replace('$$', str(nobs), 1)
-                fout.write(line+'\n')    
+                fout.write(line+'\n')
 
     gPad.Close()
-    
 
-        
+
+
 ## if __name__ == "__main__":
 ##     import sys
 ##     output_file = sys.argv[1]
@@ -401,4 +398,4 @@ def make_1D_projection(plot_title, asr_name, hadtau_file, znn_file, qcd_file, da
 ##     qcd = BGEst(f_qcd.Get("ASR/hCV"), f_qcd.Get("ASR/hStatUp"), f_qcd.Get("ASR/hStatDown"), f_qcd.Get("ASR/hSystUp"), f_qcd.Get("ASR/hSystDown"), 2001)
 ##     f_data_obs = TFile.Open(sys.argv[7])
 ##     data_obs = DataObs(f_data_obs.Get("ASR/hCV"))
-##     make_12_asr_plot(output_file, lostlep, hadtau, znn, qcd, data_obs)  
+##     make_12_asr_plot(output_file, lostlep, hadtau, znn, qcd, data_obs)
