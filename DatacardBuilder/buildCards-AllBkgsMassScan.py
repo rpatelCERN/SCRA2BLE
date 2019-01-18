@@ -46,8 +46,8 @@ if __name__ == '__main__':
 #AR-180426: odir=testCards-allBkgs-T1tttt_1500_100-35.9-mu0.0----Name of output directory
 	odir = 'testCards-%s-%s-%1.1f-mu%0.1f/' % ( tag,sms, lumi, signalmu );
 #AR-180426: idir=inputHistograms/histograms_35.9fb/. Here are various background estimates.
-	#idir = 'inputHistograms/histograms_%1.1ffb/' % ( ((lumi)) );
-	idir = 'inputHistograms/MCForBinOptimization/';
+	idir = 'inputHistograms/histograms_%1.1ffb/' % ( ((lumi)) );
+	#idir = 'inputHistograms/MCForBinOptimization/';
 #AR-180426:os.path.exists(odir):Return True if path refers to an existing path. Returns False for broken symbolic links.
 #forcefully remove directory if it exists 
 	if os.path.exists(odir): os.system( "rm -rf %s" % (odir) );
@@ -141,8 +141,11 @@ if __name__ == '__main__':
 	LLPlusHadTauSysMTDn=LLPlusHadTauAvg_file.Get("totalPredMTWSysDown_LLPlusHadTau")	
 	LLPlusHadTauAccPDFSysDn=LLPlusHadTauAvg_file.Get("totalPredLepAccSysDown_LLPlusHadTau")
 	LLPlusHadTauQScaleSysDn=LLPlusHadTauAvg_file.Get("totalPredLepAccQsquareSysDown_LLPlusHadTau")
+	LLPlusHadTauEleSysIsoDn=LLPlusHadTauAvg_file.Get("totalPredEleIsoSysDown_LLPlusHadTau")	
+	LLPlusHadTauEleSysReco=LLPlusHadTauAvg_file.Get("totalPredEleRecoSysDown_LLPlusHadTau")	
+	#/print LLPlusHadTauEleSysRecoDn.GetBinContent(1)
 	LLPlusHadTauSysIsoDn=LLPlusHadTauAvg_file.Get("totalPredMuIsoSysDown_LLPlusHadTau")	
-	LLPlusHadTauSysRecoDn=LLPlusHadTauAvg_file.Get("totalPredMuRecoSysDown_LLPlusHadTau")	
+	#LLPlusHadTauSysRecoDn=LLPlusHadTauAvg_file.Get("totalPredMuRecoSysDown_LLPlusHadTau")	
 # reads nominal data prediction
 	#HERE ADD Bin Errors for the Had Tau Stat Error
 	DYinputfile = TFile(idir+"/ZinvHistos.root")
@@ -340,8 +343,11 @@ if __name__ == '__main__':
         signalRegion.addSystematicsLine('lnN',['qcd'],QCDCoreUp)
 
 	signalRegion.addSystematicsLine('lnN', ['WTop'],LLPlusHadTauSysMTDn)
+	signalRegion.addSystematicsLine('lnN', ['WTop'],LLPlusHadTauEleSysIsoDn)
 	signalRegion.addSystematicsLine('lnN', ['WTop'],LLPlusHadTauSysIsoDn)
-	signalRegion.addSystematicsLine('lnN', ['WTop'],LLPlusHadTauSysRecoDn)
+	
+	signalRegion.addSystematicsLine('lnN', ['WTop'],LLPlusHadTauEleSysReco)
+	#signalRegion.addSystematicsLine('lnN', ['WTop'],LLPlusHadTauSysRecoDn)
 	signalRegion.addGammaSystematic(['WTop'],LLPlusHadTauControlStatistics,LLPlusHadTauTF)
 
 

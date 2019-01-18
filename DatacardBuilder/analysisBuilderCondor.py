@@ -81,7 +81,7 @@ if __name__ == '__main__':
     signalmodel=options.signal+options.mGo
     signals = [signalmodel]
     mus=[0.0]
-    lumis = [135.];
+    lumis = [41.5];
 
     #variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
     #variations = ['allNotau','llpOnly', 'tauOnly']
