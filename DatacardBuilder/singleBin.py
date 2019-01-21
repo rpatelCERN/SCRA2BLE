@@ -38,7 +38,7 @@ class singleBin:
 		line = "jmax %i #number of backgrounds \n" % (len(self._binLabels)-1);
 		self._allLines.append(line);
 		self._allLines.append("kmax * nuissance \n");
-		#self._allLines.append("shapes * * FAKE \n");
+		self._allLines.append("shapes * * FAKE \n");
 		self._allLines.append("------------ \n");
 
 		line = "bin Bin"+self._name+"\n";
@@ -199,5 +199,5 @@ class singleBin:
 		
 		ofile = open(odir+'/card_'+self._name+'.txt','w');
 		for line in self._allLines: ofile.write(line);
-		ofile.write("* autoMCStats 0 ")
+		#ofile.write("* autoMCStats 0 ")
 		ofile.close();

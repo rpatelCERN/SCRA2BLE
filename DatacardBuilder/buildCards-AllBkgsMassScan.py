@@ -181,6 +181,8 @@ if __name__ == '__main__':
 	ratesForSignalRegion_QCDList = [];
 	QCDInputFile=TFile(idir+"/QcdPredictionRandS.root")
 	qcdCV=QCDInputFile.Get("PredictionCV")
+	#TEMP SCALING FOR CHECKS!
+	qcdCV.Scale(41.5/35.9);
 	qcdBCorrUnc=QCDInputFile.Get("PredictionBTag")
 	if not options.realData:
 		for i in range(signalRegion._nBins): #174, (0-173)

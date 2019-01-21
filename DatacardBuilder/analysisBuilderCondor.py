@@ -188,13 +188,16 @@ if __name__ == '__main__':
                     #combine_cmmd = "combine  -M ProfileLikelihood  --uncapped 1 --significance --rMin -10 %s/allcards.txt -n %s" % (the_odir,the_odir); 
                     #os.system(combine_cmmd);
                     # # run m/ax likelihood fit
+                    combine_cmmd = "text2workspace.py --X-allow-no-signal --X-allow-no-background %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);
+                    os.system(combine_cmmd);
+                    combine_cmmd = "combine -M FitDiagnostics %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations --expectSignal=0" % (the_odir,the_odir);
 		    #combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.txt -n %s --minimizerStrategy 0 --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); 
                     #combine_cmmd = "text2workspace.py --X-allow-no-signal --X-allow-no-background %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);
                     #combine_cmmd = "combine -M MaxLikelihoodFit -n %s --saveWithUncertainties --saveNormalizations --saveShapes --numToysForShape=2000 --saveOverallShapes %s/allcards.root --preFitValue=0 -v 2 --minimizerStrategy 0" % (the_odir,the_odir); 
                     #print combine_cmmd;
                     #os.system(combine_cmmd);
                     # run asymptotic
-                    combine_cmmd = "combine -M Asymptotic %s/allcards.txt -n %s" % (the_odir,the_odir); 
+                    #combine_cmmd = "combine -M Asymptotic %s/allcards.txt -n %s" % (the_odir,the_odir); 
 #AR-180418: executes limit 
                     os.system(combine_cmmd);
                     print " run asymptotic limit "
