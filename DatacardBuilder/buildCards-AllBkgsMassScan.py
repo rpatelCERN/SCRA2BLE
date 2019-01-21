@@ -169,7 +169,6 @@ if __name__ == '__main__':
 	DYStatErr=DYinputfile.Get("hzvvDYstat");
 	DYPurErr=DYinputfile.Get("hzvvDYsysPur");
 	DYKinErr=DYinputfile.Get("hzvvDYsysKin");
-	#DYMCStatErr=DYinputfile.Get("hzvvDYMCstat");
 	DYNJExtrapErrUp=DYinputfile.Get("hzvvDYMCerrUp");
 	DYNJExtrapErrDn=DYinputfile.Get("hzvvDYMCerrLow");
 	for i in range(1,DYNJExtrapErrDn.GetNbinsX()+1):	
