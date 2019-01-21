@@ -141,11 +141,13 @@ if __name__ == '__main__':
 	LLPlusHadTauSysMTDn=LLPlusHadTauAvg_file.Get("totalPredMTWSysDown_LLPlusHadTau")	
 	LLPlusHadTauAccPDFSysDn=LLPlusHadTauAvg_file.Get("totalPredLepAccSysDown_LLPlusHadTau")
 	LLPlusHadTauQScaleSysDn=LLPlusHadTauAvg_file.Get("totalPredLepAccQsquareSysDown_LLPlusHadTau")
+	LLPlusHadTauEleIDSysDn=LLPlusHadTauAvg_file.Get("totalPredEleIDSysDown_LLPlusHadTau")	
 	LLPlusHadTauEleSysIsoDn=LLPlusHadTauAvg_file.Get("totalPredEleIsoSysDown_LLPlusHadTau")	
 	LLPlusHadTauEleSysReco=LLPlusHadTauAvg_file.Get("totalPredEleRecoSysDown_LLPlusHadTau")	
 	#/print LLPlusHadTauEleSysRecoDn.GetBinContent(1)
 	LLPlusHadTauSysIsoDn=LLPlusHadTauAvg_file.Get("totalPredMuIsoSysDown_LLPlusHadTau")	
-	#LLPlusHadTauSysRecoDn=LLPlusHadTauAvg_file.Get("totalPredMuRecoSysDown_LLPlusHadTau")	
+	LLPlusHadTauSysMuIdDn=LLPlusHadTauAvg_file.Get("totalPredMuIDSysDown_LLPlusHadTau")	
+	#LLPlusHadTauSysMuRecoDn=LLPlusHadTauAvg_file.Get("totalPredMuRecoSysDown_LLPlusHadTau")	
 # reads nominal data prediction
 	#HERE ADD Bin Errors for the Had Tau Stat Error
 	DYinputfile = TFile(idir+"/ZinvHistos.root")
@@ -343,11 +345,12 @@ if __name__ == '__main__':
         signalRegion.addSystematicsLine('lnN',['qcd'],QCDCoreUp)
 
 	signalRegion.addSystematicsLine('lnN', ['WTop'],LLPlusHadTauSysMTDn)
-	signalRegion.addSystematicsLine('lnN', ['WTop'],LLPlusHadTauEleSysIsoDn)
 	signalRegion.addSystematicsLine('lnN', ['WTop'],LLPlusHadTauSysIsoDn)
-	
+	signalRegion.addSystematicsLine('lnN', ['WTop'],LLPlusHadTauSysMuIdDn)
+
+	signalRegion.addSystematicsLine('lnN', ['WTop'],LLPlusHadTauEleSysIsoDn)
+	signalRegion.addSystematicsLine('lnN', ['WTop'],LLPlusHadTauEleIDSysDn)
 	signalRegion.addSystematicsLine('lnN', ['WTop'],LLPlusHadTauEleSysReco)
-	#signalRegion.addSystematicsLine('lnN', ['WTop'],LLPlusHadTauSysRecoDn)
 	signalRegion.addGammaSystematic(['WTop'],LLPlusHadTauControlStatistics,LLPlusHadTauTF)
 
 
