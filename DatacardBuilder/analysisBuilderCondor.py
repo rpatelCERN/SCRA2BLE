@@ -46,9 +46,9 @@ def getFittedMu(fn):
     tt.GetEntry(0);
     output.append( tt.limit );
     tt.GetEntry(1);
-    output.append( tt.limit );
+    output.append( output[0]-tt.limit );
     tt.GetEntry(2);
-    output.append( tt.limit );
+    output.append( tt.limit-output[0] );
 
     print "[output] ",output
     return output
@@ -107,6 +107,8 @@ if __name__ == '__main__':
     limit_obsErr        = array( 'f', [ 0. ] );
     significance = array( 'f', [ 0. ] );  
     fittedMu     = array( 'f', [ 0. ] );
+    fittedMuErrPlus     = array( 'f', [ 0. ] );
+    fittedMuErrMinus     = array( 'f', [ 0. ] );
 #AR-180418:first for loop 
     for lumi in lumis: #AR-180418:lumis array has only one element, 35.86 
     
@@ -133,6 +135,8 @@ if __name__ == '__main__':
     		tout.Branch("limit_obsErr",limit_obsErr,"limit_obsErr/F");
     		tout.Branch("significance",significance,"significance/F");
     		tout.Branch("fittedMu",fittedMu,"fittedMu/F");
+    		tout.Branch("fittedMuErrPlus",fittedMuErrPlus,"fittedMuErrPlus/F");
+    		tout.Branch("fittedMuErrMinus",fittedMuErrMinus,"fittedMuErrMinus/F");
 #AR-180418: variations array has only one element "allBkgs"
 #AR-180418:forth for loop
                 for vary in variations: 
@@ -190,7 +194,8 @@ if __name__ == '__main__':
                     # # run m/ax likelihood fit
                     combine_cmmd = "text2workspace.py --X-allow-no-signal --X-allow-no-background %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);
                     os.system(combine_cmmd);
-                    combine_cmmd = "combine -M FitDiagnostics %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations --expectSignal=0" % (the_odir,the_odir);
+                    combine_cmmd = "combine -M FitDiagnostics %s/allcards.root -n %s -t -1 --expectSignal=0" % (the_odir,the_odir);
+                    #combine_cmmd = "combine -M FitDiagnostics %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations --expectSignal=0" % (the_odir,the_odir);
 		    #combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.txt -n %s --minimizerStrategy 0 --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); 
                     #combine_cmmd = "text2workspace.py --X-allow-no-signal --X-allow-no-background %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);
                     #combine_cmmd = "combine -M MaxLikelihoodFit -n %s --saveWithUncertainties --saveNormalizations --saveShapes --numToysForShape=2000 --saveOverallShapes %s/allcards.root --preFitValue=0 -v 2 --minimizerStrategy 0" % (the_odir,the_odir); 
@@ -206,17 +211,19 @@ if __name__ == '__main__':
                     identifier = dicttag;
                     mGo[0] = float(options.mGo);
                     mLSP[0] = float(options.mLSP);
-                    #fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.MaxLikelihoodFit.mH120.root" % (tag,signaltag,lumi,mu) )[0];
+                    fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[0];
+                    fittedMuErrMinus[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[1];
+                    fittedMuErrPlus[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[2];
                     #significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
-                    olims = getLimit( "higgsCombine%s.Asymptotic.mH120.root" % (the_odir));
-                    limit_m2s[0] = olims[0];
-                    limit_m1s[0] = olims[1];
-                    limit_exp[0] = olims[2];
-                    limit_p1s[0] = olims[3];
-                    limit_p2s[0] = olims[4];
-                    limit_obs[0] = olims[5];
-                    limit_obsErr[0]= olims[6]    
-                    # fittedMu[0] = -99.;
+                    #olims = getLimit( "higgsCombine%s.Asymptotic.mH120.root" % (the_odir));
+                    #limit_m2s[0] = olims[0];
+                    #limit_m1s[0] = olims[1];
+                    #limit_exp[0] = olims[2];
+                    #limit_p1s[0] = olims[3];
+                    #limit_p2s[0] = olims[4];
+                    #limit_obs[0] = olims[5];
+                    #limit_obsErr[0]= olims[6]    
+                    #fittedMu[0] = -99.;
                     #significance[0] = -99.;
                     # limit[0] = -99.;
 		    tout.Fill();
