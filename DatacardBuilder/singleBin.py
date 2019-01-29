@@ -63,10 +63,10 @@ class singleBin:
 		self._allLines.append(line);
 
 		line = "rate ";
-		zeroProxy = 0.0001;
+		zeroProxy = 0.0;
 		for rate in self._rates: 
 			if rate < 0.000001: line += str(zeroProxy) + " ";
-			else: line += "%.4f " %round(rate,4);
+			else: line += "%.3f " %round(rate,4);
 		line += "\n";
 		self._allLines.append(line);
 
@@ -170,7 +170,7 @@ class singleBin:
                                 if(val>-99.):
                                         if(bin==0 or bin==1):
                                                 if valCS>0:line += " %g " %val ;
-                                                else: line+= " %0.4f " %(round(val,4));
+                                                else: line+= " %0.3f " %(round(val,4));
                                 else:
                                         line += " - ";
                                 bin+=1
