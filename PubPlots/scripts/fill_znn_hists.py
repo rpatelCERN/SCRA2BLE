@@ -37,6 +37,7 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
          or h.GetName() == 'hzvvTF':
            continue
        # convert to absolute
+       print(h.GetName())
        hout = h.Clone()
        hout.Reset() 
        for ibin in range(nbins):

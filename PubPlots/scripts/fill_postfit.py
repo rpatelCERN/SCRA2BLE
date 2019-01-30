@@ -46,12 +46,6 @@ def fill_postfit(inputfile = 'inputs/bg_hists/fitDiagnosticstestCards-allBkgs-T1
    		hZCV.SetBinContent(c,Z.getVal()); 		
    		hWTopCV.SetBinContent(c,T.getVal()); 		
 		 
-  		hQCDStatUp.SetBinContent(c,Q.getError()); 		
-  		hQCDStatDown.SetBinContent(c,Q.getError()); 		
-   		hZStatUp.SetBinContent(c,Z.getError()); 		
-   		hZStatDown.SetBinContent(c,Z.getError()); 		
-   		hWTopStatUp.SetBinContent(c,T.getError()); 		
-   		hWTopStatDown.SetBinContent(c,T.getError()); 		
 		 
  		hQCDSysUp.SetBinContent(c,Q.getError()); 		
   		hQCDSysDown.SetBinContent(c,Q.getError()); 		

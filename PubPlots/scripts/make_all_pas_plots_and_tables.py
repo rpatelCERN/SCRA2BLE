@@ -37,6 +37,7 @@ def make_all_pas_plots_and_tables(lostlept_file = 'lostlept_hists.root', znn_fil
     make_174_bin_plot('results-plot-prefit-35_9_pre_app-log-pull',  lostlept, znn, qcd, data_obs, True)
     make_1d_pull_dist('results-prefit-pulls-1D-35_9-pre_app',  lostlept, znn, qcd, data_obs)
     make_174_bin_tables('results-prefit-tables-35_9_pre_app',  lostlept, znn, qcd, data_obs)
+    make_174_bin_tables('results-postfit-tables-35_9_pre_app',  lostleptPost, znnPost, qcdPost, data_obs)
 
     ## aggregate search regions
     data_obs_12_asrs = DataObs(f_data_obs.Get("ASR/hCV"))
