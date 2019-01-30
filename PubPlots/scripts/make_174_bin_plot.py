@@ -67,8 +67,10 @@ def make_174_bin_plot(plot_title,  lostlept, znn, qcd, data_obs, doPull=False):
     pull = ratio.pull
     pull.GetXaxis().SetTitle("Search region bin number")
     pull_max = pull.GetMaximum()*1.1
-    pull.SetMaximum(pull_max)
-    pull.SetMinimum(-pull_max)
+    pull.SetMaximum(3)
+    pull.SetMinimum(-3)
+    #pull.SetMaximum(pull_max)
+    #pull.SetMinimum(-pull_max)
     pull.GetXaxis().SetLabelSize(0.12*1.25)
     pull.GetXaxis().SetTitleSize(0.14*1.25)
     pull.GetYaxis().SetLabelSize(0.1*1.25)
@@ -306,7 +308,7 @@ def make_174_bin_plot(plot_title,  lostlept, znn, qcd, data_obs, doPull=False):
 
     ## now wite CMS headers
     canv.cd()
-    lumi = 35.862345
+    lumi = 41.529
     CMS_lumi.writeExtraText = False
     CMS_lumi.extraText = "       Preliminary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
