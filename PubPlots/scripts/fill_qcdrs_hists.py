@@ -22,7 +22,7 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_35.9.root',
 
    infile = TFile.Open(inputfile);
    hin = infile.Get("PredictionCV");
-   hstat = infile.Get("hPredictionUncorrelated")
+   hstat = infile.Get("PredictionUncorrelated")
 
    outfile = TFile(outputfile, "recreate")
    outfile.cd()
@@ -39,8 +39,9 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_35.9.root',
    for h in infile.GetListOfKeys():
        h = h.ReadObj()
        # skip the histograms that don't actually contain systematics -- make sure you check the names haven't changed
-       if h.GetName().find('CV') >= 0 or h.GetName().find('Stat') >= 0:
+       if h.GetName().find('CV') >= 0 or h.GetName().find('Stat') >= 0 or h.GetName().find('tail')>=0 or h.GetName().find('hBaseline_SearchBinsRplusS')>=0:
            continue
+       print(h.GetName())
        # convert to absolute
        hout = h.Clone()
        hout.Reset()

@@ -1,5 +1,5 @@
 from make_174_bin_plot import make_174_bin_plot
-from make_174_bin_postfitplot import make_174_bin_postfitplot
+#from make_174_bin_postfitplot import make_174_bin_postfitplot
 from make_1d_pull_dist import make_1d_pull_dist
 from make_174_bin_tables import make_174_bin_tables
 from make_12_asr_plot import make_12_asr_plot
@@ -33,7 +33,6 @@ def make_all_pas_plots_and_tables(lostlept_file = 'lostlept_hists.root', znn_fil
     lostleptPost = BGEst(f_postfit.Get("LLCV"), f_postfit.Get("LLStat"), f_postfit.Get("LLStat"), f_postfit.Get("LLSys"), f_postfit.Get("LLSys"), 2006)
      
     make_174_bin_plot('results-plot-postfit-40_5_pre_app-log',  lostleptPost, znnPost, qcdPost, data_obs)
-    #make_174_bin_postfitplot('results-plot-postfit-40_5_pre_app-log',  f_postfit.Get("LL"), f_postfit.Get("Zinv"), f_postfit.Get("QCD"), data_obs)
     make_174_bin_plot('results-plot-prefit-35_9_pre_app-log',  lostlept, znn, qcd, data_obs)
     make_174_bin_plot('results-plot-prefit-35_9_pre_app-log-pull',  lostlept, znn, qcd, data_obs, True)
     make_1d_pull_dist('results-prefit-pulls-1D-35_9-pre_app',  lostlept, znn, qcd, data_obs)
