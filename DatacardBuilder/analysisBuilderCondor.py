@@ -81,7 +81,7 @@ if __name__ == '__main__':
     signalmodel=options.signal+options.mGo
     signals = [signalmodel]
     mus=[0.0]
-    lumis = [41.5];
+    lumis = [137.4];
 
     #variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
     #variations = ['allNotau','llpOnly', 'tauOnly']
@@ -194,8 +194,8 @@ if __name__ == '__main__':
                     # # run m/ax likelihood fit
                     combine_cmmd = "text2workspace.py --X-allow-no-signal --X-allow-no-background %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);
                     os.system(combine_cmmd);
-                    combine_cmmd = "combine -M FitDiagnostics %s/allcards.root -n %s -t -1 --expectSignal=0" % (the_odir,the_odir);
-                    #combine_cmmd = "combine -M FitDiagnostics %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations --expectSignal=0" % (the_odir,the_odir);
+                    #combine_cmmd = "combine -M FitDiagnostics %s/allcards.root -n %s -t -1 --expectSignal=1 --toysFrequentist" % (the_odir,the_odir);
+                    combine_cmmd = "combine -M FitDiagnostics %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations --expectSignal=0" % (the_odir,the_odir);
 		    #combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.txt -n %s --minimizerStrategy 0 --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); 
                     #combine_cmmd = "text2workspace.py --X-allow-no-signal --X-allow-no-background %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);
                     #combine_cmmd = "combine -M MaxLikelihoodFit -n %s --saveWithUncertainties --saveNormalizations --saveShapes --numToysForShape=2000 --saveOverallShapes %s/allcards.root --preFitValue=0 -v 2 --minimizerStrategy 0" % (the_odir,the_odir); 

@@ -20,7 +20,8 @@ class SignalModel:
         self.inhist = self.GetInputHist()
 
     def GetInputFile(self): # returns pointer to Kevin's file containing signal input
-        fname = "../DatacardBuilder/inputHistograms/fastsimSignal%s/RA2bin_proc_%s_%d_%d_fast.root" % (self.model, self.model, int(self.mMom), int(self.mLSP))
+        #fname = "../DatacardBuilder/inputHistograms/fastsimSignal%s/RA2bin_proc_%s_%d_%d_fast.root" % (self.model, self.model, int(self.mMom), int(self.mLSP))
+        fname = "inputs/signal_hists/inputHistograms/fastsimSignal%s/RA2bin_proc_%s_%d_%d_fast.root" % (self.model, self.model, int(self.mMom), int(self.mLSP))
         # if we've already opened the file, just return the pointer already in memory, else create it
         if gROOT.GetListOfFiles().FindObject(fname) == None: 
             return TFile.Open(fname)

@@ -33,11 +33,10 @@ def make_all_pas_plots_and_tables(lostlept_file = 'lostlept_hists.root', znn_fil
     lostleptPost = BGEst(f_postfit.Get("LLCV"), f_postfit.Get("LLStat"), f_postfit.Get("LLStat"), f_postfit.Get("LLSys"), f_postfit.Get("LLSys"), 2006)
      
     make_174_bin_plot('results-plot-postfit-40_5_pre_app-log',  lostleptPost, znnPost, qcdPost, data_obs)
-    make_174_bin_plot('results-plot-prefit-35_9_pre_app-log',  lostlept, znn, qcd, data_obs)
-    make_174_bin_plot('results-plot-prefit-35_9_pre_app-log-pull',  lostlept, znn, qcd, data_obs, True)
-    make_1d_pull_dist('results-prefit-pulls-1D-35_9-pre_app',  lostlept, znn, qcd, data_obs)
-    make_174_bin_tables('results-prefit-tables-35_9_pre_app',  lostlept, znn, qcd, data_obs)
-    make_174_bin_tables('results-postfit-tables-35_9_pre_app',  lostleptPost, znnPost, qcdPost, data_obs)
+    make_174_bin_plot('results-plot-prefit-40_5_pre_app-log',  lostlept, znn, qcd, data_obs)
+    make_1d_pull_dist('results-prefit-pulls-1D-40_5-pre_app',  lostlept, znn, qcd, data_obs)
+    make_174_bin_tables('results-prefit-tables-40_5_pre_app',  lostlept, znn, qcd, data_obs)
+    make_174_bin_tables('results-postfit-tables-40_5_pre_app',  lostleptPost, znnPost, qcdPost, data_obs)
 
     ## aggregate search regions
     data_obs_12_asrs = DataObs(f_data_obs.Get("ASR/hCV"))
@@ -51,6 +50,7 @@ def make_all_pas_plots_and_tables(lostlept_file = 'lostlept_hists.root', znn_fil
 
     ## 1D projections
     make_all_1D_projections(lostlept_file, znn_file, qcd_file, data_file, signal_file)
+    make_174_bin_plot('results-plot-prefit-40_5_pre_app-log-pull',  lostlept, znn, qcd, data_obs, True)
 
 if __name__ == "__main__": # to run from command line, just give the name of the BG estimation files
     import sys

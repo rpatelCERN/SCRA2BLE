@@ -14,7 +14,7 @@ import CMS_lumi
 
 
 plot_dir = "output/"
-lumi = 35.862345
+lumi = 41.529
 
 latex_templates = {'N_{jet} (p_{T} > 30 GeV)': 'njets',\
                    'N_{b-jet} (p_{T} > 30 GeV)': 'nbjets',\
