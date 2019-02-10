@@ -89,12 +89,22 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog116_35.9ifb_HadTauEstim
        hCV.SetBinContent(ibin+1, CV)
        hCV.SetBinError(ibin+1, 0.)
        SumMCWeightsError=(hin_TFErr.GetBinContent(ibin+1)-1)*CV ;
-       CSStatsError=(hin_statserr_no_poiscl0.GetBinContent(ibin+1)-1)*CV;
+       if(CV==0):SumMCWeightsError=hin_TFErr.GetBinContent(ibin+1)*1.84102*hin_TF.GetBinContent(ibin+1);
+       #CSStatsError=(hin_statserr_no_poiscl0.GetBinContent(ibin+1)-1)*CV;
+       #if(hin_stats_no_poiscl0.GetBinContent(ibin+1)==0):CSStatsError=1.84102*hin_TF.GetBinContent(ibin+1);
+       NCR =hin_stats_no_poiscl0.GetBinContent(ibin+1)
+       L = 0.
+       if NCR > 0.:
+           L = Math.gamma_quantile(alpha/2,NCR,1.)
+       U = Math.gamma_quantile_c(alpha/2,NCR+1,1.)
+       stat_up = (U-NCR)*hin_TF.GetBinContent(ibin+1)
        # get stat uncertainties
-       stat = lumiSF*(sqrt(SumMCWeightsError**2 + CSStatsError**2))#*hin_stats_no_poiscl0.GetBinError(ibin+1)
+       stat_up = lumiSF*(sqrt(SumMCWeightsError**2 + stat_up**2))#*hin_stats_no_poiscl0.GetBinError(ibin+1)
        #stat = lumiSF*(CSStatsError)#*hin_stats_no_poiscl0.GetBinError(ibin+1)
-       stat_up = sqrt(stat**2+poiscl0**2)
-       stat_down = stat
+       #stat_up = stat
+       #stat_down = stat
+       stat_down = (NCR-L)*hin_TF.GetBinContent(ibin+1)
+       stat_down=lumiSF*(sqrt(SumMCWeightsError**2 + stat_down**2))
        if stat_down > CV: # just to be safe
                stat_down = CV
        hStatUp.SetBinContent(ibin+1, stat_up)
