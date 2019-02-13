@@ -44,7 +44,7 @@ if __name__ == '__main__':
 	lumi = float(options.lumi);
 	signalmu = float(options.mu);
 #AR-180426: odir=testCards-allBkgs-T1tttt_1500_100-35.9-mu0.0----Name of output directory
-	odir = 'testCards-%s-%s-%1.1f-mu%0.1f/' % ( tag,sms, lumi, signalmu );
+	odir = '/nfs/data39/cms/rish/RA2Moriond/testCards-%s-%s-%1.1f-mu%0.1f/' % ( tag,sms, lumi, signalmu );
 #AR-180426: idir=inputHistograms/histograms_35.9fb/. Here are various background estimates.
 	idir = 'inputHistograms/histograms_%1.1ffb/' % ( ((lumi)) );
 	#idir = 'inputHistograms/MCForBinOptimization/';
@@ -88,7 +88,7 @@ if __name__ == '__main__':
 		#signaldirtag="/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
 		#signaldirtag="./inputHistograms/fastsimSignalT1bbbb/"
 	else: signaldirtag ="inputHistograms/FullSim"
-	signaldirtag ="inputHistograms/MCForBinOptimization/"
+	#signaldirtag ="inputHistograms/MCForBinOptimization/"
 	#signaldirtag ="inputHistograms/MCNominalBinning/"
 	#AR-180427:when "fastsim" is true, sms=T1tttt_1500_100. Hence, signaltag=RA2bin_proc_T1tttt_1500_100
 	#print "Data_List ", Data_List
@@ -99,14 +99,14 @@ if __name__ == '__main__':
 	#print parse
 #AR-180427:Here signaltag becomes "RA2bin_proc_T1tttt_1500_100_fast
 	#if options.fastsim: 
-	#signaltag+="_fast"
+	signaltag+="_fast"
 	print signaldirtag+"/%s.root" %signaltag
 #AR-180427:Name of input histogram file for FastSim:"RA2bin_proc_T1tttt_1500_100_fast.root" from directory "root://cmseos.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"
 	signal_inputfile =TFile.Open(signaldirtag+"/%s.root" %signaltag);
 #AR-180427:Now file "RA2bin_proc_T1tttt_1500_100_fast.root" has histograms for nominal expected signal yield in search bins and that after applying various uncertainties. Name of these histograms are of type RA2bin_T1tttt_1500_100_fast_*. Hence signaltag is defined as below.
 #AR-180515:signaltag=RA2bin_T1tttt_1500_100_fast
 	#signaltag="RA2bin_"+sms+"_fast";
-	signaltag="RA2bin_"+sms+"_MC2017"#+"_fast";
+	signaltag="RA2bin_"+sms+"_MC2017_fast";
 	print "%s_nominal" %signaltag
 #AR-180427:Gets signal nominal yield histogram "RA2bin_T1tttt_1500_100_fast_nominal" and scale it to "lumi*1000". This implies histogram root file corresponds to lumi of 1/pb.
 	CorrSigHist=signal_inputfile.Get("%s_nominal" %signaltag)
@@ -288,7 +288,7 @@ if __name__ == '__main__':
 	signalSysctagCFuncDown=signal_inputfile.Get(signaltag+"_ctagCFuncDown")
 	signalSysmistagCFuncUp=signal_inputfile.Get(signaltag+"_mistagCFuncUp")
 	signalSysmistagCFuncDown=signal_inputfile.Get(signaltag+"_mistagCFuncDown")
-	#MHTSyst=signal_inputfile.Get(signaltag+"_MHTSyst")
+	MHTSyst=signal_inputfile.Get(signaltag+"_MHTSyst")
 	LumiUnc=signal_inputfile.Get(signaltag+"_lumiuncUp")
 	#JetIdUnc=signal_inputfile.Get(signaltag+"_jetiduncUp")
 	TkIsoUncUp=signal_inputfile.Get(signaltag+"_isotrackuncUp")
@@ -302,7 +302,7 @@ if __name__ == '__main__':
         signalRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.05);
         signalRegion.addSingleSystematic('JetIDUnc','lnN',['sig'],1.01);
 	signalRegion.addSystematicsLine('lnN',['sig'],signalMCStatError);	
-	#signalRegion.addSystematicsLine('lnU',['sig'],MHTSyst);
+	signalRegion.addSystematicsLine('lnU',['sig'],MHTSyst);
 	
 	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalPUUp,signalPUDown)	
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysMisSFUp,signalSysMisSFDown)	
@@ -311,13 +311,13 @@ if __name__ == '__main__':
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysJERUp,signalSysJERDown)	
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysJECUp,signalSysJECDown)	
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysScaleUp,signalSysScaleDown)
-	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysbtagCFuncUp,signalSysbtagCFuncDown)		
-	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysctagCFuncUp,signalSysctagCFuncDown)		
-	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysmistagCFuncUp,signalSysmistagCFuncDown)		
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysPrefireUp,signalSysPrefireDown)	
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysISRUp,signalSysISRDown)	
 	signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysSFUp,signalSysSFDown)	
 	##############
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysbtagCFuncUp,signalSysbtagCFuncDown)		
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysctagCFuncUp,signalSysctagCFuncDown)		
+	#signalRegion.addSystematicsLineAsymShape('lnN',['sig'],signalSysmistagCFuncUp,signalSysmistagCFuncDown)		
 
 	#Correlate HAD TAU AND LOST LEPTON SYSTEMATICS
 
