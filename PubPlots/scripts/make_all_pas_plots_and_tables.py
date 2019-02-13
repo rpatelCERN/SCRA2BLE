@@ -1,4 +1,5 @@
 from make_174_bin_plot import make_174_bin_plot
+from make_174_bin_Comp import make_174_bin_Comp
 #from make_174_bin_postfitplot import make_174_bin_postfitplot
 from make_1d_pull_dist import make_1d_pull_dist
 from make_174_bin_tables import make_174_bin_tables
@@ -32,12 +33,12 @@ def make_all_pas_plots_and_tables(lostlept_file = 'lostlept_hists.root', znn_fil
     znnPost = BGEst(f_postfit.Get("ZinvCV"), f_postfit.Get("ZinvStat"), f_postfit.Get("ZinvStat"), f_postfit.Get("ZinvSys"), f_postfit.Get("ZinvSys"), 2002)
     lostleptPost = BGEst(f_postfit.Get("LLCV"), f_postfit.Get("LLStat"), f_postfit.Get("LLStat"), f_postfit.Get("LLSys"), f_postfit.Get("LLSys"), 2006)
      
-    make_174_bin_plot('results-plot-postfit-40_5_pre_app-log',  lostleptPost, znnPost, qcdPost, data_obs)
-    make_174_bin_plot('results-plot-prefit-40_5_pre_app-log',  lostlept, znn, qcd, data_obs)
-    make_1d_pull_dist('results-prefit-pulls-1D-40_5-pre_app',  lostlept, znn, qcd, data_obs)
-    make_174_bin_tables('results-prefit-tables-40_5_pre_app',  lostlept, znn, qcd, data_obs)
-    make_174_bin_tables('results-postfit-tables-40_5_pre_app',  lostleptPost, znnPost, qcdPost, data_obs)
-
+    make_174_bin_plot('results-plot-postfit-35_9_pre_app-log',  lostleptPost, znnPost, qcdPost, data_obs)
+    make_174_bin_plot('results-plot-prefit-35_9_pre_app-log',  lostlept, znn, qcd, data_obs)
+    make_1d_pull_dist('results-prefit-pulls-1D-35_9-pre_app',  lostlept, znn, qcd, data_obs)
+    make_174_bin_tables('results-prefit-tables-35_9_pre_app',  lostlept, znn, qcd, data_obs)
+    make_174_bin_tables('results-postfit-tables-35_9_pre_app',  lostleptPost, znnPost, qcdPost, data_obs)
+    
     ## aggregate search regions
     data_obs_12_asrs = DataObs(f_data_obs.Get("ASR/hCV"))
     qcd_12_asrs = BGEst(f_qcd.Get("ASR/hCV"), f_qcd.Get("ASR/hStatUp"), f_qcd.Get("ASR/hStatDown"), f_qcd.Get("ASR/hSystUp"), f_qcd.Get("ASR/hSystDown"), 2001)
@@ -50,8 +51,15 @@ def make_all_pas_plots_and_tables(lostlept_file = 'lostlept_hists.root', znn_fil
 
     ## 1D projections
     make_all_1D_projections(lostlept_file, znn_file, qcd_file, data_file, signal_file)
-    make_174_bin_plot('results-plot-prefit-40_5_pre_app-log-pull',  lostlept, znn, qcd, data_obs, True)
-
+    #make_174_bin_plot('results-plot-prefit35fb2016_Rerun2016Inputs',  lostlept, znn, qcd, data_obs, True)
+    make_174_bin_Comp('CompPlotTotalTF',     znn_file, znn_file,"hzvvTF")
+    make_174_bin_Comp('CompPlotZgammaRatio',     znn_file, znn_file,"hgJZgR")
+    #make_174_bin_Comp('CompPlotDoubleRatio',     znn_file, znn_file,"hZgDR")
+    #make_174_bin_Comp('CompPlotPurity',     znn_file, znn_file,"hgJPur")
+    #make_174_bin_Comp('CompPlotgJTrig',     znn_file, znn_file,"hgJEtrg")
+    #make_174_bin_Comp('CompPlotgJSF',     znn_file, znn_file,"hgJSF")
+    #make_174_bin_Comp('CompPlotgJFrag',     znn_file, znn_file,"hgJFdir")
+    #make_174_bin_Comp('CompPlotgQcdTail',     znn_file, znn_file,"PredictionCore")
 if __name__ == "__main__": # to run from command line, just give the name of the BG estimation files
     import sys
     if len(sys.argv) == 1: # no command line inputs -- just use defaults

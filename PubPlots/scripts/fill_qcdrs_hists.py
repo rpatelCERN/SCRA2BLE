@@ -23,6 +23,7 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_35.9.root',
    infile = TFile.Open(inputfile);
    hin = infile.Get("PredictionCV");
    hstat = infile.Get("PredictionUncorrelated")
+   #hstat = infile.Get("hPredictionUncorrelated")
 
    outfile = TFile(outputfile, "recreate")
    outfile.cd()
@@ -39,7 +40,7 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_35.9.root',
    for h in infile.GetListOfKeys():
        h = h.ReadObj()
        # skip the histograms that don't actually contain systematics -- make sure you check the names haven't changed
-       if h.GetName().find('CV') >= 0 or h.GetName().find('Stat') >= 0 or h.GetName().find('tail')>=0 or h.GetName().find('hBaseline_SearchBinsRplusS')>=0:
+       if h.GetName().find('CV') >= 0 or h.GetName().find('Stat') >= 0 or h.GetName().find('hBaseline_SearchBinsRplusS')>=0:
            continue
        print(h.GetName())
        # convert to absolute
@@ -57,7 +58,7 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_35.9.root',
        if hout.GetName().find('Down') >= 0:
            SYSTS_Down.append(hout)
            print("%s (down-only)" % (hout.GetName()))
-       elif hout.GetName().find('Up') >= 0 and "Core" not in hout.GetName():
+       elif hout.GetName().find('Up') >= 0 and "Core" not in hout.GetName() and "Tail" not in hout.GetName():
            SYSTS_Up.append(hout)
            print("%s (up-only)" % (hout.GetName()))
        else:

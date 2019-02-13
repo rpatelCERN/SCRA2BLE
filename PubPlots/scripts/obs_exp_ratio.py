@@ -134,7 +134,6 @@ class ObsExpRatio:
                 pull = (self.data_obs.hist.GetBinContent(ibin+1)-self.bg_pred.hCV.GetBinContent(ibin+1))/sqrt(self.bg_pred.gFull.GetErrorYhigh(ibin)**2 + self.bg_pred.hCV.GetBinContent(ibin+1))
             elif self.bg_pred.hCV.GetBinContent(ibin+1) > self.data_obs.hist.GetBinContent(ibin+1): # obs low
                 pull = (self.data_obs.hist.GetBinContent(ibin+1)-self.bg_pred.hCV.GetBinContent(ibin+1))/sqrt(self.bg_pred.gFull.GetErrorYlow(ibin)**2 + self.bg_pred.hCV.GetBinContent(ibin+1))
-	    print "Pull %g" %pull
             hpull.SetBinContent(ibin+1, pull)
             hpull.SetBinError(ibin+1, 0.)
         return hpull

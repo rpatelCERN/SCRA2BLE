@@ -14,7 +14,10 @@ import CMS_lumi
 
 
 plot_dir = "output/"
-lumi = 41.529
+lumi = 10.0
+#lumi = 41.529
+#lumi = 35.9
+#lumi = 137.421
 
 latex_templates = {'N_{jet} (p_{T} > 30 GeV)': 'njets',\
                    'N_{b-jet} (p_{T} > 30 GeV)': 'nbjets',\
@@ -135,8 +138,10 @@ def make_1D_projection(plot_title, asr_name, lostlept_file, znn_file, qcd_file, 
     pull.GetYaxis().SetTitleOffset(0.374)
     hratdummy = ratio.dummy_hist
     rat_max = 0.97
-    hratdummy.SetMaximum(rat_max)
-    hratdummy.SetMinimum(-rat_max)
+    hratdummy.SetMaximum(0.5)
+    hratdummy.SetMinimum(-0.5)
+    #hratdummy.SetMaximum(rat_max)
+    #hratdummy.SetMinimum(-rat_max)
     hratdummy.GetXaxis().SetLabelSize(0.12*1.2)
     hratdummy.GetXaxis().SetTitleSize(0.14*1.19)
     hratdummy.GetYaxis().SetLabelSize(0.1*1.075)
@@ -147,10 +152,12 @@ def make_1D_projection(plot_title, asr_name, lostlept_file, znn_file, qcd_file, 
 
     ## load signal histograms
     f_signal = open_if_necessary(signal_file)
-    # f_signal.ls()
-    # print (asr_name, signal1, signal2)
-    hsig1 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal1))
-    hsig2 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal2))
+    #f_signal.ls()
+    print (asr_name, signal1, signal2)
+    #hsig1 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal1))
+    #hsig2 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal2))
+    hsig1 = f_signal.Get("%s/RA2bin_%s_MC2017_nominal" % (asr_name, signal1))
+    hsig2 = f_signal.Get("%s/RA2bin_%s_MC2017_nominal" % (asr_name, signal2))
     hsig2.SetLineStyle(7)
     # scale to current luminosity
     if signal1.find("T2qq") >= 0:
@@ -325,7 +332,7 @@ def make_1D_projection(plot_title, asr_name, lostlept_file, znn_file, qcd_file, 
     CMS_lumi.writeExtraText = False
     if logy or doPull:
         CMS_lumi.writeExtraText = True
-    CMS_lumi.extraText = "        Supplementary"
+    CMS_lumi.extraText = "     Supplementary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
     CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (13 TeV)"
     iPos=0

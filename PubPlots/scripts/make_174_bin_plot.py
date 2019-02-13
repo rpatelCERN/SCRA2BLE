@@ -308,11 +308,14 @@ def make_174_bin_plot(plot_title,  lostlept, znn, qcd, data_obs, doPull=False):
 
     ## now wite CMS headers
     canv.cd()
-    lumi = 41.529
+    #lumi = 41.529
+    lumi = 10
+    #lumi = 137.421
+    #lumi = 35.9
     CMS_lumi.writeExtraText = False
     CMS_lumi.extraText = "       Preliminary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
-    CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (13 TeV)"
+    CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (2017 13 TeV)"
     iPos=0
     CMS_lumi.CMS_lumi(canv, 0, iPos)
     ## textCMS = TLatex(0.25,0.96, "  CMS ")

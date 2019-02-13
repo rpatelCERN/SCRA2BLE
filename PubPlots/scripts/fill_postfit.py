@@ -44,8 +44,10 @@ def fill_postfit(inputfile = 'inputs/bg_hists/fitDiagnosticstestCards-allBkgs-T1
 		T   = BinProcesses.find("ch%d/WTop" %c)
    		hQCDCV.SetBinContent(c,Q.getVal()); 		
    		hZCV.SetBinContent(c,Z.getVal()); 		
-   		hWTopCV.SetBinContent(c,T.getVal()); 		
-		 
+		
+   		#if type(T) is RooAbsArg:
+		hWTopCV.SetBinContent(c,T.getVal()); 		
+		#else: hWTopCV.SetBinContent(c,0)
 		 
  		hQCDSysUp.SetBinContent(c,Q.getError()); 		
   		hQCDSysDown.SetBinContent(c,Q.getError()); 		

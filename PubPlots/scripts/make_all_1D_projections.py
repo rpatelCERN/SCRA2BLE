@@ -7,9 +7,9 @@ def make_all_1D_projections(lostlept_file = 'lostlept_hists.root', znn_file = 'z
 
     ## NJets projection
     make_1D_projection('njets-projection', 'NJ',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1tttt_1500_100", "T1tttt_1200_800", "H_{T}^{miss} > 300 GeV, H_{T} > 300 GeV", True, False, True)
+                       "T1tttt_2000_100", "T1tttt_1200_800", "H_{T}^{miss} > 300 GeV, H_{T} > 300 GeV", True, False, True)
     make_1D_projection('njets-projection-pull', 'NJ',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1tttt_1500_100", "T1tttt_1200_800", "H_{T}^{miss} > 300 GeV, H_{T} > 300 GeV", True, True, True)
+                       "T1tttt_2000_100", "T1tttt_1200_800", "H_{T}^{miss} > 300 GeV, H_{T} > 300 GeV", True, True, True)
     ## BTags projection
     make_1D_projection('nbjets-projection', 'NB',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
                        "T1bbbb_1500_100", "T1bbbb_1000_900", "N_{jet} #geq 2, H_{T}^{miss} > 300 GeV, H_{T} > 300 GeV", True, False, True)
@@ -27,9 +27,9 @@ def make_all_1D_projections(lostlept_file = 'lostlept_hists.root', znn_file = 'z
     ##                    "T1qqqq_1400_100", "T1qqqq_1000_800", "", True, True)
     ## T1tttt plot: 2+ b-jets, MHT > 500, HT > 500
     make_1D_projection('T1tttt-projection', 'T1tttt',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1tttt_1500_100", "T1tttt_1200_800", "N_{b-jet} #geq 2, H_{T}^{miss} > 600 GeV, H_{T} > 700 GeV")
+                       "T1tttt_2000_100", "T1tttt_1200_800", "N_{b-jet} #geq 2, H_{T}^{miss} > 600 GeV, H_{T} > 700 GeV")
     make_1D_projection('T1tttt-projection-pull', 'T1tttt',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1tttt_1500_100", "T1tttt_1200_800", "N_{b-jet} #geq 2, H_{T}^{miss} > 600 GeV, H_{T} > 700 GeV", False, True, True)
+                       "T1tttt_2000_100", "T1tttt_1200_800", "N_{b-jet} #geq 2, H_{T}^{miss} > 600 GeV, H_{T} > 700 GeV", False, True, True)
     ## T1bbbb plot: 5+ b-jets, MHT > 500, HT > 1000
     make_1D_projection('T1bbbb-projection', 'T1bbbb',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
                        "T1bbbb_1500_100", "T1bbbb_1000_900", "N_{jet} #geq 6, H_{T}^{miss} > 850 GeV, H_{T} > 1700 GeV")
@@ -58,7 +58,7 @@ def make_all_1D_projections(lostlept_file = 'lostlept_hists.root', znn_file = 'z
 
     ## 2D plots with signal stacked on BG
     make_2D_projection('2D-T1tttt', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1tttt_1500_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV")
+                       "T1tttt_2000_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV")
     make_2D_projection('2D-T1bbbb', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
                        "T1bbbb_1500_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV")
     make_2D_projection('2D-T1qqqq', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
@@ -70,7 +70,7 @@ def make_all_1D_projections(lostlept_file = 'lostlept_hists.root', znn_file = 'z
     make_2D_projection('2D-T2qq', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
                        "T2qq_1000_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV")
     make_2D_projection('2D-T1tttt-pull', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1tttt_1500_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV", doPull=True)
+                       "T1tttt_2000_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV", doPull=True)
     make_2D_projection('2D-T1bbbb-pull', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
                        "T1bbbb_1500_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV", doPull=True)
     make_2D_projection('2D-T1qqqq-pull', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \

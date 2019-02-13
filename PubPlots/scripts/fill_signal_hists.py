@@ -27,7 +27,10 @@ def fill_signal_hists(outputfile = 'signal_hists.root', nbins = 174):
 
     ## if you want to make histograms for any other models,
     ## just add them to this list
-    signal_models = [SignalModel("T1tttt", 1500, 100), SignalModel("T1tttt", 1200, 800), \
+    #signal_models = #[SignalModel("T1tttt", 1500, 100), SignalModel("T1tttt", 1200, 800), \
+                    # SignalModel("T1bbbb", 1500, 100), SignalModel("T1bbbb", 1000, 900), \
+                    # SignalModel("T1qqqq", 1400, 100), SignalModel("T1qqqq", 1000, 800), \
+    signal_models = [SignalModel("T1tttt", 2000, 100), SignalModel("T1tttt", 1200, 800), \
                      SignalModel("T1bbbb", 1500, 100), SignalModel("T1bbbb", 1000, 900), \
                      SignalModel("T1qqqq", 1400, 100), SignalModel("T1qqqq", 1000, 800), \
                      SignalModel("T2tt", 700, 50), SignalModel("T2tt", 300, 200), \
