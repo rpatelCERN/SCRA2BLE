@@ -25,9 +25,9 @@ from singleBin import *
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("--signal", dest="signal", default = 'SMSqqqq',help="mass of LSP", metavar="signal")
-parser.add_option("--tag", dest="tag", default = 'SinglePhoton1',help="mass of LSP", metavar="tag")
 parser.add_option("--mGo", dest="mGo", default='1000', help="Mass of Gluino", metavar="mGo")
 parser.add_option("--mLSP", dest="mLSP", default='900', help="Mass of LSP", metavar="mLSP")
+parser.add_option("--tag", dest="tag", default = 'SinglePhoton1',help="mass of LSP", metavar="tag")
 parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='use fastsim signal')
 parser.add_option('--realData', action='store_true', dest='realData', default=False, help='use real data')
 parser.add_option("--eos", dest="eos", default = "",help="EOS directory prefix", metavar="eos")
@@ -82,6 +82,7 @@ if __name__ == '__main__':
     signals = [signalmodel]
     mus=[0.0]
     lumis = [137.4];
+    os.system("python SignalMergePeriods.py --signal=%s --mGo=%s --mLSP=%s" %(options.signal, options.mGo,options.mLSP))
 
     #variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
     #variations = ['allNotau','llpOnly', 'tauOnly']
@@ -92,7 +93,7 @@ if __name__ == '__main__':
     #variations=['allNozvv']
     #variations=['onlyLep']
     #variations=['zvvOnly']
-    variations=['allBkgs']
+    #variations=['']
     #variations=['allNoqcd']
     # identifier    = array( 'c', [ 'c' ] );
 #AR-180418:create an array with data type float and value list specified in its arguments
@@ -139,96 +140,68 @@ if __name__ == '__main__':
     		tout.Branch("fittedMuErrMinus",fittedMuErrMinus,"fittedMuErrMinus/F");
 #AR-180418: variations array has only one element "allBkgs"
 #AR-180418:forth for loop
-                for vary in variations: 
-                    tag = options.tag;
-                    combOpt = '';
-                    if vary == 'allBkgs':  combOpt = '--allBkgs'
-                    if vary == 'qcdOnly':  combOpt = '--qcdOnly'
-                    if vary == 'zvvOnly':  combOpt = '--zvvOnly'
-                    if vary == 'llpOnly':  combOpt = '--llpOnly'
-                    if vary == 'tauOnly':  combOpt = '--tauOnly'
-                    if vary == 'allNoqcd': combOpt = '--tauOnly --zvvOnly --llpOnly'
-                    if vary == 'allNozvv': combOpt = '--tauOnly --qcdOnly --llpOnly'
-                    if vary == 'allNollp': combOpt = '--tauOnly --zvvOnly --qcdOnly'
-                    if vary == 'allNotau': combOpt = '--qcdOnly --zvvOnly --llpOnly'
-                    if vary == 'allNolep': combOpt = '--qcdOnly --zvvOnly'
-                    if vary == 'onlyLep':  combOpt = '--tauOnly --llpOnly'
 #AR-180418:python script buildCards-AllBkgsMassScan.py runs for every combination of [lumi,signal,mu,bkg] combination
-                    print "Now build cards"
-                    command = 'python buildCards-AllBkgsMassScan.py %s --signal %s --tag %s --lumi %0.1f --mu %0.1f --mGo=%s --mLSP=%s' % (combOpt,options.signal,vary,lumi,mu, options.mGo, options.mLSP); 
-                    if options.fastsim: command += " --fastsim"
-                    if options.realData: command += " --realData"
-                    #if len(options.eos)>0: command += " --eos %s" % (options.eos)
-                    os.system(command); #AR-180418: We can execute system command by using os.system() function. 
-                    print "buildCards-AllBkgsMassScan.py has run "
+            print "Now build cards"
+            #command = 'python buildCards-AllBkgsMassScan.py %s --signal %s --tag %s --lumi %0.1f --mu %0.1f --mGo=%s --mLSP=%s' % (combOpt,options.signal,vary,lumi,mu, options.mGo, options.mLSP); 
+            command = 'python buildCards-AllBkgsMassScan.py --signal %s  --lumi %0.1f --mu %0.1f --mGo=%s --mLSP=%s' % (options.signal,lumi,mu, options.mGo, options.mLSP); 
+            if options.fastsim: command += " --fastsim"
+            if options.realData: command += " --realData"
+            #if len(options.eos)>0: command += " --eos %s" % (options.eos)
+	    print command
+            os.system(command); #AR-180418: We can execute system command by using os.system() function. 
+            print "buildCards-AllBkgsMassScan.py has run "
                     #AR-180418:options.signal can be an array of signals with different signal name and gluino masses
 #AR-180418:what is options.signal[2:]
            #AR-180418:signaltag is different if FastSim is true or not
-                    signaltag = "SMS%s%s" % (options.signal[2:],options.mGo);
-                    if options.fastsim: signaltag = "%s_%s_%s" % (options.signal, options.mGo, options.mLSP);
-                    #AR-180418:the_odir is different if FastSim is true or not
-                    the_odir = 'testCards-%s-%s-%1.1f-mu%0.1f' % (vary,signaltag,lumi,mu);
-                    if options.fastsim: the_odir = 'testCards-%s-%s_%s_%s-%1.1f-mu%0.1f' % (vary,options.signal,options.mGo, options.mLSP, lumi,mu);
+            signaltag = "SMS%s%s" % (options.signal[2:],options.mGo);
+            if options.fastsim: signaltag = "%s_%s_%s" % (options.signal, options.mGo, options.mLSP);
+            #AR-180418:the_odir is different if FastSim is true or not
+            the_odir = 'testCards-Moriond-%s-%1.1f-mu%0.1f' % (signaltag,lumi,mu);
+            if options.fastsim: the_odir = 'testCards-Moriond-%s_%s_%s-%1.1f-mu%0.1f' % (options.signal,options.mGo, options.mLSP, lumi,mu);
 #AR-180418:Lists all cards in output directory the_odir     
-                    allcardnames = os.listdir(the_odir);
+            allcardnames = os.listdir(the_odir);
  #AR-180427:combineCards.py file is located at /uscms_data/d3/arane/work/RA2bInterpretation/CMSSW_7_4_7/src/HiggsAnalysis/CombinedLimit/scripts. Where is location of file mentioned?
-                    print "list cards" , allcardnames
-                    command = "combineCards.py ";
-                    #for cn in allcardnames:
-		    for i in range(0,174):
-		    #for i in range(173,174):
-                        cn="card_signal%d.txt" %i
-                        command += " " + the_odir+'/'+cn;
+            print "list cards" , allcardnames
+            command = "combineCards.py ";
+            #for cn in allcardnames
+	    #for i in range(0,174):
+	    for i in range(160,174):
+                    cn="card_signal%d.txt" %i
+                    command += " " + the_odir+'/'+cn;
           #AR-180418:          You have to use indentation to represent something is for something else. This line is out of for loop as it is not indented.
 #AR-180418:allcards.txt is a combined card which is created
                     command += " > "+the_odir+'/allcards.txt'
 #AR-180418: executes combineCards.py
-                    os.system(command);
-                    print "combinecards command has run "
-                    #combine_cmmd = "text2workspace.py %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);
-                    #os.system(combine_cmmd);
-		    #os.system("xrdcp -f %s/allcards.txt %s/card_%s_%s_%s.txt" %(the_odir,options.eos,options.signal,options.mGo, options.mLSP) )
-                    # run significance
-                    #combine_cmmd = "combine  -M ProfileLikelihood  --uncapped 1 --significance --rMin -10 %s/allcards.txt -n %s" % (the_odir,the_odir); 
-                    #os.system(combine_cmmd);
-                    # # run m/ax likelihood fit
-                    combine_cmmd = "text2workspace.py --X-allow-no-signal --X-allow-no-background %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);
-                    os.system(combine_cmmd);
-                    #combine_cmmd = "combine -M FitDiagnostics %s/allcards.root -n %s -t -1 --expectSignal=1 --toysFrequentist" % (the_odir,the_odir);
-                    combine_cmmd = "combine -M FitDiagnostics %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations --expectSignal=0" % (the_odir,the_odir);
-		    #combine_cmmd = "combine -M MaxLikelihoodFit %s/allcards.txt -n %s --minimizerStrategy 0 --saveWithUncertainties --saveNormalizations " % (the_odir,the_odir); 
-                    #combine_cmmd = "text2workspace.py --X-allow-no-signal --X-allow-no-background %s/allcards.txt -o %s/allcards.root" % (the_odir,the_odir);
-                    #combine_cmmd = "combine -M MaxLikelihoodFit -n %s --saveWithUncertainties --saveNormalizations --saveShapes --numToysForShape=2000 --saveOverallShapes %s/allcards.root --preFitValue=0 -v 2 --minimizerStrategy 0" % (the_odir,the_odir); 
-                    #print combine_cmmd;
-                    #os.system(combine_cmmd);
-                    # run asymptotic
-                    #combine_cmmd = "combine -M Asymptotic %s/allcards.txt -n %s" % (the_odir,the_odir); 
-#AR-180418: executes limit 
-                    os.system(combine_cmmd);
-                    print " run asymptotic limit "
-                    dicttag = "%s_%s_%.1f" % (vary,sig,lumi);
+            os.system(command);
+            print "combinecards command has run "
+            combine_cmmd = "combine -M Asymptotic %s/allcards.txt -n %s" % (the_odir,the_odir); 
+	    #AR-180418: executes limit 
+            os.system(combine_cmmd);
+            print " run asymptotic limit "
+            dicttag = "%s_%.1f" % (sig,lumi);
 
-                    identifier = dicttag;
-                    mGo[0] = float(options.mGo);
-                    mLSP[0] = float(options.mLSP);
-                    fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[0];
-                    fittedMuErrMinus[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[1];
-                    fittedMuErrPlus[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[2];
-                    #significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
-                    #olims = getLimit( "higgsCombine%s.Asymptotic.mH120.root" % (the_odir));
-                    #limit_m2s[0] = olims[0];
-                    #limit_m1s[0] = olims[1];
-                    #limit_exp[0] = olims[2];
-                    #limit_p1s[0] = olims[3];
-                    #limit_p2s[0] = olims[4];
-                    #limit_obs[0] = olims[5];
-                    #limit_obsErr[0]= olims[6]    
+            identifier = dicttag;
+            mGo[0] = float(options.mGo);
+            mLSP[0] = float(options.mLSP);
+	    tag="Moriond"
+            #fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[0];
+            #fittedMuErrMinus[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[1];
+            #fittedMuErrPlus[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[2];
+            #significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
+            olims = getLimit( "higgsCombine%s.Asymptotic.mH120.root" % (the_odir));
+            limit_m2s[0] = olims[0];
+            limit_m1s[0] = olims[1];
+            limit_exp[0] = olims[2];
+            limit_p1s[0] = olims[3];
+            limit_p2s[0] = olims[4];
+            limit_obs[0] = olims[5];
+            limit_obsErr[0]= olims[6]    
                     #fittedMu[0] = -99.;
                     #significance[0] = -99.;
                     # limit[0] = -99.;
-		    tout.Fill();
+            tout.Fill();
 		   
-                fout.cd();
+            fout.cd();
 #AR-180418:results tree is written
-                tout.Write();
-    		fout.Close();
+            tout.Write();
+    	    fout.Close();

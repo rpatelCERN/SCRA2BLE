@@ -52,8 +52,8 @@ def make_all_pas_plots_and_tables(lostlept_file = 'lostlept_hists.root', znn_fil
     ## 1D projections
     make_all_1D_projections(lostlept_file, znn_file, qcd_file, data_file, signal_file)
     #make_174_bin_plot('results-plot-prefit35fb2016_Rerun2016Inputs',  lostlept, znn, qcd, data_obs, True)
-    make_174_bin_Comp('CompPlotTotalTF',     znn_file, znn_file,"hzvvTF")
-    make_174_bin_Comp('CompPlotZgammaRatio',     znn_file, znn_file,"hgJZgR")
+    make_174_bin_Comp('CompPlotTotalLLTF',     znn_file, znn_file,"LLPlusHadTauTF")
+    #make_174_bin_Comp('CompPlotZgammaRatio',     znn_file, znn_file,"hgJZgR")
     #make_174_bin_Comp('CompPlotDoubleRatio',     znn_file, znn_file,"hZgDR")
     #make_174_bin_Comp('CompPlotPurity',     znn_file, znn_file,"hgJPur")
     #make_174_bin_Comp('CompPlotgJTrig',     znn_file, znn_file,"hgJEtrg")

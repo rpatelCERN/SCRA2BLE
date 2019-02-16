@@ -22,7 +22,8 @@ def fill_qcdrs_hists(inputfile = 'inputs/bg_hists/QcdPredictionRandS_35.9.root',
 
    infile = TFile.Open(inputfile);
    hin = infile.Get("PredictionCV");
-   hstat = infile.Get("PredictionUncorrelated")
+   hstat = infile.Get("hStat")
+   #hstat = infile.Get("PredictionUncorrelated")
    #hstat = infile.Get("hPredictionUncorrelated")
 
    outfile = TFile(outputfile, "recreate")

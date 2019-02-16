@@ -98,7 +98,8 @@ def condorize(command,tag,odir,CMSSWVER):
     	#f1.write("ls \n");
     	#f1.write(command+" \n") 
     	#f1.close();
-    	os.system("Qsub -l lnxfarm -o OutPut_LogFile%s -e %s" %(tag,command))
+    	#os.system("Qsub -l lnxfarm -o OutPut_LogFile%s -e %s" %(tag,command))
+    	os.system(command)
  	#print "Qsub -l lnxfarm -o OutPut_LogFile%s -e %s" %(tag,command)
 
 
@@ -127,6 +128,7 @@ if __name__ == '__main__':
     models = []
     mGos=[]
     mLSPs=[]
+    '''
     for f in filenames:
 	parse=f.split("_")
 	#print parse
@@ -135,6 +137,10 @@ if __name__ == '__main__':
 		models.append(parse[2])	
 		mGos.append(int(parse[3]))
 		mLSPs.append(int(parse[4]))
+    '''
+    mGos=[2150, 2150, 2100, 2000]
+    mLSPs=[200, 500, 1100,1200]
+    models=["T1tttt", "T1tttt", "T1tttt", "T1tttt"]
     # for signal in signals:
     for m in range(len(mGos)):
         #    for mLSP in mLSPs:
@@ -143,8 +149,8 @@ if __name__ == '__main__':
         command += "--mGo %i " % mGos[m];
         command += "--mLSP %i " % mLSPs[m];
         if options.fastsim: command += " --fastsim";
-        command += " --realData";
-        command += " --tag allBkgs";
+        #command += " --realData";
+        command += " --tag Moriond";
         #command += " --eos %s" % (eosDir);
 
         tag = "%s_%i_%i" % (models[m],mGos[m],mLSPs[m]);

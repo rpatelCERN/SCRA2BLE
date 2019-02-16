@@ -32,8 +32,10 @@ def make_174_bin_Comp(plot_title,  fname_bkg1, fname_bkg2,TF):
 
 
     #fZinv2016=TFile("../DatacardBuilder/inputHistograms/histograms_35.9fb/ZinvHistos.root")
-    fZinv2017=TFile("inputs/bg_hists/Run2017Inputs/ZinvHistosFullRun2.root")
-    fZinv2016=TFile("inputs/bg_hists/CrossCheck2016/ZinvHistos_2016.root")
+    #fZinv2017=TFile("inputs/bg_hists/FullRun2/ZinvHistos.root")
+    fZinv2017=TFile("inputs/bg_hists/Run2017Inputs/InputsForLimits_data_formatted_LLPlusHadTau_Run2017.root")
+    #fZinv2017=TFile("inputs/bg_hists/Run2017/InputsForLimits_data_formatted_LLPlusHadTau.root")
+    fZinv2016=TFile("inputs/bg_hists/CrossCheck2016/InputsForLimits_data_formatted_LLPlusHadTau_2016.root")
     
     #fZinv2016=TFile("inputs/bg_hists/CrossCheck2016/QcdPredictionRun2016.root")
     #fZinv2017=TFile("inputs/bg_hists/Run2017Inputs/QcdPredictionRun2017.root")
@@ -74,7 +76,7 @@ def make_174_bin_Comp(plot_title,  fname_bkg1, fname_bkg2,TF):
     if hdata_obs.GetMaximum()>ymax:
          ymax=hdata_obs.GetMaximum()
     #hbg_pred.SetMaximum(500*ymax)
-    hbg_pred.SetMaximum(1.0)
+    hbg_pred.SetMaximum(3.0)
     hbg_pred.SetMinimum(0.1)
 
     #data_obs = DataObs(lostlept)
@@ -174,7 +176,7 @@ def make_174_bin_Comp(plot_title,  fname_bkg1, fname_bkg2,TF):
 
     sumBG.gFull.Draw("hist")
     Base2016Input=fZinv2016.Get(TF);
-    Base2016InputErr=fZinv2016.Get("hgJZgRerr")
+    Base2016InputErr=fZinv2016.Get("LLPlusHadTauTFErr")
     #Qcd2018Input=fZinv2018.Get(TF);
     #Base2016Input.Scale(1.0/0.9)
     #Qcd2017Input.Draw("histsame");
@@ -194,9 +196,9 @@ def make_174_bin_Comp(plot_title,  fname_bkg1, fname_bkg2,TF):
     leg1.SetTextSize(0.035)
     leg1.SetFillStyle(0)
     #leg1.AddEntry(gdata_obs.GetName(), "Data", "pes")
-    leg1.AddEntry(Base2016Input, "2016 Z/#gamma", "l")
+    leg1.AddEntry(Base2016Input, "2016 Lost-lepton", "l")
     #leg1.AddEntry(hqcd, "QCD", "f")
-    leg1.AddEntry(TestNewInput, "Full Run 2 Z/#gamma", "l")
+    leg1.AddEntry(TestNewInput, "Full Run 2 Lost-lepton", "l")
     #leg1.AddEntry(Qcd2018Input, "2018 QCD Core", "l")
 
     leg2 = TLegend(0.83, 0.5, 1.075, 0.82)
