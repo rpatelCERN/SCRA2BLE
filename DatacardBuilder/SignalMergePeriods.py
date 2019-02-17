@@ -1,13 +1,14 @@
 from ROOT import *
 from math import sqrt
 import sys
+'''
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("--signal", dest="signal", default = 'SMSqqqq',help="mass of LSP", metavar="signal")
 parser.add_option("--mGo", dest="mGo", default='1000', help="Mass of Gluino", metavar="mGo")
 parser.add_option("--mLSP", dest="mLSP", default='900', help="Mass of LSP", metavar="mLSP")
 (options, args) = parser.parse_args()
-
+'''
 
 def SubstractSignalContamination(signaldirtag,signalregion,mGo,mLSP, yearsToCombine, lumiscales):
 	SignalContaminRecoFile=TFile.Open("inputHistograms/SignalContamin/Run2Legacy/%s_RecoMHT_SignalFiles_190215.root" %signalregion)
@@ -41,8 +42,6 @@ def SubstractSignalContamination(signaldirtag,signalregion,mGo,mLSP, yearsToComb
         for b in range(1,NominalCorrSignal.GetNbinsX()+1):
 		UnCorrSignal=NominalCorrSignal.GetBinContent(b)-SignalContaminReco.GetBinContent(b)
 		GenMHTCleaned=GenCorrSignal.GetBinContent(b)-SignalContaminGEN.GetBinContent(b)
-		#print b, NominalCorrSignal.GetBinContent(b), SignalContaminReco.GetBinContent(b),GenCorrSignal.GetBinContent(b),SignalContaminGEN.GetBinContent(b) #,UnCorrSignal,GenCorrSignal.GetBinContent(b)
-		#print b,(UnCorrSignal+GenMHTCleaned)/2. #GenCorrSignal.GetBinContent(b),SignalContaminGEN.GetBinContent(b),NominalCorrSignal.GetBinContent(b),SignalContaminReco.GetBinContent(b)
 		NominalCorrSignal.SetBinContent(b, (UnCorrSignal+GenMHTCleaned)/2.)
 		NominalCorrSignalUnc.SetBinContent(b, 1.0+abs(UnCorrSignal-GenMHTCleaned)/2.)
 	MHTCorr=[]#[NominalCorrSignal,NominalCorrSignalUnc]
@@ -62,7 +61,6 @@ def MHTSystematicGenMHT(signaldirtag,signaltag, yearsToCombine,lumiscales):
 	NominalCorrSignal.SetDirectory(0)
 	NominalCorrSignalUnc.SetDirectory(0)
 	GenCorrSignal.SetDirectory(0)
-	#for i in range(1,2):
 	for i in range(len(yearsToCombine)):
 		SignalRunFile=TFile.Open(signaldirtag+"/RA2bin_proc_%s_%s_fast.root" %(signaltag,yearsToCombine[i]))
 		SignalRun=SignalRunFile.Get("RA2bin_%s_%s_fast_nominalOrig" %(signaltag,yearsToCombine[i]));
@@ -77,7 +75,6 @@ def MHTSystematicGenMHT(signaldirtag,signaltag, yearsToCombine,lumiscales):
 		SignalRunFile.Close();
 	for b in range(1,NominalCorrSignal.GetNbinsX()+1):
 			UnCorrSignal=NominalCorrSignal.GetBinContent(b)
-			#print b, UnCorrSignal,GenCorrSignal.GetBinContent(b)
 			NominalCorrSignal.SetBinContent(b, (UnCorrSignal+GenCorrSignal.GetBinContent(b))/2.)
 			NominalCorrSignalUnc.SetBinContent(b, 1.0+abs(UnCorrSignal-GenCorrSignal.GetBinContent(b))/2.)
 	MHTCorr=[]#[NominalCorrSignal,NominalCorrSignalUnc]
@@ -104,19 +101,13 @@ def MergeSignal(signaldirtag,signaltag, yearsToCombine, lumiscales):
 	return MergedSignal;
 	#return MergedSignal
 
-def MergeUncUncorrelated(signaldirtag,signaltag, yearsToCombine, lumiscales,Unc,MergedSignal, isUp):
+def MergeUncUncorrelated(signaldirtag,signaltag, yearsToCombine, lumiscales,Unc,MergedFullRun2):
 	SigTempFile=TFile.Open(signaldirtag+"/RA2bin_proc_%s_MC2016_fast.root" %(signaltag))
 	MergedUnc=SigTempFile.Get("RA2bin_%s_MC2016_fast_%s" %(signaltag,Unc))
-	#MergedUncSign=SigTempFile.Get("RA2bin_%s_MC2016_fast_%s" %(signaltag,Unc))
-	#MergedUncSign.SetName("UpDownSign")
-	#MergedUncSign.Reset()
         MergedUnc.Reset();
-	#MergedUncSign.Reset();
         MergedUnc.SetDirectory(0)
-	#MergedUncSign.SetDirectory(0)
         SigTempFile.Close();
 	for i in range(len(yearsToCombine)):
-	#for i in range(0,2):
 		SignalRunFile=TFile.Open(signaldirtag+"/RA2bin_proc_%s_%s_fast.root" %(signaltag,yearsToCombine[i]))
         	SignalRun=SignalRunFile.Get("RA2bin_%s_%s_fast_nominalOrig" %(signaltag,yearsToCombine[i]));
         	SignalRunUnc=SignalRunFile.Get("RA2bin_%s_%s_fast_%s" %(signaltag,yearsToCombine[i],Unc));
@@ -129,26 +120,15 @@ def MergeUncUncorrelated(signaldirtag,signaltag, yearsToCombine, lumiscales,Unc,
 			#sign=1.0
 			if SignalRunUnc.GetBinContent(b)>=1.0:sign.append(1.0)
 			else: sign.append(-1.0)
-			#MergedUncSign.SetBinContent(b,sign);	
-			#if i==1:
-			#	print "here for sqrt %g" %UncQuadSum
-			#	UncQuadSum=sqrt(UncQuadSum)
-			#if(SignalRunUnc.GetBinContent(b)<1):UncQuadSum=UncQuadSum*-1
 			MergedUnc.SetBinContent(b, UncQuadSum);
 		SignalRunFile.Close();
 	#print sign;
 	for b in range(1,MergedUnc.GetNbinsX()+1):
 			if MergedUnc.GetBinContent(b)>0:
-				#print sqrt(MergedUnc.GetBinContent(b))
 				MergedUnc.SetBinContent(b,1.0+sign[b-1]*(sqrt(MergedUnc.GetBinContent(b))/MergedFullRun2.GetBinContent(b)));
-				print MergedUnc.GetBinContent(b)
-				#if isUp:MergedUnc.SetBinContent(b,  1.0+(sqrt(MergedUnc.GetBinContent(b))/MergedFullRun2.GetBinContent(b))); 
-				#else: MergedUnc.SetBinContent(b,  1.0-sqrt(MergedUnc.GetBinContent(b))/MergedFullRun2.GetBinContent(b)); 
 			else: MergedUnc.SetBinContent(b,1.0);
 	return MergedUnc;	
-		#UncQuadSum=SignalRun.GetBinContent(
-                #SignalRun.SetName("%s_%s" %(signaltag,yearsToCombine[i]))	
-def MergeUncCorrelated(signaldirtag,signaltag, yearsToCombine, lumiscales,Unc,MergedSignal,isUp):
+def MergeUncCorrelated(signaldirtag,signaltag, yearsToCombine, lumiscales,Unc,MergedFullRun2,isUp):
 	SigTempFile=TFile.Open(signaldirtag+"/RA2bin_proc_%s_MC2016_fast.root" %(signaltag))
 	MergedUnc=SigTempFile.Get("RA2bin_%s_MC2016_fast_%s" %(signaltag,Unc))
         MergedUnc.Reset();
@@ -167,17 +147,14 @@ def MergeUncCorrelated(signaldirtag,signaltag, yearsToCombine, lumiscales,Unc,Me
 		for b in range(1,MergedUnc.GetNbinsX()+1):
 			UncQuadSum=MergedUnc.GetBinContent(b)+(SignalRun.GetBinContent(b)*abs(1-SignalRunUnc.GetBinContent(b)));
 			MergedUnc.SetBinContent(b, UncQuadSum);
-			#print yearsToCombine[i],sqrt(UncQuadSum)
 		SignalRunFile.Close();
-        #SignalRunUnc=SigTempFile.Get("RA2bin_%s_MC2016_fast_%s" %(signaltag,Unc));
 	for b in range(1,MergedUnc.GetNbinsX()+1):
 			if MergedFullRun2.GetBinContent(b)>0:
 				if isUp :MergedUnc.SetBinContent(b,  1.0+(MergedUnc.GetBinContent(b))/MergedFullRun2.GetBinContent(b)); 
 				else:MergedUnc.SetBinContent(b,  1.0-(MergedUnc.GetBinContent(b))/MergedFullRun2.GetBinContent(b)); 
-				#print (MergedUnc.GetBinContent(b)),MergedFullRun2.GetBinContent(b)
 			else: MergedUnc.SetBinContent(b,1.0);
 	return MergedUnc;	
-
+'''
 if __name__ == '__main__':
 	signal=options.signal	
 	mLSP=int(options.mLSP)
@@ -259,5 +236,5 @@ if __name__ == '__main__':
 	BTagSFUncDown.Write("RA2bin_%s_fast_btagSFuncDown" %sms)
 	MisTagSFUncDown.Write("RA2bin_%s_fast_mistagSFuncDown" %sms)
 	MHTCorr_Unc[0].Write("RA2bin_%s_fast_nominal" %sms)	
-	MHTCorr_Unc[1].Write("RA2bin_%s_fast_MHTSyst" %sms)	
-
+	MHTCorr_Unc[1].Write("RA2bin_%s_fast_MHTSyst" %sms)
+'''	

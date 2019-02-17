@@ -82,7 +82,7 @@ if __name__ == '__main__':
     signals = [signalmodel]
     mus=[0.0]
     lumis = [137.4];
-    os.system("python SignalMergePeriods.py --signal=%s --mGo=%s --mLSP=%s" %(options.signal, options.mGo,options.mLSP))
+    #os.system("python SignalMergePeriods.py --signal=%s --mGo=%s --mLSP=%s" %(options.signal, options.mGo,options.mLSP))
 
     #variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
     #variations = ['allNotau','llpOnly', 'tauOnly']
@@ -161,7 +161,7 @@ if __name__ == '__main__':
 #AR-180418:Lists all cards in output directory the_odir     
             allcardnames = os.listdir(the_odir);
  #AR-180427:combineCards.py file is located at /uscms_data/d3/arane/work/RA2bInterpretation/CMSSW_7_4_7/src/HiggsAnalysis/CombinedLimit/scripts. Where is location of file mentioned?
-            print "list cards" , allcardnames
+            #print "list cards" , allcardnames
             command = "combineCards.py ";
             #for cn in allcardnames
 	    #for i in range(0,174):
