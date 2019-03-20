@@ -50,10 +50,11 @@ def fill_all_inputs(year=2016):
    	fill_qcdrs_hists('inputs/bg_hists/Run2018Inputs/QcdPredictionRun2018PostHem.root', 'qcdrs_hists.root', 174,8.2/38.83) # CR lumi from JetHT V11: 36346.489
    	#fill_data_hists('inputs/data_hists/data_fixhtratio/RA2bin_signal.root', 'RA2bin_data2018HEM', 'data_hists.root', 174)
    	fill_data_hists('inputs/data_hists/data_althemveto/RA2bin_signal.root', 'RA2bin_data2018HEM_ra2bin2018HEM-alt2', 'data_hists.root', 174)
+   fill_signal_hists('signal_hists.root', 174)
 	
    #fill_znn_hists('inputs/bg_hists/Run2018Inputs/HEM/ZinvHistos.root', 'znn_hists.root', 174,8.2/38.83) 
    #fill_znn_hists('inputs/bg_hists/CrossCheck2016/zinvData_2019Feb17_Run2016/ZinvHistos.root', 'znn_hists.root', 174) # CR lumi from single-electron V11: 36344.959
-   	'''
+   '''
    ##############2018A######################
    ##############2018D######################
   # fill_data_hists('inputs/data_hists/RA2bin_signal.root', 'RA2bin_data', 'data_hists.root', 174)
@@ -64,7 +65,6 @@ def fill_all_inputs(year=2016):
    #fill_data_hists('inputs/data_hists/FullRun2/HEMVETO/RA2bin_signalNoHEM.root', 'RA2bin_data2018HEM', 'data_hists.root')
    #fill_data_hists('inputs/data_hists/FullRun2/HEMVETOFix/RA2bin_signal.root', 'RA2bin_data2018HEM', 'data_hists.root')
    #fill_data_hists('inputs/data_hists/FullRun2/HEMVETOFix/RA2bin_signal.root', 'RA2bin_data2018HEM', 'data_hists.root')
-   #fill_signal_hists('signal_hists.root', 174)
    #fill_qcd_hists('inputs/bg_hists/qcd-bg-combine-input-36.3ifb-dec16-dashes.txt', 'qcd_hists.root', 174) # CR lumi from MET V11: 35862.345
    #fill_qcdrs_hists('inputs/bg_hists/master-r+s-35.9.root', 'qcdrs_hists.root', 174,10./41.5) # CR lumi from JetHT V11: 36346.489
    #fill_znn_hists('inputs/bg_hists/ZinvHistos.root', 'znn_hists.root', 174, 10./41.5) # CR lumi from single-electron V11: 36344.959
