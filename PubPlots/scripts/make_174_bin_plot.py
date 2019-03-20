@@ -11,7 +11,7 @@ import CMS_lumi
 plot_dir = "output/"
 #plot_title = "results-plot-prefit-12_9-log"
 
-def make_174_bin_plot(plot_title,  lostlept, znn, qcd, data_obs, doPull=False):
+def make_174_bin_plot(plot_title,  lostlept, znn, qcd, data_obs, doPull=False,lumi=35.9,year=2016):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -309,13 +309,18 @@ def make_174_bin_plot(plot_title,  lostlept, znn, qcd, data_obs, doPull=False):
     ## now wite CMS headers
     canv.cd()
     #lumi = 41.529
-    lumi = 10
+    #lumi = 8.2
+    #lumi =61.9
+    #lumi = 10.0
+    #lumi =7.8
     #lumi = 137.421
     #lumi = 35.9
+    #lumi = 16.
     CMS_lumi.writeExtraText = False
     CMS_lumi.extraText = "       Preliminary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
-    CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (2017 13 TeV)"
+    #CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (2017 13 TeV)"
+    CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (%d 13 TeV)" %year
     iPos=0
     CMS_lumi.CMS_lumi(canv, 0, iPos)
     ## textCMS = TLatex(0.25,0.96, "  CMS ")

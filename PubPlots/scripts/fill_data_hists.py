@@ -23,7 +23,10 @@ def fill_data_hists(inputfile = 'inputs/data_hists/RA2bin_signal.root', inputhis
    
     infile = TFile.Open(inputfile);
     dataTotal=infile.Get(inputhist)
+    #dataTotal.Add(infile.Get("RA2bin_data2016"))
+    #dataTotal.Add(infile.Get("RA2bin_data2017"))
     #dataTotal.Add(infile.Get("RA2bin_data2018"))
+    #dataTotal.Add(infile.Get("RA2bin_data2018HEM"))
     data_obs = DataObs(dataTotal)
    
     outfile = TFile(outputfile, "recreate")

@@ -1,5 +1,6 @@
 from make_174_bin_plot import make_174_bin_plot
 from make_174_bin_Comp import make_174_bin_Comp
+from make_174_bin_CompUnc import make_174_bin_CompUnc
 #from make_174_bin_postfitplot import make_174_bin_postfitplot
 from make_1d_pull_dist import make_1d_pull_dist
 from make_174_bin_tables import make_174_bin_tables
@@ -11,7 +12,7 @@ from ROOT import TFile
 from bg_est import BGEst
 from data_obs import DataObs
 gROOT.SetBatch(True)
-def make_all_pas_plots_and_tables(lostlept_file = 'lostlept_hists.root', znn_file = 'znn_hists.root', qcd_file = 'qcdrs_hists.root', data_file = 'data_hists.root', signal_file = 'signal_hists.root',postfitFile="postfit_hists.root"):
+def make_all_pas_plots_and_tables(lumiprefix="8_2",lostlept_file = 'lostlept_hists.root', znn_file = 'znn_hists.root', qcd_file = 'qcdrs_hists.root', data_file = 'data_hists.root', signal_file = 'signal_hists.root',postfitFile="postfit_hists.root"):
 
     # open input files
     f_lostlept = TFile.Open(lostlept_file)
@@ -33,11 +34,16 @@ def make_all_pas_plots_and_tables(lostlept_file = 'lostlept_hists.root', znn_fil
     znnPost = BGEst(f_postfit.Get("ZinvCV"), f_postfit.Get("ZinvStat"), f_postfit.Get("ZinvStat"), f_postfit.Get("ZinvSys"), f_postfit.Get("ZinvSys"), 2002)
     lostleptPost = BGEst(f_postfit.Get("LLCV"), f_postfit.Get("LLStat"), f_postfit.Get("LLStat"), f_postfit.Get("LLSys"), f_postfit.Get("LLSys"), 2006)
      
-    make_174_bin_plot('results-plot-postfit-35_9_pre_app-log',  lostleptPost, znnPost, qcdPost, data_obs)
-    make_174_bin_plot('results-plot-prefit-35_9_pre_app-log',  lostlept, znn, qcd, data_obs)
-    make_1d_pull_dist('results-prefit-pulls-1D-35_9-pre_app',  lostlept, znn, qcd, data_obs)
-    make_174_bin_tables('results-prefit-tables-35_9_pre_app',  lostlept, znn, qcd, data_obs)
-    make_174_bin_tables('results-postfit-tables-35_9_pre_app',  lostleptPost, znnPost, qcdPost, data_obs)
+    make_174_bin_plot('results-plot-postfit-%s_pre_app-pull' %lumiprefix,  lostleptPost, znnPost, qcdPost, data_obs,True,8.2, 2018)
+    make_174_bin_plot('results-plot-postfit-%s_pre_app-log' %lumiprefix,  lostleptPost, znnPost, qcdPost, data_obs,False,8.2, 2018)
+    make_174_bin_plot('results-plot-prefit%sfb%d_pre-app-pull' %(lumiprefix,2018),  lostlept, znn, qcd, data_obs, True,8.2,2018)
+    make_174_bin_plot('results-plot-postfit-%s_pre_app-log' %lumiprefix,  lostleptPost, znnPost, qcdPost, data_obs,False,8.2, 2018)
+    make_1d_pull_dist('results-prefit-pulls-1D-%s-pre_app' %lumiprefix,  lostlept, znn, qcd, data_obs,8.2)
+    #make_1d_pull_dist('results-postfit-pulls-1D-%s-pre_app' %lumiprefix,  lostleptPost, znnPost, qcdPost, data_obs,8.2)
+    make_174_bin_tables('results-prefit-tables-%s_pre_app'%lumiprefix,  lostlept, znn, qcd, data_obs)
+    make_174_bin_tables('results-postfit-tables-%s_app'%lumiprefix,  lostleptPost, znnPost, qcdPost, data_obs)
+    #make_174_bin_tables('results-postfit-tables-8.2_pre_app',  lostleptPost, znnPost, qcdPost, data_obs)
+    make_174_bin_plot('results-plot-prefit-%s_pre_app-log' %lumiprefix,  lostlept, znn, qcd, data_obs)
     
     ## aggregate search regions
     data_obs_12_asrs = DataObs(f_data_obs.Get("ASR/hCV"))
@@ -45,14 +51,32 @@ def make_all_pas_plots_and_tables(lostlept_file = 'lostlept_hists.root', znn_fil
     znn_12_asrs = BGEst(f_znn.Get("ASR/hCV"), f_znn.Get("ASR/hStatUp"), f_znn.Get("ASR/hStatDown"), f_znn.Get("ASR/hSystUp"), f_znn.Get("ASR/hSystDown"), 2002)
     lostlept_12_asrs = BGEst(f_lostlept.Get("ASR/hCV"), f_lostlept.Get("ASR/hStatUp"), f_lostlept.Get("ASR/hStatDown"), f_lostlept.Get("ASR/hSystUp"), f_lostlept.Get("ASR/hSystDown"), 2006)
 
-    make_12_asr_plot('results-plot-prefit-12-asrs-35_9-log',  lostlept_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs)
-    make_12_asr_plot('results-plot-prefit-12-asrs-35_9-log-pull',  lostlept_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs, True)
-    make_asr_table('asr_table',  lostlept_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs)
+    make_12_asr_plot('results-plot-prefit-12-asrs-%s-log' %lumiprefix,  lostlept_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs,False, 8.2)
+    make_12_asr_plot('results-plot-prefit-12-asrs-%s-log-pull'%lumiprefix,  lostlept_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs, True,8.2)
+    make_asr_table('asr_table%s' %lumiprefix,  lostlept_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs)
 
     ## 1D projections
     make_all_1D_projections(lostlept_file, znn_file, qcd_file, data_file, signal_file)
-    #make_174_bin_plot('results-plot-prefit35fb2016_Rerun2016Inputs',  lostlept, znn, qcd, data_obs, True)
-    make_174_bin_Comp('CompPlotTotalLLTF',     znn_file, znn_file,"LLPlusHadTauTF")
+    #make_174_bin_Comp('CompPlotYearsZ2017',"inputs/bg_hists/CrossCheck2016/zinvData_2019Feb22_2016/ZinvHistos.root"  ,"inputs/bg_hists/FullRun2/zinvData_2019Feb22_Run2/ZinvHistos.root","Z( #nu #nu)  ", "ZinvBGpred",41.5/137.4)
+    #make_174_bin_Comp('CompPlotYearsLL2017',"inputs/bg_hists/CrossCheck2016/InputsForLimits_data_formatted_LLPlusHadTau_2016.root"  ,"inputs/bg_hists/FullRun2/InputsForLimits_data_formatted_LLPlusHadTau_CombinedYears.root","Lost Lept  ", "totalPred_LLPlusHadTau",41.5/137.4)
+    #make_174_bin_Comp('CompPlotYearsQCD2017',"inputs/bg_hists/CrossCheck2016/QcdPredictionRun2016.root"  ,"inputs/bg_hists/FullRun2/QcdPredictionRun2.root","QCD R+S  ", "PredictionCV",41.5/137.4)
+    #make_174_bin_Comp('CompPlotYearsZ2017',"inputs/bg_hists/Run2017Inputs/zinvData_2019Feb22_2017/ZinvHistos.root"  ,"inputs/bg_hists/FullRun2/zinvData_2019Feb22_Run2/ZinvHistos.root","Z( #nu #nu)  ", "ZinvBGpred",41.5/137.4)
+    #make_174_bin_Comp('CompPlotYearsLL2017',"inputs/bg_hists/Run2017Inputs/InputsForLimits_data_formatted_LLPlusHadTau_Run2017.root"  ,"inputs/bg_hists/FullRun2/InputsForLimits_data_formatted_LLPlusHadTau_CombinedYears.root","Lost Lept  ", "totalPred_LLPlusHadTau",41.5/137.4)
+    #make_174_bin_Comp('CompPlotYearsQCD2017',"inputs/bg_hists/Run2017Inputs/QcdPredictionRun2017.root"  ,"inputs/bg_hists/FullRun2/QcdPredictionRun2.root","QCD R+S  ", "PredictionCV",41.5/137.4)
+    #make_174_bin_Comp('CompPlotYearsZ2018',"inputs/bg_hists/Run2018Inputs/zinvData_2019Feb22_2018AB/ZinvHistos.root"  ,"inputs/bg_hists/Run2018Inputs/zinvData_2019Feb22_2018CD/ZinvHistos.root","Z( #nu #nu)  ", "ZinvBGpred",27.8.905/38196.951)
+    #make_174_bin_Comp('CompPlotYearsLL2018',"inputs/bg_hists/Run2018Inputs/NoHEM/InputsForLimits_data_formatted_LLPlusHadTau_PreHEMRecheck.root"  ,"inputs/bg_hists/Run2018Inputs/HEM/InputsForLimits_data_formatted_LLPlusHadTau_PostHEMRecheck.root","Lost Lept  ", "totalPred_LLPlusHadTau",27.8.905/38196.951)
+    #make_174_bin_Comp('CompPlotYearsQCD2018',"inputs/bg_hists/Run2018Inputs/QcdPredictionRun2018PreHem.root"  ,"inputs/bg_hists/Run2018Inputs/QcdPredictionRun2018PostHem.root","QCD R+S  ", "PredictionCV",27.8.905/38196.951)
+    #make_174_bin_plot('results-plot-prefit7fb2018_FullRun2Inputs',  lostlept, znn, qcd, data_obs, True)
+    #make_174_bin_plot('results-plot-prefit8p2fb2018_Inputs',  lostlept, znn, qcd, data_obs, True)
+    #make_174_bin_Comp('CompPlotTotalTF',     znn_file, znn_file,"hzvvTF")
+    #make_174_bin_Comp('CompPlotYearsLL2018',"inputs/bg_hists/CrossCheck2018/InputsForLimits_data_formatted_LLPlusHadTau_2018.root"  ,"inputs/bg_hists/FullRun2/InputsForLimits_data_formatted_LLPlusHadTau.root","Lost Lepton ", "totalPred_LLPlusHadTau",8.2/137.4)
+    #make_174_bin_Comp('CompPlotYearsZ2018',"inputs/bg_hists/CrossCheck2018/ZinvHistos_2018.root"  ,"inputs/bg_hists/FullRun2/ZinvHistos.root","Z( #nu #nu)  ", "ZinvBGpred",8.2/137.4)
+    #make_174_bin_Comp('CompPlotHEMLL',"inputs/bg_hists/Run2018Inputs/NoHEM/ZinvHistos.root"  ,"inputs/bg_hists/Run2018Inputs/HEM/ZinvHistos.root","Z( #nu #nu)  ", "hzvvgJNobs",20.92/38.83)
+    #make_174_bin_Comp('CompPlotHEMLL',"inputs/bg_hists/Run2018Inputs/NoHEM/InputsForLimits_data_formatted_LLPlusHadTau_PreHEMRecheck.root"  ,"inputs/bg_hists/Run2018Inputs/HEM/InputsForLimits_data_formatted_LLPlusHadTau_PostHEMRecheck.root","LostLept  ", "totalPred_LLPlusHadTau",20.92/38.83)
+    #make_174_bin_Comp('CompPlotYearsLL2018',"inputs/bg_hists/CrossCheck2018/InputsForLimits_data_formatted_LLPlusHadTau_2018.root"  ,"inputs/bg_hists/Run2018Inputs/InputsForLimits_data_formatted_LLPlusHadTau_Run2018.root","Lost Lepton ", "totalPred_LLPlusHadTau",8.2/41.5)
+    #make_174_bin_CompUnc("CompZGamma2018", "inputs/bg_hists/CrossCheck2018/ZinvHistos_2018.root"  ,"inputs/bg_hists/FullRun2/ZinvHistos.root", " Z/ #gamma ", "hgJZgR", "hgJZgRerr")
+    #make_174_bin_CompUnc("CompLLTF2018", "inputs/bg_hists/CrossCheck2018/InputsForLimits_data_formatted_LLPlusHadTau_2018.root"  ,"inputs/bg_hists/FullRun2/InputsForLimits_data_formatted_LLPlusHadTau.root", " 0L/1L ", "LLPlusHadTauTF", "LLPlusHadTauTFErr")
+    #make_174_bin_Comp('CompPlotYearsZ',     znn_file, znn_file,"ZinvBGpred")
     #make_174_bin_Comp('CompPlotZgammaRatio',     znn_file, znn_file,"hgJZgR")
     #make_174_bin_Comp('CompPlotDoubleRatio',     znn_file, znn_file,"hZgDR")
     #make_174_bin_Comp('CompPlotPurity',     znn_file, znn_file,"hgJPur")

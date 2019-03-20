@@ -14,8 +14,11 @@ import CMS_lumi
 
 
 plot_dir = "output/"
+#lumi=61.9
 #lumi=35.9
-lumi=10.
+#lumi=10.
+#lumi=7.8
+lumi=8.2
 #lumi = 41.529
 
 latex_templates = {'N_{jet} (p_{T} > 30 GeV)': 'njets',\
@@ -23,7 +26,7 @@ latex_templates = {'N_{jet} (p_{T} > 30 GeV)': 'njets',\
                    'H_{T}^{miss} [GeV]': 'mht',\
                    'H_{T} [GeV]': 'ht'}
 
-n_divisions = {'N_{jet} (p_{T} > 30 GeV)': 10, 'N_{b-jet} (p_{T} > 30 GeV)': 4}
+n_divisions = {'N_{jet} (p_{T} > 30 GeV)': 10, 'H_{T}^{miss} [GeV]': 4}
 
 signal_to_latex = {'T1tttt': '#tilde{g}#rightarrowt#bar{t} #tilde{#chi}_{1}^{0}',\
                    'T1bbbb': '#tilde{g}#rightarrowb#bar{b} #tilde{#chi}_{1}^{0}',\
@@ -272,21 +275,21 @@ def make_2D_projection(plot_title, asr_name,  lostlept_file, znn_file, qcd_file,
     tl_njet.SetLineStyle(2)
     tl_njet.SetLineWidth(2)
     tl_njet.SetLineColor(1)
-    tl_njet.DrawLine(3.5,ymin_top,3.5,ymax_top)
-    tl_njet.DrawLine(7.5,ymin_top,7.5,ymax_top)
-    tl_njet.DrawLine(11.5,ymin_top,11.5,ymax_top)
-    tl_njet.DrawLine(15.5,ymin_top,15.5,ymax_top)
+    tl_njet.DrawLine(4.5,ymin_top,4.5,ymax_top+10000)
+    tl_njet.DrawLine(8.5,ymin_top,8.5,ymax_top+10000)
+    tl_njet.DrawLine(12.5,ymin_top,12.5,ymax_top+10000)
+    # tl_njet.DrawLine(15.5,ymin_top,15.5,ymax_top+10000)
 
     ## Njet labels
-    ttext_njet = TLatex()
-    ttext_njet.SetTextFont(42)
-    ttext_njet.SetTextSize(0.04)
-    ttext_njet.SetTextAlign(22)
-    ttext_njet.DrawLatex(2 , ymax_top*0.75 , "2 #leq N_{#scale[0.2]{ }jet} #leq 3")
-    ttext_njet.DrawLatex(5.5 , ymax_top*0.75 , "4 #leq N_{#scale[0.2]{ }jet} #leq 5")
-    ttext_njet.DrawLatex(9.5 , ymax_top*0.75, "6 #leq N_{#scale[0.2]{ }jet} #leq 7")
-    ttext_njet.DrawLatex(13.5 , ymax_top*0.75, "8 #leq N_{#scale[0.2]{ }jet} #leq 9")
-    ttext_njet.DrawLatex(17.5 , ymax_top*0.75, "N_{#scale[0.2]{ }jet} #geq 10")
+    #ttext_njet = TLatex()
+    #ttext_njet.SetTextFont(42)
+    #ttext_njet.SetTextSize(0.04)
+    #ttext_njet.SetTextAlign(22)
+    #ttext_njet.DrawLatex(2 , ymax_top*0.75 , " N_{#scale[0.2]{ }btag} = 0")
+    #ttext_njet.DrawLatex(5.5 , ymax_top*0.75 , "N_{#scale[0.2]{ }btag} = 1")
+    #ttext_njet.DrawLatex(9.5 , ymax_top*0.75, "N_{#scale[0.2]{ }btag} = 2")
+    #ttext_njet.DrawLatex(13.5 , ymax_top*0.75, "N_{#scale[0.2]{ }btag} = 3+")
+    #ttext_njet.DrawLatex(17.5 , ymax_top*0.75, "N_{#scale[0.2]{ }jet} #geq 10")
 
     # cuts label
     latex = TLatex();
@@ -300,7 +303,7 @@ def make_2D_projection(plot_title, asr_name,  lostlept_file, znn_file, qcd_file,
     ratiomid = TLine(hbg_pred.GetBinLowEdge(1), 0., hbg_pred.GetBinLowEdge(hbg_pred.GetNbinsX()+1), 0.)
 
     nb_labels = ['0','1','2+']
-    x_labels = ['0','1','2+', '0','1','2','3+', '0','1','2','3+', '0','1','2','3+', '0','1','2', '3+']
+    x_labels = ['350','600','850', '#geq 850','350','600','850', '#geq 850','350','600','850', '#geq 850','350','600','850', '#geq 850']
     for xbin in range(hratdummy.GetNbinsX()):
         hratdummy.GetXaxis().SetBinLabel(xbin+1, x_labels[xbin])
         pull.GetXaxis().SetBinLabel(xbin+1, x_labels[xbin])
@@ -346,11 +349,22 @@ def make_2D_projection(plot_title, asr_name,  lostlept_file, znn_file, qcd_file,
 
     ymin_bottom = rat_min
     ymax_bottom = rat_max
-    tl_njet.DrawLine(3.5,ymin_bottom,3.5,ymax_bottom)
-    tl_njet.DrawLine(7.5,ymin_bottom,7.5,ymax_bottom)
-    tl_njet.DrawLine(11.5,ymin_bottom,11.5,ymax_bottom)
-    tl_njet.DrawLine(15.5,ymin_bottom,15.5,ymax_bottom)
+    #tl_njet.DrawLine(3.5,ymin_bottom,3.5,ymax_bottom)
+    #tl_njet.DrawLine(7.5,ymin_bottom,7.5,ymax_bottom)
+    #tl_njet.DrawLine(11.5,ymin_bottom,11.5,ymax_bottom)
+    #tl_njet.DrawLine(15.5,ymin_bottom,15.5,ymax_bottom)
+    tl_njet.DrawLine(4.5,ymin_top,4.5,ymax_top)
+    tl_njet.DrawLine(8.5,ymin_top,8.5,ymax_top)
+    tl_njet.DrawLine(12.5,ymin_top,12.5,ymax_top)
 
+    ttext_njet = TLatex()
+    ttext_njet.SetTextFont(42)
+    ttext_njet.SetTextSize(0.1)
+    ttext_njet.SetTextAlign(22)
+    ttext_njet.DrawLatex(2 , ymin_top+2.0, " N_{#scale[0.2]{ }btag} = 0")
+    ttext_njet.DrawLatex(5.5 , ymin_top+2.0 , "N_{#scale[0.2]{ }btag} = 1")
+    ttext_njet.DrawLatex(9.5 , ymin_top+2.0, "N_{#scale[0.2]{ }btag} = 2")
+    ttext_njet.DrawLatex(13.5 , ymin_top+2.0, "N_{#scale[0.2]{ }btag} #geq 3")
 
     ## refresh everything, to be safe
     pad1.cd()
@@ -398,6 +412,36 @@ def make_2D_projection(plot_title, asr_name,  lostlept_file, znn_file, qcd_file,
     if doPull:
         gPad.Close()
         return
+
+
+    temp_file = latex_templates[hlostlept.GetXaxis().GetTitle()]
+    #temp_file = latex_templates["2DProjection"]
+    with open("/".join(["output", plot_title+"_table.tex"]), 'w') as fout:
+        ## open template file saved in output reference directory
+        with open('output/reference/mhtnb_table_template.tex', 'r') as ftemp:
+            template = ftemp.read().split('\n')
+            edit = False
+            for line in template:
+                if line.find('Bin') == 0:
+                    edit = True
+                    fout.write(line+'\n')
+                    continue
+                elif line.find('\\end') == 0:
+                    edit = False
+                if edit:
+                    ibin = int(line[0:2])
+                    lostlept_pred = GetPred(lostlept_proj, ibin)
+                    line = line.replace('$$', lostlept_pred, 1)
+                    znn_pred = GetPred(znn_proj, ibin)
+                    line = line.replace('$$', znn_pred, 1)
+                    qcd_pred = GetPred(qcd_proj, ibin)
+                    line = line.replace('$$', qcd_pred, 1)
+                    sumBG_pred = GetPred(sumBG, ibin)
+                    line = line.replace('$$', sumBG_pred, 1)
+                    nobs = int(hdata_obs.GetBinContent(ibin))
+                    line = line.replace('$$', str(nobs), 1)
+		    #print(ibin)
+                fout.write(line+'\n')
 
     gPad.Close()
 

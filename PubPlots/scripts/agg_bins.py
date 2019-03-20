@@ -31,7 +31,7 @@ asr_sets = {'ASR': [asr1, asr2, asr3, asr4, asr5, asr6, asr7, asr8, asr9, asr10,
             'T2tt' : GetNBJetsBins(minNJ=2, maxNJ=3, minMHT=2, minHT=1), \
             'T2bb' : GetMHTBins(minNJ=0, maxNJ=1, minNB=2, maxNB=2, minHT=1), \
             'T2qq': GetNJetsBins(minNB=0, maxNB=0, minMHT=3, minHT=2), \
-            '2D' : Get2DBins(8,9)
+            '2D' : Get2DBins(0,9)
             }
 
 asr_xtitle = {'ASR': 'Aggregate search region binning', \
@@ -45,7 +45,7 @@ asr_xtitle = {'ASR': 'Aggregate search region binning', \
             'T2tt' : 'N_{b-jet} (p_{T} > 30 GeV)', \
             'T2bb' : 'H_{T}^{miss} [GeV]', \
             'T2qq' : 'N_{jet} (p_{T} > 30 GeV)', \
-            '2D' : 'N_{b-jet} (p_{T} > 30 GeV)'}
+            '2D' : 'H_{T}^{miss} [GeV]'}
 
 asr_xbins = {'ASR': [i+0.5 for i in range(13)], \
             'NJ': [1.5, 3.5, 5.5, 7.5, 9.5, 13.5], \
@@ -58,7 +58,7 @@ asr_xbins = {'ASR': [i+0.5 for i in range(13)], \
             'T2tt' : [-0.499, 0.5, 1.5, 2.5, 3.499], \
             'T2bb' : [300., 350., 600., 850., 1150.], \
             'T2qq' : [1.5, 3.5, 5.5, 7.5, 9.5, 13.5], \
-            '2D' : [i+0.5 for i in range(20)]}
+            '2D' : [i+0.5 for i in range(17)]}
 
 def AddHistsInQuadrature(name, hists):
     if hists[0].GetXaxis().GetXbins().GetSize()==0: # fixed bin width--there is no TArrayD?
