@@ -2,7 +2,7 @@ from __future__ import print_function
 import os
 import errno
 from ROOT import TFile, TH1D, Math, gStyle, THStack, TLegend, TCanvas, TPad, gPad, TLatex, TLine
-from ROOT import TGraph,TGraphAsymmErrors
+from ROOT import TGraph,TGraphAsymmErrors,TColor,TAttFill
 from bg_est import BGEst
 from data_obs import DataObs
 from exp_exp_ratio import ExpExpRatio
@@ -13,7 +13,7 @@ from array import array
 plot_dir = "output/"
 #plot_title = "results-plot-prefit-12_9-log"
 
-def make_174_bin_Comp(plot_title,  fname_bkg1, fname_bkg2,TF):
+def make_174_bin_Comp(plot_title, fileNominal, fileComp,BkgName, TF,relLumiScale):
     doPull=False;
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -25,18 +25,20 @@ def make_174_bin_Comp(plot_title,  fname_bkg1, fname_bkg2,TF):
     znn_file = 'znn_hists.root'
     f_bkg1 = TFile.Open(znn_file)
     f_bkg2 = TFile.Open(znn_file)
-    data_obs = DataObs(f_bkg1.Get("hCV"))
+    data_obs = DataObs(f_bkg2.Get("hCV"))
     hdata_obs = data_obs.hist
     gdata_obs = data_obs.graph # note that this also sets the style
     sumBG = BGEst(f_bkg2.Get("hCV"), f_bkg2.Get("hStatUp"), f_bkg2.Get("hStatDown"), f_bkg2.Get("hSystUp"), f_bkg2.Get("hSystDown"), 2001)
 
 
     #fZinv2016=TFile("../DatacardBuilder/inputHistograms/histograms_35.9fb/ZinvHistos.root")
-    #fZinv2017=TFile("inputs/bg_hists/FullRun2/ZinvHistos.root")
-    fZinv2017=TFile("inputs/bg_hists/Run2017Inputs/InputsForLimits_data_formatted_LLPlusHadTau_Run2017.root")
-    #fZinv2017=TFile("inputs/bg_hists/Run2017/InputsForLimits_data_formatted_LLPlusHadTau.root")
-    fZinv2016=TFile("inputs/bg_hists/CrossCheck2016/InputsForLimits_data_formatted_LLPlusHadTau_2016.root")
-    
+    #fZiv2017=TFile("inputs/bg_hists/FullRun2/ZinvHistos.root")
+    fZinv2016=TFile(fileNominal)
+    fZinv2017=TFile(fileComp)
+    #fZinv2016=TFile("inputs/bg_hists/Run2017Inputs/InputsForLimits_data_formatted_LLPlusHadTau_Run2017.root")
+    #fZinv2016=TFile("inputs/bg_hists/Run2017Inputs/InputsForLimits_data_formatted_LLPlusHadTau_Run2017.root")
+    #fZinv2016=TFile("inputs/bg_hists/CrossCheck2016/ZinvHistos_2016.root")
+    #fZinv2016=TFile("inputs/bg_hists/Run2017Inputs/ZinvHistos_2017.root")
     #fZinv2016=TFile("inputs/bg_hists/CrossCheck2016/QcdPredictionRun2016.root")
     #fZinv2017=TFile("inputs/bg_hists/Run2017Inputs/QcdPredictionRun2017.root")
     #fZinv2018=TFile("inputs/bg_hists/Run2018Inputs/QcdPredictionRun2018.root")
@@ -76,7 +78,7 @@ def make_174_bin_Comp(plot_title,  fname_bkg1, fname_bkg2,TF):
     if hdata_obs.GetMaximum()>ymax:
          ymax=hdata_obs.GetMaximum()
     #hbg_pred.SetMaximum(500*ymax)
-    hbg_pred.SetMaximum(3.0)
+    hbg_pred.SetMaximum(5000000)
     hbg_pred.SetMinimum(0.1)
 
     #data_obs = DataObs(lostlept)
@@ -170,21 +172,31 @@ def make_174_bin_Comp(plot_title,  fname_bkg1, fname_bkg2,TF):
     pad2.SetRightMargin(0.02)
     pad2.Draw()
     pad1.cd()
-
+    pad1.SetLogy()
     ## draw graphs on top pad
     hbg_pred.Draw()
-
+    sumBG.gFull.SetFillStyle(0);
     sumBG.gFull.Draw("hist")
+
     Base2016Input=fZinv2016.Get(TF);
-    Base2016InputErr=fZinv2016.Get("LLPlusHadTauTFErr")
+    Base2016InputErr=fZinv2016.Get("hgJZgRerr")
     #Qcd2018Input=fZinv2018.Get(TF);
     #Base2016Input.Scale(1.0/0.9)
     #Qcd2017Input.Draw("histsame");
-    Base2016Input.Draw("same")
+   
+    Base2016Input.SetLineColor(600);
+    Base2016Input.SetLineWidth(2)
+    Base2016Input.SetFillStyle(0);
+    Base2016Input.Draw("histsame")
     TestNewInput=fZinv2017.Get(TF)
     #TestNewInput.Scale(1.0/0.9);
-    TestNewInput.SetLineColor(2029);
-    TestNewInput.Draw("same")
+    TestNewInput.SetFillStyle(0);
+    TestNewInput.SetLineColor(1);
+    TestNewInput.SetLineStyle(10);
+    TestNewInput.SetLineWidth(2)
+    #TestNewInput.Scale(40.5/137.4)
+    TestNewInput.Scale(relLumiScale)
+    TestNewInput.Draw("histsame")
     #Qcd2018Input.SetLineColor(2002)
     #Qcd2018Input.Draw("same"); 
     #f_bkg1.Get("hCV").Draw("hist,same")
@@ -196,9 +208,14 @@ def make_174_bin_Comp(plot_title,  fname_bkg1, fname_bkg2,TF):
     leg1.SetTextSize(0.035)
     leg1.SetFillStyle(0)
     #leg1.AddEntry(gdata_obs.GetName(), "Data", "pes")
-    leg1.AddEntry(Base2016Input, "2016 Lost-lepton", "l")
     #leg1.AddEntry(hqcd, "QCD", "f")
-    leg1.AddEntry(TestNewInput, "Full Run 2 Lost-lepton", "l")
+    #leg1.AddEntry(Base2016Input, "2016 Z/#gamma Ratio", "l")
+    #leg1.AddEntry(TestNewInput, "2017 Z/#gamma Ratio", "l")
+    leg1.AddEntry(Base2016Input, "2018 Pre-HEM %s " %BkgName, "l")
+    #leg1.AddEntry(TestNewInput, "Full Run 2 %s" %BkgName, "l")
+    leg1.AddEntry(TestNewInput, "2018 Post-HEM %s" %BkgName, "l")
+    #leg1.AddEntry(Base2016Input, "2017 LostLept Pred.", "l")
+    #leg1.AddEntry(TestNewInput, "Full Run 2 LostLept Pred.", "l")
     #leg1.AddEntry(Qcd2018Input, "2018 QCD Core", "l")
 
     leg2 = TLegend(0.83, 0.5, 1.075, 0.82)
@@ -300,6 +317,7 @@ def make_174_bin_Comp(plot_title,  fname_bkg1, fname_bkg2,TF):
         m3.Draw()
     else:
 	hratdummy.GetYaxis().SetTitle("Rel. Diff");
+	hratdummy.GetYaxis().SetRangeUser(-1.5,1.5)
         hratdummy.Draw("axis")
         ratio_bands.SetFillStyle(3245)
         x = []
@@ -319,9 +337,14 @@ def make_174_bin_Comp(plot_title,  fname_bkg1, fname_bkg2,TF):
                 #y.append( (Base2016Input.GetBinContent(ibin+1)-TestNewInput.GetBinContent(ibin+1)))
                 #ey_h.append( ( Base2016InputErr.GetBinContent(ibin+1) * Base2016Input.GetBinContent(ibin+1)-TestNewInput.GetBinContent(ibin+1)))
                 #ey_l.append( ( Base2016InputErr.GetBinContent(ibin+1) * Base2016Input.GetBinContent(ibin+1)-TestNewInput.GetBinContent(ibin+1)) )
+		if ibin+1==40:print("Base 2016 %g +/- %g   Full Run 2 %g" %(Base2016Input.GetBinContent(ibin+1),Base2016Input.GetBinError(ibin+1),TestNewInput.GetBinContent(ibin+1)))
                 y.append( (Base2016Input.GetBinContent(ibin+1)-TestNewInput.GetBinContent(ibin+1))/Base2016Input.GetBinContent(ibin+1) )
-                ey_h.append( ( Base2016InputErr.GetBinContent(ibin+1) * Base2016Input.GetBinContent(ibin+1)-TestNewInput.GetBinContent(ibin+1))/Base2016Input.GetBinContent(ibin+1) )
-                ey_l.append( ( Base2016InputErr.GetBinContent(ibin+1) * Base2016Input.GetBinContent(ibin+1)-TestNewInput.GetBinContent(ibin+1))/Base2016Input.GetBinContent(ibin+1) )
+                #ey_h.append( (( Base2016Input.GetBinError(ibin+1) + Base2016Input.GetBinContent(ibin+1))-TestNewInput.GetBinContent(ibin+1))/Base2016Input.GetBinContent(ibin+1) )
+                #ey_l.append( ((Base2016Input.GetBinContent(ibin+1)+Base2016Input.GetBinError(ibin+1))-TestNewInput.GetBinContent(ibin+1))/Base2016Input.GetBinContent(ibin+1) )
+                ey_h.append( (( Base2016Input.GetBinError(ibin+1) ))/Base2016Input.GetBinContent(ibin+1) )
+                ey_l.append( (( Base2016Input.GetBinError(ibin+1) ))/Base2016Input.GetBinContent(ibin+1) )
+                #ey_h.append( ( Base2016InputErr.GetBinContent(ibin+1) * Base2016Input.GetBinContent(ibin+1)-TestNewInput.GetBinContent(ibin+1))/Base2016Input.GetBinContent(ibin+1) )
+                #ey_l.append( ( Base2016InputErr.GetBinContent(ibin+1) * Base2016Input.GetBinContent(ibin+1)-TestNewInput.GetBinContent(ibin+1))/Base2016Input.GetBinContent(ibin+1) )
                 #ey_l.append( (Base2016Input.GetBinContent(ibin+1)*(2-Base2016InputErr.GetBinContent(ibin+1))-TestNewInput.GetBinContent(ibin+1))/Base2016Input.GetBinContent(ibin+1) )
                 #ey_l.append(Base2016Input.GetErrorYlow(ibin)/TestNewInput.GetBinContent(ibin+1))
                 #ey_h.append(Base2016Input.GetErrorYhigh(ibin)/TestNewInput.GetBinContent(ibin+1))
@@ -339,12 +362,13 @@ def make_174_bin_Comp(plot_title,  fname_bkg1, fname_bkg2,TF):
         gMarkers.SetLineWidth(1)
         gMarkers.SetMarkerStyle(20)
         gMarkers.SetLineColor(1)	
-        #ratio_bands.Draw("e2, same")
+
+        ratio_bands.Draw("e2, same")
         #ratio_markers.Draw("p, 0, same")
     	ratiomid = TLine(hbg_pred.GetBinLowEdge(1), 0., hbg_pred.GetBinLowEdge(hbg_pred.GetNbinsX()+1), 0.)
     	ratiomid.SetLineStyle(2)
     	ratiomid.Draw()
-        gMarkers2.Draw("e2same")
+        #gMarkers2.Draw("e2same")
         gMarkers.Draw("psame")
     ## lines again
     if doPull:
@@ -382,13 +406,14 @@ def make_174_bin_Comp(plot_title,  fname_bkg1, fname_bkg2,TF):
     ## now wite CMS headers
     canv.cd()
     #lumi = 41.529
+    lumi = 21.0
     #lumi = 137.421
-    lumi = 35.9
+    #lumi = 35.9
     CMS_lumi.writeExtraText = False
     CMS_lumi.extraText = "       Preliminary"
 
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
-    CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (2016 13 TeV)"
+    CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (2018 13 TeV)"
     iPos=0
     CMS_lumi.CMS_lumi(canv, 0, iPos)
     ## textCMS = TLatex(0.25,0.96, "  CMS ")

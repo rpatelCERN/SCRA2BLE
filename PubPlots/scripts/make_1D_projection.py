@@ -14,7 +14,12 @@ import CMS_lumi
 
 
 plot_dir = "output/"
-lumi = 10.0
+#lumi = 16.0
+#lumi = 10.0
+lumi = 8.2
+#lumi = 61.9
+#lumi = 7.8
+#lumi = 10.
 #lumi = 41.529
 #lumi = 35.9
 #lumi = 137.421

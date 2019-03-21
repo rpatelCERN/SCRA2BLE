@@ -58,29 +58,29 @@ def make_all_1D_projections(lostlept_file = 'lostlept_hists.root', znn_file = 'z
 
     ## 2D plots with signal stacked on BG
     make_2D_projection('2D-T1tttt', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1tttt_2000_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV")
+                       "T1tttt_2000_100", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2 ")
     make_2D_projection('2D-T1bbbb', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1bbbb_1500_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV")
+                       "T1bbbb_1500_100", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2")
     make_2D_projection('2D-T1qqqq', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1qqqq_1400_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV")
+                       "T1qqqq_1400_100", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2")
     make_2D_projection('2D-T2tt', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T2tt_700_50", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV")
+                       "T2tt_700_50", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2")
     make_2D_projection('2D-T2bb', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T2bb_650_1", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV")
+                       "T2bb_650_1", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2")
     make_2D_projection('2D-T2qq', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T2qq_1000_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV")
+                       "T2qq_1000_100", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2")
     make_2D_projection('2D-T1tttt-pull', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1tttt_2000_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV", doPull=True)
+                       "T1tttt_2000_100", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2", doPull=True)
     make_2D_projection('2D-T1bbbb-pull', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1bbbb_1500_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV", doPull=True)
+                       "T1bbbb_1500_100", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2", doPull=True)
     make_2D_projection('2D-T1qqqq-pull', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T1qqqq_1400_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV", doPull=True)
+                       "T1qqqq_1400_100", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2", doPull=True)
     make_2D_projection('2D-T2tt-pull', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T2tt_700_50", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV", doPull=True)
+                       "T2tt_700_50", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2", doPull=True)
     make_2D_projection('2D-T2bb-pull', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T2bb_650_1", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV", doPull=True)
+                       "T2bb_650_1", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2", doPull=True)
     make_2D_projection('2D-T2qq-pull', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T2qq_1000_100", "H_{T}^{miss} > 850 GeV, H_{T} > 850 GeV", doPull=True)
+                       "T2qq_1000_100", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2", doPull=True)
 
 if __name__ == "__main__": # to run from command line, just give the name of the BG estimation files
     import sys

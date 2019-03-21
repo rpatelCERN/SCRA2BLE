@@ -9,6 +9,8 @@ from __future__ import print_function
 import os
 import sys, getopt
 import math
+from agg_bins import *
+from uncertainty import Uncertainty
 from ROOT import TFile
 from ROOT import  *
 
@@ -21,7 +23,7 @@ def fill_postfit(inputfile = 'inputs/bg_hists/fitDiagnosticstestCards-allBkgs-T1
     #TH1D.SetDefaultSumw2(True)
    
     infile = TFile(inputfile,"READ");
-    BinProcesses=infile.Get("norm_fit_b");
+    BinProcesses=infile.Get("norm_fit_s");
     hQCDCV = TH1D("hQCDCV", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
     hQCDStatUp = TH1D("hQCDStatUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
     hQCDStatDown = TH1D("hQCDStatDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
@@ -43,8 +45,7 @@ def fill_postfit(inputfile = 'inputs/bg_hists/fitDiagnosticstestCards-allBkgs-T1
 		Q   = BinProcesses.find("ch%d/qcd" %c)
 		T   = BinProcesses.find("ch%d/WTop" %c)
    		hQCDCV.SetBinContent(c,Q.getVal()); 		
-   		hZCV.SetBinContent(c,Z.getVal()); 		
-		
+   		hZCV.SetBinContent(c,Z.getVal()); 			
    		#if type(T) is RooAbsArg:
 		hWTopCV.SetBinContent(c,T.getVal()); 		
 		#else: hWTopCV.SetBinContent(c,0)
@@ -67,7 +68,36 @@ def fill_postfit(inputfile = 'inputs/bg_hists/fitDiagnosticstestCards-allBkgs-T1
     hZStatUp.Write("ZinvStat");
     hWTopStatUp.Write("LLStat")
 
+    hCV = TH1D("hCV", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+    hStatUp = TH1D("hStatUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+    hStatDown = TH1D("hStatDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+    hSysUp = TH1D("hSysUp", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5)
+    hSysDown = TH1D("hSysDown", ";Search Bin;Events / Bin", nbins, 0.5, nbins + 0.5) 
+    hCV.Add(hQCDCV);
+    hCV.Add(hZCV);
+    hCV.Add(hWTopCV);
+    #FULLY CORRELATED 
+    #hSysUp.Add(hQCDSysUp)  
+    #hSysUp.Add(hZSysUp)  
+    #hSysUp.Add(hWTopSysUp)
+    #SYSTSUp_ASR=["hZSysUp", "hWTopSysUp",
+    for name, asrs in asr_sets.items():
+       dASR = outfile.mkdir(name)
+       dASR.cd()
+       hCV_ASR = Uncertainty(hCV, "all").AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist # pretending the CV is a fully-correlated uncertainty b/c we need to add it linearly
+       # stat uncertainty fully-uncorrelated (174 CRs)
+       hSystUp_ASR = Uncertainty(hSysUp, '').AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
+       correlation='all'
+       hist_asrQ = Uncertainty(hQCDSysUp, correlation).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
+       hist_asrZ = Uncertainty(hZSysUp, correlation).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
+       hist_asrWTop = Uncertainty(hWTopSysUp, correlation).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
+       SYSTSUp_ASR=[hist_asrQ,hist_asrZ,hist_asrWTop]
+       hSystUp_ASR = AddHistsInQuadrature('hSystUp', SYSTSUp_ASR)
+
+       hCV_ASR.Write()
+       hSystUp_ASR.Write()
     outfile.Close()
+
 
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@ import CMS_lumi
 
 plot_dir = "output/"
 
-def make_1d_pull_dist(plot_title,  lostlept, znn, qcd, data_obs):
+def make_1d_pull_dist(plot_title,  lostlept, znn, qcd, data_obs,lumi=35.9):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -39,21 +39,29 @@ def make_1d_pull_dist(plot_title,  lostlept, znn, qcd, data_obs):
     hpull.SetFillColor(2029)
     hpull.SetLineColor(1)
     hpull.SetLineWidth(2)
-
+    ZerobBin=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 111, 112, 113, 114, 115, 116, 117, 118, 143, 144, 145, 146, 147, 148, 149, 150]
+    OnebBin=[11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 119, 120, 121, 122, 123, 124, 125, 126, 151, 152, 153, 154, 155, 156, 157, 158]
+    TwobBin=[21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174]
+    ZeroCount=0;
     for ibin in range(pull.GetNbinsX()):
-        hpull.Fill(pull.GetBinContent(ibin+1))
+	#if hbg_pred.GetBinContent(ibin+1)<=5:
+	#if ibin in TwobBin or ibin in OnebBin:
+	if(hdata_obs.GetBinContent(ibin+1)>0): 
+    		hpull.Fill(pull.GetBinContent(ibin+1))
+	else: ZeroCount=ZeroCount+1
         if abs(pull.GetBinContent(ibin+1))>1.5:
-            print("Bin %d: Obs: %d, Pred: %3.3f, Err: %3.3f - %3.3f, Pull: %3.2f" % (ibin+1, hdata_obs.GetBinContent(ibin+1), hbg_pred.GetBinContent(ibin+1),\
+        #if abs(hbg_pred.GetBinContent(ibin+1))<=5:
+           	 print("Bin %d: Obs: %d, Pred: %3.3f, Err: %3.3f - %3.3f, Pull: %3.2f" % (ibin+1, hdata_obs.GetBinContent(ibin+1), hbg_pred.GetBinContent(ibin+1),\
                                                                                        hbg_err_up.GetBinContent(ibin+1), hbg_err_down.GetBinContent(ibin+1),\
                                                                                        pull.GetBinContent(ibin+1)) )
-
+    print(ZeroCount)
     for ibin in range(hpull.GetNbinsX()):
         if hpull.GetBinContent(ibin+1)>0.:
             hpull.SetBinError(ibin+1,0.0001)
 
-    if hpull.GetBinContent(hpull.GetNbinsX()+1)>0.:
+    if hpull.GetBinContent(hpull.GetNbinsX()+1)>0.: #and hbg_pred.GetBinContent(hpull.GetNbinsX()+1)>5:
         hpull.SetBinContent(hpull.GetNbinsX(), hpull.GetBinContent(hpull.GetNbinsX())+hpull.GetBinContent(hpull.GetNbinsX()+1))
-
+	print(hpull.GetNbinsX()+1)
     fit = hpull.Fit("gaus")
     gStyle.SetOptFit(0)
 
@@ -82,8 +90,12 @@ def make_1d_pull_dist(plot_title,  lostlept, znn, qcd, data_obs):
     hpull.Draw("hist");
 
     #lumi = 137.421
-    #lumi = 10.
-    lumi = 35.9
+    #lumi =61.9
+    #lumi =10.0
+    #lumi =16
+    #lumi =8.2
+    #lumi = 7.8
+    #lumi = 35.9
     #lumi = 41.529
     CMS_lumi.writeExtraText = False
     CMS_lumi.extraText = "  Preliminary"

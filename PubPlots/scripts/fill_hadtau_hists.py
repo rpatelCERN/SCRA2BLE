@@ -36,7 +36,6 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog116_35.9ifb_HadTauEstim
         if "QCDBin_" in kname or "totalPred_LLPlusHadTau" in kname or "DataCSStatistics" in kname or "LLPlusHadTauTF" in kname or "DataCSStatErr" in kname:
             continue
 	if "_Change" in kname or "searchBin_one" in kname or "closureRatio" in kname or "totalPredNonClosure_LL" in kname:continue
-	if "totalPredBMistagDown" in kname:continue
         #if "QCDBin_" in kname or "nominal" in kname or "DataCSStatistics" in kname or "BMistag" in kname:
         hist = infile.Get(kname)
         # convert to absolute
@@ -95,7 +94,7 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog116_35.9ifb_HadTauEstim
        #if(hin_stats_no_poiscl0.GetBinContent(ibin+1)==0):CSStatsError=1.84102*hin_TF.GetBinContent(ibin+1);
        NCR =hin_stats_no_poiscl0.GetBinContent(ibin+1)
        CSStatsError=0#hin_TF.GetBinContent(ibin+1)*hin_stats_no_poiscl0.GetBinError(ibin+1)
-	
+       #lumiSF=1.	
        L = 0.
        if NCR > 0.:
            L = Math.gamma_quantile(alpha/2,NCR,1.)
@@ -165,15 +164,17 @@ def fill_hadtau_hists(inputfile = 'inputs/bg_hists/ARElog116_35.9ifb_HadTauEstim
        SYSTSDown_ASR = []
        for hsyst in SYSTS:
            hname = hsyst.GetName()
-           correlation = 'nbjets' # note: default is correlated across nbjets bins, corresponds to Acc, PDF, Scale, IsoTrack, MtEffStat, MuFromTau, BMistag
+           correlation = 'all' # note: default is correlated across nbjets bins, corresponds to Acc, PDF, Scale, IsoTrack, MtEffStat, MuFromTau, BMistag
            if hname.find('Adhoc') >= 0:
                correlation = 'htmht' ## adhoc fudge factor is binned in njets & nbjets
-           elif hname.find('NonClosure') >= 0: # one for each bin
+           elif hname.find('JEC')>=0 or hname.find('MTSys') >= 0: # one for each bin
                correlation = ''
            elif hname.find('TrigSyst') >= 0: # only binned in HT and MHT
                correlation = 'njets:nbjets'
-           elif hname.find('MuReco') >= 0 or hname.find('MuIso') >= 0 or hname.find('BMistagDown') >= 0 or hname.find('PDFDown')>=0 or hname.find('ScaleDown'): # 1 value, fully-correlated
-               correlation = 'all'
+           #elif hname.find('MuReco') >= 0 or hname.find('MuIso') >= 0 or hname.find('BMistagDown') >= 0 or hname.find('PDFDown')>=0 or hname.find('ScaleDown'): # 1 value, fully-correlated
+               #correlation = 'all'
+	   #if correlation=='all':print("%s Correlated " %hname)
+	   #else: print("%s UnCorrelated " %hname)
            hist_asr = Uncertainty(hsyst, correlation).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
            ## now group by Up, Down, symmetric
            #if hname.find('Down') >= 0:

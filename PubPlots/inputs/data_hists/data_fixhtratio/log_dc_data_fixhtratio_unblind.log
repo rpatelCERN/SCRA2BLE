@@ -1,0 +1,198 @@
+TDR Style initialized
+
+Processing MakeAllDCdata.C+("root://cmseos.fnal.gov//store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV16","signalUnblind","input/input_RA2bin_DC_data.txt","input/input_sets_DC_data.txt","datacards/data_fixhtratio")...
+signalUnblind
+MET_2016B
+--------------------------------------------------------
+Selection: ra2bin2016
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc          177316
+HLT                 105921          59.74          59.74
+METFilter           101981          57.51          96.28
+ExtraFilter          96866          54.63          94.98
+RA2Bin               17274           9.74          17.83
+MET_2016C
+--------------------------------------------------------
+Selection: ra2bin2016
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc           76831
+HLT                  47103          61.31          61.31
+METFilter            45291          58.95          96.15
+ExtraFilter          43042          56.02          95.03
+RA2Bin                7789          10.14          18.10
+MET_2016D
+--------------------------------------------------------
+Selection: ra2bin2016
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc          107535
+HLT                  77095          71.69          71.69
+METFilter            74704          69.47          96.90
+ExtraFilter          70962          65.99          94.99
+RA2Bin               12848          11.95          18.11
+MET_2016E
+--------------------------------------------------------
+Selection: ra2bin2016
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc          105056
+HLT                  75044          71.43          71.43
+METFilter            72687          69.19          96.86
+ExtraFilter          69040          65.72          94.98
+RA2Bin               12426          11.83          18.00
+MET_2016F
+--------------------------------------------------------
+Selection: ra2bin2016
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc           76515
+HLT                  57649          75.34          75.34
+METFilter            56226          73.48          97.53
+ExtraFilter          53343          69.72          94.87
+RA2Bin                9538          12.47          17.88
+MET_2016G
+--------------------------------------------------------
+Selection: ra2bin2016
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc          176320
+HLT                 134635          76.36          76.36
+METFilter           131628          74.65          97.77
+ExtraFilter         125111          70.96          95.05
+RA2Bin               22592          12.81          18.06
+MET_2016H
+--------------------------------------------------------
+Selection: ra2bin2016
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc          191360
+HLT                 151153          78.99          78.99
+METFilter           148159          77.42          98.02
+ExtraFilter         140864          73.61          95.08
+RA2Bin               25290          13.22          17.95
+MET_2017B
+--------------------------------------------------------
+Selection: ra2bin2017
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc           92053
+HLT                  91302          99.18          99.18
+METFilter            90315          98.11          98.92
+ExtraFilter          83092          90.27          92.00
+RA2Bin               14639          15.90          17.62
+MET_2017C
+--------------------------------------------------------
+Selection: ra2bin2017
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc          184812
+HLT                 177104          95.83          95.83
+METFilter           175443          94.93          99.06
+ExtraFilter         162415          87.88          92.57
+RA2Bin               29296          15.85          18.04
+MET_2017D
+--------------------------------------------------------
+Selection: ra2bin2017
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc           85551
+HLT                  81416          95.17          95.17
+METFilter            80817          94.47          99.26
+ExtraFilter          73726          86.18          91.23
+RA2Bin               13301          15.55          18.04
+MET_2017E
+--------------------------------------------------------
+Selection: ra2bin2017
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc          199063
+HLT                 185695          93.28          93.28
+METFilter           183923          92.39          99.05
+ExtraFilter         164154          82.46          89.25
+RA2Bin               29340          14.74          17.87
+MET_2017F
+--------------------------------------------------------
+Selection: ra2bin2017
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc          306921
+HLT                 281871          91.84          91.84
+METFilter           278600          90.77          98.84
+ExtraFilter         242493          79.01          87.04
+RA2Bin               42892          13.97          17.69
+MET_2018A
+--------------------------------------------------------
+Selection: ra2bin2018
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc          296333
+HLT                 283378          95.63          95.63
+METFilter           280450          94.64          98.97
+Blind               280450          94.64         100.00
+ExtraFilter         260742          87.99          92.97
+RA2Bin               47081          15.89          18.06
+MET_2018A
+--------------------------------------------------------
+Selection: ra2bin2018HEM
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc          296333
+HLT                 283378          95.63          95.63
+METFilter           280450          94.64          98.97
+Blind                    0           0.00           0.00
+ExtraFilter              0           0.00           -nan
+RA2Bin                   0           0.00           -nan
+MET_2018B
+--------------------------------------------------------
+Selection: ra2bin2018
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc          142289
+HLT                 136919          96.23          96.23
+METFilter           135699          95.37          99.11
+Blind               135221          95.03          99.65
+ExtraFilter         124585          87.56          92.13
+RA2Bin               22543          15.84          18.09
+MET_2018B
+--------------------------------------------------------
+Selection: ra2bin2018HEM
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc          142289
+HLT                 136919          96.23          96.23
+METFilter           135699          95.37          99.11
+Blind                  478           0.34           0.35
+ExtraFilter            328           0.23          68.62
+RA2Bin                  42           0.03          12.80
+MET_2018C
+--------------------------------------------------------
+Selection: ra2bin2018
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc          225628
+HLT                 214838          95.22          95.22
+METFilter           213528          94.64          99.39
+Blind                    0           0.00           0.00
+ExtraFilter              0           0.00           -nan
+RA2Bin                   0           0.00           -nan
+MET_2018C
+--------------------------------------------------------
+Selection: ra2bin2018HEM
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc          225628
+HLT                 214838          95.22          95.22
+METFilter           213528          94.64          99.39
+Blind               213528          94.64         100.00
+ExtraFilter         150962          66.91          70.70
+RA2Bin               23259          10.31          15.41
+MET_2018D
+--------------------------------------------------------
+Selection: ra2bin2018
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc         1087255
+HLT                1012746          93.15          93.15
+METFilter          1007057          92.62          99.44
+Blind                    0           0.00           0.00
+ExtraFilter              0           0.00           -nan
+RA2Bin                   0           0.00           -nan
+MET_2018D
+--------------------------------------------------------
+Selection: ra2bin2018HEM
+Selector      Raw # Events  Abs. Eff. (%)  Rel. Eff. (%)
+NEventProc         1087255
+HLT                1012746          93.15          93.15
+METFilter          1007057          92.62          99.44
+Blind              1007057          92.62         100.00
+ExtraFilter         636322          58.53          63.19
+RA2Bin              101503           9.34          15.95
+RA2bin yield:
+data2016: 107757.00 +/- 328.26
+data2017: 129468.00 +/- 359.82
+data2018: 69624.00 +/- 263.86
+data2018HEM: 124804.00 +/- 353.28
+

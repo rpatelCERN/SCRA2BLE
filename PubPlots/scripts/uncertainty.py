@@ -57,6 +57,7 @@ class Uncertainty:
                       or ('njets' in self.corrs and 'nbjets' not in self.corrs and jbin.inb == ibin.inb and jbin.ihtmht == ibin.ihtmht) \
                       or ('nbjets' in self.corrs  and 'njets' not in self.corrs and jbin.inj == ibin.inj and jbin.ihtmht == ibin.ihtmht) \
                       or ('njets' in self.corrs and 'nbjets' in self.corrs and jbin.ihtmht == ibin.ihtmht) \
+                      or ('mht' in self.corrs and jbin.imht == ibin.imht) \
                       or ('htmht' in self.corrs and 'nbjets' not in self.corrs and jbin.inb == ibin.inb and jbin.inj == ibin.inj) \
                       or ('htmht' in self.corrs and 'nbjets' in self.corrs and jbin.inj == ibin.inj) \
                       or ('DYstat' in self.corrs and ibin.inb == jbin.inb and ((ibin.inj == jbin.inj) or (ibin.inj>2 and jbin.inj>2))) \

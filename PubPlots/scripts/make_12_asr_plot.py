@@ -11,7 +11,7 @@ import CMS_lumi
 
 plot_dir = "output/"
 
-def make_12_asr_plot(plot_title,  lostlept, znn, qcd, data_obs, doPull=False):
+def make_12_asr_plot(plot_title,  lostlept, znn, qcd, data_obs, doPull=False,lumi=35.9):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -218,7 +218,7 @@ def make_12_asr_plot(plot_title,  lostlept, znn, qcd, data_obs, doPull=False):
 
     ## now wite CMS headers
     canv.cd()
-    lumi = 35.862345
+    #lumi = 35.862345
     CMS_lumi.cmsTextSize = 0.85
     CMS_lumi.writeExtraText = False
     CMS_lumi.extraText = "   Preliminary"

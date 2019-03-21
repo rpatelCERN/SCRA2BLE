@@ -39,7 +39,7 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
        # convert to absolute
        print(h.GetName())
        hout = h.Clone()
-       hout.Reset() 
+       hout.Reset()
        for ibin in range(nbins):
            if hin.GetBinContent(ibin+1) > 0.:
                if hout.GetName().find("Low") >= 0:
@@ -81,13 +81,16 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
        hCV.SetBinError(ibin+1, 0.)
        # get stat uncertainties
        NCR = hin_CR.GetBinContent(ibin+1)
+       #lumiSF=1.0;
        L = 0.
        if NCR > 0.:
            L = Math.gamma_quantile(alpha/2,NCR,1.)
        U = Math.gamma_quantile_c(alpha/2,NCR+1,1.)
        stat_up = lumiSF*(U-NCR)*hin_TF.GetBinContent(ibin+1)
-       hStatUp.SetBinContent(ibin+1, stat_up)
        stat_down = lumiSF*(NCR-L)*hin_TF.GetBinContent(ibin+1)
+       if stat_up<=0 and stat_down<=0:
+		stat_up = lumiSF*(U-NCR) 
+       hStatUp.SetBinContent(ibin+1, stat_up)
        if stat_down > CV: # for some reason, this one is sometimes greater than the central value, so truncate
            stat_down = CV
        hStatDown.SetBinContent(ibin+1, stat_down)
@@ -121,14 +124,20 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
                correlation = ''
            elif hsyst.GetName().find('hzvvNbCorrel') >= 0: # DR, fragmentation factor
                correlation = 'nbjets'
+               #correlation = 'njets:nbjets'
+               #correlation = ''
+               #correlation = 'mht'
            elif hsyst.GetName().find('hzvvgJEtrgErr') >= 0: # trigger efficiency, binned in MHT
-               correlation = 'njets:nbjets'
+               #correlation = 'njets:nbjets'
+               correlation = 'mht'
            elif hsyst.GetName().find('DYstat') >= 0: # special
-               correlation = 'DYstat'
+               #correlation = 'DYstat'
+               correlation = 'htmht'
            elif hsyst.GetName().find('zvvDYMCerr') >= 0 or hsyst.GetName().find('hzvvDYsysNj') >= 0: # 3 values for nb = 1, 2, 3 for njets>8
                correlation = 'htmht'
            elif hsyst.GetName().find('DYsysPur') >= 0: # funny
-               correlation = 'DYsysPur'
+               #correlation = 'DYsysPur'
+               correlation = 'htmht'
            ## Up, Low, Sym
            hist_asr = Uncertainty(hsyst, correlation).AggregateBins(asrs, asr_xtitle[name], asr_xbins[name]).hist
            if hsyst.GetName().find('Low') >= 0:
@@ -138,7 +147,7 @@ def fill_znn_hists(inputfile = 'inputs/bg_hists/ZinvHistos.root', outputfile = '
            else:
                SYSTSUp_ASR.append(hist_asr)
                SYSTSDown_ASR.append(hist_asr)
-               
+           print("%s, %s " %(hsyst.GetName(),correlation ))
        hSystUp_ASR = AddHistsInQuadrature('hSystUp', SYSTSUp_ASR)       
        hSystDown_ASR = AddHistsInQuadrature('hSystDown', SYSTSDown_ASR)
        # sanity: make sure Stat and Syst Down not larger than CV
