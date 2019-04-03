@@ -14,10 +14,10 @@ from ROOT import *
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='use fastsim signal (default = %default)')
-parser.add_option('--keeptar', action='store_true', dest='keeptar', default=True, help='keep old tarball for condor jobs (default = %default)')
+parser.add_option('--keeptar', action='store_true', dest='keeptar', default=False, help='keep old tarball for condor jobs (default = %default)')
 parser.add_option("--model", dest="model", default = "T1bbbb",help="SMS model", metavar="model")
-parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond/BugFix",help="EOS output directory  (default = %default)", metavar="outDir")
-parser.add_option('--lpc', action='store_true', dest='lpc', default=False, help='running on lpc condor  (default = %default)')
+parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019",help="EOS output directory  (default = %default)", metavar="outDir")
+parser.add_option('--lpc', action='store_true', dest='lpc', default=True, help='running on lpc condor  (default = %default)')
 
 (options, args) = parser.parse_args()
 
@@ -121,26 +121,24 @@ if __name__ == '__main__':
     	os.system("tar --exclude-caches-all --exclude inputHistograms/fastsimSignalT*  -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
    
     #f = TFile.Open("inputHistograms/fastsimSignalT1tttt/RA2bin_signal.root");
-    #filenames = next(os.walk("/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"))[2]
-    filenames = next(os.walk("./inputHistograms/fastsimSignal%s/" %options.model))[2]
+    filenames = next(os.walk("/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV16_v4/"))[2]
+    #filenames = next(os.walk("./inputHistograms/fastsimSignal%s/" %options.model))[2]
     #print filenames
 	
     models = []
     mGos=[]
     mLSPs=[]
-    '''
     for f in filenames:
 	parse=f.split("_")
 	#print parse
 	if not "proc" in parse[1]:continue
-	if options.model==parse[2]:
+	if options.model==parse[2] and int(parse[3])>=800 and int(parse[3])<=2500 :
 		models.append(parse[2])	
 		mGos.append(int(parse[3]))
 		mLSPs.append(int(parse[4]))
-    '''
-    mGos=[2150, 2150, 2100, 2000]
-    mLSPs=[200, 500, 1100,1200]
-    models=["T1tttt", "T1tttt", "T1tttt", "T1tttt"]
+    #mGos=[2150, 2150, 2100, 2000]
+    #mLSPs=[200, 500, 1100,1200]
+    #models=["T1tttt", "T1tttt", "T1tttt", "T1tttt"]
     # for signal in signals:
     for m in range(len(mGos)):
         #    for mLSP in mLSPs:
@@ -149,7 +147,7 @@ if __name__ == '__main__':
         command += "--mGo %i " % mGos[m];
         command += "--mLSP %i " % mLSPs[m];
         if options.fastsim: command += " --fastsim";
-        #command += " --realData";
+        command += " --realData";
         command += " --tag Moriond";
         #command += " --eos %s" % (eosDir);
 
