@@ -199,7 +199,7 @@ if __name__ == '__main__':
 		#signaldirtag="/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
 		#signaldirtag="./inputHistograms/fastsimSignalT1bbbb/"
 	else: signaldirtag ="inputHistograms/FullSim"
-	signaldirtag ="inputHistograms/Run2ProductionV16_v4/"
+	signaldirtag ="root://cmseos.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV16_v4/"
 	#signaldirtag ="inputHistograms/MCNominalBinning/"
 	#AR-180427:when "fastsim" is true, sms=T1tttt_1500_100. Hence, signaltag=RA2bin_proc_T1tttt_1500_100
 	#print "Data_List ", Data_List
@@ -235,7 +235,7 @@ if __name__ == '__main__':
 	CorrSigHist.SetDirectory(0)
 	#signal_inputfile.Close();
 	
-	CorrSigHist.Scale((lumi*1000.)/(RunLumi[0]+RunLumi[1]+RunLumi[2]+RunLumi[3]))#####BE CAREFUL This is hard coded
+	#CorrSigHist.Scale((lumi*1000.)/(RunLumi[0]+RunLumi[1]+RunLumi[2]+RunLumi[3]))#####BE CAREFUL This is hard coded
 	#genMHTCorr(signaldirtag,signaltag,lumi)		
 	#if "T2tt" in sms or "T1tttt" in sms or "T5qqqqVV" in sms or "T1t" in sms: 
 		#CorrSigHist=LeptonCorr(signaldirtag,options.signal,lumi, int(options.mGo), int(options.mLSP))   #AR-180427:returns signal contamination, need to look in carefully.

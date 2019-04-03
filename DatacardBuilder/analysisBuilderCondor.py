@@ -82,7 +82,7 @@ if __name__ == '__main__':
     signals = [signalmodel]
     mus=[0.0]
     #lumis = [35.9];
-    lumis = [61.9];
+    lumis = [137.4];
     #os.system("python SignalMergePeriods.py --signal=%s --mGo=%s --mLSP=%s" %(options.signal, options.mGo,options.mLSP))
 
     #variations = ['qcdOnly','zvvOnly','llpOnly','tauOnly']
@@ -165,8 +165,8 @@ if __name__ == '__main__':
             #print "list cards" , allcardnames
             command = "combineCards.py ";
             #for cn in allcardnames
-	    #for i in range(0,174):
 	    for i in range(0,174):
+	    #for i in range(150,174):
                     cn="card_signal%d.txt" %i
                     command += " " + the_odir+'/'+cn;
           #AR-180418:          You have to use indentation to represent something is for something else. This line is out of for loop as it is not indented.
@@ -177,8 +177,8 @@ if __name__ == '__main__':
             print "combinecards command has run "
 	    combine_cmmd = "text2workspace.py --X-allow-no-signal --X-allow-no-background %s/allcards.txt -o %s/allcards.root" %(the_odir,the_odir);
             os.system(combine_cmmd);
-            combine_cmmd = "combine -M FitDiagnostics %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations --expectSignal=0" %(the_odir,the_odir);
-            #combine_cmmd = "combine -M Asymptotic %s/allcards.txt -n %s" % (the_odir,the_odir); 
+            #combine_cmmd = "combine -M FitDiagnostics %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations --expectSignal=0" %(the_odir,the_odir);
+            combine_cmmd = "combine -M Asymptotic %s/allcards.txt -n %s" % (the_odir,the_odir); 
 	    #AR-180418: executes limit 
             os.system(combine_cmmd);
             print " run asymptotic limit "
@@ -188,18 +188,18 @@ if __name__ == '__main__':
             mGo[0] = float(options.mGo);
             mLSP[0] = float(options.mLSP);
 	    tag="Moriond"
-            fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[0];
+            #fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[0];
             #fittedMuErrMinus[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[1];
             #fittedMuErrPlus[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[2];
             #significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
-            #olims = getLimit( "higgsCombine%s.Asymptotic.mH120.root" % (the_odir));
-            #limit_m2s[0] = olims[0];
-            #limit_m1s[0] = olims[1];
-            #limit_exp[0] = olims[2];
-            #limit_p1s[0] = olims[3];
-            #limit_p2s[0] = olims[4];
-            #limit_obs[0] = olims[5];
-            #limit_obsErr[0]= olims[6]    
+            olims = getLimit( "higgsCombine%s.Asymptotic.mH120.root" % (the_odir));
+            limit_m2s[0] = olims[0];
+            limit_m1s[0] = olims[1];
+            limit_exp[0] = olims[2];
+            limit_p1s[0] = olims[3];
+            limit_p2s[0] = olims[4];
+            limit_obs[0] = olims[5];
+            limit_obsErr[0]= olims[6]    
                     #fittedMu[0] = -99.;
                     #significance[0] = -99.;
                     # limit[0] = -99.;
