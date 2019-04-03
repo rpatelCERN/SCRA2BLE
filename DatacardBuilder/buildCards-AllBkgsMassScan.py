@@ -83,7 +83,7 @@ def WriteSignalSystematics(signaldirtag,signal,mGo,mLSP,yearsToMerge,RunLumi,sea
 def WriteZSystematics(inputfile,CSSystematics,SymSystematics,AsymSystematics,signalRegion):
 	Z_file=TFile.Open(inputfile);	
 	GammaObs=Z_file.Get(CSSystematics[1])
-	GammaObs.Scale(61.9*1000./(35916.403 +41521.425+21000.905+38196.951))#####BE CAREFUL This is hard coded
+	#GammaObs.Scale(61.9*1000./(35916.403 +41521.425+21000.905+38196.951))#####BE CAREFUL This is hard coded
 	ZRatios=Z_file.Get(CSSystematics[0])
 	signalRegion.addGammaSystematic(['zvv'],GammaObs,ZRatios )
 	for z in SymSystematics:
@@ -116,7 +116,7 @@ def WriteLostLeptonSystematics(inputfile, ListOfSystematics,signalRegion):
 			signalRegion.addSystematicsLine('lnN',['WTop'],hTempSyst)
 			
 	LLPlusHadTauControlStatistics=LLPlusHadTauAvg_file.Get("DataCSStatistics")
-	LLPlusHadTauControlStatistics.Scale(61.9*1000./(35916.403 +41521.425+21000.905+38196.951))#####BE CAREFUL This is hard coded
+	#LLPlusHadTauControlStatistics.Scale(61.9*1000./(35916.403 +41521.425+21000.905+38196.951))#####BE CAREFUL This is hard coded
 	LLPlusHadTauTF=LLPlusHadTauAvg_file.Get("LLPlusHadTauTF")	
 	signalRegion.addGammaSystematic(['WTop'],LLPlusHadTauControlStatistics,LLPlusHadTauTF)
 			
@@ -205,7 +205,7 @@ if __name__ == '__main__':
 	#print "Data_List ", Data_List
 	signaltag = "RA2bin_proc_"+sms+"_Merged";
 	yearsToMerge=["MC2016","MC2017","MC2018", "MC2018HEM"]
-	RunLumi=[ 35916.403 , 41521.425,21000.905,38196.951 ]
+	RunLumi=[ 35916.403 , 41521.425,21000.905,38196.951*0.98/0.92 ]
         mLSP=int(options.mLSP)
         mGo=int(options.mGo)
 	TestNominal=NominalSignal(signaldirtag,options.signal,mGo,mLSP,yearsToMerge,RunLumi)
@@ -256,7 +256,7 @@ if __name__ == '__main__':
 		contributionsPerBin.append(tmpcontributions) #AR: contributionsPerBin has saved seven elements' list per bin
 	signalRegion = searchRegion('signal', contributionsPerBin, tagsForSignalRegion)
 	if options.realData:
-        	DataHist_In=TFile.Open("inputHistograms/histograms_%1.1ffb/RA2bin_signalUnblind.root" %lumi)
+        	DataHist_In=TFile.Open("inputHistograms/histograms_%1.1ffb/RA2bin_signalUnblindMerged.root" %lumi)
         	Data_Hist=DataHist_In.Get("RA2bin_data_Unblind")
 		Data_Hist.SetDirectory(0);
         	#Data_Hist2017=DataHist_In.Get("RA2bin_data2017")
@@ -274,7 +274,7 @@ if __name__ == '__main__':
 	#LLPlusHadTau_file = TFile(idir+"/LLPlusHadTauPrediction.root");
 	LLPlusHadTauPrediction_Hist=LLPlusHadTauAvg_file.Get("totalPred_LLPlusHadTau")
 	LLPlusHadTauPrediction_Hist.SetDirectory(0)
-        LLPlusHadTauPrediction_Hist.Scale(61.9*1000. /(RunLumi[0]+RunLumi[1]+RunLumi[2]+RunLumi[3]))
+        #LLPlusHadTauPrediction_Hist.Scale(61.9*1000. /(RunLumi[0]+RunLumi[1]+RunLumi[2]+RunLumi[3]))
 	LLPlusHadTauAvg_file.Close();
 	#LLPlusHadTauControlStatistics=TH1D()#LLPlusHadTauAvg_file.Get("DataCSStatistics")		
 	#LLPlusHadTauControlStatUnc_Hist=TH1D()#LLPlusHadTauAvg_file.Get("DataCSStatErr")
@@ -319,12 +319,12 @@ if __name__ == '__main__':
 	ratesForSignalRegion_QCDList = [];
 	QCDInputFile=TFile.Open(idir+"/QcdPredictionRandS.root")
 	qcdCV=QCDInputFile.Get("PredictionCV")
-	qcdCV.Scale(61.9*1000. /(RunLumi[0]+RunLumi[1]+RunLumi[2]+RunLumi[3]))
+	#qcdCV.Scale(61.9*1000. /(RunLumi[0]+RunLumi[1]+RunLumi[2]+RunLumi[3]))
 	qcdCV.SetDirectory(0)
 	QCDInputFile.Close();
 	DYinputfile = TFile.Open(idir+"ZinvHistos.root","READ")
 	ZPred=DYinputfile.Get("ZinvBGpred")
-	ZPred.Scale(61.9*1000. /(RunLumi[0]+RunLumi[1]+RunLumi[2]+RunLumi[3]))
+	#ZPred.Scale(61.9*1000. /(RunLumi[0]+RunLumi[1]+RunLumi[2]+RunLumi[3]))
 	ZPred.SetDirectory(0);
 	DYinputfile.Close()
 	#ZRatios=TH1D()#DYinputfile.Get("hzvvTF")
