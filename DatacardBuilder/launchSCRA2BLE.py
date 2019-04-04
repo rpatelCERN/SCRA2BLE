@@ -54,9 +54,12 @@ def condorize(command,tag,odir,CMSSWVER):
 	f1.write("tar -xzf %s.tar.gz \n" % (CMSSWVER));
     	f1.write("source /cvmfs/cms.cern.ch/cmsset_default.sh \n");
     	f1.write("set SCRAM_ARCH=slc6_amd64_gcc530\n")
-    	f1.write("cd %s \n" %(CMSSWVER));
-    	f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
-    	f1.write("eval `scramv1 runtime -sh`\n")
+    	f1.write("cd %s/src \n" %(CMSSWVER));
+	f1.write("eval `scramv1 runtime -sh`\n")
+    	f1.write("scramv1 b ProjectRename\n")
+    	f1.write("scramv1 b \n")
+	f1.write("eval `scramv1 runtime -sh`\n")
+    	f1.write("cd SCRA2BLE/DatacardBuilder/ \n");
     	f1.write(command+" \n")
     	mu=0.0
     	f1.write("xrdcp -f results_%s_mu%1.1f.root root://cmseos.fnal.gov/%s/results_%s_mu%1.1f.root 2>&1 \n" % (tag,float(mu),odir,tag,float(mu)));
@@ -82,7 +85,7 @@ def condorize(command,tag,odir,CMSSWVER):
     	f2.write("Queue 1 \n");
     	f2.close();
 	
-    	#os.system("condor_submit %s" % (f2n));
+    	os.system("condor_submit %s" % (f2n));
 	
  	os.chdir("../.");
     else:    

@@ -205,7 +205,7 @@ if __name__ == '__main__':
 	#print "Data_List ", Data_List
 	signaltag = "RA2bin_proc_"+sms+"_Merged";
 	yearsToMerge=["MC2016","MC2017","MC2018", "MC2018HEM"]
-	RunLumi=[ 35916.403 , 41521.425,21000.905,38196.951*0.98/0.92 ]
+	RunLumi=[ 35916.403 , 41521.425,21000.905,38196.951 ]
         mLSP=int(options.mLSP)
         mGo=int(options.mGo)
 	TestNominal=NominalSignal(signaldirtag,options.signal,mGo,mLSP,yearsToMerge,RunLumi)
