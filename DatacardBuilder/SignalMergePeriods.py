@@ -58,7 +58,8 @@ def SubstractSignalContamination(signaldirtag,signalregion,mGo,mLSP, yearsToComb
 		UnCorrSignal=NominalCorrSignal.GetBinContent(b)-SignalContaminReco.GetBinContent(b)
 		GenMHTCleaned=GenCorrSignal.GetBinContent(b)-SignalContaminGEN.GetBinContent(b)
 		NominalCorrSignal.SetBinContent(b, (UnCorrSignal+GenMHTCleaned)/2.)
-		NominalCorrSignalUnc.SetBinContent(b, 1.0+abs(UnCorrSignal-GenMHTCleaned)/2.)
+		if NominalCorrSignal.GetBinContent(b)>0:NominalCorrSignalUnc.SetBinContent(b, 1.0+(abs(UnCorrSignal-GenMHTCleaned)/2.)/NominalCorrSignal.GetBinContent(b))
+		else: NominalCorrSignalUnc.SetBinContent(b,1.0)
 	MHTCorr=[]#[NominalCorrSignal,NominalCorrSignalUnc]
 	MHTCorr.append(NominalCorrSignal)
 	MHTCorr.append(NominalCorrSignalUnc)
@@ -99,7 +100,8 @@ def SubstractSignalContaminationCrossCheck(signaldirtag,signalregion,mGo,mLSP, y
 		UnCorrSignal=NominalCorrSignal.GetBinContent(b)-SignalContaminReco.GetBinContent(b)
 		GenMHTCleaned=GenCorrSignal.GetBinContent(b)-SignalContaminGEN.GetBinContent(b)
 		NominalCorrSignal.SetBinContent(b, (UnCorrSignal+GenMHTCleaned)/2.)
-		NominalCorrSignalUnc.SetBinContent(b, 1.0+abs(UnCorrSignal-GenMHTCleaned)/2.)
+		if NominalCorrSignal.GetBinContent(b)>0:NominalCorrSignalUnc.SetBinContent(b, 1.0+(abs(UnCorrSignal-GenMHTCleaned)/2.)/NominalCorrSignal.GetBinContent(b))
+		else: NominalCorrSignalUnc.SetBinContent(b,1.0)
 	MHTCorr=[]#[NominalCorrSignal,NominalCorrSignalUnc]
 	MHTCorr.append(NominalCorrSignal)
 	MHTCorr.append(NominalCorrSignalUnc)
@@ -133,9 +135,11 @@ def MHTSystematicGenMHT(signaldirtag,signaltag, yearsToCombine,lumiscales):
 	for b in range(1,NominalCorrSignal.GetNbinsX()+1):
 			UnCorrSignal=NominalCorrSignal.GetBinContent(b)
 			NominalCorrSignal.SetBinContent(b, (UnCorrSignal+GenCorrSignal.GetBinContent(b))/2.)
-			NominalCorrSignalUnc.SetBinContent(b, 1.0+abs(UnCorrSignal-GenCorrSignal.GetBinContent(b))/2.)
+			if NominalCorrSignal.GetBinContent(b)>0:NominalCorrSignalUnc.SetBinContent(b, 1.0+(abs(UnCorrSignal-GenCorrSignal.GetBinContent(b))/2.)/NominalCorrSignal.GetBinContent(b))
+			else:NominalCorrSignalUnc.SetBinContent(b, 1.0)
 	MHTCorr=[]#[NominalCorrSignal,NominalCorrSignalUnc]
 	MHTCorr.append(NominalCorrSignal)
+	
 	MHTCorr.append(NominalCorrSignalUnc)
 	return MHTCorr
 

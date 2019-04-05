@@ -513,7 +513,7 @@ if __name__ == '__main__':
 	signalSysmistagCFuncDown=signal_inputfile.Get(signaltag+"_mistagCFuncDown")
 	'''
 	MHTSyst=TestNominal[1]#signal_inputfile.Get(signaltag+"_MHTSyst")
-	#signalRegion.addSystematicsLine('lnU',['sig'],MHTSyst);
+	signalRegion.addSystematicsLine('lnU',['sig'],MHTSyst);
 	signaltag=options.signal;
 	WriteSignalSystematics(signaldirtag,signaltag,mGo,mLSP,yearsToMerge,RunLumi,signalRegion)
 	#for i in range(1,175):
