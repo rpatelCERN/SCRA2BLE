@@ -51,7 +51,6 @@ def WriteSignalSystematics(signaldirtag,signal,mGo,mLSP,yearsToMerge,RunLumi,sea
 	TrigUnc=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"triguncUp",MergedNominal)							
 	searchRegion.addSystematicsLine('lnN',['sig'],LumiUnc)
 	searchRegion.addSystematicsLine('lnN',['sig'],JetIDUnc)	
-        searchRegion.addSingleSystematic('EvtFilters','lnN',['sig'],1.05);
 	searchRegion.addSystematicsLine('lnN',['sig'],IsoTrackUnc)	
 	searchRegion.addSystematicsLine('lnN',['sig'],TrigUnc)	
 	PUUncUp=MergeUncCorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"puuncUp",MergedNominal,True)	
@@ -514,7 +513,7 @@ if __name__ == '__main__':
 	signalSysmistagCFuncDown=signal_inputfile.Get(signaltag+"_mistagCFuncDown")
 	'''
 	MHTSyst=TestNominal[1]#signal_inputfile.Get(signaltag+"_MHTSyst")
-	signalRegion.addSystematicsLine('lnU',['sig'],MHTSyst);
+	#signalRegion.addSystematicsLine('lnU',['sig'],MHTSyst);
 	signaltag=options.signal;
 	WriteSignalSystematics(signaldirtag,signaltag,mGo,mLSP,yearsToMerge,RunLumi,signalRegion)
 	#for i in range(1,175):

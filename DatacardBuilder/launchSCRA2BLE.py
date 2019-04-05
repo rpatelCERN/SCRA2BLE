@@ -73,7 +73,7 @@ def condorize(command,tag,odir,CMSSWVER):
     	f2.write("Executable = %s \n" % (f1n) );
     	f2.write("Requirements = OpSys == \"LINUX\"&& (Arch != \"DUMMY\" ) \n");
     	f2.write("request_disk = 10000000 \n");
-    	f2.write("request_memory = 5000 \n");
+    	f2.write("request_memory = 2100 \n");
     	f2.write("Should_Transfer_Files = YES \n");
     	f2.write("WhenToTransferOutput  = ON_EXIT \n");
     	f2.write("Transfer_Input_Files = %s, %s.tar.gz \n" % (f1n,CMSSWVER));
@@ -131,14 +131,17 @@ if __name__ == '__main__':
     models = []
     mGos=[]
     mLSPs=[]
+    
     for f in filenames:
 	parse=f.split("_")
 	#print parse
 	if not "proc" in parse[1]:continue
-	if options.model==parse[2] and int(parse[3])>=800 and int(parse[3])<=2500 :
+	#if options.model==parse[2] and int(parse[3])<=2150 and int(parse[3])>1200:
+	if options.model==parse[2] and int(parse[3])<=1000:
 		models.append(parse[2])	
 		mGos.append(int(parse[3]))
 		mLSPs.append(int(parse[4]))
+	
     #mGos=[2150, 2150, 2100, 2000]
     #mLSPs=[200, 500, 1100,1200]
     #models=["T1tttt", "T1tttt", "T1tttt", "T1tttt"]
