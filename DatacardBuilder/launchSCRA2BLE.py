@@ -14,7 +14,7 @@ from ROOT import *
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='use fastsim signal (default = %default)')
-parser.add_option('--keeptar', action='store_true', dest='keeptar', default=False, help='keep old tarball for condor jobs (default = %default)')
+parser.add_option('--keeptar', action='store_true', dest='keeptar', default=True, help='keep old tarball for condor jobs (default = %default)')
 parser.add_option("--model", dest="model", default = "T1bbbb",help="SMS model", metavar="model")
 parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019",help="EOS output directory  (default = %default)", metavar="outDir")
 parser.add_option('--lpc', action='store_true', dest='lpc', default=True, help='running on lpc condor  (default = %default)')
@@ -136,8 +136,8 @@ if __name__ == '__main__':
 	parse=f.split("_")
 	#print parse
 	if not "proc" in parse[1]:continue
-	#if options.model==parse[2] and int(parse[3])<=2150 and int(parse[3])>1200:
-	if options.model==parse[2] and int(parse[3])<=1000:
+	if options.model==parse[2] and int(parse[3])<=1500 and int(parse[3])>1000:
+	#if options.model==parse[2] and int(parse[3])<=1000:
 		models.append(parse[2])	
 		mGos.append(int(parse[3]))
 		mLSPs.append(int(parse[4]))

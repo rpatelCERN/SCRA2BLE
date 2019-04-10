@@ -48,35 +48,46 @@ def WriteSignalSystematics(signaldirtag,signal,mGo,mLSP,yearsToMerge,RunLumi,sea
 	IsoTrackUnc=MergeUncCorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"isotrackuncUp",MergedNominal,True)
 	PrefireUncUp=MergeUncPreFireCorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"prefireuncUp",MergedNominal,True)
 	PrefireUncDown=MergeUncPreFireCorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"prefireuncDown",MergedNominal,False)
+	ISRUncUp=MergeUncCorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"isruncUp",MergedNominal,True)
+	ISRUncDown=MergeUncCorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"isruncDown",MergedNominal,False)
 	TrigUnc=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"triguncUp",MergedNominal)							
+	TrigSysUnc=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"trigsystuncUp;",MergedNominal)							
 	searchRegion.addSystematicsLine('lnN',['sig'],LumiUnc)
 	searchRegion.addSystematicsLine('lnN',['sig'],JetIDUnc)	
 	searchRegion.addSystematicsLine('lnN',['sig'],IsoTrackUnc)	
 	searchRegion.addSystematicsLine('lnN',['sig'],TrigUnc)	
+	searchRegion.addSystematicsLine('lnN',['sig'],TrigSysUnc)	
 	PUUncUp=MergeUncCorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"puuncUp",MergedNominal,True)	
 	#searchRegion.addSystematicsLine('lnN',['sig'],PUUncUp)	
 	PUUncDown=MergeUncCorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"puuncDown",MergedNominal,False)	
 	searchRegion.addSystematicsLineAsymShape('lnN',['sig'],PUUncUp,PUUncDown)	
-
 	ScaleUncUp=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"scaleuncUp",MergedNominal)
 	JERUncUp=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"JERup",MergedNominal)
 	JECUncUp=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"JECup",MergedNominal)
+
 	BTagSFUncUp=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"btagSFuncUp",MergedNominal)
 	MisTagSFUncUp=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"mistagSFuncUp",MergedNominal)
-	ISRUncUp=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"isruncUp",MergedNominal)
+	CTagCFUncUp=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"ctagCFuncUp",MergedNominal)
+	BTagCFUncUp=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"btagCFuncUp",MergedNominal)
+	MisTagCFUncUp=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"mistagCFuncUp",MergedNominal)
 
 	ScaleUncDown=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"scaleuncDown",MergedNominal)
 	JERUncDown=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"JERdown",MergedNominal)
 	JECUncDown=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"JECdown",MergedNominal)
 	BTagSFUncDown=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"btagSFuncDown",MergedNominal)
 	MisTagSFUncDown=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"mistagSFuncDown",MergedNominal)
-	ISRUncDown=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"isruncDown",MergedNominal)
+	BTagCFUncDown=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"btagCFuncDown",MergedNominal)
+	CTagCFUncDown=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"ctagCFuncDown",MergedNominal)
+	MisTagCFUncDown=MergeUncUncorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"mistagCFuncDown",MergedNominal)
+	searchRegion.addSystematicsLineAsymShape('lnN',['sig'],MisTagCFUncDown,MisTagCFUncUp)	
+	searchRegion.addSystematicsLineAsymShape('lnN',['sig'],BTagCFUncDown,BTagCFUncUp)	
+	searchRegion.addSystematicsLineAsymShape('lnN',['sig'],CTagCFUncDown,CTagCFUncUp)	
 	searchRegion.addSystematicsLineAsymShape('lnN',['sig'],MisTagSFUncDown,MisTagSFUncUp)	
+	searchRegion.addSystematicsLineAsymShape('lnN',['sig'],BTagSFUncDown,BTagSFUncUp)	
 	searchRegion.addSystematicsLineAsymShape('lnN',['sig'],JERUncDown,JERUncUp)	
 	searchRegion.addSystematicsLineAsymShape('lnN',['sig'],JECUncDown,JECUncUp)	
 	searchRegion.addSystematicsLineAsymShape('lnN',['sig'],ScaleUncDown,ScaleUncUp)
 	searchRegion.addSystematicsLineAsymShape('lnN',['sig'],ISRUncDown,ISRUncUp)	
-	searchRegion.addSystematicsLineAsymShape('lnN',['sig'],BTagSFUncDown,BTagSFUncUp)	
 	searchRegion.addSystematicsLineAsymShape('lnN',['sig'],PrefireUncDown,PrefireUncUp)	
 	
 def WriteZSystematics(inputfile,CSSystematics,SymSystematics,AsymSystematics,signalRegion):
@@ -195,10 +206,10 @@ if __name__ == '__main__':
 		#signaldirtag="inputHistograms/Run2ProductionV12/"
 
 		#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
-		#signaldirtag="/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
+		#signaldirtag="/eo/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
 		#signaldirtag="./inputHistograms/fastsimSignalT1bbbb/"
 	else: signaldirtag ="inputHistograms/FullSim"
-	signaldirtag ="root://cmseos.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV16_v4/"
+	signaldirtag ="root://cmseos.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV16_v6/"
 	#signaldirtag ="inputHistograms/MCNominalBinning/"
 	#AR-180427:when "fastsim" is true, sms=T1tttt_1500_100. Hence, signaltag=RA2bin_proc_T1tttt_1500_100
 	#print "Data_List ", Data_List
@@ -455,7 +466,7 @@ if __name__ == '__main__':
 	WriteQCDSystematics(idir+"/QcdPredictionRandS.root",QCDSystematics,signalRegion,tagsForSignalRegion)
 	ZSystematicsCS=["hzvvTF","hzvvgJNobs"]
 	ZSystematicsSym=["hzvvgJEtrgErr","hzvvgJPurErr","hzvvScaleErr","hzvvDYsysPur","hzvvDYstat","hzvvDYsysKin"]
-	ZSystematicsASym=["hzvvNbCorrelLow","hzvvNbCorrelUp","hzvvDYMCerrLow","hzvvDYMCerrUp"]
+	ZSystematicsASym=["hzvvNbCorrelUp","hzvvNbCorrelLow","hzvvDYMCerrLow","hzvvDYMCerrUp"]
 	WriteZSystematics(idir+"ZinvHistos.root",ZSystematicsCS,ZSystematicsSym,ZSystematicsASym,signalRegion)
 	#for i in range(len(GammaObs)):GammaObs[i]=GammaObs[i]
 	#signalRegion.addGammaSystematic(['zvv'],GammaObs,ZRatios )
