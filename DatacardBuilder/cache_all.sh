@@ -7,15 +7,12 @@ current=`pwd`
 
 cd $CMSSW_BASE/tmp
 cachedir
-cd $CMSSW_BASE/src/.git
-cachedir
+#cd $CMSSW_BASE/src/.git
+#cachedir
 cd $CMSSW_BASE/src/SCRA2BLE/.git
 cachedir
 cd $CMSSW_BASE/src/SCRA2BLE/DatacardBuilder/inputHistograms
-cachedir
-cd $CMSSW_BASE/src/SCRA2BLE/DatacardBuilder/inputSignalSys
-cachedir
+#cachedir
 cd $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/.git
 cachedir
-
 cd $current

@@ -72,7 +72,7 @@ def condorize(command,tag,odir,CMSSWVER):
     	f2.write("universe = vanilla \n");
     	f2.write("Executable = %s \n" % (f1n) );
     	f2.write("Requirements = OpSys == \"LINUX\"&& (Arch != \"DUMMY\" ) \n");
-    	f2.write("request_disk = 10000000 \n");
+    	f2.write("request_disk = 800MB \n");
     	f2.write("request_memory = 2100 \n");
     	f2.write("Should_Transfer_Files = YES \n");
     	f2.write("WhenToTransferOutput  = ON_EXIT \n");
@@ -124,20 +124,21 @@ if __name__ == '__main__':
     	os.system("tar --exclude-caches-all --exclude inputHistograms/fastsimSignalT*  -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
    
     #f = TFile.Open("inputHistograms/fastsimSignalT1tttt/RA2bin_signal.root");
-    filenames = next(os.walk("/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV16_v4/"))[2]
+    filenames = next(os.walk("/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV16_v6/"))[2]
     #filenames = next(os.walk("./inputHistograms/fastsimSignal%s/" %options.model))[2]
     #print filenames
 	
     models = []
     mGos=[]
     mLSPs=[]
-    
+     
     for f in filenames:
 	parse=f.split("_")
-	#print parse
+		
 	if not "proc" in parse[1]:continue
-	if options.model==parse[2] and int(parse[3])<=1500 and int(parse[3])>1000:
-	#if options.model==parse[2] and int(parse[3])<=1000:
+	if not "MC2016" in parse[5]:continue
+	#if options.model==parse[2] :
+	if options.model==parse[2] and int(parse[3])<=2500 and int(parse[3])>=600:
 		models.append(parse[2])	
 		mGos.append(int(parse[3]))
 		mLSPs.append(int(parse[4]))
