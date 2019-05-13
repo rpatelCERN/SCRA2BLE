@@ -1,0 +1,289 @@
+
+Processing ../src/RA2bin_driver.C...
+...using style 'Plain'
+gJets data filename = ../datFiles/gJets_2016v16_noPU_DRRun2wt_signal.dat, lumi = 35.9
+../datFiles/DR_Run2v16_HT17wt_ZptWt_noPU_DRRun2wt_signal.dat
+DRscaleErr = 0.0069, DY0bPurErr = 0.0109, DYtrigEffErr = 0, LeptonSFerr = 0.0213, btagSFerr = 0.005
+1  Ngobs = 58419  ZgR = 0.42 (0.5%)  gEtrg =  1 (1.4+/-2%)  gSF =  1 (5.8%)  gFdir = 0.969 (+0.2-0.2+/-30%)  gPur = 0.952 (2.5%)  ZgDR = 1.0016 (+1.28-1.1%)
+2  Ngobs = 3315  ZgR = 0.411 (0.9%)  gEtrg =  1 (1.4+/-2%)  gSF =  1 (5.8%)  gFdir = 0.973 (+0.4-0.4+/-30%)  gPur = 0.953 (2.5%)  ZgDR = 1.0016 (+1.32-1.1%)
+3  Ngobs = 197  ZgR = 0.423 (3.2%)  gEtrg =  1 (1.2+/-2%)  gSF =  1 (5.7%)  gFdir = 0.979 (+0.5-0.5+/-30%)  gPur = 0.955 (2.3%)  ZgDR = 1.0016 (+5-4.15%)
+4  Ngobs = 49428  ZgR = 0.419 (0.4%)  gEtrg =  1 (1.3+/-2%)  gSF =  1 (5.7%)  gFdir = 0.977 (+0.2-0.2+/-30%)  gPur = 0.958 (1.9%)  ZgDR = 1.0016 (+1.07-0.64%)
+5  Ngobs = 9402  ZgR = 0.42 (0.5%)  gEtrg =  1 (1.3+/-2%)  gSF =  1 (5.6%)  gFdir = 0.969 (+0.2-0.2+/-30%)  gPur = 0.959 (1.8%)  ZgDR = 1.0016 (+1.32-0.95%)
+6  Ngobs = 402  ZgR = 0.436 (2.1%)  gEtrg =  1 (1.1+/-2%)  gSF =  1 (5.6%)  gFdir = 0.978 (+0.3-0.3+/-30%)  gPur = 0.961 (1.7%)  ZgDR = 1.0016 (+5-4.15%)
+7  Ngobs = 3772  ZgR = 0.425 (0.8%)  gEtrg =  1 (1.1+/-2%)  gSF =  1 (5.4%)  gFdir = 0.985 (+0.2-0.2+/-30%)  gPur = 0.975 (1.3%)  ZgDR = 1.0016 (+5.31-5.03%)
+8  Ngobs = 142  ZgR = 0.472 (3.7%)  gEtrg =  1 (1+/-2%)  gSF =  1 (5.3%)  gFdir = 0.984 (+0.4-0.4+/-30%)  gPur = 0.978 (1%)  ZgDR = 1.0016 (+5.31-5.03%)
+9  Ngobs = 598  ZgR = 0.449 (1.8%)  gEtrg =  1 (1+/-2%)  gSF =  1 (5.3%)  gFdir = 0.989 (+0.2-0.2+/-30%)  gPur = 0.978 (1%)  ZgDR = 1.0016 (+8.79-8.35%)
+10  Ngobs = 27  ZgR = 0.536 (8.6%)  gEtrg =  1 (0.8+/-2%)  gSF =  1 (5.3%)  gFdir = 0.991 (+0.6-0.6+/-30%)  gPur = 0.982 (0.8%)  ZgDR = 1.0016 (+8.79-8.35%)
+11  Ngobs = 9227  ZgR = 0.426 (1%)  gEtrg =  1 (1.4+/-2%)  gSF =  1 (5.9%)  gFdir = 0.924 (+0.8-0.8+/-30%)  gPur = 0.952 (2.5%)  ZgDR = 1.0016 (+2.91-2.7%)
+12  Ngobs = 2687  ZgR = 0.424 (1%)  gEtrg =  1 (1.4+/-2%)  gSF =  1 (5.8%)  gFdir = 0.901 (+1-1+/-30%)  gPur = 0.952 (2.5%)  ZgDR = 1.0016 (+2.91-2.7%)
+13  Ngobs = 190  ZgR = 0.447 (3%)  gEtrg =  1 (1.3+/-2%)  gSF =  1 (5.7%)  gFdir = 0.945 (+0.8-0.8+/-30%)  gPur = 0.954 (2.3%)  ZgDR = 1.0016 (+5-4.15%)
+14  Ngobs = 7508  ZgR = 0.431 (0.9%)  gEtrg =  1 (1.4+/-2%)  gSF =  1 (5.7%)  gFdir = 0.949 (+0.6-0.6+/-30%)  gPur = 0.958 (1.9%)  ZgDR = 1.0016 (+2.91-2.7%)
+15  Ngobs = 6026  ZgR = 0.432 (0.6%)  gEtrg =  1 (1.3+/-2%)  gSF =  1 (5.7%)  gFdir = 0.928 (+0.5-0.5+/-30%)  gPur = 0.959 (1.8%)  ZgDR = 1.0016 (+2.91-2.7%)
+16  Ngobs = 426  ZgR = 0.452 (2%)  gEtrg =  1 (1.2+/-2%)  gSF =  1 (5.6%)  gFdir = 0.932 (+0.7-0.7+/-30%)  gPur = 0.96 (1.8%)  ZgDR = 1.0016 (+5-4.15%)
+17  Ngobs = 1048  ZgR = 0.445 (1.4%)  gEtrg =  1 (1.1+/-2%)  gSF =  1 (5.4%)  gFdir = 0.966 (+0.4-0.4+/-30%)  gPur = 0.973 (1.4%)  ZgDR = 1.0016 (+5.31-5.03%)
+18  Ngobs = 141  ZgR = 0.489 (3.6%)  gEtrg =  1 (1.1+/-2%)  gSF =  1 (5.4%)  gFdir = 0.952 (+0.8-0.8+/-30%)  gPur = 0.974 (1.3%)  ZgDR = 1.0016 (+5.31-5.03%)
+19  Ngobs = 198  ZgR = 0.456 (2.9%)  gEtrg =  1 (1+/-2%)  gSF =  1 (5.2%)  gFdir = 0.969 (+0.5-0.5+/-30%)  gPur = 0.978 (1%)  ZgDR = 1.0016 (+8.79-8.35%)
+20  Ngobs = 27  ZgR = 0.597 (9.1%)  gEtrg =  1 (0.8+/-2%)  gSF =  1 (5.2%)  gFdir = 0.951 (+1.9-1.9+/-30%)  gPur = 0.982 (0.8%)  ZgDR = 1.0016 (+8.79-8.35%)
+21  Ngobs = 476  ZgR = 0.437 (4.1%)  gEtrg =  1 (1.5+/-2%)  gSF =  1 (5.9%)  gFdir = 0.907 (+3.8-3.8+/-30%)  gPur = 0.95 (2.6%)  ZgDR = 1.0016 (+6.58-6.31%)
+22  Ngobs = 607  ZgR = 0.453 (2.2%)  gEtrg =  1 (1.5+/-2%)  gSF =  1 (5.9%)  gFdir = 0.871 (+2.5-2.5+/-30%)  gPur = 0.951 (2.6%)  ZgDR = 1.0016 (+6.58-6.31%)
+23  Ngobs = 74  ZgR = 0.503 (5%)  gEtrg =  1 (1.3+/-2%)  gSF =  1 (5.7%)  gFdir = 0.888 (+3.3-3.3+/-30%)  gPur = 0.954 (2.4%)  ZgDR = 1.0016 (+6.58-6.31%)
+24  Ngobs = 336  ZgR = 0.457 (4.5%)  gEtrg =  1 (1.5+/-2%)  gSF =  1 (5.8%)  gFdir = 0.973 (+1.6-1.6+/-30%)  gPur = 0.955 (2%)  ZgDR = 1.0016 (+6.58-6.31%)
+25  Ngobs = 1056  ZgR = 0.464 (1.6%)  gEtrg =  1 (1.3+/-2%)  gSF =  1 (5.7%)  gFdir = 0.893 (+1.4-1.4+/-30%)  gPur = 0.958 (1.9%)  ZgDR = 1.0016 (+6.58-6.31%)
+26  Ngobs = 181  ZgR = 0.474 (3.3%)  gEtrg =  1 (1.2+/-2%)  gSF =  1 (5.7%)  gFdir = 0.888 (+1.6-1.6+/-30%)  gPur = 0.96 (1.8%)  ZgDR = 1.0016 (+6.58-6.31%)
+27  Ngobs = 125  ZgR = 0.467 (3.9%)  gEtrg =  1 (1.2+/-2%)  gSF =  1 (5.4%)  gFdir = 0.929 (+2.2-2.2+/-30%)  gPur = 0.973 (1.4%)  ZgDR = 1.0016 (+6.58-6.31%)
+28  Ngobs = 42  ZgR = 0.48 (5.8%)  gEtrg =  1 (1+/-2%)  gSF =  1 (5.4%)  gFdir = 0.872 (+3-3+/-30%)  gPur = 0.977 (1.1%)  ZgDR = 1.0016 (+6.58-6.31%)
+29  Ngobs = 31  ZgR = 0.455 (7.6%)  gEtrg =  1 (1.1+/-2%)  gSF =  1 (5.3%)  gFdir = 0.943 (+1.9-1.9+/-30%)  gPur = 0.975 (1.2%)  ZgDR = 1.0016 (+8.79-8.35%)
+30  Ngobs = 8  ZgR = 0.551 (14.4%)  gEtrg =  1 (0.8+/-2%)  gSF =  1 (5.2%)  gFdir = 0.852 (+13-13+/-30%)  gPur = 0.982 (0.8%)  ZgDR = 1.0016 (+8.79-8.35%)
+31  Ngobs = 50  ZgR = 0.453 (2.2%)  gEtrg =  1 (1.3+/-2%)  gSF =  1 (6%)  gFdir = 0.922 (+4.7-4.7+/-30%)  gPur = 0.954 (2.4%)  ZgDR = 1.0016 (+10.38-9.99%)
+32  Ngobs = 17  ZgR = 0.503 (5%)  gEtrg =  1 (1.5+/-2%)  gSF =  1 (5.9%)  gFdir = 0.762 (+12.6-12.6+/-30%)  gPur = 0.95 (2.6%)  ZgDR = 1.0016 (+10.38-9.99%)
+33  Ngobs = 91  ZgR = 0.464 (1.6%)  gEtrg =  1 (1.5+/-2%)  gSF =  1 (5.7%)  gFdir = 0.948 (+2.5-2.5+/-30%)  gPur = 0.955 (2%)  ZgDR = 1.0016 (+10.38-9.99%)
+34  Ngobs = 37  ZgR = 0.474 (3.3%)  gEtrg =  1 (1.2+/-2%)  gSF =  1 (5.6%)  gFdir = 0.862 (+3.6-3.6+/-30%)  gPur = 0.96 (1.8%)  ZgDR = 1.0016 (+10.38-9.99%)
+35  Ngobs = 8  ZgR = 0.467 (3.9%)  gEtrg =  1 (1.1+/-2%)  gSF =  1 (5.3%)  gFdir = 0.81 (+17.6-17.6+/-30%)  gPur = 0.974 (1.3%)  ZgDR = 1.0016 (+10.38-9.99%)
+36  Ngobs = 3  ZgR = 0.48 (5.8%)  gEtrg =  1 (0.8+/-2%)  gSF =  1 (5.9%)  gFdir = 0.772 (+7.7-7.7+/-30%)  gPur = 0.982 (0.8%)  ZgDR = 1.0016 (+10.38-9.99%)
+37  Ngobs = 3  ZgR = 0.455 (7.6%)  gEtrg =  1 (0.8+/-2%)  gSF =  1 (5.6%)  gFdir = 0.838 (+12.4-12.4+/-30%)  gPur = 0.982 (0.8%)  ZgDR = 1.0016 (+10.38-9.99%)
+38  Ngobs = 0  ZgR = 0.551 (14.4%)  gEtrg =  1 (0+/-2%)  gSF =  1 (5%)  gFdir = 0.898 (+11.4-12.5+/-30%)  gPur = 1 (0%)  ZgDR = 1.0016 (+10.38-9.99%)
+39  Ngobs = 0  ZgR = 0.453 (2.2%)  gEtrg =  1 (0+/-2%)  gSF =  1 (6.3%)  gFdir = 0.922 (+4.7-4.7+/-30%)  gPur = 1 (0%)  ZgDR = 1.0016 (+14.09-13.56%)
+40  Ngobs = 0  ZgR = 0.503 (5%)  gEtrg =  1 (0+/-2%)  gSF =  1 (6%)  gFdir = 0.762 (+12.6-12.6+/-30%)  gPur = 1 (0%)  ZgDR = 1.0016 (+14.09-13.56%)
+41  Ngobs = 3  ZgR = 0.464 (1.6%)  gEtrg =  1 (1.6+/-2%)  gSF =  1 (6.8%)  gFdir = 0.948 (+2.5-2.5+/-30%)  gPur = 0.954 (2%)  ZgDR = 1.0016 (+14.09-13.56%)
+42  Ngobs = 3  ZgR = 0.474 (3.3%)  gEtrg =  1 (0.8+/-2%)  gSF =  1 (6.3%)  gFdir = 0.862 (+3.6-3.6+/-30%)  gPur = 0.966 (1.6%)  ZgDR = 1.0016 (+14.09-13.56%)
+43  Ngobs = 1  ZgR = 0.467 (3.9%)  gEtrg =  1 (0.8+/-2%)  gSF =  1 (0%)  gFdir = 0.81 (+17.6-17.6+/-30%)  gPur = 0.982 (0.8%)  ZgDR = 1.0016 (+14.09-13.56%)
+44  Ngobs = 2  ZgR = 0.48 (5.8%)  gEtrg =  1 (0.8+/-2%)  gSF =  1 (5.7%)  gFdir = 0.772 (+7.7-7.7+/-30%)  gPur = 0.982 (0.8%)  ZgDR = 1.0016 (+14.09-13.56%)
+45  Ngobs = 0  ZgR = 0.455 (7.6%)  gEtrg =  1 (0+/-2%)  gSF =  1 (5.4%)  gFdir = 0.838 (+12.4-12.4+/-30%)  gPur = 1 (0%)  ZgDR = 1.0016 (+14.09-13.56%)
+46  Ngobs = 0  ZgR = 0.551 (14.4%)  gEtrg =  1 (0+/-2%)  gSF =  1 (4.4%)  gFdir = 0.898 (+11.4-12.5+/-30%)  gPur = 1 (0%)  ZgDR = 1.0016 (+14.09-13.56%)
+
+1  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0109
+2  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0109
+3  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0109
+4  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0109
+5  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0109
+6  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0109
+7  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0109
+8  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0109
+9  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0109
+10  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0109
+11  DYvalue = 0.1144  DYstat = 0.0304  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0122
+12  DYvalue = 0.1243  DYstat = 0.0304  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0122
+13  DYvalue = 0.1234  DYstat = 0.0304  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0122
+14  DYvalue = 0.1142  DYstat = 0.0304  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0122
+15  DYvalue = 0.1237  DYstat = 0.0304  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0122
+16  DYvalue = 0.1254  DYstat = 0.0304  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0122
+17  DYvalue = 0.1165  DYstat = 0.0304  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0122
+18  DYvalue = 0.123  DYstat = 0.0304  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0122
+19  DYvalue = 0.1178  DYstat = 0.0304  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0122
+20  DYvalue = 0.1223  DYstat = 0.0304  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0122
+21  DYvalue = 0.0084  DYstat = 0.1042  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0229
+22  DYvalue = 0.0112  DYstat = 0.1042  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0229
+23  DYvalue = 0.0109  DYstat = 0.1042  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0229
+24  DYvalue = 0.0083  DYstat = 0.1042  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0229
+25  DYvalue = 0.011  DYstat = 0.1042  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0229
+26  DYvalue = 0.0115  DYstat = 0.1042  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0229
+27  DYvalue = 0.009  DYstat = 0.1042  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0229
+28  DYvalue = 0.0108  DYstat = 0.1042  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0229
+29  DYvalue = 0.0093  DYstat = 0.1042  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0229
+30  DYvalue = 0.0106  DYstat = 0.1042  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0229
+31  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0112
+32  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0112
+33  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0112
+34  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0112
+35  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0112
+36  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0112
+37  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0112
+38  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0112
+39  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0112
+40  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0112
+41  DYvalue = 0.185  DYstat = 0.0511  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0144
+42  DYvalue = 0.1951  DYstat = 0.0511  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0144
+43  DYvalue = 0.1996  DYstat = 0.0511  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0144
+44  DYvalue = 0.1846  DYstat = 0.0511  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0144
+45  DYvalue = 0.1932  DYstat = 0.0511  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0144
+46  DYvalue = 0.1978  DYstat = 0.0511  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0144
+47  DYvalue = 0.1897  DYstat = 0.0511  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0144
+48  DYvalue = 0.1988  DYstat = 0.0511  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0144
+49  DYvalue = 0.1859  DYstat = 0.0511  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0144
+50  DYvalue = 0.1966  DYstat = 0.0511  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0144
+51  DYvalue = 0.032  DYstat = 0.1098  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0341
+52  DYvalue = 0.0336  DYstat = 0.1098  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0341
+53  DYvalue = 0.0342  DYstat = 0.1098  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0341
+54  DYvalue = 0.032  DYstat = 0.1098  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0341
+55  DYvalue = 0.0333  DYstat = 0.1098  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0341
+56  DYvalue = 0.034  DYstat = 0.1098  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0341
+57  DYvalue = 0.0327  DYstat = 0.1098  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0341
+58  DYvalue = 0.0341  DYstat = 0.1098  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0341
+59  DYvalue = 0.0322  DYstat = 0.1098  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0341
+60  DYvalue = 0.0338  DYstat = 0.1098  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0341
+61  DYvalue = 0.0027  DYstat = 0.3785  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0341
+62  DYvalue = 0.0027  DYstat = 0.3785  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0341
+63  DYvalue = 0.0027  DYstat = 0.3785  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0341
+64  DYvalue = 0.0027  DYstat = 0.3785  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0341
+65  DYvalue = 0.0027  DYstat = 0.3785  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0341
+66  DYvalue = 0.0027  DYstat = 0.3785  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0341
+67  DYvalue = 0.0027  DYstat = 0.3785  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0341
+68  DYvalue = 0.0027  DYstat = 0.3785  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0341
+69  DYvalue = 0.0027  DYstat = 0.3785  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0341
+70  DYvalue = 0.0027  DYstat = 0.3785  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0341
+71  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+72  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+73  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+74  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+75  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+76  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+77  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+78  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+79  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+80  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+81  DYvalue = 0.3424  DYstat = 0.1202  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+82  DYvalue = 0.3457  DYstat = 0.1202  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+83  DYvalue = 0.3469  DYstat = 0.1202  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+84  DYvalue = 0.3437  DYstat = 0.1202  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+85  DYvalue = 0.3451  DYstat = 0.1202  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+86  DYvalue = 0.3455  DYstat = 0.1202  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+87  DYvalue = 0.3444  DYstat = 0.1202  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+88  DYvalue = 0.3484  DYstat = 0.1202  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+89  DYvalue = 0.3419  DYstat = 0.1202  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+90  DYvalue = 0.3451  DYstat = 0.1202  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+91  DYvalue = 0.0922  DYstat = 0.1957  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+92  DYvalue = 0.1008  DYstat = 0.1957  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+93  DYvalue = 0.104  DYstat = 0.1957  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+94  DYvalue = 0.0956  DYstat = 0.1957  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+95  DYvalue = 0.0993  DYstat = 0.1957  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+96  DYvalue = 0.1002  DYstat = 0.1957  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+97  DYvalue = 0.0975  DYstat = 0.1957  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+98  DYvalue = 0.108  DYstat = 0.1957  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+99  DYvalue = 0.0907  DYstat = 0.1957  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+100  DYvalue = 0.0994  DYstat = 0.1957  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+101  DYvalue = 0.0155  DYstat = 0.4515  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+102  DYvalue = 0.0177  DYstat = 0.4515  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+103  DYvalue = 0.0185  DYstat = 0.4515  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+104  DYvalue = 0.0164  DYstat = 0.4515  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+105  DYvalue = 0.0173  DYstat = 0.4515  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+106  DYvalue = 0.0175  DYstat = 0.4515  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+107  DYvalue = 0.0168  DYstat = 0.4515  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+108  DYvalue = 0.0195  DYstat = 0.4515  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+109  DYvalue = 0.0151  DYstat = 0.4515  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+110  DYvalue = 0.0173  DYstat = 0.4515  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+111  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+112  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+113  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+114  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+115  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+116  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+117  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+118  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+119  DYvalue = 0.2757  DYstat = 0.4564  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+120  DYvalue = 0.2451  DYstat = 0.4564  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+121  DYvalue = 0.2585  DYstat = 0.4564  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+122  DYvalue = 0.2219  DYstat = 0.4564  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+123  DYvalue = 0.3205  DYstat = 0.4564  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+124  DYvalue = 0.3205  DYstat = 0.4564  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+125  DYvalue = 0.3205  DYstat = 0.4564  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+126  DYvalue = 0.2404  DYstat = 0.4564  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+127  DYvalue = 0.0658  DYstat = 0.736  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+128  DYvalue = 0.0756  DYstat = 0.736  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+129  DYvalue = 0.0713  DYstat = 0.736  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+130  DYvalue = 0.083  DYstat = 0.736  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+131  DYvalue = 0.0514  DYstat = 0.736  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+132  DYvalue = 0.0514  DYstat = 0.736  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+133  DYvalue = 0.0514  DYstat = 0.736  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+134  DYvalue = 0.0771  DYstat = 0.736  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+135  DYvalue = 0.1325  DYstat = 0.6124  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+136  DYvalue = 0.1179  DYstat = 0.6124  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+137  DYvalue = 0.1243  DYstat = 0.6124  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+138  DYvalue = 0.1067  DYstat = 0.6124  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+139  DYvalue = 0.1541  DYstat = 0.6124  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+140  DYvalue = 0.1541  DYstat = 0.6124  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+141  DYvalue = 0.1541  DYstat = 0.6124  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+142  DYvalue = 0.1156  DYstat = 0.6124  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+143  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+144  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+145  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+146  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+147  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+148  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+149  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+150  DYvalue = 1  DYstat = 0  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0  DYsysPur = 0.0141
+151  DYvalue = 0.481  DYstat = 1.2247  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+152  DYvalue = 0.481  DYstat = 1.2247  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+153  DYvalue = 0.481  DYstat = 1.2247  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+154  DYvalue = 0.481  DYstat = 1.2247  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+155  DYvalue = 0.481  DYstat = 1.2247  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+156  DYvalue = 0.481  DYstat = 1.2247  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+157  DYvalue = 0.481  DYstat = 1.2247  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+158  DYvalue = 0.481  DYstat = 1.2247  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0247
+159  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+160  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+161  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+162  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+163  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+164  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+165  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+166  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.15  DYsysPur = 0.0504
+167  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+168  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+169  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+170  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+171  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+172  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+173  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+174  DYvalue = 0  DYstat = 1  DYMCstat = 0  DYsysNjUp = 0  DYsysNjLow = 0  DYsysKin = 0.3  DYsysPur = 0.0504
+
+
+Initializing input file ../plots/histograms/ZinvMCttzMC174bin_2016v16_noPU.root
+hzvvgJNobs,  binLabel(135) = zvvgJNobs_NJets3_MHT0_HT1
+hzvvgJEtrgErr,  binLabel(135) = zvvgJEtrgErr_MHT0
+hzvvgJPurErr,  binLabel(135) = zvvgJPurErr
+hzvvNbCorrelUp,  binLabel(135) = zvvNbCorrelUp_NJets3_MHT0_HT1
+hzvvNbCorrelLow,  binLabel(135) = zvvNbCorrelLow_NJets3_MHT0_HT1
+hzvvScaleErr,  binLabel(135) = zvvScaleErr
+hzvvDYstat,  binLabel(135) = zvvDYstat_NJets3_BTags3
+hzvvDYMCerrUp,  binLabel(135) = zvvDYMCerrUp_NJets4_BTags3
+hzvvDYMCerrLow,  binLabel(135) = zvvDYMCerrLow_NJets4_BTags3
+hzvvDYsysKin,  binLabel(135) = zvvDYsysKin_NJets3_BTags3_MHT0_HT1
+hzvvDYsysPur,  binLabel(135) = zvvDYsysPur_NJets2_BTags2
+iJet 0 Var (err nominal, eff):  gEtrg (0.014, 0.00055775)  gFdir (0.00980369, 0.00189301)  gFdir (0.00980369, 0.00189301)  gPur (0.025, 0.00348334) 
+iJet 0 Var (err nominal, eff):  gEtrg (0.014, 0.00055775)  gFdir (0.00923588, 0.00246081)  gFdir (0.00923588, 0.00246081)  gPur (0.025, 0.00348334) 
+iJet 0 Var (err nominal, eff):  gEtrg (0.012, 0.00144225)  gFdir (0.00814931, 0.00354739)  gFdir (0.00814931, 0.00354739)  gPur (0.023, 0.00148334) 
+iJet 0 Var (err nominal, eff):  gEtrg (0.013, 0.00044225)  gFdir (0.00734016, 0.00435653)  gFdir (0.00734016, 0.00435653)  gPur (0.019, 0.00251666) 
+iJet 0 Var (err nominal, eff):  gEtrg (0.013, 0.00044225)  gFdir (0.00980369, 0.00189301)  gFdir (0.00980369, 0.00189301)  gPur (0.018, 0.00351666) 
+iJet 0 Var (err nominal, eff):  gEtrg (0.011, 0.00244225)  gFdir (0.00738525, 0.00431145)  gFdir (0.00738525, 0.00431145)  gPur (0.017, 0.00451666) 
+iJet 0 Var (err nominal, eff):  gEtrg (0.011, 0.00244225)  gFdir (0.00498712, 0.00670958)  gFdir (0.00498712, 0.00670958)  gPur (0.013, 0.00851666) 
+iJet 0 Var (err nominal, eff):  gEtrg (0.01, 0.00344225)  gFdir (0.00630835, 0.00538834)  gFdir (0.00630835, 0.00538834)  gPur (0.01, 0.0115167) 
+iJet 0 Var (err nominal, eff):  gEtrg (0.01, 0.00344225)  gFdir (0.00389019, 0.00780651)  gFdir (0.00389019, 0.00780651)  gPur (0.01, 0.0115167) 
+iJet 0 Var (err nominal, eff):  gEtrg (0.008, 0.00544225)  gFdir (0.00658961, 0.00510708)  gFdir (0.00658961, 0.00510708)  gPur (0.008, 0.0135167) 
+iJet 1 Var (err nominal, eff):  gEtrg (0.014, 0.00055775)  gFdir (0.0259398, 0.0142431)  gFdir (0.0259398, 0.0142431)  gPur (0.025, 0.00348334) 
+iJet 1 Var (err nominal, eff):  gEtrg (0.014, 0.00055775)  gFdir (0.0344468, 0.0227501)  gFdir (0.0344468, 0.0227501)  gPur (0.025, 0.00348334) 
+iJet 1 Var (err nominal, eff):  gEtrg (0.013, 0.00044225)  gFdir (0.0192058, 0.00750911)  gFdir (0.0192058, 0.00750911)  gPur (0.023, 0.00148334) 
+iJet 1 Var (err nominal, eff):  gEtrg (0.014, 0.00055775)  gFdir (0.0172025, 0.0055058)  gFdir (0.0172025, 0.0055058)  gPur (0.019, 0.00251666) 
+iJet 1 Var (err nominal, eff):  gEtrg (0.013, 0.00044225)  gFdir (0.0238069, 0.0121102)  gFdir (0.0238069, 0.0121102)  gPur (0.018, 0.00351666) 
+iJet 1 Var (err nominal, eff):  gEtrg (0.012, 0.00144225)  gFdir (0.0229805, 0.0112838)  gFdir (0.0229805, 0.0112838)  gPur (0.018, 0.00351666) 
+iJet 1 Var (err nominal, eff):  gEtrg (0.011, 0.00244225)  gFdir (0.0112913, 0.000405441)  gFdir (0.0112913, 0.000405441)  gPur (0.014, 0.00751666) 
+iJet 1 Var (err nominal, eff):  gEtrg (0.011, 0.00244225)  gFdir (0.0171113, 0.00541463)  gFdir (0.0171113, 0.00541463)  gPur (0.013, 0.00851666) 
+iJet 1 Var (err nominal, eff):  gEtrg (0.01, 0.00344225)  gFdir (0.0108218, 0.000874853)  gFdir (0.0108218, 0.000874853)  gPur (0.01, 0.0115167) 
+iJet 1 Var (err nominal, eff):  gEtrg (0.008, 0.00544225)  gFdir (0.0244935, 0.0127968)  gFdir (0.0244935, 0.0127968)  gPur (0.008, 0.0135167) 
+iJet 2 Var (err nominal, eff):  gEtrg (0.015, 0.00155775)  gFdir (0.0488899, 0.0371932)  gFdir (0.0488899, 0.0371932)  gPur (0.026, 0.00448334) 
+iJet 2 Var (err nominal, eff):  gEtrg (0.015, 0.00155775)  gFdir (0.0509821, 0.0392854)  gFdir (0.0509821, 0.0392854)  gPur (0.026, 0.00448334) 
+iJet 2 Var (err nominal, eff):  gEtrg (0.013, 0.00044225)  gFdir (0.0502066, 0.0385099)  gFdir (0.0502066, 0.0385099)  gPur (0.024, 0.00248334) 
+iJet 2 Var (err nominal, eff):  gEtrg (0.015, 0.00155775)  gFdir (0.0180361, 0.00633942)  gFdir (0.0180361, 0.00633942)  gPur (0.02, 0.00151666) 
+iJet 2 Var (err nominal, eff):  gEtrg (0.013, 0.00044225)  gFdir (0.0385763, 0.0268796)  gFdir (0.0385763, 0.0268796)  gPur (0.019, 0.00251666) 
+iJet 2 Var (err nominal, eff):  gEtrg (0.012, 0.00144225)  gFdir (0.0410817, 0.029385)  gFdir (0.0410817, 0.029385)  gPur (0.018, 0.00351666) 
+iJet 2 Var (err nominal, eff):  gEtrg (0.012, 0.00144225)  gFdir (0.0317756, 0.0200789)  gFdir (0.0317756, 0.0200789)  gPur (0.014, 0.00751666) 
+iJet 2 Var (err nominal, eff):  gEtrg (0.01, 0.00344225)  gFdir (0.0532845, 0.0415878)  gFdir (0.0532845, 0.0415878)  gPur (0.011, 0.0105167) 
+iJet 2 Var (err nominal, eff):  gEtrg (0.011, 0.00244225)  gFdir (0.0262646, 0.0145679)  gFdir (0.0262646, 0.0145679)  gPur (0.012, 0.00951666) 
+iJet 2 Var (err nominal, eff):  gEtrg (0.008, 0.00544225)  gFdir (0.140056, 0.128359)  gFdir (0.140056, 0.128359)  gPur (0.008, 0.0135167) 
+iJet 3 Var (err nominal, eff):  gEtrg (0.013, 0.00044225)  gFdir (0.0534146, 0.0417179)  gFdir (0.0534146, 0.0417179)  gPur (0.024, 0.00248334) 
+iJet 3 Var (err nominal, eff):  gEtrg (0.015, 0.00155775)  gFdir (0.157022, 0.145325)  gFdir (0.157022, 0.145325)  gPur (0.026, 0.00448334) 
+iJet 3 Var (err nominal, eff):  gEtrg (0.015, 0.00155775)  gFdir (0.0299297, 0.018233)  gFdir (0.0299297, 0.018233)  gPur (0.02, 0.00151666) 
+iJet 3 Var (err nominal, eff):  gEtrg (0.012, 0.00144225)  gFdir (0.0600223, 0.0483256)  gFdir (0.0600223, 0.0483256)  gPur (0.018, 0.00351666) 
+iJet 3 Var (err nominal, eff):  gEtrg (0.011, 0.00244225)  gFdir (0.189547, 0.17785)  gFdir (0.189547, 0.17785)  gPur (0.013, 0.00851666) 
+iJet 3 Var (err nominal, eff):  gEtrg (0.008, 0.00544225)  gFdir (0.117385, 0.105688)  gFdir (0.117385, 0.105688)  gPur (0.008, 0.0135167) 
+iJet 3 Var (err nominal, eff):  gEtrg (0.008, 0.00544225)  gFdir (0.136892, 0.125195)  gFdir (0.136892, 0.125195)  gPur (0.008, 0.0135167) 
+iJet 3 Var (err nominal, eff):  gEtrg (0, 0.0134422)  gFdir (0.118984, 0.107287)  gFdir (0.129561, 0.117865)  gPur (0, 0.0215167) 
+iJet 4 Var (err nominal, eff):  gEtrg (0, 0.0134422)  gFdir (0.0534146, 0.0417179)  gFdir (0.0534146, 0.0417179)  gPur (0, 0.0215167) 
+iJet 4 Var (err nominal, eff):  gEtrg (0, 0.0134422)  gFdir (0.157022, 0.145325)  gFdir (0.157022, 0.145325)  gPur (0, 0.0215167) 
+iJet 4 Var (err nominal, eff):  gEtrg (0.016, 0.00255775)  gFdir (0.0299297, 0.018233)  gFdir (0.0299297, 0.018233)  gPur (0.02, 0.00151666) 
+iJet 4 Var (err nominal, eff):  gEtrg (0.008, 0.00544225)  gFdir (0.0600223, 0.0483256)  gFdir (0.0600223, 0.0483256)  gPur (0.016, 0.00551666) 
+iJet 4 Var (err nominal, eff):  gEtrg (0.008, 0.00544225)  gFdir (0.189547, 0.17785)  gFdir (0.189547, 0.17785)  gPur (0.008, 0.0135167) 
+iJet 4 Var (err nominal, eff):  gEtrg (0.008, 0.00544225)  gFdir (0.117385, 0.105688)  gFdir (0.117385, 0.105688)  gPur (0.008, 0.0135167) 
+iJet 4 Var (err nominal, eff):  gEtrg (0, 0.0134422)  gFdir (0.136892, 0.125195)  gFdir (0.136892, 0.125195)  gPur (0, 0.0215167) 
+iJet 4 Var (err nominal, eff):  gEtrg (0, 0.0134422)  gFdir (0.118984, 0.107287)  gFdir (0.129561, 0.117865)  gPur (0, 0.0215167) 
+Info in <TCanvas::Print>: pdf file ZinvBGpred.pdf has been created
+Info in <TCanvas::Print>: pdf file errorComponents.pdf has been created

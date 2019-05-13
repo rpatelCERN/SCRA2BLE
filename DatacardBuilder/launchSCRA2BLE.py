@@ -138,7 +138,7 @@ if __name__ == '__main__':
 	if not "proc" in parse[1]:continue
 	if not "MC2016" in parse[5]:continue
 	#if options.model==parse[2] :
-	if options.model==parse[2] and int(parse[3])<=2500 and int(parse[3])>=600:
+	if options.model==parse[2] and  int(parse[3])<1600:
 		models.append(parse[2])	
 		mGos.append(int(parse[3]))
 		mLSPs.append(int(parse[4]))

@@ -1,0 +1,7 @@
+# Commands I used for consolidate signal histograms (for Q plots)
+hadd inputs/signal_hists/T1tttt_hists.root ../DatacardBuilder/inputHistograms/fastsimSignalT1tttt/RA2bin_proc_T1tttt_1500_100_fast.root ../DatacardBuilder/inputHistograms/fastsimSignalT1tttt/RA2bin_proc_T1tttt_1200_800_fast.root
+hadd inputs/signal_hists/T1bbbb_hists.root ../DatacardBuilder/inputHistograms/fastsimSignalT1bbbb/RA2bin_proc_T1bbbb_1500_100_fast.root ../DatacardBuilder/inputHistograms/fastsimSignalT1bbbb/RA2bin_proc_T1bbbb_1000_900_fast.root
+hadd inputs/signal_hists/T1qqqq_hists.root ../DatacardBuilder/inputHistograms/fastsimSignalT1qqqq/RA2bin_proc_T1qqqq_1400_100_fast.root ../DatacardBuilder/inputHistograms/fastsimSignalT1qqqq/RA2bin_proc_T1qqqq_1000_800_fast.root
+hadd inputs/signal_hists/T2tt_hists.root ../DatacardBuilder/inputHistograms/fastsimSignalT2tt/RA2bin_proc_T2tt_700_50_fast.root ../DatacardBuilder/inputHistograms/fastsimSignalT2tt/RA2bin_proc_T2tt_300_200_fast.root
+hadd inputs/signal_hists/T2bb_hists.root ../DatacardBuilder/inputHistograms/fastsimSignalT2bb/RA2bin_proc_T2bb_650_1_fast.root ../DatacardBuilder/inputHistograms/fastsimSignalT2bb/RA2bin_proc_T2bb_500_300_fast.root
+hadd inputs/signal_hists/T2qq_hists.root ../DatacardBuilder/inputHistograms/fastsimSignalT2qq/RA2bin_proc_T2qq_1000_100_fast.root ../DatacardBuilder/inputHistograms/fastsimSignalT2qq/RA2bin_proc_T2qq_700_400_fast.root

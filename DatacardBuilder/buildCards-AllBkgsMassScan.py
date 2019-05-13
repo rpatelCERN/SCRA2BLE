@@ -113,6 +113,10 @@ def WriteQCDSystematics(inputfile,ListOfSystematics,signalRegion,tagsForSignalRe
 		hTempSyst=QCD_file.Get(syst)
 		if "Uncorrelated" in syst:
 			for i in range(1,175):hTempSyst.GetXaxis().SetBinLabel(i,"QCDUncorrel"+tagsForSignalRegion[i-1])			
+		if "PredictionBTag" in syst:
+			for i in range(1,175):
+				if hTempSyst.GetBinContent(i)<0.0001:hTempSyst.SetBinContent(i,1.0)
+				else: hTempSyst.SetBinContent(i,hTempSyst.GetBinContent(i));
 		signalRegion.addSystematicsLine('lnN',['qcd'], hTempSyst);
 	
 	QCD_file.Close();
@@ -463,7 +467,7 @@ if __name__ == '__main__':
 	
 	WriteLostLeptonSystematics(idir+"/InputsForLimits_data_formatted_LLPlusHadTau.root",LLSystematicsList,signalRegion)
 	#QCDSystematics=["PredictionCore","PredictionTail","PredictionUncorrelated"]
-	QCDSystematics=["PredictionCore","hSyst_tail","PredictionUncorrelated"]
+	QCDSystematics=["PredictionCore","hSyst_tail","PredictionUncorrelated","PredictionBTag"]
 	WriteQCDSystematics(idir+"/QcdPredictionRandS.root",QCDSystematics,signalRegion,tagsForSignalRegion)
 	ZSystematicsCS=["hzvvTF","hzvvgJNobs"]
 	ZSystematicsSym=["hzvvgJEtrgErr","hzvvgJPurErr","hzvvScaleErr","hzvvDYsysPur","hzvvDYstat","hzvvDYsysKin"]
