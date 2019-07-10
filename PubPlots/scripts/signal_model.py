@@ -22,7 +22,8 @@ class SignalModel:
     def GetInputFile(self): # returns pointer to Kevin's file containing signal input
         #fname = "../DatacardBuilder/inputHistograms/fastsimSignal%s/RA2bin_proc_%s_%d_%d_fast.root" % (self.model, self.model, int(self.mMom), int(self.mLSP))
         #fname = "inputs/signal_hists/inputHistograms/fastsimSignal%s/RA2bin_proc_%s_%d_%d_fast.root" % (self.model, self.model, int(self.mMom), int(self.mLSP))
-        fname = "inputs/signal_hists/inputHistograms/FullSIM/RA2bin_proc_%s_%d_%d_MC2017.root" % (self.model, int(self.mMom), int(self.mLSP))
+	fname="root://cmseos.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV16_v6/RA2bin_proc_%s_%d_%d_MC2017_fast.root"% (self.model, int(self.mMom), int(self.mLSP))
+        #fname = "inputs/signal_hists/inputHistograms/FullSIM/RA2bin_proc_%s_%d_%d_MC2017.root" % (self.model, int(self.mMom), int(self.mLSP))
         # if we've already opened the file, just return the pointer already in memory, else create it
         if gROOT.GetListOfFiles().FindObject(fname) == None: 
             return TFile.Open(fname)
@@ -30,7 +31,7 @@ class SignalModel:
             return gROOT.GetListOfFiles().FindObject(fname)
         
     def GetInputHist(self): # returns histogram loaded from input file
-        hname = "RA2bin_%s_%d_%d_MC2017_nominal" % (self.model, int(self.mMom), int(self.mLSP))
+        hname = "RA2bin_%s_%d_%d_MC2017_fast_nominal" % (self.model, int(self.mMom), int(self.mLSP))
         return self.infile.Get(hname)
 
     def AggregateBins(self, agg_bins, xaxis_title=None, xaxis_binning=None): # creates a histogram from aggregated bins -- this is used in fill_signal_hists.py

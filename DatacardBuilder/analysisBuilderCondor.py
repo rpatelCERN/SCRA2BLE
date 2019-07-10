@@ -179,6 +179,7 @@ if __name__ == '__main__':
             os.system(combine_cmmd);
             #combine_cmmd = "combine -M FitDiagnostics %s/allcards.root -n %s --saveWithUncertainties --saveNormalizations --expectSignal=0" %(the_odir,the_odir);
             combine_cmmd = "combine -M Asymptotic %s/allcards.txt -n %s" % (the_odir,the_odir); 
+	    #combine_cmmd=" combine  -M ProfileLikelihood  --uncapped 1 --significance --rMin -5 %s/allcards.root -n %s " %(the_odir,the_odir);
 	    #AR-180418: executes limit 
             os.system(combine_cmmd);
             print " run asymptotic limit "
@@ -191,7 +192,7 @@ if __name__ == '__main__':
             #fittedMu[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[0];
             #fittedMuErrMinus[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[1];
             #fittedMuErrPlus[0] = getFittedMu( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.FitDiagnostics.mH120.root" % (tag,signaltag,lumi,mu) )[2];
-            #significance[0]=getSignif( "higgsCombinetestCards-%s-%s-%0.1f-mu%0.1f.ProfileLikelihood.mH120.root" % (tag,signaltag,lumi,mu) ) ;
+            #significance[0]=getSignif( "higgsCombine%s.ProfileLikelihood.mH120.root" % (the_odir) ) ;
             olims = getLimit( "higgsCombine%s.Asymptotic.mH120.root" % (the_odir));
             limit_m2s[0] = olims[0];
             limit_m1s[0] = olims[1];

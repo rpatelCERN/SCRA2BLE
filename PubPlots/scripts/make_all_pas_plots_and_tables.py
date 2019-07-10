@@ -55,18 +55,18 @@ def make_all_pas_plots_and_tables(lumiprefix="137Paper",lostlept_file = 'lostlep
     make_12_asr_plot('results-plot-prefit-12-asrs-%s-log' %lumiprefix,  lostlept_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs,False, 137)
     #make_12_asr_plot('results-plot-prefit-12-asrs-%s-log-pull'%lumiprefix,  lostlept_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs, True,35.9)
     make_asr_table('asr_table%s' %lumiprefix,  lostlept_12_asrs, znn_12_asrs, qcd_12_asrs, data_obs_12_asrs)
-    make_1D_postfitprojection('njets-projectionpostfit', 'NJ', "postfit_hists.root"  , data_file,signal_file,\
-                       "T1tttt_2000_100", "T1tttt_1200_800", "H_{T}^{miss} > 300 GeV, H_{T} > 300 GeV", True, False, True)
+    #make_1D_postfitprojection('njets-projectionpostfit', 'NJ', "postfit_hists.root"  , data_file,signal_file,\
+    #                   "T1tttt_2000_100", "T1tttt_1200_800", "H_{T}^{miss} > 300 GeV, H_{T} > 300 GeV", True, False, True)
     #make_1D_postfitprojection('njets-projectionpostfit-pull', 'NJ', "postfit_hists.root"  , data_file,signal_file,\
     #                   "T1tttt_2000_100", "T1tttt_1200_800", "H_{T}^{miss} > 300 GeV, H_{T} > 300 GeV", True, True, True)
     ## BTags projection
-    make_1D_postfitprojection('nbjets-projectionpostfit', 'NB',  "postfit_hists.root"  , data_file,signal_file, \
-                       "T1bbbb_1500_100", "T1bbbb_1000_900", "N_{jet} #geq 2, H_{T}^{miss} > 300 GeV, H_{T} > 300 GeV", True, False, True)
+    #make_1D_postfitprojection('nbjets-projectionpostfit', 'NB',  "postfit_hists.root"  , data_file,signal_file, \
+    #                   "T1bbbb_1500_100", "T1bbbb_1000_900", "N_{jet} #geq 2, H_{T}^{miss} > 300 GeV, H_{T} > 300 GeV", True, False, True)
     #make_1D_postfitprojection('nbjets-projectionpostfit-pull', 'NB',  "postfit_hists.root", data_file, signal_file, \
     #                   "T1bbbb_1500_100", "T1bbbb_1000_900", "N_{jet} #geq 2, H_{T}^{miss} > 300 GeV, H_{T} > 300 GeV", True, True, True)
     ## MHT projection
-    make_1D_postfitprojection('mht-projectionpostfit', 'MHT',  "postfit_hists.root", data_file, signal_file, \
-                       "T1qqqq_1400_100", "T1qqqq_1000_800", "N_{jet} #geq 2, H_{T} > 300 GeV", True, False, True)
+    #make_1D_postfitprojection('mht-projectionpostfit', 'MHT',  "postfit_hists.root", data_file, signal_file, \
+    #                   "T1qqqq_1400_100", "T1qqqq_1000_800", "N_{jet} #geq 2, H_{T} > 300 GeV", True, False, True)
     #make_1D_postfitprojection('mht-projectionpostfit-pull', 'MHT', "postfit_hists.root", data_file, signal_file, \
     #                   "T1qqqq_1400_100", "T1qqqq_1000_800", "N_{jet} #geq 2, H_{T} > 300 GeV", True, True, True)
     ## 1D projections

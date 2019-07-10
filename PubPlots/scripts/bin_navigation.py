@@ -169,6 +169,7 @@ def Get2DBins(minHTMHT=0, maxHTMHT=9, nbins=174):
             	    bin_set.append([])
             	    for ibin in range(nbins):
                 	bini = SearchBin(ibin)
+		    	if bini.inj<3:continue 
                 	if bini.inb!=inb or bini.imht!=imht:
                     		continue
                 	if bini.ihtmht < minHTMHT or bini.ihtmht > maxHTMHT:

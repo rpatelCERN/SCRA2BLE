@@ -52,7 +52,7 @@ def open_if_necessary(filename):
 
 # note: this time the inputs are just the paths to *_hists.root files
 def make_1D_projection(plot_title, asr_name, lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       signal1, signal2, cut_labels, logy=False, doPull=False, printArXiv=False):
+                       signal1, signal2, cut_labels, logy=True, doPull=False, printArXiv=False):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -162,8 +162,8 @@ def make_1D_projection(plot_title, asr_name, lostlept_file, znn_file, qcd_file, 
     print (asr_name, signal1, signal2)
     #hsig1 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal1))
     #hsig2 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal2))
-    hsig1 = f_signal.Get("%s/RA2bin_%s_MC2017_nominal" % (asr_name, signal1))
-    hsig2 = f_signal.Get("%s/RA2bin_%s_MC2017_nominal" % (asr_name, signal2))
+    hsig1 = f_signal.Get("%s/RA2bin_%s_MC2017_fast_nominal" % (asr_name, signal1))
+    hsig2 = f_signal.Get("%s/RA2bin_%s_MC2017_fast_nominal" % (asr_name, signal2))
     hsig2.SetLineStyle(7)
     # scale to current luminosity
     if signal1.find("T2qq") >= 0:

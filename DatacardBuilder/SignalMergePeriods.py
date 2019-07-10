@@ -11,6 +11,8 @@ parser.add_option("--mLSP", dest="mLSP", default='900', help="Mass of LSP", meta
 '''
 def SubstractSignalContamination(signaldirtag,signalregion,mGo,mLSP, yearsToCombine, lumiscales):
 	signaltag="%s_%s_%s" %(signalregion,mGo,mLSP)
+	LLPlusHadTauAvg_file=TFile.Open("inputHistograms/histograms_137.4fb/InputsForLimits_data_formatted_LLPlusHadTau.root");
+	LLPlusHadTauPrediction_AVGTF=LLPlusHadTauAvg_file.Get("LLPlusHadTauTF")
 	SigTempFile=TFile.Open(signaldirtag+"/RA2bin_proc_%s_MC2016_fast.root" %(signaltag))
         NominalCorrSignal=SigTempFile.Get("RA2bin_%s_MC2016_fast_nominalOrig" %signaltag)#SignalRuns[0];#.Clone("MergedSignal");
         NominalCorrSignalUnc=SigTempFile.Get("RA2bin_%s_MC2016_fast_MHTSyst" %signaltag)#SignalRuns[0];#.Clone("MergedSignal");
@@ -30,6 +32,7 @@ def SubstractSignalContamination(signaldirtag,signalregion,mGo,mLSP, yearsToComb
 	GenCorrSignal.SetDirectory(0)
 	SignalContaminGEN.SetDirectory(0)
 	SignalContaminReco.SetDirectory(0)
+	LLPlusHadTauPrediction_AVGTF.SetDirectory(0)
 	for i in range(len(yearsToCombine)):
 		SignalRunFile=TFile.Open(signaldirtag+"/RA2bin_proc_%s_%s_fast.root" %(signaltag,yearsToCombine[i]))
 		SignalRun=SignalRunFile.Get("RA2bin_%s_%s_fast_nominalOrig" %(signaltag,yearsToCombine[i]));
@@ -55,8 +58,8 @@ def SubstractSignalContamination(signaldirtag,signalregion,mGo,mLSP, yearsToComb
 		SignalContaminGEN.Add(SignalContaminGenEle);
 		SignalRunFile.Close();
         for b in range(1,NominalCorrSignal.GetNbinsX()+1):
-		UnCorrSignal=NominalCorrSignal.GetBinContent(b)-SignalContaminReco.GetBinContent(b)
-		GenMHTCleaned=GenCorrSignal.GetBinContent(b)-SignalContaminGEN.GetBinContent(b)
+		UnCorrSignal=NominalCorrSignal.GetBinContent(b)-(SignalContaminReco.GetBinContent(b)*LLPlusHadTauPrediction_AVGTF.GetBinContent(b))
+		GenMHTCleaned=GenCorrSignal.GetBinContent(b)-(SignalContaminGEN.GetBinContent(b)*LLPlusHadTauPrediction_AVGTF.GetBinContent(b))
 		NominalCorrSignal.SetBinContent(b, (UnCorrSignal+GenMHTCleaned)/2.)
 		if NominalCorrSignal.GetBinContent(b)>0:NominalCorrSignalUnc.SetBinContent(b, 1.0+(abs(UnCorrSignal-GenMHTCleaned)/2.)/NominalCorrSignal.GetBinContent(b))
 		else: NominalCorrSignalUnc.SetBinContent(b,1.0)
@@ -156,8 +159,21 @@ def MergeSignal(signaldirtag,signaltag, yearsToCombine, lumiscales):
 		SignalRun=SignalRunFile.Get("RA2bin_%s_%s_fast_nominalOrig" %(signaltag,yearsToCombine[i]));
 		SignalRun.Scale(lumiscales[i])
 		SignalRun.SetName("%s_%s" %(signaltag,yearsToCombine[i]))
+	        if "MC2018" in yearsToCombine[i] and not "MC2018HEM" in yearsToCombine[i]:
+			#print "special case"
+			MergedCorrelated=SignalRun.Clone("MergedCorrelated");
+			SignalRunFileHEM=TFile.Open(signaldirtag+"/RA2bin_proc_%s_%s_fast.root" %(signaltag,yearsToCombine[i+1]))
+			SignalRunHEM=SignalRunFileHEM.Get("RA2bin_%s_%s_fast_nominalOrig" %(signaltag,yearsToCombine[i+1]));	
+                	SignalRunHEM.Scale(lumiscales[i+1])
+                	SignalRunHEM.SetName("%s_%s" %(signaltag,yearsToCombine[i+1]))
+			for j in range(1, 175):
+				SignalRun.SetBinContent(j, MergedCorrelated.GetBinContent(j)+SignalRunHEM.GetBinContent(j))
+				SignalRun.SetBinError(j, MergedCorrelated.GetBinError(j)+SignalRunHEM.GetBinError(j))
+				
+		if "MC2018HEM" in yearsToCombine[i]:continue
 		MergedSignal.Add(SignalRun);
 		SignalRunFile.Close();
+
 	MergedSignal.SetName("RA2bin_%s_fast_nominalOrig" %signaltag)
 	return MergedSignal;
 	#return MergedSignal

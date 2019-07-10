@@ -162,8 +162,8 @@ def make_1D_postfitprojection(plot_title, asr_name, postfit_file, data_file, sig
     print (asr_name, signal1, signal2)
     #hsig1 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal1))
     #hsig2 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal2))
-    hsig1 = f_signal.Get("%s/RA2bin_%s_MC2017_nominal" % (asr_name, signal1))
-    hsig2 = f_signal.Get("%s/RA2bin_%s_MC2017_nominal" % (asr_name, signal2))
+    hsig1 = f_signal.Get("%s/RA2bin_%s_MC2017_fast_nominal" % (asr_name, signal1))
+    hsig2 = f_signal.Get("%s/RA2bin_%s_MC2017_fast_nominal" % (asr_name, signal2))
     hsig2.SetLineStyle(7)
     # scale to current luminosity
     if signal1.find("T2qq") >= 0:

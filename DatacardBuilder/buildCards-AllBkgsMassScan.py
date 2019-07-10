@@ -36,7 +36,7 @@ def WriteSignalSystematics(signaldirtag,signal,mGo,mLSP,yearsToMerge,RunLumi,sea
 	for i in range(1, MergedNominal.GetNbinsX()+1):
 		#MCStatErr.GetXaxis().SetBinLabel(i, "MCStatErr"+MCStatErr.GetXaxis().GetBinLabel(i))
 		StatErr=MergedNominal.GetBinError(i);
-		if StatErr==0:StatErr=1.0;
+		if StatErr<=0 or MergedNominal.GetBinContent(i)<=0:StatErr=1.0;
 		else:
 			StatErr=1.0+(StatErr/MergedNominal.GetBinContent(i))
 		MCStatErr.SetBinContent(i, StatErr);
@@ -44,7 +44,7 @@ def WriteSignalSystematics(signaldirtag,signal,mGo,mLSP,yearsToMerge,RunLumi,sea
 	signalRegion.addSystematicsLine('lnN',['sig'], MCStatErr);
 	SigTempFile.Close();
 	LumiUnc=MergeUncCorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"lumiuncUp",MergedNominal,True)							
-	JetIDUnc=MergeUncCorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"jetiduncUp",MergedNominal,True)
+        JetIDUnc=MergeUncCorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"jetiduncUp",MergedNominal,True)
 	IsoTrackUnc=MergeUncCorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"isotrackuncUp",MergedNominal,True)
 	PrefireUncUp=MergeUncPreFireCorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"prefireuncUp",MergedNominal,True)
 	PrefireUncDown=MergeUncPreFireCorrelated(signaldirtag,sms,yearsToMerge,RunLumi,"prefireuncDown",MergedNominal,False)
@@ -104,7 +104,6 @@ def WriteZSystematics(inputfile,CSSystematics,SymSystematics,AsymSystematics,sig
 		if i%2==0:
 			UpSyst=Z_file.Get(AsymSystematics[i+1])
 			DownSyst=Z_file.Get(AsymSystematics[i])
-			print AsymSystematics[i],AsymSystematics[i-1]
 			signalRegion.addSystematicsLineAsymShape('lnN',['zvv'],DownSyst,UpSyst)
 	Z_file.Close()
 def WriteQCDSystematics(inputfile,ListOfSystematics,signalRegion,tagsForSignalRegion):
@@ -131,7 +130,7 @@ def WriteLostLeptonSystematics(inputfile, ListOfSystematics,signalRegion):
 			
 	LLPlusHadTauControlStatistics=LLPlusHadTauAvg_file.Get("DataCSStatistics")
 	#LLPlusHadTauControlStatistics.Scale(61.9*1000./(35916.403 +41521.425+21000.905+38196.951))#####BE CAREFUL This is hard coded
-	LLPlusHadTauTF=LLPlusHadTauAvg_file.Get("LLPlusHadTauTF")	
+	LLPlusHadTauTF=LLPlusHadTauAvg_file.Get("LLPlusHadTauTF")
 	signalRegion.addGammaSystematic(['WTop'],LLPlusHadTauControlStatistics,LLPlusHadTauTF)
 			
 	LLPlusHadTauAvg_file.Close()
@@ -213,7 +212,7 @@ if __name__ == '__main__':
 		#signaldirtag="/eo/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"#signaldirtag="/fdata/hepx/store/user/rish/CombineCards/Run2ProductionV11new/"
 		#signaldirtag="./inputHistograms/fastsimSignalT1bbbb/"
 	else: signaldirtag ="inputHistograms/FullSim"
-	signaldirtag ="root://cmseos.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV16_v6/"
+	signaldirtag ="root://cmseos.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV17_v1/"
 	#signaldirtag ="inputHistograms/MCNominalBinning/"
 	#AR-180427:when "fastsim" is true, sms=T1tttt_1500_100. Hence, signaltag=RA2bin_proc_T1tttt_1500_100
 	#print "Data_List ", Data_List
@@ -222,6 +221,8 @@ if __name__ == '__main__':
 	RunLumi=[ 35916.403 , 41521.425,21000.905,38196.951 ]
         mLSP=int(options.mLSP)
         mGo=int(options.mGo)
+        #LLPlusHadTauPrediction_Hist.Scale(61.9*1000. /(RunLumi[0]+RunLumi[1]+RunLumi[2]+RunLumi[3]))
+
 	TestNominal=NominalSignal(signaldirtag,options.signal,mGo,mLSP,yearsToMerge,RunLumi)
 	#signaltag = "RA2bin_proc_"+sms+"_MC2017";
 	#signaltag = "RA2bin_"+sms+"";
@@ -284,8 +285,8 @@ if __name__ == '__main__':
 		#Data_Hist.Add(Data_Hist2018HEM)
         	Data_List=binsToList(Data_Hist) # creates a list of bin content	
 		DataHist_In.Close();
-	LLPlusHadTauAvg_file=TFile.Open(idir+"/InputsForLimits_data_formatted_LLPlusHadTau.root");
 	#LLPlusHadTau_file = TFile(idir+"/LLPlusHadTauPrediction.root");
+	LLPlusHadTauAvg_file=TFile.Open("inputHistograms/histograms_137.4fb/InputsForLimits_data_formatted_LLPlusHadTau.root");
 	LLPlusHadTauPrediction_Hist=LLPlusHadTauAvg_file.Get("totalPred_LLPlusHadTau")
 	LLPlusHadTauPrediction_Hist.SetDirectory(0)
         #LLPlusHadTauPrediction_Hist.Scale(61.9*1000. /(RunLumi[0]+RunLumi[1]+RunLumi[2]+RunLumi[3]))
@@ -463,7 +464,7 @@ if __name__ == '__main__':
 
 	#LLSystematicsList=["LLPlusHadTauTF","DataCSStatistics","LLPlusHadTauTFErr","totalPredBMistagDown_LLPlusHadTau","totalPredJECSysDown_LLPlusHadTau","totalPredMTWSysDown_LL","totalPredLepAccSysDown_LLPlusHadTau","totalPredLepAccSysDown_LLPlusHadTau","totalPredEleIDSysDown_LLPlusHadTau","totalPredEleIsoSysDown_LLPlusHadTau","totalPredEleRecoSysDown_LLPlusHadTau","totalPredMuIsoSysDown_LLPlusHadTau","totalPredMuIDSysDown_LLPlusHadTau","totalPredMuRecoSysDown_LLPlusHadTau"]
 	#LLSystematicsList=["LLPlusHadTauTF","DataCSStatistics","LLPlusHadTauTFErr","totalPredBMistagDown_LLPlusHadTau","totalPred_JECSysDown_LLPlusHadTau","totalPredMTWSysDown_LLPlusHadTau","totalPredLepAccSysDown_LLPlusHadTau","totalPredLepAccSysDown_LLPlusHadTau","totalPredEleIDSysDown_LLPlusHadTau","totalPredEleIsoSysDown_LLPlusHadTau","totalPredEleRecoSysDown_LLPlusHadTau","totalPredMuIsoSysDown_LLPlusHadTau","totalPredMuIDSysDown_LLPlusHadTau"]
-	LLSystematicsList=["LLPlusHadTauTF","DataCSStatistics","LLPlusHadTauTFErr","totalPredBMistagDown_LLPlusHadTau","totalPredJECSysDown_LLPlusHadTau","totalPredMTSysDown_LL","totalPredPDFDown_LLPlusHadTau","totalPredScaleDown_LLPlusHadTau","totalPredEleIDSysDown_LL","totalPredEleIsoSysDown_LL","totalPredEleRecoSysDown_LL","totalPredMuIsoSysDown_LL","totalPredMuIDSysDown_LL","totalPredMuRecoSysDown_LL"]
+	LLSystematicsList=["LLPlusHadTauTF","DataCSStatistics","LLPlusHadTauTFErr","totalPredBMistagDown_LLPlusHadTau","totalPredJECSysDown_LLPlusHadTau","totalPredMTSysDown_LL","totalPredPDFDown_LLPlusHadTau","totalPredScaleDown_LLPlusHadTau","totalPredEleIDSysDown_LL","totalPredEleIsoSysDown_LL","totalPredEleRecoSysDown_LL","totalPredMuIsoSysDown_LL","totalPredMuIDSysDown_LL"]
 	
 	WriteLostLeptonSystematics(idir+"/InputsForLimits_data_formatted_LLPlusHadTau.root",LLSystematicsList,signalRegion)
 	#QCDSystematics=["PredictionCore","PredictionTail","PredictionUncorrelated"]

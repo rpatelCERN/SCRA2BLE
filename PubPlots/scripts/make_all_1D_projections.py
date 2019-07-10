@@ -42,9 +42,11 @@ def make_all_1D_projections(lostlept_file = 'lostlept_hists.root', znn_file = 'z
                        "T1qqqq_1400_100", "T1qqqq_1000_800", "N_{jet} #geq 6, N_{b-jet} = 0, H_{T} > 1200 GeV", False, True, True)
     ## T2tt plot: 5-8 b-jets, MHT > 500, HT > 500
     make_1D_projection('T2tt-projection', 'T2tt',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T2tt_700_50", "T2tt_300_200", "6 #leq N_{jet} #leq 9, H_{T}^{miss} > 600 GeV, H_{T} > 700 GeV")
+                       "T2tt_600_425", "T2tt_600_375", "N_{jet} #geq 8, H_{T} > 600 GeV")
+    make_2D_projection('2D-T2tt', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
+                       "T2tt_600_425", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 8")
     make_1D_projection('T2tt-projection-pull', 'T2tt',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T2tt_700_50", "T2tt_300_200", "6 #leq N_{jet} #leq 9, H_{T}^{miss} > 600 GeV, H_{T} > 700 GeV", False, True, True)
+                       "T2tt_600_425", "T2tt_600_375", "6 #leq N_{jet} #leq 9, H_{T}^{miss} > 600 GeV, H_{T} > 600 GeV", False, True, True)
     ## T2bb plot: 2 b-jets, 2-4 jets, HT > 500
     make_1D_projection('T2bb-projection', 'T2bb',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
                        "T2bb_650_1", "T2bb_500_300", "2 #leq N_{jet} #leq 5, N_{b-jet} = 2, H_{T} > 700 GeV")
@@ -63,8 +65,6 @@ def make_all_1D_projections(lostlept_file = 'lostlept_hists.root', znn_file = 'z
                        "T1bbbb_1500_100", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2")
     make_2D_projection('2D-T1qqqq', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
                        "T1qqqq_1400_100", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2")
-    make_2D_projection('2D-T2tt', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       "T2tt_700_50", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2")
     make_2D_projection('2D-T2bb', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \
                        "T2bb_650_1", "H_{T}^{miss} > 300 GeV, N_{jet} #geq 2")
     make_2D_projection('2D-T2qq', '2D',  lostlept_file, znn_file, qcd_file, data_file, signal_file, \

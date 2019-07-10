@@ -33,7 +33,7 @@ def fill_signal_hists(outputfile = 'signal_hists.root', nbins = 174):
     signal_models = [SignalModel("T1tttt", 2000, 100), SignalModel("T1tttt", 1200, 800), \
                      SignalModel("T1bbbb", 1500, 100), SignalModel("T1bbbb", 1000, 900), \
                      SignalModel("T1qqqq", 1400, 100), SignalModel("T1qqqq", 1000, 800), \
-                     SignalModel("T2tt", 700, 50), SignalModel("T2tt", 300, 200), \
+                     SignalModel("T2tt", 600, 425), SignalModel("T2tt", 600, 375), \
                      SignalModel("T2bb", 650, 1), SignalModel("T2bb", 500, 300), \
                      SignalModel("T2qq", 1000, 100), SignalModel("T2qq", 700, 400), \
                      #SignalModel("T5qqqqVV", 1400, 100), SignalModel("T5qqqqVV", 1000, 800), \

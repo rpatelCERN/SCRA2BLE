@@ -92,7 +92,7 @@ def make_2D_projection(plot_title, asr_name,  lostlept_file, znn_file, qcd_file,
     # f_signal.ls()
     # print (asr_name, signal1, signal2)
     #hsig1 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal1))
-    hsig1 = f_signal.Get("%s/RA2bin_%s_MC2017_nominal" % (asr_name, signal1))
+    hsig1 = f_signal.Get("%s/RA2bin_%s_MC2017_fast_nominal" % (asr_name, signal1))
     #hsig1 = f_signal.Get("%s/RA2bin_%s_fast_nominal" % (asr_name, signal1))
     # scale to current luminosity
     if signal1.find("T2qq") >= 0:
