@@ -7,7 +7,7 @@ The current version of the code is based on the legacy 13 TeV [RA2 analysis](htt
 used 174 search bins with seperate background inputs for each Run era based on the data taking periods in 2016, 2017, 2018 
 (further split by HEM affected runs). The analysis used the RA2 production from the [Treemaker](https://github.com/TreeMaker/TreeMaker/tree/Run2_2017) and the signal histograms from the V17 signal samples. 
 
-# # Setup 
+## Setup 
 
 This was the release used for the Legacy analysis:
 ```	
@@ -29,7 +29,7 @@ Note that future versions of the analysis the combine tool recipe would be updat
 git clone -b Run2LegacyPub  https://github.com/rpatelCERN/SCRA2BLE.git
 ```
 
-# # Plots for Publication
+## Plots for Publication
 
 The files necessary to produce plots for a PAS, publication, supplementary material, or for the technical twiki page are produced from the code in PubPlots.
 
@@ -38,6 +38,7 @@ cd PubPlots
 python scripts/fill_all_inputs.py 
 ```
 
-The above function will create formatted histograms for the bkg estimate, data, post-fit backgrounds, and selected signal points. The bkg and data are filled for the full Run2 data if no argument is specified or according to Run Eras (2016,2017, 2018, 2018HEM). The full Run2 background estimates are taken from the same area as for the likelihood inputs: DatacardBuilder/inputHistograms/histograms_137.4fb . The Run era inputs are in SCRA2BLE/PubPlots/inputs/ where the background estimate is only done with the data in a given run period. These inputs are included for checks and can be compared to the full Run2 background estimates. 
+The above function will create formatted histograms for the bkg estimate, data, post-fit backgrounds, and selected signal points. The bkg and data are filled for the full Run2 data if no argument is specified or according to Run Eras (2016,2017, 2018, 2018HEM). The full Run2 background estimates are taken from the same area as for the likelihood inputs: DatacardBuilder/inputHistograms/histograms_137.4fb . The Run era inputs are in SCRA2BLE/PubPlots/inputs/ where the background estimate is only done with the data in a given run period. These inputs are included for checks and can be compared to the full Run2 background estimates. The above script makes a call to the following python scripts: fill_hadtau_hists.py,fill_znn_hists.py,fill_qcd_hists.py, and fill_data_hists.py. Each function takes the input files and creates a histogram of systematic and statistical uncertainties and projections. Search regions are integrated over accounting for bin correlations to give the correct uncertainty for the 1D and 2D projections and also the aggregate bins. The functions in fill_postfit.py do the same for the post-fit background where there is only a single post-fit uncertainty. 
 
+ 
 
