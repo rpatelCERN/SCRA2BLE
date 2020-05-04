@@ -35,7 +35,9 @@ The files necessary to produce plots for a PAS, publication, supplementary mater
 
 ```
 cd PubPlots
-python scripts/fill_all_inputs.py YEAR
+python scripts/fill_all_inputs.py 
 ```
 
-The above function will create formatted histograms for the bkg estimate, data, post-fit backgrounds, and selected signal points. The bkg and data are filled according to Run Eras (2016,2017, 2018, 2018HEM) 
+The above function will create formatted histograms for the bkg estimate, data, post-fit backgrounds, and selected signal points. The bkg and data are filled for the full Run2 data if no argument is specified or according to Run Eras (2016,2017, 2018, 2018HEM). The full Run2 background estimates are taken from the same area as for the likelihood inputs: DatacardBuilder/inputHistograms/histograms_137.4fb . The Run era inputs are in SCRA2BLE/PubPlots/inputs/ where the background estimate is only done with the data in a given run period. These inputs are included for checks and can be compared to the full Run2 background estimates. 
+
+
