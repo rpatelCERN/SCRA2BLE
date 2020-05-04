@@ -22,11 +22,11 @@ def fill_data_hists(inputfile = 'inputs/data_hists/RA2bin_signal.root', inputhis
     TH1D.SetDefaultSumw2(True)
    
     infile = TFile.Open(inputfile);
-    infile2 = TFile.Open("inputs/data_hists/data_althemveto/RA2bin_signal.root", "READ");
+    #infile2 = TFile.Open("inputs/data_hists/data_althemveto/RA2bin_signal.root", "READ");
     dataTotal=infile.Get(inputhist)
-    dataTotal.Add(infile.Get("RA2bin_data2017"))
-    dataTotal.Add(infile.Get("RA2bin_data2018"))
-    dataTotal.Add(infile.Get("RA2bin_data2018HEM"))
+    #dataTotal.Add(infile.Get("RA2bin_data2017"))
+    #dataTotal.Add(infile.Get("RA2bin_data2018"))
+    #dataTotal.Add(infile.Get("RA2bin_data2018HEM"))
     #dataTotal.Add(infile2.Get("RA2bin_data2018HEM_ra2bin2018HEM-alt2"))
     data_obs = DataObs(dataTotal)
    

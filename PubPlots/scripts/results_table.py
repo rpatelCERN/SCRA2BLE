@@ -48,9 +48,10 @@ class ResultsTable:
         if self.label != None:
             header.append("\\label{%s}" % self.label)
         header.append("\\resizebox{\\textwidth}{!}{")
-        header.append("\\begin{tabular}{ |c|c|c|c|c||c|c|c||c|c| }")
+        header.append("\\begin{tabular}{ cccccccccc }")
         header.append("\\hline")
-        header.append("Bin & $\\MHT$ [GeV] & $\\HT$ [GeV] & $\\njets$ & $\\nbjets$ & Lost-lepton & $Z\\rightarrow\\nu\\bar{\\nu}$ & QCD & Total Pred. & Obs. \\\\ \\hline")
+        header.append("Bin & $\\MHT$ & $\\HT$ & $\\njets$ & $\\nbjets$ & Lost-lepton & $Z\\rightarrow\\nu\\bar{\\nu}$ & QCD & Total & Observed \\\\ ")
+	header.append("& [GeV] &[GeV] & & &   background & background & background & background & \\\\ \\hline")
         return header
 
     def GetTrailer(self):
@@ -75,7 +76,7 @@ class ResultsTable:
             line.append(GetPred(self.znn, ibin+1))
             line.append(GetPred(self.qcd, ibin+1))
             line.append(GetPred(sumBG, ibin+1))
-            line.append("%d \\\\ \\hline" % self.data_obs.hist.GetBinContent(ibin+1))
+            line.append("%d \\\\ " % self.data_obs.hist.GetBinContent(ibin+1))
             rows.append(" & ".join(line))
             ilabel += 1
 
