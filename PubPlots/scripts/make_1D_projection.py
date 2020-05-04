@@ -52,7 +52,7 @@ def open_if_necessary(filename):
 
 # note: this time the inputs are just the paths to *_hists.root files
 def make_1D_projection(plot_title, asr_name, lostlept_file, znn_file, qcd_file, data_file, signal_file, \
-                       signal1, signal2, cut_labels, logy=True, doPull=False, printArXiv=False):
+                       signal1, signal2, cut_labels, logy=True, doPull=False, printArXiv=False,isPAS=False):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -144,8 +144,16 @@ def make_1D_projection(plot_title, asr_name, lostlept_file, znn_file, qcd_file, 
     pull.GetYaxis().SetTitleOffset(0.374)
     hratdummy = ratio.dummy_hist
     rat_max = 0.97
-    hratdummy.SetMaximum(0.5)
-    hratdummy.SetMinimum(-0.5)
+    hratdummy.SetMaximum(0.8)
+    hratdummy.SetMinimum(-0.8)
+    if not doPull:
+	if signal1.find('T1tttt')>=0 or signal1.find('T1bbbb')>=0 or signal1.find('T2qq')>=0: 
+  		hratdummy.SetMaximum(2.4)
+    		hratdummy.SetMinimum(-2.4)
+	if signal1.find('T1qqqq')>=0 :
+  		hratdummy.SetMaximum(1.4)
+    		hratdummy.SetMinimum(-1.4)
+	
     #hratdummy.SetMaximum(rat_max)
     #hratdummy.SetMinimum(-rat_max)
     hratdummy.GetXaxis().SetLabelSize(0.12*1.2)
@@ -339,6 +347,7 @@ def make_1D_projection(plot_title, asr_name, lostlept_file, znn_file, qcd_file, 
     if logy or doPull:
         CMS_lumi.writeExtraText = True
     CMS_lumi.extraText = "     "
+    if isPAS:CMS_lumi.extraText ="  Preliminary "
     CMS_lumi.lumi_13TeV="%8.0f fb^{-1}" % lumi
     CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (13 TeV)"
     iPos=0
@@ -349,7 +358,7 @@ def make_1D_projection(plot_title, asr_name, lostlept_file, znn_file, qcd_file, 
     #print(latex.GetTextSize())
     if printArXiv:
         latex.SetTextColor(4)
-        #latex.DrawLatex(0.7, 0.6, "arXiv:1704.07781");
+        latex.DrawLatex(0.7, 0.6, "arXiv:xxxx.xxxxx");
 
 
     ## save plot to PDF and PNG

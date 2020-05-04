@@ -338,7 +338,7 @@ def make_1D_postfitprojection(plot_title, asr_name, postfit_file, data_file, sig
     CMS_lumi.writeExtraText = False
     if logy or doPull:
         CMS_lumi.writeExtraText = True
-    CMS_lumi.extraText = "     Supplementary"
+    CMS_lumi.extraText = "         Supplementary"
     CMS_lumi.lumi_13TeV="%8.1f fb^{-1}" % lumi
     CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (13 TeV)"
     iPos=0

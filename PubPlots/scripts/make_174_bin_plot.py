@@ -11,7 +11,7 @@ import CMS_lumi
 plot_dir = "output/"
 #plot_title = "results-plot-prefit-12_9-log"
 
-def make_174_bin_plot(plot_title,  lostlept, znn, qcd, data_obs, doPull=False,lumi=35.9,year=2016):
+def make_174_bin_plot(plot_title,  lostlept, znn, qcd, data_obs, doPull=False,lumi=137,WriteExtra=False):
 
     TH1D.SetDefaultSumw2(True)
     import tdrstyle
@@ -316,7 +316,7 @@ def make_174_bin_plot(plot_title,  lostlept, znn, qcd, data_obs, doPull=False,lu
     #lumi = 137.421
     #lumi = 35.9
     #lumi = 16.
-    CMS_lumi.writeExtraText = False
+    CMS_lumi.writeExtraText = WriteExtra
     CMS_lumi.extraText = "       Preliminary"
     CMS_lumi.lumi_13TeV="%8.0f fb^{-1}" % lumi
     #CMS_lumi.lumi_sqrtS = CMS_lumi.lumi_13TeV+ " (2017 13 TeV)"
