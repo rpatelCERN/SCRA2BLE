@@ -176,7 +176,8 @@ if __name__ == '__main__':
 		print "run Obs. significance"
 	    	combine_cmmd=" combine  -M ProfileLikelihood  --uncapped 1 --significance --rMin -5 %s/allcards.root -n %s " %(the_odir,the_odir);
 	    elif options.CombOpt=="ImpactsInitialFit":
-		combine_cmmd = "combineTool.py -M Impacts -m 125  --doInitialFit --robustFit 1  -t -1 --expectSignal  0  --toysFrequentist -d %s/allcards.root -n %s --rMin=-5 --rMax=5" %(TotalPath,the_odir);	
+		#combine_cmmd = "combineTool.py -M Impacts -m 125  --doInitialFit --robustFit 1  -t -1 --expectSignal  0  --toysFrequentist -d %s/allcards.root -n %s --rMin=-5 --rMax=5" %(TotalPath,the_odir);	
+		combine_cmmd = "combineTool.py -M Impacts -m 125  --doInitialFit --robustFit 1  -t -1 --expectSignal  0  --toysFrequentist -d %s/allcards.root --rMin=-5 --rMax=5" %(the_odir);	
 	    else: print "Not a combine option!!!!! "
             os.system(combine_cmmd);
             dicttag = "%s_%.1f" % (sig,lumi);
