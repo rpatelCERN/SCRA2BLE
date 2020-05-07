@@ -146,7 +146,7 @@ if __name__ == '__main__':
         tag = "%s_%i_%i" % (models[m],mGos[m],mLSPs[m]);
 	#os.system(command)
 	print command
-        #condorize( command, tag, outDir, CMSSWVER );
+        condorize( command, tag, outDir, CMSSWVER );
         time.sleep(0.05);
 
 
