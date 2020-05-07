@@ -106,6 +106,7 @@ The Covariance matrix can be checked and also used to create the correlation mat
 The matrices are plotted with plottingStuff/QuickCovariancePASPlot.C 
 
 ```
+cd plottingStuff
 root -b 'QuickCovarianceFormat.C(fname)'
 root -b 'QuickCovariancePASPlot.C'  
 ```
