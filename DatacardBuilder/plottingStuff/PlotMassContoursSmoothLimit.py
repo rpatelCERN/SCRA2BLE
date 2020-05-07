@@ -7,7 +7,7 @@ flist=open("listofFiles%s.txt" %sys.argv[1], 'r')
 #fgluxsec=open("LatestXsecGluGlu.txt", 'r')
 dictXsec={}
 dictXsecUnc={}
-with open('LatestGluGluNNLO.txt', 'r') as input:
+with open('%s' %sys.argv[2], 'r') as input:
 #with open('LatestSquarkNNLO.txt', 'r') as input:
 #with open('LatestSbottomStopNNLO.txt', 'r') as input:
         for line in input:
@@ -49,25 +49,9 @@ MuScanSup2.SetName("MuScanSup2")
 MuScanSdn2=TGraph2D()
 MuScanSdn2.SetName("MuScanSdn2")
 
-'''
-MuScan=TGraph2D(len(mLsp))
-MuScan.SetName("MuScan")
-MuScanXsec=TGraph2D(len(mLsp))
-MuScanXsec.SetName("MuScanXsec")
-MuScanSup=TGraph2D(len(mLsp))
-MuScanSup.SetName("MuScanSup")
-MuScanSdn=TGraph2D(len(mLsp))
-MuScanSdn.SetName("MuScanSdn")
-MuScanObs=TGraph2D(len(mLsp))
-MuScanObs.SetName("MuScanObs")
-MuScanObsSup=TGraph2D(len(mLsp))
-MuScanObsSup.SetName("MuScanObsSup")
-MuScanObsSdn=TGraph2D(len(mLsp))
-MuScanObsSdn.SetName("MuScanObsSdn")
-'''
 for m in range(len(mGo)):
     	#if sys.argv[1]=="T1qqqq" and mGo[m]<400: continue
-	filein=TFile("results_%s_%d_%d_mu0.0.root" %(sys.argv[1],int(mGo[m]), int(mLsp[m])))
+	filein=TFile("results_%s_%d_%d.root" %(sys.argv[1],int(mGo[m]), int(mLsp[m])))
 	t = filein.Get("results")
 	if not t:
 		MissMgo.append(mGo[m])
@@ -102,15 +86,6 @@ for m in range(len(mGo)):
 	MuScanXsec.SetPoint(MuScanXsec.GetN(), mGo[m], mLsp[m],ObsUL*float(dictXsec.get(mGo[m])))
 	MuScanXsecExp.SetPoint(MuScanXsecExp.GetN(), mGo[m], mLsp[m],ExpULXSec)
         PointsFilled.Fill( mGo[m], mLsp[m],ExpUL)	
-	'''
-	MuScan.SetPoint(m+1, mGo[m], mLsp[m], ExpUL)
-	MuScanSup.SetPoint(m+1, mGo[m], mLsp[m], ExpULSigmaUp)
-    	MuScanSdn.SetPoint(m+1, mGo[m], mLsp[m], ExpULSigmaDn)
-	MuScanObs.SetPoint( m+1, mGo[m], mLsp[m], ObsUL)
-	MuScanObsSup.SetPoint(m+1, mGo[m], mLsp[m], ObsULUp)
-    	MuScanObsSdn.SetPoint(m+1, mGo[m], mLsp[m], ObsULDn)
-	MuScanXsec.SetPoint(m+1, mGo[m], mLsp[m],ExpULXSec)
-	'''
 MuScan.SetName("MuScan")
 MuScan.SetNpx(128)
 MuScan.SetNpy(160)

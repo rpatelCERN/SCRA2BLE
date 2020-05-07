@@ -14,11 +14,12 @@ from ROOT import *
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option('--fastsim', action='store_true', dest='fastsim', default=False, help='use fastsim signal (default = %default)')
-parser.add_option('--keeptar', action='store_true', dest='keeptar', default=True, help='keep old tarball for condor jobs (default = %default)')
+parser.add_option('--keeptar', action='store_true', dest='keeptar', default=False, help='keep old tarball for condor jobs (default = %default)')
 parser.add_option("--model", dest="model", default = "T1bbbb",help="SMS model", metavar="model")
+parser.add_option("--inDir", dest="inDir", default = "/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV17_v1/",help="EOS output directory  (default = %default)", metavar="outDir")
 parser.add_option("--outDir", dest="outDir", default = "/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/",help="EOS output directory  (default = %default)", metavar="outDir")
-parser.add_option('--lpc', action='store_true', dest='lpc', default=True, help='running on lpc condor  (default = %default)')
-
+parser.add_option('--lpc', action='store_true', dest='lpc', default=False, help='running on lpc condor  (default = %default)')
+parser.add_option("--CombOpt", dest="CombOpt", default="AsymptoticUL", help="Combine option for the code: AsymptoticUL,Significance",metavar="CombOpt")
 (options, args) = parser.parse_args()
 
 # -----------------------------------------------------------------
@@ -89,27 +90,13 @@ def condorize(command,tag,odir,CMSSWVER):
 	
  	os.chdir("../.");
     else:    
-	#f1.write("#SBATCH -J CombineCLT_%s\n" %(tag))
-    	#f1.write("#SBATCH -p background-4g\n")
-    	#f1.write("#SBATCH --time=07:30:00\n")
-    	#f1.write("#SBATCH --mem-per-cpu=8000 \n")
-    	#f1.write("#SBATCH -o CombineCLT_%s.out \n" %(tag))
-    	#f1.write("#SBATCH -e CombineCLT_%s.err \n" %(tag))
-    	#f1.write("cd /fdata/hepx/store/user/rish/CombineCards/Moriond/%s \n" % (CMSSWVER));
-    	#f1.write("cd src/SCRA2BLE/DatacardBuilder/ \n");
-    	#f1.write("eval `scramv1 runtime -sh`\n")
-    	#f1.write("ls \n");
-    	#f1.write(command+" \n") 
-    	#f1.close();
     	os.system("Qsub -l lnxfarm -o OutPut_LogFile%s -e %s" %(tag,command))
-    	#os.system(command)
- 	#print "Qsub -l lnxfarm -o OutPut_LogFile%s -e %s" %(tag,command)
+ 	print "Qsub -l lnxfarm -o OutPut_LogFile%s -e %s" %(tag,command)
 
 
 
 if __name__ == '__main__':
     outDir = options.outDir
-    eosDir = "root://cmseos.fnal.gov/"+options.outDir
     
     # get some info from the OS
     CMSSWVER = os.getenv("CMSSW_VERSION")
@@ -121,11 +108,14 @@ if __name__ == '__main__':
         cachedir('tmp')
 
     if not options.keeptar:
+	print "Make tar "
     	os.system("tar --exclude-caches-all --exclude inputHistograms/fastsimSignalT*  -zcf tmp/"+CMSSWVER+".tar.gz -C "+CMSSWBASE+"/.. "+CMSSWVER)
    
     #f = TFile.Open("inputHistograms/fastsimSignalT1tttt/RA2bin_signal.root");
-    filenames = next(os.walk("/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV17_v1/"))[2]
-    #filenames = next(os.walk("./inputHistograms/fastsimSignal%s/" %options.model))[2]
+    localpath=options.inDir
+    eosDir = "root://cmseos.fnal.gov/"+localpath
+    if options.lpc:filenames = next(os.walk("/eos/uscms/"+localpath))[2]
+    else:filenames = next(os.walk(localpath))[2]
     #print filenames
 	
     models = []
@@ -138,15 +128,11 @@ if __name__ == '__main__':
 	if not "proc" in parse[1]:continue
 	if not "MC2016" in parse[5]:continue
 	#if options.model==parse[2] :
-	if options.model==parse[2] and  int(parse[3])<2500 :
+	if options.model==parse[2]:
 		models.append(parse[2])	
 		mGos.append(int(parse[3]))
 		mLSPs.append(int(parse[4]))
-	
-    #mGos=[2150, 2150, 2100, 2000]
-    #mLSPs=[200, 500, 1100,1200]
-    #models=["T1tttt", "T1tttt", "T1tttt", "T1tttt"]
-    # for signal in signals:
+		print("Mgo %d mLSP %d " %(int(parse[3]),int(parse[4])))
     for m in range(len(mGos)):
         #    for mLSP in mLSPs:
         command = "python analysisBuilderCondor.py ";
@@ -155,13 +141,12 @@ if __name__ == '__main__':
         command += "--mLSP %i " % mLSPs[m];
         if options.fastsim: command += " --fastsim";
         command += " --realData";
-        command += " --tag Moriond";
-        #command += " --eos %s" % (eosDir);
-
+        command += " --eos %s" % (eosDir);
+	command += " --CombOpt %s " %(options.CombOpt)
         tag = "%s_%i_%i" % (models[m],mGos[m],mLSPs[m]);
 	#os.system(command)
 	print command
-        condorize( command, tag, outDir, CMSSWVER );
+        #condorize( command, tag, outDir, CMSSWVER );
         time.sleep(0.05);
 
 

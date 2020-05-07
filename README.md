@@ -25,10 +25,53 @@ scramv1 b clean; scramv1 b
 
 Note that future versions of the analysis the combine tool recipe would be updated for new CMSSW releases like (e.g. 10X and beyond). Find the latest instructions on the [CombineToolTwiki](https://twiki.cern.ch/twiki/bin/viewauth/CMS/SWGuideHiggsAnalysisCombinedLimit). 
 
+Also in order to complete the full set of [pre-approval checks](https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSPAGPreapprovalChecks) it is also necessary to use the [CombineHarvester](http://cms-analysis.github.io/CombineHarvester/) in order to compute the impact of each nuisance parameter.
+
+```
+git clone https://github.com/cms-analysis/CombineHarvester.git CombineHarvester
+```
+
+
 ```
 git clone -b Run2LegacyPub  https://github.com/rpatelCERN/SCRA2BLE.git
 ```
 
+## Building DataCards for the Combine Tool
+
+The python scripts in DatacardBuilder are designed to take the input bkg estimate histograms as well as an input SMS fastSIM signal point and create datacards for the combine tool.
+The code is in analysisBuilderCondor.py, and includes various options to call methods in the Higgs Combine tool. The scripts also include plotting code for the 2D interpretations,
+which include the cross-section UL, signal significance, and signal efficiency. An example command is shown below for a single signal point:
+
+```
+python analysisBuilderCondor.py --signal T1bbbb --mGo 1500 --mLSP 100 --fastsim --realData --CombOpt=AsymptoticUL
+```
+
+The options specified for the signal point: 
+
+```
+--signal T1bbbb --mGo 1500 --mLSP 100 
+```
+
+bool options below specify that the input signal is fastsim (as opposed to FullSIM) and to use the unblinded data for the observation (otherwise use the sum of the total bkg)
+
+```
+--fastsim --realData
+```
+
+The last option specifies which method to run in the combine code: 
+
+```
+--CombOpt=AsymptoticUL #(or MaxLiklihood, Significance, FitCovariance, ImpactsInitialFit)
+```
+
+The option for AsymptoticUL just runs the Asymptotic upper limits. The other options call different combine methods: 
+- MaxLiklihood computes the post-fit background yields which are input to the plotting code in the next section
+- Fit Covaraince performs the maxlikelihood fit and throws toys to compute the covariance matrix
+- ImpactsInitialFit calls the Combine Harvester tool to fit the likelhood and nuisances (need this is the right format to compute the nuisance impacts)
+- The Significance calls the ProfileLikelihood method to compute the observed significance
+
+
+ 
 ## Plots for Publication
 
 The files necessary to produce plots for a PAS, publication, supplementary material, or for the technical twiki page are produced from the code in PubPlots.
