@@ -1,5 +1,5 @@
-void QuickCovarianceFormat(){
-TFile*fin=new TFile("fitDiagnosticstestCards-Moriond-T2tt_1000_550-137.4-mu0.0.root", "READ");
+void QuickCovarianceFormat(TString fname){
+TFile*fin=new TFile(fname, "READ");
 TH2D*CombineCovariance=(TH2D*)fin->Get("shapes_prefit/overall_total_covar");
     TH2D*OrderedCovariance=(TH2D*)CombineCovariance->Clone("OrderedCovariance");
     TH2D*Correlation=(TH2D*)CombineCovariance->Clone("Correlation");

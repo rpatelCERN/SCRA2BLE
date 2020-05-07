@@ -8,6 +8,7 @@ import os
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("--model", dest="model", default = "T1tttt",help="SMS model", metavar="model")
+parser.add_option("--xsec", dest="xsec", default = "LatestGluGluNNLO.txt",help="SMS model", metavar="xsec")
 (options, args) = parser.parse_args()
 #flist=open("listofFiles%s.txt" %sys.argv[1], 'r')
 #fgluxsec=open("LatestXsecGluGlu.txt", 'r')
@@ -16,7 +17,7 @@ dictXsecUnc={}
 #with open('LatestXsecGluGlu.txt', 'r') as input:
 #with open('LatestGluGluNNLO.txt', 'r') as input:
 #with open('LatestSquarkNNLO.txt', 'r') as input:
-with open('LatestSbottomStopNNLO.txt', 'r') as input:
+with open('%s' %options.xsec, 'r') as input:
         for line in input: #for ex. |225|2021.29|13.8804|
                 elements = line.rstrip().split("|")
                 dictXsec[int(elements[1])]=elements[2]
@@ -49,22 +50,6 @@ SignifScan=TGraph2D()
 SignifScan.SetName("SignifScan")
 
 histoSignifScan=TH2D("histoSignifScan", "Signif. Scan (#sigma) ", 100, 0, 2500, 64,0,1600)
-'''
-MuScan=TGraph2D(len(mLsp))
-MuScan.SetName("MuScan")
-MuScanXsec=TGraph2D(len(mLsp))
-MuScanXsec.SetName("MuScanXsec")
-MuScanSup=TGraph2D(len(mLsp))
-MuScanSup.SetName("MuScanSup")
-MuScanSdn=TGraph2D(len(mLsp))
-MuScanSdn.SetName("MuScanSdn")
-MuScanObs=TGraph2D(len(mLsp))
-MuScanObs.SetName("MuScanObs")
-MuScanObsSup=TGraph2D(len(mLsp))
-MuScanObsSup.SetName("MuScanObsSup")
-MuScanObsSdn=TGraph2D(len(mLsp))
-MuScanObsSdn.SetName("MuScanObsSdn")
-'''
 #idir = "/eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond/BugFix/forrishilpcT1tttt/";
 idir = "/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV17_v1/" #"/eos/uscms/store/user/arane/Limits_T1tttt/";
 RunLumi=[ 35916.403 , 41521.425,21000.905,38196.951 ]

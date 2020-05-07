@@ -98,6 +98,18 @@ plotImpacts.py -i impacts.json -o impacts
 ```
 The results in an impacts plot stored in impacts.pdf
 
+### Covariance /Correlation Matrices
+This matrix is generated using the FitCovariance option for analysisBuilderCondor.py which gives an output file like: fitDiagnosticstestCards-Moriond-XXXX.root (XXXX=output directory name)
+The covariance matrix is already stored in shapes_prefit/overall_total_covar. 
+
+The Covariance matrix can be checked and also used to create the correlation matrix using: plottingStuff/QuickCovarianceFormat.C . This code orders the covariance matrix according to bin number, cross-checks the diagonal against the known pre-fit uncertainties from the inputs (store these in PrefitUnc.root), and computes a correlation matrix. 
+The matrices are plotted with plottingStuff/QuickCovariancePASPlot.C 
+
+```
+root -b 'QuickCovarianceFormat.C(fname)'
+root -b 'QuickCovariancePASPlot.C'  
+```
+
 ### Submitting Jobs
 A single python script is used to run a 2D scan for a signal sample for the two main cases: Upper Limits and significance
 ```
