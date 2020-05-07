@@ -69,9 +69,53 @@ The option for AsymptoticUL just runs the Asymptotic upper limits. The other opt
 - Fit Covaraince performs the maxlikelihood fit and throws toys to compute the covariance matrix
 - ImpactsInitialFit calls the Combine Harvester tool to fit the likelhood and nuisances (need this is the right format to compute the nuisance impacts)
 - The Significance calls the ProfileLikelihood method to compute the observed significance
+### Preapproval Checks
+
+A number of the [pre-approval checks](https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSPAGPreapprovalChecks) can be done with the MaxLiklihood option using analysisBuilderCondor.py. (Use the modifications recommended in the page to toggle between the expectSignal=0, 1 hypotheses). The output results of the MaxLiklihood fit can be plotted and examined using 
+```
+python $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/test/diffNuisances.py 
+```
+The above code provides either a table or a plot (specified by the options) can be used to test the behavior of certain nuisance parameters. We expect correlations in the background uncertainty to shrink the uncertainty on a nuisance parameter after the fit. 
+
+The nuisance impacts can be computationally intensive due to the large number of nuisance parameters in the RA2 likelihood model. It is useful then to break up the impacts into jobs per background estimate or signal in the last step: QCD, Zvv, Lost-lepton, and signal. The procedure for computing Impacts is shown on this twiki:[Nuisance_parameter_impacts](https://twiki.cern.ch/twiki/bin/view/CMS/HiggsWG/SWGuideNonStandardCombineUses#Nuisance_parameter_impacts)
+The steps below show how to produce an impact plot for a subset of nuisances using the RA2 code:
+1. Derive the initial fit to the likelihood using the command for analysisBuilderCondor.py --CombOpt=ImpactsInitialFit. This will produce a file: higgsCombine_initialFit_Test.MultiDimFit.mH125.root
+This will be used for plotting the fitted mu and uncertainty and to find the fitted nuisance parameters
+2. Fit each nuisance parameter as POI. It would take a long time to fit all of them, so in the script QuickNuisnce.py I show how you can run over subsets in batch jobs (the script uses the CU cluster with the Qsub command but it could be adapted to other clusters or the LPC).
+3. Create a Json of all the fitted parameters and their uncertainties. 
+4. Read in the JSON and produce the impacts plot
+
+The full set of commands is shown for an example signal point here:
+
+```
+python analysisBuilderCondor.py --signal T1tttt --mGo 950 --mLSP 700 --fastsim --realData --eos root://cmseos.fnal.gov//store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV17_v1/ --CombOpt=ImpactsInitialFit
+
+combine -M MultiDimFit --robustFit 1 -t -1 --expectSignal 0 -n _paramFit_Test_zvvgJNobs_NJets4_MHT1_HT4 --rMin=-10 --rMax=10 --algo impact --redefineSignalPOIs r -P zvvgJNobs_NJets4_MHT1_HT4 --floatOtherPOIs 1 --saveInactivePOI 1 -m 125 -d testCards-Moriond-T1tttt_950_700-137.4/allcards.root
+####Sumbit to batch as: python QuickNuisnce.py testCards-Moriond-T1tttt_950_700-137.4
+
+combineTool.py -M Impacts -d testCards-Moriond-T1tttt_950_700-137.4/allcards.root -m 125 -o impacts.json
+plotImpacts.py -i impacts.json -o impacts
+```
+The results in an impacts plot stored in impacts.pdf
+
+### Submitting Jobs
+A single python script is used to run a 2D scan for a signal sample for the two main cases: Upper Limits and significance
+```
+python launchSCRA2BLE.py --fastsim --model=T1tttt --keeptar --lpc --CombOpt AsymptoticUL --inDir /store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV17_v1/ --outDir=/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/
+```
+
+The python script runs by default on the lpc but can be modified to run on other clusters. The flag --lpc uses the mode that submits jobs to LPC condor. 
+The code tars the CMSSW area and creates a condor submission area in a new directory called tmp/. The option --keeptar keeps a tar file that is already made  for a new job for a new model set by --model. The remaining parameters define the input and output directories (in this example they are both on LPC eos).  
+
+### Generating 2D Contours and Histograms
+
+The key 2D scans for signal for the RA2 analysis are the signal efficiency, observed significance and upper limit contours and obs limits. The scripts to create 2D smoothed histograms and contours are in DatacardBuilder/plottingStuff. 
+```
+
+```
 
 
- 
+
 ## Plots for Publication
 
 The files necessary to produce plots for a PAS, publication, supplementary material, or for the technical twiki page are produced from the code in PubPlots.
