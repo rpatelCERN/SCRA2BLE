@@ -120,13 +120,44 @@ python launchSCRA2BLE.py --fastsim --model=T1tttt --keeptar --lpc --CombOpt Asym
 The python script runs by default on the lpc but can be modified to run on other clusters. The flag --lpc uses the mode that submits jobs to LPC condor. 
 The code tars the CMSSW area and creates a condor submission area in a new directory called tmp/. The option --keeptar keeps a tar file that is already made  for a new job for a new model set by --model. The remaining parameters define the input and output directories (in this example they are both on LPC eos).  
 
-### Generating 2D Contours and Histograms
+### Generating 2D Scan Histograms
 
 The key 2D scans for signal for the RA2 analysis are the signal efficiency, observed significance and upper limit contours and obs limits. The scripts to create 2D smoothed histograms and contours are in DatacardBuilder/plottingStuff. 
-```
 
+For Signal efficiency is the simplest because it is plotted directly from the signal datacards and the efficiency is computed by dividing the cross-section out from the 
+integral of the signal over the 174 search bins (gives N_passed/N_total). The script requires a list of files per model and an input list of cross sections (I made formatted .txt files from [SUSY Cross-Sections](https://twiki.cern.ch/twiki/bin/view/LHCPhysics/SUSYCrossSections). An example scan:
 ```
+    cd plottingStuff/
+    python PlotMassContoursSmoothEfficiency.py --model=T1bbbb --xsec=LatestGluGluNNLO.txt --idir=/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV17_v1/
+```
+This produces an output file MassScanT1bbbb.root containing a histogram of efficiencies in the 2D mass plane of the T1bbbb model. By default the signal efficiency for models with leptons is adjusted (by degraded the efficiency according to the 1-lepton signal contamination) and the efficiency is computed using the average of the reco MHT and gen MHT binning. The code is setup to run over 4 run eras 2016, 2017, 2018, 2018HEM, but can be modified to just do a single run period.
 
+The significance scan is produced in a similar way using PlotMassContoursSmoothSignif.py where the arguments are the same but the list of files are the resultsYYYY.root (where YYYY are the files made using analysisBuilderCondor.py with the option Significance. 
+    ```
+    cd plottingStuff/
+    ls /eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/Signif/results*T1bbbb*.root > listofFilesT1bbbb.txt
+    python PlotMassContoursSmoothSignif.py --model=T1bbbb --xsec=LatestGluGluNNLO.txt --idir=/eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/Signif/
+    ```
+This produces an output file MassScanT1bbbb.root which contains the observed significance in the 2D mass plane. 
+
+Finally producing the Obs limit in the 2D plane along with the Expected, Observed contours is done in PlotMassContoursSmoothLimit.py
+
+    ```
+    cd plottingStuff/
+    ls /eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/results*T1bbbb*.root > listofFilesT1bbbb.txt
+    python PlotMassContoursSmoothLimit.py --model=T1bbbb --xsec=LatestGluGluNNLO.txt --idir=/eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/
+    ```
+This will output a file MassScanT1bbbb.root for the Obs and Exp limits in the 2D mass plane as well as the contours for the obs limit, the theory uncertainty, the expected limit (medium, +/- 1sigma, +/- 2sigma)
+
+Just a few notes about the code:
+-To create a smooth 2D histogram all of the above code uses TGraph2D where the size of the bins is hard coded in the scripts (this can be adjusted)
+-T2qq is a model with 8-squarks but is also used to do the single 1 quark limit, by default in the script the contours drawn are for signal strength of 1.0,
+but for the single quark this needs to be adjusted to be 1/8 of the total xsec, so this needs to be changed in the script when running over this model. 
+-The significance needs additional smoothing when there are fluctations, this can be done by removing points in the TGraph2D and reinterpolating
+-The contours of the limit also sometimes need additional smoothing, which can be done in root using the TGraphSmoothClass and SmoothSuper. 
+
+### Plotting 2D scans
+The code used to plot results for 2D SMS mass scans is based on the repository [PlotsSMS](https://github.com/CMS-SUS-XPAG/PlotsSMS) but is modified a bit for the RA2 analysis and the various 2D scans required for the publication and additional material.
 
 
 ## Plots for Publication
