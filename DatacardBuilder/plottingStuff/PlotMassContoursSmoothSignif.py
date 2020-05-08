@@ -6,12 +6,18 @@ from ROOT import TCanvas
 import mmap
 import time
 import sys
-flist=open("listofFiles%s.txt" %sys.argv[1], 'r')
+from optparse import OptionParser
+parser = OptionParser()
+parser.add_option("--model", dest="model", default = "T1tttt",help="SMS model", metavar="model")
+parser.add_option("--xsec", dest="xsec", default = "LatestGluGluNNLO.txt",help="SMS model", metavar="xsec")
+parser.add_option("--idir", dest="idir", default = "/eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/Signif/",help="input path", metavar="idir")
+(options, args) = parser.parse_args()
+flist=open("listofFiles%s.txt" %options.model, 'r')
 dictXsec={}
 dictXsecUnc={}
 #with open('LatestGluGluNNLO.txt', 'r') as input:
 #with open('LatestSbottomStopNNLO.txt', 'r') as input:
-with open('%s' %sys.argv[2], 'r') as input:
+with open('%s' %options.xsec, 'r') as input:
 #with open('LatestXsecGluGlu.txt', 'r') as input:
 ##with open('LatestXsecSqtSqt.txt', 'r') as input:
 	for line in input:
@@ -35,7 +41,7 @@ SignifScan=TGraph2D()
 SignifScan.SetName("SignifScan")
 histoSignifScan=TH2D("histoSignifScan", "Signif. Scan (#sigma) ", 100, 0, 2500, 64,0,1600)
 for m in range(len(mGo)):
-	filein=TFile("results_%s_%d_%d_mu0.0.root" %(sys.argv[1],int(mGo[m]), int(mLsp[m])))
+	filein=TFile(options.idir+"results_%s_%d_%d_mu0.0.root" %(options.model,int(mGo[m]), int(mLsp[m])))
 	if not filein:
 	        MissMgo.append(mGo[m])
                 MissMLsp.append(mLsp[m])
@@ -72,7 +78,7 @@ SignifScan.SetNpx(132)
 SignifScan.SetNpy(128)
 hSignif=SignifScan.GetHistogram()
 c=TCanvas("c","",800,800);
-fileOut=TFile("MassScan%s.root" %sys.argv[1], "RECREATE")
+fileOut=TFile("MassScan%s.root" %options.model, "RECREATE")
 print MissMgo
 print MissMLsp
 hSignif.Write("MassScanSignif")
