@@ -125,11 +125,15 @@ The code tars the CMSSW area and creates a condor submission area in a new direc
 The key 2D scans for signal for the RA2 analysis are the signal efficiency, observed significance and upper limit contours and obs limits. The scripts to create 2D smoothed histograms and contours are in DatacardBuilder/plottingStuff. 
 
 For Signal efficiency is the simplest because it is plotted directly from the signal datacards and the efficiency is computed by dividing the cross-section out from the 
-integral of the signal over the 174 search bins (gives N_passed/N_total). The script requires a list of files per model and an input list of cross sections (I made formatted .txt files from [SUSY Cross-Sections](https://twiki.cern.ch/twiki/bin/view/LHCPhysics/SUSYCrossSections). An example scan:
+integral of the signal over the 174 search bins (gives N_passed/N_total). The script requires a list of files per model and an input list of cross sections (I made formatted .txt files from [SUSY Cross-Sections](https://twiki.cern.ch/twiki/bin/view/LHCPhysics/SUSYCrossSections). 
+
+An example scan:
+
     ```
     cd plottingStuff/
     python PlotMassContoursSmoothEfficiency.py --model=T1bbbb --xsec=LatestGluGluNNLO.txt --idir=/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV17_v1/
     ```
+
 This produces an output file MassScanT1bbbb.root containing a histogram of efficiencies in the 2D mass plane of the T1bbbb model. By default the signal efficiency for models with leptons is adjusted (by degraded the efficiency according to the 1-lepton signal contamination) and the efficiency is computed using the average of the reco MHT and gen MHT binning. The code is setup to run over 4 run eras 2016, 2017, 2018, 2018HEM, but can be modified to just do a single run period.
 
 The significance scan is produced in a similar way using PlotMassContoursSmoothSignif.py where the arguments are the same but the list of files are the resultsYYYY.root (where YYYY are the files made using analysisBuilderCondor.py with the option Significance). 
@@ -158,9 +162,19 @@ but for the single quark this needs to be adjusted to be 1/8 of the total xsec, 
 -The contours of the limit also sometimes need additional smoothing, which can be done in root using the TGraphSmoothClass and SmoothSuper. 
 
 ### Plotting 2D scans
-The code used to plot results for 2D SMS mass scans is based on the repository [PlotsSMS](https://github.com/CMS-SUS-XPAG/PlotsSMS) but is modified a bit for the RA2 analysis and the various 2D scans required for the publication and additional material.
+The code used to plot results for 2D SMS mass scans is based on the repository [PlotsSMS](https://github.com/CMS-SUS-XPAG/PlotsSMS) but is modified a bit for the RA2 analysis and the various 2D scans required for the publication and additional material. Each of the folders have the same method for plotting, but have titles, axis labels, and latex text adjusted accordingly. The PlotsSMSLimits/ and PlotsSMST2qqLimits/ folders contain the code to plot the limit contours and the observed limit in the 2D mass plane (The T2qq is a special case because there are two sets of contours for the single and 8-squark models). 
 
+```
+cd PlotsSMSLimits/
+python python/makeSMSplots.py config/SUS12024/T1tttt_SUS12024.cfg OUTPUTFILENAME
+```
 
+The above code reads the histograms and TGraphs defined in T1tttt_SUS12024.cfg and makes a plot from the TFile in the config. The definitions of the signal model and plot ranges are configured in sms.py . New models and corresponding cfg files can be included. The above call is identical for the significance and signal efficiency, the only difference is that only the 2D histogram defined in the .cfg files is used. 
+
+NOTE: 
+-The arxiv number is hard coded to the legacy analysis but can be adjusted. 
+-T2tt model for the legacy analysis is always blinded in the bottom left corned of the stop corridor, but this may change someday
+-You must put the input histograms in the folder with the cfg file
 ## Plots for Publication
 
 The files necessary to produce plots for a PAS, publication, supplementary material, or for the technical twiki page are produced from the code in PubPlots.
