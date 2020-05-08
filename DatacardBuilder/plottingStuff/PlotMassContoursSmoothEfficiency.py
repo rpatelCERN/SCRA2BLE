@@ -9,6 +9,7 @@ from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("--model", dest="model", default = "T1tttt",help="SMS model", metavar="model")
 parser.add_option("--xsec", dest="xsec", default = "LatestGluGluNNLO.txt",help="SMS model", metavar="xsec")
+parser.add_option("--idir", dest="idir", default = "/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV17_v1/",help="input path", metavar="idir")
 (options, args) = parser.parse_args()
 #flist=open("listofFiles%s.txt" %sys.argv[1], 'r')
 #fgluxsec=open("LatestXsecGluGlu.txt", 'r')
@@ -31,9 +32,8 @@ limit=[]
 
 #fileOut=TFile("MassScan%s.root" %sys.argv[1], "RECREATE")
 fileOut=TFile("MassScan%s.root" %options.model, "RECREATE")
-#names = next(os.walk("/eos/uscms/store/user/rgp230/SUSY/CheckYields/Run2ProductionV12/fastsimSignal%s/" %options.model))[2]
-#names = next(os.walk("/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV12/"))[2]
-names = next(os.walk("/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV17_v1/"))[2]
+idir = options.idir #"/eos/uscms/store/user/arane/Limits_T1tttt/";
+names = next(os.walk(idir))[2]
 
 for n in names:
 	#print "nList ",n
@@ -51,11 +51,10 @@ SignifScan.SetName("SignifScan")
 
 histoSignifScan=TH2D("histoSignifScan", "Signif. Scan (#sigma) ", 100, 0, 2500, 64,0,1600)
 #idir = "/eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond/BugFix/forrishilpcT1tttt/";
-idir = "/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV17_v1/" #"/eos/uscms/store/user/arane/Limits_T1tttt/";
 RunLumi=[ 35916.403 , 41521.425,21000.905,38196.951 ]
 TotalLumi=RunLumi[0]+RunLumi[1]+RunLumi[2]+RunLumi[3];
 for m in range(len(mGo)):
-	if(int(mGo[m])==1625 and int(mLsp[m])>=1475):continue
+	#if(int(mGo[m])==1625 and int(mLsp[m])>=1475):continue
 	#if(int(mGo[m])==1625 and int(mLsp[m])==1500):continue
 	#if(int(mGo[m])==1625 and int(mLsp[m])==1525):continue
 	#if(int(mGo[m])==1625 and int(mLsp[m])==1550):continue
