@@ -126,13 +126,14 @@ The key 2D scans for signal for the RA2 analysis are the signal efficiency, obse
 
 For Signal efficiency is the simplest because it is plotted directly from the signal datacards and the efficiency is computed by dividing the cross-section out from the 
 integral of the signal over the 174 search bins (gives N_passed/N_total). The script requires a list of files per model and an input list of cross sections (I made formatted .txt files from [SUSY Cross-Sections](https://twiki.cern.ch/twiki/bin/view/LHCPhysics/SUSYCrossSections). An example scan:
-```
+    ```
     cd plottingStuff/
     python PlotMassContoursSmoothEfficiency.py --model=T1bbbb --xsec=LatestGluGluNNLO.txt --idir=/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV17_v1/
-```
+    ```
 This produces an output file MassScanT1bbbb.root containing a histogram of efficiencies in the 2D mass plane of the T1bbbb model. By default the signal efficiency for models with leptons is adjusted (by degraded the efficiency according to the 1-lepton signal contamination) and the efficiency is computed using the average of the reco MHT and gen MHT binning. The code is setup to run over 4 run eras 2016, 2017, 2018, 2018HEM, but can be modified to just do a single run period.
 
-The significance scan is produced in a similar way using PlotMassContoursSmoothSignif.py where the arguments are the same but the list of files are the resultsYYYY.root (where YYYY are the files made using analysisBuilderCondor.py with the option Significance. 
+The significance scan is produced in a similar way using PlotMassContoursSmoothSignif.py where the arguments are the same but the list of files are the resultsYYYY.root (where YYYY are the files made using analysisBuilderCondor.py with the option Significance). 
+
     ```
     cd plottingStuff/
     ls /eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/Signif/results*T1bbbb*.root > listofFilesT1bbbb.txt
