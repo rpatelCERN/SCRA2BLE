@@ -62,8 +62,7 @@ def condorize(command,tag,odir,CMSSWVER):
 	f1.write("eval `scramv1 runtime -sh`\n")
     	f1.write("cd SCRA2BLE/DatacardBuilder/ \n");
     	f1.write(command+" \n")
-    	mu=0.0
-    	f1.write("xrdcp -f results_%s_mu%1.1f.root root://cmseos.fnal.gov/%s/results_%s_mu%1.1f.root 2>&1 \n" % (tag,float(mu),odir,tag,float(mu)));
+    	f1.write("xrdcp -f results_%s.root root://cmseos.fnal.gov/%s/results_%s.root 2>&1 \n" % (tag,odir,tag));
     	f1.write("rm -r *.py input* *.root *.tar.gz \n")
     	f1.close();
     	f2n = "tmp_%s.condor" % (tag);
