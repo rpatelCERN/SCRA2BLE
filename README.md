@@ -69,8 +69,21 @@ The option for AsymptoticUL just runs the Asymptotic upper limits. The other opt
 - Fit Covaraince performs the maxlikelihood fit and throws toys to compute the covariance matrix
 - ImpactsInitialFit calls the Combine Harvester tool to fit the likelhood and nuisances (need this is the right format to compute the nuisance impacts)
 - The Significance calls the ProfileLikelihood method to compute the observed significance
-### Preapproval Checks
 
+### Notes on buildCards-AllBkgsMassScan.py
+
+The main part of the RA2 integration code is buildCards-AllBkgsMassScan.py, which is the code that defines the the background central values, the background uncertainities as nuisance parameters, the signal yields, and signal nuisance parameters. This code is called within  analysisBuilderCondor.py to create the list of datacards (one per RA2 bin) for the combine tool options. The code relies on a set of background inputs where the central value is binned in a 174 bin histogram, each uncertainty is also filled in a 174 bin histogram with the nuisance parameter name defined in the x-axis bin labels. The bin-labels then allow for creating correlations across the 4D search bins for the bkg systematics. 
+
+The steps below walk through the main functions of the buildcards code. 
+
+1. Merging Run periods: Since the code by default runs over 4 run eras (MC2016,MC2017,MC2018, MC2018HEM) the signal is merged accounting for the lumi of each run period in the function NominalSignal, which makes use of the functions in SignalMergePeriods.py. This step merges the signal for each run period, computes the genMHT systematic, and if there are leptons in the signal accounts for the signal degradation due to contamination in the lost-lepton control sample. TestNominal is a list containing the signal yield histogram and the gen MHT systematic (accounting for mismodeling in FastSIM). NOTE: This step can be modified to run over a single run period by passing a single run era and lumi to NominalSignal.
+2. tagsForSignalRegion defines the name of the RA2 bins based on the bin labels (NJetsW_BTagsX_MHTY_HTZ) and the signal and background contributions, (signal, Zvv, Lost-lepton, QCD multijet). This defines the structure of the rate line in the data card and provides a label for uncorrelated signal systematics.
+3. options.realData is the flag that is set to unblind the data stored in the input histogram for the search region, if it is false then the datacard observations will just contain the total background. The central value yields are stored in a TFile in the output directory (yields.root)
+4.The names of the background systematics are defined in lists in lines 286-292. The lists are seperated according to the bkg contribution. The Zvv systematics are further split according to symmetric, asymmetric, and control stat yield histograms. The nuisance lines are then written for each bkg contribution in the functions: WriteZSystematics,WriteQCDSystematics,and WriteLostLeptonSystematics.
+4. The final stage adds the signal systematics LN 298 adds the lnU for the MHT systematic (which was computed in the first step). The remaining systematics need to be properly merged according to whether or not they are correlated or uncorrelated across run periods. This is done in WriteSignalSystematics using the functions defined in SignalMergePeriods.py. 
+
+
+### Preapproval Checks
 A number of the [pre-approval checks](https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSPAGPreapprovalChecks) can be done with the MaxLiklihood option using analysisBuilderCondor.py. (Use the modifications recommended in the page to toggle between the expectSignal=0, 1 hypotheses). The output results of the MaxLiklihood fit can be plotted and examined using 
 ```
 python $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/test/diffNuisances.py 
@@ -129,29 +142,30 @@ integral of the signal over the 174 search bins (gives N_passed/N_total). The sc
 
 An example scan:
 
-    ```
-    cd plottingStuff/
-    python PlotMassContoursSmoothEfficiency.py --model=T1bbbb --xsec=LatestGluGluNNLO.txt --idir=/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV17_v1/
-    ```
+```
+cd plottingStuff/
+python PlotMassContoursSmoothEfficiency.py --model=T1bbbb --xsec=LatestGluGluNNLO.txt --idir=/eos/uscms/store/user/pedrok/SUSY2015/Analysis/Datacards/Run2ProductionV17_v1/
+```
 
 This produces an output file MassScanT1bbbb.root containing a histogram of efficiencies in the 2D mass plane of the T1bbbb model. By default the signal efficiency for models with leptons is adjusted (by degraded the efficiency according to the 1-lepton signal contamination) and the efficiency is computed using the average of the reco MHT and gen MHT binning. The code is setup to run over 4 run eras 2016, 2017, 2018, 2018HEM, but can be modified to just do a single run period.
 
 The significance scan is produced in a similar way using PlotMassContoursSmoothSignif.py where the arguments are the same but the list of files are the resultsYYYY.root (where YYYY are the files made using analysisBuilderCondor.py with the option Significance). 
 
-    ```
-    cd plottingStuff/
-    ls /eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/Signif/results*T1bbbb*.root > listofFilesT1bbbb.txt
-    python PlotMassContoursSmoothSignif.py --model=T1bbbb --xsec=LatestGluGluNNLO.txt --idir=/eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/Signif/
-    ```
+```
+cd plottingStuff/
+ls /eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/Signif/results*T1bbbb*.root > listofFilesT1bbbb.txt
+python PlotMassContoursSmoothSignif.py --model=T1bbbb --xsec=LatestGluGluNNLO.txt --idir=/eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/Signif/
+ ```
 This produces an output file MassScanT1bbbb.root which contains the observed significance in the 2D mass plane. 
 
 Finally producing the Obs limit in the 2D plane along with the Expected, Observed contours is done in PlotMassContoursSmoothLimit.py
 
-    ```
-    cd plottingStuff/
-    ls /eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/results*T1bbbb*.root > listofFilesT1bbbb.txt
-    python PlotMassContoursSmoothLimit.py --model=T1bbbb --xsec=LatestGluGluNNLO.txt --idir=/eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/
-    ```
+```
+cd plottingStuff/
+ls /eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/results*T1bbbb*.root > listofFilesT1bbbb.txt
+python PlotMassContoursSmoothLimit.py --model=T1bbbb --xsec=LatestGluGluNNLO.txt --idir=/eos/uscms/store/user/rgp230/SUSY/statInterp/scanOutput/Moriond2019/
+```
+
 This will output a file MassScanT1bbbb.root for the Obs and Exp limits in the 2D mass plane as well as the contours for the obs limit, the theory uncertainty, the expected limit (medium, +/- 1sigma, +/- 2sigma)
 
 Just a few notes about the code:
