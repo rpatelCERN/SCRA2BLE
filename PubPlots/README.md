@@ -15,7 +15,7 @@ python scripts/make_all_pas_plots_and_tables.py
 ``` 
 The above function then plots a full suite of results for the paper (for the PAS flip the switch for isPAS which is hardcoded isPAS=False;) from the formatted histograms in the previous step. 
 
-## Notes for updates
+### Notes for updates
 
 A few parts of the code have hard-coded file paths and variables: 
 - scripts/fill_signal_hists.py defines which signal points are stored in the signal histograms, so these can limit what signal is overlayed in plots
