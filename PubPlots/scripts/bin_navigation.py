@@ -145,8 +145,8 @@ def GetMHTSelectionString(minHTMHT=0, maxHTMHT=9):
     else:
         return "%d \\leq H_{T}^{\\rm miss} \\leq %d" % (minHTMHTToMHTMap[minHTMHT], maxHTMHTToMHTMap[maxHTMHT])
 
-minHTMap = {0:300, 1:700, 2:1200}
-maxHTMap = {0:700, 1:1200}
+minHTMap = {0:300, 1:600, 2:1200}
+maxHTMap = {0:600, 1:1200}
 def GetHTSelectionString(minHT=0, maxHT=2, minHTMHT=0, maxHTMHT=9):
     if maxHT==2:
         if minHTMHT==8 and maxHTMHT==8:
